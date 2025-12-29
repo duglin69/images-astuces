@@ -19,5 +19,22 @@
 </div>
 </div>
 </body>
-</html>
+ <!-- Dans ton index.html existant, ajoute à la fin : -->
+<div class="surprise-section">
+<h3 style="grid-column:1/-1;color:#dc2626;">🎲 Surprise aléatoire</h3>
+<div id="surprise-slot"></div>
+</div>
 
+<script>
+const fiches = [
+  {nom:"Hébergeurs Éternels", lien:"hebergeurs.html"},
+  {nom:"Grilles Responsive", lien:"grilles.html"},
+  {nom:"15 Prompts Logos", lien:"prompts.html"}
+];
+const surprise = fiches[Math.floor(Math.random() * fiches.length)];
+document.getElementById("surprise-slot").innerHTML = 
+`<a href="${surprise.lien}" class="file-link">
+🔥 ${surprise.nom} 🔥
+</a>`;
+</script>
+</html>
