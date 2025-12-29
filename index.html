@@ -5,20 +5,18 @@
 <meta name="viewport" content="width=device-width">
 <title>🏛️ Images Astuces</title>
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-body {font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:40px;line-height:1.6;color:#333;}
-.container {max-width:900px;margin:0 auto;background:white;border-radius:24px;padding:60px;box-shadow:0 30px 80px rgba(0,0,0,0.2);text-align:center;}
-.logo {font-size:4em;margin-bottom:20px;}
-.title {font-size:3em;color:#1a202c;margin-bottom:20px;}
-.subtitle {font-size:1.3em;color:#666;margin-bottom:50px;max-width:600px;margin-left:auto;margin-right:auto;}
-.all-files {margin:60px 0;padding:40px;background:rgba(16,185,129,0.1);border-radius:24px;border-left:6px solid #10b981;}
-.files-title {font-size:2em;color:#1e293b;margin-bottom:30px;}
-.files-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:25px;}
-.file-link {display:block;padding:20px;background:white;border-radius:16px;text-decoration:none;color:#333;font-weight:700;font-size:1.2em;transition:all 0.3s;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
-.file-link:hover {transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,0.15);background:#f0fdf4;}
-h3.cat-section {grid-column:1/-1;font-size:1.8em;color:#1e293b;margin:30px 0 15px 0;font-weight:700;border-bottom:3px solid #10b981;padding-bottom:10px;}
-.new-badge {color:#dc2626;font-weight:900;}
-.surprise-section {grid-column:1/-1;margin-top:40px;padding:30px;background:rgba(220,38,38,0.1);border-radius:16px;border:3px dashed #dc2626;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:40px;line-height:1.6;color:#333;}
+.container{max-width:900px;margin:0 auto;background:white;border-radius:24px;padding:60px;box-shadow:0 30px 80px rgba(0,0,0,0.2);}
+.logo{font-size:4em;margin-bottom:20px;text-align:center;}
+.title{font-size:3em;color:#1a202c;margin-bottom:20px;text-align:center;}
+.repertoire{margin:60px 0;padding:40px;background:#f8fafc;border-radius:20px;border-left:6px solid #10b981;}
+.repertoire h2{font-size:2em;color:#1e293b;margin-bottom:30px;text-align:center;}
+.files-list{max-width:600px;margin:0 auto;}
+.file-link{display:block;padding:20px;background:white;margin-bottom:15px;border-radius:12px;text-decoration:none;color:#333;font-weight:700;font-size:1.2em;transition:all 0.3s;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
+.file-link:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(0,0,0,0.15);}
+.surprise{padding:30px;background:#fef3c7;border-radius:16px;margin-top:40px;text-align:center;border:2px dashed #f59e0b;}
+.surprise h3{color:#d97706;margin-bottom:20px;}
 @media(max-width:768px){.container{padding:40px 20px;}}
 </style>
 </head>
@@ -26,20 +24,18 @@ h3.cat-section {grid-column:1/-1;font-size:1.8em;color:#1e293b;margin:30px 0 15p
 <div class="container">
 <div class="logo">🏛️</div>
 <h1 class="title">Images Astuces</h1>
-<p class="subtitle">Répertoire alphabétique complet. GitHub affiche les 3 dernières en tête.</p>
 
-<div class="all-files">
-<h2 class="files-title">📋 Répertoire alphabétique</h2>
-<div class="files-grid">
-<h3 class="cat-section">0-999999...</h3>
-<a href="prompts.html" class="file-link"><span class="new-badge">🔥 15 Prompts Logos 🔥</span></a>
-<h3 class="cat-section">G-H-I</h3>
-<a href="grilles.html" class="file-link">Grilles Responsive</a>
-<a href="hebergeurs.html" class="file-link">Hébergeurs Éternels</a>
+<div class="repertoire">
+<h2>📋 Toutes les fiches</h2>
+<div class="files-list">
+<a href="hebergeurs.html" class="file-link">📸 Hébergeurs Éternels</a>
+<a href="grilles.html" class="file-link">💻 Grilles Responsive</a>
+<a href="prompts.html" class="file-link">🔥 15 Prompts Logos 🔥</a>
+<!-- +1 nouvelle = +1 ligne simple -->
 </div>
 </div>
 
-<div class="surprise-section">
+<div class="surprise" id="surprise-section">
 <h3>🎲 Surprise aléatoire</h3>
 <div id="surprise-slot">Chargement...</div>
 </div>
@@ -52,9 +48,7 @@ const fiches = [
 ];
 const surprise = fiches[Math.floor(Math.random() * fiches.length)];
 document.getElementById("surprise-slot").innerHTML = 
-`<a href="${surprise.lien}" class="file-link">
-🔥 ${surprise.nom} 🔥
-</a>`;
+`<a href="${surprise.lien}" class="file-link">🎲 ${surprise.nom}</a>`;
 </script>
 
 </body>
