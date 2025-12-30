@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Prompt Maître - Guide Visuel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #4a6fa5, #166088);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .analogy-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #ff9a3c;
+        }
+        
+        .section-title {
+            color: #166088;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #ff9a3c;
+        }
+        
+        .analogy-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .prompt-type {
+            flex: 1;
+            min-width: 300px;
+            padding: 25px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .prompt-type:hover {
+            transform: translateY(-5px);
+        }
+        
+        .normal-prompt {
+            background: #e8f4fc;
+            border: 2px solid #4a6fa5;
+        }
+        
+        .master-prompt {
+            background: #f0f7ed;
+            border: 2px solid #2e7d32;
+        }
+        
+        .prompt-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .normal-title {
+            color: #4a6fa5;
+        }
+        
+        .master-title {
+            color: #2e7d32;
+        }
+        
+        .prompt-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-style: italic;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .components-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #4a6fa5;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .component-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border-top: 5px solid;
+            height: 100%;
+        }
+        
+        .component-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .component-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #166088;
+        }
+        
+        .component-desc {
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .example-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #ff6b6b;
+        }
+        
+        .example-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .example-prompt {
+            padding: 25px;
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .example-normal {
+            background: #fff5f5;
+            border: 2px dashed #ff6b6b;
+        }
+        
+        .example-master {
+            background: #f7f9ff;
+            border: 2px solid #4a6fa5;
+        }
+        
+        .example-label {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .master-label {
+            background: #4a6fa5;
+        }
+        
+        .example-content {
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+        
+        .image-generation-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #9c27b0;
+            background: linear-gradient(to right, #fdf2ff, #ffffff);
+        }
+        
+        .image-example {
+            background: #f3e5f5;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px dashed #9c27b0;
+        }
+        
+        .image-prompt-template {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .variable-item {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4a6fa5;
+        }
+        
+        .variable-title {
+            font-weight: bold;
+            color: #166088;
+            margin-bottom: 5px;
+        }
+        
+        .advantages-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #6b5b95;
+        }
+        
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .advantage-item {
+            background: #f8f5ff;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .advantage-icon {
+            color: #6b5b95;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .conclusion {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(to right, #166088, #4a6fa5);
+            color: white;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+        
+        .conclusion h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .highlight {
+            background: #ff9a3c;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .facebook-group-note {
+            background: #1877f2;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .analogy-container {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .prompt-type {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-crown"></i> Le Concept de "Prompt Maître"</h1>
+            <p class="subtitle">Un guide visuel pour comprendre la différence entre un prompt simple et un prompt maître, et comment structurer vos interactions avec l'IA.</p>
+        </header>
+        
+        <section class="analogy-section">
+            <h2 class="section-title"><i class="fas fa-utensils"></i> L'Analogie Culinaire</h2>
+            <div class="analogy-container">
+                <div class="prompt-type normal-prompt">
+                    <h3 class="prompt-title normal-title"><i class="fas fa-comment"></i> Prompt Normal</h3>
+                    <div class="prompt-content">"Fais-moi un gâteau au chocolat."</div>
+                    <p><strong>Résultat :</strong> Une recette basique, sans détails sur les ingrédients, les quantités ou les étapes précises.</p>
+                </div>
+                
+                <div class="prompt-type master-prompt">
+                    <h3 class="prompt-title master-title"><i class="fas fa-crown"></i> Prompt Maître</h3>
+                    <div class="prompt-content">"Tu es un pâtissier français étoilé. Crée une recette de gâteau au chocolat fondant pour 6 personnes. Donne la liste des ingrédients précis, les étapes détaillées, les temps de cuisson, et des conseils pour éviter que le gâteau ne s'affaisse. Présente la réponse sous forme de titre, suivie des ingrédients en liste, puis des étapes numérotées."</div>
+                    <p><strong>Résultat :</strong> Une recette complète, détaillée, adaptée à vos besoins spécifiques, et présentée de manière structurée.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="components-section">
+            <h2 class="section-title"><i class="fas fa-puzzle-piece"></i> Les 5 Éléments Clés d'un Prompt Maître</h2>
+            <div class="components-grid">
+                <div class="component-card" style="border-color: #FF9A3C;">
+                    <div class="component-icon"><i class="fas fa-user-tie"></i></div>
+                    <h3 class="component-title">1. Le Rôle / La Persona</h3>
+                    <p class="component-desc">Définir l'identité de l'IA (expert, tuteur, créateur) pour orienter son style et son expertise.</p>
+                </div>
+                
+                <div class="component-card" style="border-color: #4A6FA5;">
+                    <div class="component-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3 class="component-title">2. L'Objectif Principal</h3>
+                    <p class="component-desc">Préciser clairement le but final à atteindre avec cette interaction.</p>
+                </div>
+                
+                <div class="component-card" style="border-color: #2E7D32;">
+                    <div class="component-icon"><i class="fas fa-tasks"></i></div>
+                    <h3 class="component-title">3. La Tâche Détaillée</h3>
+                    <p class="component-desc">Décomposer en étapes spécifiques ce que l'IA doit faire pour atteindre l'objectif.</p>
+                </div>
+                
+                <div class="component-card" style="border-color: #6B5B95;">
+                    <div class="component-icon"><i class="fas fa-table"></i></div>
+                    <h3 class="component-title">4. Le Format de Sortie</h3>
+                    <p class="component-desc">Définir la structure de la réponse (tableau, liste, paragraphes, etc.).</p>
+                </div>
+                
+                <div class="component-card" style="border-color: #FF6B6B;">
+                    <div class="component-icon"><i class="fas fa-sliders-h"></i></div>
+                    <h3 class="component-title">5. Règles & Contraintes</h3>
+                    <p class="component-desc">Ajouter des limitations (longueur, style, exclusions) pour affiner le résultat.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="example-section">
+            <h2 class="section-title"><i class="fas fa-code"></i> Exemple Comparatif</h2>
+            <div class="example-container">
+                <div class="example-prompt example-normal">
+                    <div class="example-label">Prompt Normal</div>
+                    <h3 style="color: #ff6b6b; margin-bottom: 10px;">Demande : Écrire un article de blog sur la marche à pied</h3>
+                    <div class="example-content">"Écris un article sur la marche à pied."</div>
+                </div>
+                
+                <div class="example-prompt example-master">
+                    <div class="example-label master-label">Prompt Maître</div>
+                    <h3 style="color: #4a6fa5; margin-bottom: 10px;">Demande : Écrire un article de blog sur la marche à pied</h3>
+                    <div class="example-content">🎭 Rôle : Tu es un rédacteur santé pour un magazine grand public.
+🎯 Objectif : Rédiger un article engageant qui donne envie de marcher.
+📝 Tâche : Pour le sujet "LA MARCHE À PIED", crée :
+1. Un titre accrocheur
+2. Une introduction percutante
+3. 3 sections avec sous-titres (bienfaits physiques, mentaux, sociaux)
+4. 3 conseils pratiques pour commencer
+5. Une conclusion motivante
+📊 Format : Article complet en français, ton positif et accessible
+⚙️ Règles : Pas de jargon médical, maximum 500 mots</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="image-generation-section">
+            <h2 class="section-title"><i class="fas fa-images"></i> Application à la Génération d'Images IA</h2>
+            <div class="facebook-group-note">
+                <i class="fab fa-facebook"></i> Spécialement adapté pour les groupes Facebook dédiés à la génération d'images IA
+            </div>
+            
+            <p>Le concept de prompt maître peut également se révéler fort utile dans le cadre de la génération d'images. Plutôt que de créer chaque prompt individuellement, vous pouvez créer un template réutilisable qui garantit une cohérence stylistique et technique pour toute une série d'images.</p>
+            
+            <div class="image-example">
+                <h3 style="color: #9c27b0; margin-bottom: 15px;"><i class="fas fa-camera"></i> Exemple pour les recettes de cuisine</h3>
+                <p>Si vous cherchez à présenter le résultat de recettes de cuisine, il est possible de répéter à l'infini le prompt ainsi structuré :</p>
+                
+                <div class="image-prompt-template">"Tu as préparé un/une [RECETTE]. Présente ton/ta [RECETTE] sous la forme d'une photo [CARACTÉRISTIQUES ou ESTHÉTIQUES] posé(e) sur [ENDROIT], au format [FORMAT]."</div>
+                
+                <div class="variables-grid">
+                    <div class="variable-item">
+                        <div class="variable-title">[RECETTE]</div>
+                        <div>tarte aux pommes, canard à l'orange, burger gourmet, salade niçoise, crème brûlée, etc.</div>
+                    </div>
+                    
+                    <div class="variable-item">
+                        <div class="variable-title">[CARACTÉRISTIQUES]</div>
+                        <div>réaliste, photo de magazine de cuisine, style hygge, lumière naturelle, rétro, minimaliste, etc.</div>
+                    </div>
+                    
+                    <div class="variable-item">
+                        <div class="variable-title">[ENDROIT]</div>
+                        <div>table en bois, plan de travail en marbre, encore sur la grille du four, assiette vintage, etc.</div>
+                    </div>
+                    
+                    <div class="variable-item">
+                        <div class="variable-title">[FORMAT]</div>
+                        <div>1:1 (carré), 16:9 (paysage), 9:16 (portrait), 4:5, etc.</div>
+                    </div>
+                </div>
+                
+                <h4 style="color: #9c27b0; margin-top: 20px;"><i class="fas fa-magic"></i> Exemples concrets générés :</h4>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li><strong>"Tu as préparé une tarte aux pommes. Présente ta tarte aux pommes sous la forme d'une photo réaliste posée sur une table en bois rustique, au format 1:1."</strong></li>
+                    <li><strong>"Tu as préparé un canard à l'orange. Présente ton canard à l'orange sous la forme d'une photo de magazine de cuisine posé sur une assiette blanche élégante, au format 16:9."</strong></li>
+                    <li><strong>"Tu as préparé un burger gourmet. Présente ton burger gourmet sous la forme d'une photo style hygge posé sur un plan de travail en bois, au format 4:5."</strong></li>
+                </ul>
+                
+                <p style="margin-top: 20px; font-style: italic; background: #e8f4fc; padding: 15px; border-radius: 8px;">
+                    <i class="fas fa-lightbulb"></i> <strong>Astuce pour votre groupe Facebook :</strong> Partagez ce template avec vos membres et encouragez-les à publier leurs variations ! Vous pouvez organiser des défis thématiques (ex: "Les desserts d'automne") où chacun utilise le même prompt maître avec des variables différentes.
+                </p>
+            </div>
+        </section>
+        
+        <section class="advantages-section">
+            <h2 class="section-title"><i class="fas fa-star"></i> Les Avantages du Prompt Maître</h2>
+            <div class="advantages-grid">
+                <div class="advantage-item">
+                    <div class="advantage-icon"><i class="fas fa-check-circle"></i></div>
+                    <div>
+                        <h3>Fiabilité</h3>
+                        <p>Résultats de qualité constante à chaque utilisation</p>
+                    </div>
+                </div>
+                
+                <div class="advantage-item">
+                    <div class="advantage-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <h3>Gain de Temps</h3>
+                        <p>Économise des dizaines de messages et d'itérations</p>
+                    </div>
+                </div>
+                
+                <div class="advantage-item">
+                    <div class="advantage-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div>
+                        <h3>Apprentissage</h3>
+                        <p>Améliore votre capacité à structurer votre pensée</p>
+                    </div>
+                </div>
+                
+                <div class="advantage-item">
+                    <div class="advantage-icon"><i class="fas fa-redo"></i></div>
+                    <div>
+                        <h3>Réutilisable</h3>
+                        <p>Un template sauvegardé pour des utilisations futures</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="conclusion">
+            <h2>En Résumé</h2>
+            <p style="font-size: 1.3rem; max-width: 900px; margin: 0 auto;">
+                Le <span class="highlight">Prompt Maître</span> est votre <strong>plan d'action détaillé</strong> pour l'IA. 
+                Au lieu de simples instructions, vous fournissez un <strong>template structuré</strong> qui garantit des réponses 
+                précises, cohérentes et de haute qualité. C'est l'outil qui fait passer de l'expérimentation à la <strong>production efficace</strong>.
+            </p>
+            <p style="margin-top: 25px; font-size: 1.1rem;">
+                <i class="fas fa-lightbulb" style="margin-right: 10px;"></i>
+                <strong>Conseil :</strong> Commencez par définir le résultat idéal, puis décomposez-le en éléments pour construire votre premier prompt maître !
+            </p>
+        </section>
+    </div>
+
+    <script>
+        // Animation simple pour les cartes au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.component-card, .prompt-type, .variable-item');
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+            
+            // Effet d'interaction pour les exemples
+            const examplePrompts = document.querySelectorAll('.example-prompt, .image-example');
+            examplePrompts.forEach(prompt => {
+                prompt.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                prompt.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
