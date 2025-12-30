@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <a href="repertoire/index.html">🏛️ Répertoire</a>
-    <a href="index.html">🏛️ Accueil</a>
+  <body>  <div class="btn-group-top">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">🏛️ Répertoire</a>
+</div>
+
 <head>
 <style>
 .prompt-block {
@@ -152,9 +155,15 @@
   top: 15px;
   right: 15px;
 }
+  .btn-group-top {
+    position: fixed; top: 20px; right: 20px;
+    display: flex; gap: 10px; z-index: 1000;
+}
+body { padding-top: 80px; /* + votre CSS */ }
+
 </style>
 </head>
-<body>
+
 <!-- SECTION DESCRIPTIONS ORIGINALES -->
 <div class="original-descriptions">
   <div class="original-title">D'un prompt basique à une quasi "infinité" de prompts (le prompt maître)</div>
@@ -435,6 +444,7 @@ function copyPrompt(num, lang) {
 </body>
 
 </html>
+
 
 
 
