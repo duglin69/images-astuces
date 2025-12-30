@@ -37,6 +37,15 @@
         .demo-grid img { width: 140px; height: 140px; object-fit: cover; border-radius: 8px; border: 3px solid #ddd; }
         .primary { border-color: #4CAF50 !important; }
         .code-block { background: #1e1e1e; color: #f8f8f2; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 13px; overflow-x: auto; margin: 15px 0; }
+    /* ✅ AJOUTEZ ICI (fin du CSS) */
+        .btn-retour { 
+            display: inline-block; padding: 12px 20px; 
+            background: #007BFF; color: white; 
+            text-decoration: none; border-radius: 8px; 
+        }
+        .btn-group {
+            display: flex; gap: 15px; justify-content: center; margin: 30px 0;
+        }
     </style>
 </head>
 <body>
@@ -119,9 +128,13 @@
     border-radius: 5px; 
 }
 </style>
-       <div> <a href="repertoire/index.html"class=" btn-retour">🏛️ Répertoire</a>
-        <a href="index.html" class="btn-retour">🏛️ Accueil</a></div>
+       <div class="btn-group">
+    <a href="repertoire/index.html" class="btn-retour">🏛️ Répertoire</a>
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
 </div>
+
+</div>
+
 
 
 
