@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <body>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,17 +39,38 @@
         .primary { border-color: #4CAF50 !important; }
         .code-block { background: #1e1e1e; color: #f8f8f2; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 13px; overflow-x: auto; margin: 15px 0; }
     /* ✅ AJOUTEZ ICI (fin du CSS) */
-        .btn-retour { 
-            display: inline-block; padding: 12px 20px; 
-            background: #007BFF; color: white; 
-            text-decoration: none; border-radius: 8px; 
-        }
-        .btn-group {
-            display: flex; gap: 15px; justify-content: center; margin: 30px 0;
-        }
+        .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* Ajouter un padding au body pour éviter que le contenu soit caché */
+body {
+    padding-top: 80px;
+}
+        .btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-retour:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
     </style>
 </head>
-<body>
+
     <div class="container">
                 <div class="header">
             <h1>Hébergement de vos photos</h1>
@@ -118,22 +140,15 @@
         <b>6-9 photos</b> → 120px + gap:15px + padding:20px (MOYENNE)<br/>
         <b>10+ photos</b> → 80px + gap:10px + padding:15px (PETITE)
     </div>
-        <style>
-.btn-retour { 
-    display: inline-block; 
-    padding: 10px 20px; 
-    background: #007BFF; 
-    color: white; 
-    text-decoration: none; 
-    border-radius: 5px; 
-}
-</style>
-       <div class="btn-group">
-    <a href="repertoire/index.html" class="btn-retour">🏛️ Répertoire</a>
-    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+        
+     
+
+        <div class="top-right">
+            <a href="index.html" class="btn-retour">🏠 Accueil </a>
+            <a href="repertoire/index.html" class="btn-retour">🏛️ Répertoire</a></div>
+</body>
 </div>
 
-</div>
 
 
 
