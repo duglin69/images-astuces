@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.prompt-block {
+  margin: 15px 0;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+.prompt-title {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+.prompt-text {
+  background: rgba(255,255,255,0.95);
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  margin: 10px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: #2c3e50;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.copy-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.3s;
+  margin: 0 5px;
+}
+.copy-btn:hover {
+  background: #2980b9;
+}
+.copy-btn.en {
+  background: #9b59b6;
+}
+.copy-btn.en:hover {
+  background: #8e44ad;
+}
+.copied {
+  background: #27ae60 !important;
+}
+.copied.en {
+  background: #27ae60 !important;
+}
+.negative-prompt {
+  background: rgba(231,76,60,0.1);
+  border: 1px solid #e74c3c;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #c0392b;
+}
+.lang-pair {
+  display: flex;
+  gap: 15px;
+}
+.intro-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.intro-title {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.intro-text {
+  font-size: 1.1em;
+  line-height: 1.7;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.base-prompt {
+  background: rgba(255,255,255,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 10px auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  max-width: 800px;
+  border-left: 4px solid #f1c40f;
+}
+.en-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+/* Styles pour la section des descriptions originales */
+.original-descriptions {
+  margin: 15px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e8f4f8 0%, #d6eaf8 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+.original-title {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+.original-subtitle {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 25px 0 10px 0;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 5px;
+}
+.original-text {
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.95em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+}
+.original-section {
+  margin-bottom: 25px;
+}
+
+/* Styles pour les boutons de copie */
+.copy-buttons {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+</style>
+</head>
+<body>
+
+<!-- SECTION DESCRIPTIONS ORIGINALES -->
+<div class="original-descriptions">
+  <div class="original-title">D'un prompt basique à une quasi "infinité" de prompts (le prompt maître)</div>
+ <div class="original-title">From a basic prompt to near "infinity" of prompts (the master prompt)</div>
+  
+  <div class="original-section">
+    <div class="original-subtitle">Le chat (description détaillée)</div>
+    <div class="original-text">
+Sujet principal -
+Un chat élancé de race type siamois ou oriental, entièrement composé de mécanismes steampunk et cyberpunk en métal blanc-argenté patiné de givre. Son corps expose des engrenages, pistons, câbles et articulations rouillées, avec des effets de vapeur s'échappant des joints. Les yeux brillent d'un bleu électrique intense, exprimant une vigilance alerte.
+
+Environnement - 
+Un décor gelé et désolé : sol enneigé avec congères, dômes géodésiques en ruines couverts de glace, tours cylindriques effondrées et structures suspendues par des câbles brisés. Une lune pâle éclaire la scène d'une lumière froide, avec un ciel nocturne nuageux et des ombres longues.
+
+Composition et éclairage -
+L'animal occupe le premier plan en pose dynamique (patte avant levée), cadrage en contre-plongée légère pour accentuer la majesté. Palette dominée par les bleus glaciaux, blancs givrés et reflets métalliques ; brouillard et particules de neige ajoutent de la profondeur atmosphérique. Style hyper-réaliste numérique, haute définition (8K), avec textures détaillées et éclairage volumétrique.
+    </div>
+  </div>
+  
+  <div class="original-section">
+    <div class="original-subtitle">Le dragon et le kangourou (description détaillée)</div>
+    <div class="original-text">
+Dragon biomécanique - 
+Dragon élancé aux écailles remplacées par un exosquelette métallique blanc-argenté givré, ailes déployées en membranes renforcées de câbles et pistons. Corps musculeux expose engrenages dentelés, tubes à vapeur fumants et griffes articulées ; yeux bleu électrique luminescent, gueule entrouverte révélant crocs mécaniques. Pose imposante en vol plané, queue serpentine balayant la neige.
+
+Kangourou robotique - 
+Kangourou anthropomorphe massif, pelage simulé en métal patiné de givre, poche thoracique ouverte sur circuits et mécanismes internes. Pattes arrière puissantes à ressorts hydrauliques, bras avant griffus ; yeux bleu néon intenses, expression alerte. Pose dynamique en saut, avec vapeur s'échappant des articulations et sac protecteur renforcé.
+
+Environnement partagé -
+Paysage glacé désolé : sol enneigé, dômes géodésiques effondrés, tours cylindriques brisées suspendues par câbles gelés, lune pâle dans ciel nuageux nocturne. Brouillard neigeux, ombres portées longues, palette bleus froids et blancs givrés.
+
+Composition et style -
+Cadrage large en contre-plongée pour majesté, premier plan occupé par le sujet principal. Hyper-réaliste numérique 8K, textures détaillées (rouille, givre, reflets métalliques), éclairage volumétrique lunaire avec particules atmosphériques.
+    </div>
+  </div>
+  
+  <div class="original-section">
+    <div class="original-subtitle">Mix des 3 personnages</div>
+    <div class="original-text">
+Dans un paysage arctique post-apocalyptique enneigé, le dragon biomécanique et le kangourou robotique s'affrontent aux échecs sur un échiquier gelé, tandis que le chat cybernétique se promène en arrière-plan.
+
+Personnages principaux -
+Dragon biomécanique élancé, exosquelette métallique blanc-argenté givré avec engrenages, pistons et ailes membranaires renforcées de câbles ; yeux bleu électrique, pose concentrée penchée sur l'échiquier, griffe manipulant une pièce. Kangourou robotique massif, métal patiné de givre, pattes hydrauliques puissantes, poche thoracique ouverte sur circuits ; yeux néon bleus, posture accroupie réfléchissant son coup.
+
+Chat en action - 
+Chat cybernétique siamois (comme l'original), mécanismes steampunk fumants, yeux bleu luminescent ; se promène.
+
+Scène et environnement - 
+Échiquier géant en pierre gelée au centre, pièces d'échecs biomécaniques (pions engrenés, tours cylindriques) ; sol enneigé avec congères, dômes ruines, tours effondrées et lune pâle éclairant le ciel nuageux nocturne. Brouillard neigeux ajoute profondeur.
+
+Composition et style -
+Cadrage large en plongée pour overview stratégique, focus sur tension du jeu et mouvement du chat ; palette bleus glaciaux, blancs givrés, reflets métalliques. Hyper-réaliste 8K, textures détaillées (rouille, vapeur, givre), éclairage volumétrique lunaire avec particules atmosphériques.
+    </div>
+  </div>
+  
+  <div class="original-section">
+    <div class="original-subtitle">Le tout adapté au format 16:9</div>
+    <div class="original-text">
+Format large paysage (16:9) pour encadrer l'échiquier central occupant 40% horizontal, dragon à gauche penché (griffe sur tour), kangourou à droite accroupi (pattes hydrauliques visibles), chat traverse l'arrière-plan. Cadrage en plongée légère favorisant perspective stratégique étirée horizontalement.
+
+Personnages détaillés - 
+Dragon : exosquelette givré blanc-argenté, ailes semi-déployées encadrant gauche, yeux bleu électrique fixés sur plateau. Kangourou : poche circuits ouverte au centre, yeux néon bleus scrutateurs, posture saut prête exploitant largeur cadre. Chat : steampunk fumant, marche fluide, reliant avant/arrière-plan.
+
+Environnement étendu - 
+Horizons larges révélant dômes ruines étirés, tours effondrées suspendues par câbles gelés à l'extrême droite/gauche ; sol enneigé avec congères basses, lune pâle haute dans ciel nuageux, brouillard neigeux horizontal renforçant profondeur 16:9. Échiquier pierreuse 3x3m avec pièces biomécaniques (pions engrenés).
+
+Style et éclairage -
+Hyper-réaliste numérique 8K optimisé 16:9 (3840x2160), textures rouille/givre/vapeur haute définition ; palette bleus glaciaux dominants, reflets métalliques lunaires, éclairage volumétrique avec particules atmosphériques traversant largeur cadre.
+    </div>
+  </div>
+  
+  <div class="original-section">
+    <div class="original-subtitle">Exemples de synthèse</div>
+    <div class="original-text">
+Plan cinématique grand-angle 16:9 paysage arctique post-apocalyptique gelé nuit sous clair de lune pâle : dragon biomécanique majestueux exosquelette blanc-argenté givré complexe pistons engrenages visibles ailes semi-déployées renforcées câbles yeux bleu électrique perçants penché griffe positionnée précisément sur tour ; face à lui kangourou robotique massif texture fourrure métallique glacée poche circuits ouverte mécanismes internes visibles pattes hydrauliques puissantes accroupies prêt-saut yeux néon bleu intenses concentrés échiquier ; arrière-plan dynamique chat cybernétique siamois élégant détails biomécaniques steampunk vapeur s'échappant marche. Échiquier pierre surdimensionné 3x3m givré centre pièces échecs biomécaniques détaillées pions engrenés tours cylindriques. Environnement dômes géodésiques ruinés tours industrielles effondrées suspendues câbles gelés congères profondes brouillard neige horizontal profondeur atmosphérique. Textures hyper-détaillées rouille givre vapeur palette bleus glaciaux blancs dominants tons froids éclairage volumétrique rayons lunaires traversant brume chef-d'œuvre cinématique photoréaliste ultra-haute résolution 8K netteté parfaite composition professionnelle
+    </div>
+    <div class="original-text">
+Plus synthétique :
+Plan cinématique grand-angle paysage arctique post-apocalyptique gelé nuit clair de lune pâle, dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique griffe sur tour, kangourou robotique métal glacé poche circuits pattes hydrauliques yeux néon bleu, arrière-plan chat cybernétique siamois steampunk fumant marche, échiquier pierre pièces biomécaniques, dômes ruines tours câbles gelés brouillard neige, bleus glaciaux éclairage volumétrique hyper-détaillé 8K photoréaliste, ratio 16:9
+    </div>
+    <div class="original-text">
+Version anglaise :
+Cinematic wide-angle shot of frozen post-apocalyptic Arctic wasteland night pale moonlight, biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes claw on rook, robotic kangaroo iced metal fur circuit pouch hydraulic legs neon blue eyes, background cybernetic siamese cat steampunk steaming walking, stone chessboard biomechanical pieces, ruined domes towers frozen cables snow mist, glacial blues volumetric lighting hyper-detailed 8K photorealistic, 16:9 aspect ratio
+    </div>
+  </div>
+</div>
+
+<!-- SECTION INTRO FRANÇAIS -->
+<div class="intro-section">
+  <div class="intro-title">Évolution des Prompts : <br/>De l'idée originale aux variantes infinies</div>
+  <div class="intro-text">
+    Tout a commencé avec un <strong>chat cybernétique</strong> dans un paysage arctique post-apocalyptique. 
+    Puis l'idée d'un <strong>dragon biomécanique et kangourou robotique jouant aux échecs</strong> :
+  </div>
+  <div class="base-prompt">
+Prompt de base 1 : dragon biomécanique + kangourou robotique jouent aux échecs échiquier pierre + chat cybernétique + paysage arctique ruines + éclairage lunaire + hyper-détaillé 8K
+  </div>
+  <div class="base-prompt">
+Ajout du moonwalk : dragon biomécanique + kangourou robotique jouent aux échecs + chat cybernétique marche + décor arctique + 16:9
+  </div>
+  <div class="intro-text">
+    Système modulaire master prompt : <code>[DRAGON] + [KANGOUROU] + [CHAT] + [ACTION] + [DECOR] + [ECLAIRAGE] + [STYLE]</code><br>
+    <strong>Résultat : 225 variantes infinies</strong> sans réécriture !<br>
+<i>Rassurez-vous, vous n'êtes pas "obligé" d'effectuer / de rédiger vous-même toutes les étapes de détails intermédiaires, vous pouvez demander à votre système de générer lui-même des descriptions détaillées pour le positionnement, le décor, la luminosité, l'esthétique, ..., et vous réorganisez ensuite le tout à votre sauce !</i><br/>
+    <strong>5 exemples :</strong>
+  </div>
+</div>
+  
+  <!-- SECTION INTRO ANGLAIS -->
+<div class="intro-section" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); margin-top: 30px;">
+  <div class="intro-title" style="color: #1a1a1a;">Prompt Evolution: <br/>From Original Idea to Infinite Variants</div>
+  <div class="intro-text" style="color: #1a1a1a;">
+    Started with a <strong>cybernetic cat</strong> in post-apocalyptic Arctic. 
+    Then <strong>biomechanical dragon + robotic kangaroo playing chess</strong>:
+  </div>
+  <div class="base-prompt" style="background: rgba(0,0,0,0.2); color: #1a1a1a;">
+Base Prompt 1: biomechanical dragon + robotic kangaroo play chess stone board + cybernetic cat + arctic ruins + lunar lighting + hyper-detailed 8K
+  </div>
+  <div class="base-prompt" style="background: rgba(0,0,0,0.2); color: #1a1a1a;">
+Moonwalk addition: dragon + kangaroo chess + cat walking + arctic + 16:9
+  </div>
+  <div class="intro-text" style="color: #1a1a1a;">
+    Modular master system: <code>[DRAGON] + [KANGAROO] + [CAT] + [ACTION] + [SETTING] + [LIGHTING] + [STYLE]</code><br>
+    <strong>Result: 225 infinite variants</strong> without rewriting!<br>
+<i>Don't worry, you're not "required" to manually perform/write all the intermediate detailed steps yourself—you can ask your system to generate detailed descriptions for positioning, decor, lighting, aesthetics, etc., and then reorganize everything to your own taste!</i><br/>
+    <strong>5 examples :</strong>
+    
+  </div>
+  </div>
+
+<!-- PROMPT 1 VF/EN - LOCH NESS HYGGE -->
+<div class="prompt-block" style="background: linear-gradient(135deg, #f8e8d9 0%, #e8d5b7 100%);">
+  <div class="prompt-title">1. Loch Ness - Hygge</div>
+  <div class="copy-buttons">
+    <button class="copy-btn" onclick="copyPrompt(1, 'vf')">Copier VF</button>
+    <button class="copy-btn en" onclick="copyPrompt(1, 'en')">Copier EN</button>
+  </div>
+  <div class="lang-pair">
+    <div class="prompt-text" id="prompt1-vf">
+dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique kangourou robotique métal glacé poche circuits ouverte pattes hydrauliques yeux néon bleu chat cybernétique siamois steampunk fumant yeux bleu luminescent au bord Loch Ness regardent fascinés Nessy surf, cabanes bois cosy hygge bougies feux torpille lumière chaude brume matinale lac écossais reflets eau douce, éclairage hygge doux tons chauds orangés ambrés lumière naturelle douce golden hour, hyper-détaillé 8K photoréaliste profondeur champ bokeh flou artistique netteté sélective textures bois fumées reflets eau ratio 16:9
+    </div>
+    <div class="prompt-text" id="prompt1-en">
+biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes robotic kangaroo iced metal fur open circuit pouch hydraulic legs neon blue eyes cybernetic siamese cat steampunk mechanisms steaming blue glowing eyes at Loch Ness edge fascinated watching Nessy surf, cozy hygge wooden cabins candles fire pits warm light morning mist Scottish lake water reflections, soft hygge lighting warm orange amber tones natural golden hour light, hyper-detailed 8K photorealistic depth of field bokeh artistic blur selective sharpness wood textures smoke water reflections 16:9 ratio
+    </div>
+  </div>
+  <div class="negative-prompt">
+Prompt négatif: déformation anatomique, membres disproportionnés, couleurs criardes, surexposition, flou excessif, artefacts IA, arrière-plan pollué, compositions bancales
+  </div>
+</div>
+
+<!-- PROMPT 2 VF/EN - PÈRE NOËL ANIME -->
+<div class="prompt-block" style="background: linear-gradient(135deg, #ffeef8 0%, #f8d7e8 100%);">
+  <div class="prompt-title">2. Père Noël - Anime</div>
+  <div class="copy-buttons">
+    <button class="copy-btn" onclick="copyPrompt(2, 'vf')">Copier VF</button>
+    <button class="copy-btn en" onclick="copyPrompt(2, 'en')">Copier EN</button>
+  </div>
+  <div class="lang-pair">
+    <div class="prompt-text" id="prompt2-vf">
+dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique kangourou robotique métal glacé poche circuits ouverte pattes hydrauliques yeux néon bleu chat cybernétique siamois steampunk fumant yeux bleu luminescent aident Père Noël préparer traîneau cadeaux, atelier lutins cadeaux empilés rennes harnais magie Noël flocons boules décorations, style anime Studio Ghibli contours nets couleurs saturées yeux expressifs dynamisme manga particules magiques lumière féerique, hyper-détaillé 8K animation 2D/3D hybride ratio 16:9
+    </div>
+    <div class="prompt-text" id="prompt2-en">
+biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes robotic kangaroo iced metal fur open circuit pouch hydraulic legs neon blue eyes cybernetic siamese cat steampunk mechanisms steaming blue glowing eyes helping Santa prepare sleigh gifts, elf workshop stacked presents reindeer harnesses Christmas magic snowflakes ornaments, Studio Ghibli anime style clean outlines saturated colors expressive eyes manga dynamism magical particles fairy lights, hyper-detailed 8K 2D/3D hybrid animation 16:9 ratio
+    </div>
+  </div>
+  <div class="negative-prompt">
+Prompt négatif: style occidental, réalisme photo, proportions irréalistes anime, arrière-plan vide, couleurs ternes, manque dynamisme, traits grossiers
+  </div>
+</div>
+
+<!-- PROMPT 3 VF/EN - TOUR EIFFEL N&B (suite) -->
+<div class="prompt-block" style="background: linear-gradient(135deg, #bdc3c7 0%, #95a5a6 100%);">
+  <div class="prompt-title">3. Tour Eiffel - Magazine N&B</div>
+  <div class="copy-buttons">
+    <button class="copy-btn" onclick="copyPrompt(3, 'vf')">Copier VF</button>
+    <button class="copy-btn en" onclick="copyPrompt(3, 'en')">Copier EN</button>
+  </div>
+  <div class="lang-pair">
+    <div class="prompt-text" id="prompt3-vf">
+dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique kangourou robotique métal glacé poche circuits ouverte pattes hydrauliques yeux néon bleu chat cybernétique siamois steampunk fumant yeux bleu luminescent construisent Tour Eiffel 1889, échafaudages fer riveteurs marteaux Paris 19e siècle fumées usines ciel nuageux, photo magazine noir blanc contrastes forts textures métalliques grains pellicule haute définition éclairage dramatisé ombres dures, hyper-détaillé 8K ratio 16:9
+    </div>
+    <div class="prompt-text" id="prompt3-en">
+biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes robotic kangaroo iced metal fur open circuit pouch hydraulic legs neon blue eyes cybernetic siamese cat steampunk mechanisms steaming blue glowing eyes building Eiffel Tower 1889, iron scaffolding riveters hammers 19th century Paris factory smoke cloudy sky, magazine photo black white high contrast metallic textures film grain high definition dramatized lighting hard shadows, hyper-detailed 8K 16:9 ratio
+    </div>
+  </div>
+  <div class="negative-prompt">
+Prompt négatif: couleurs, surexposition, flou mouvement, compositions modernes, éléments anachroniques, manque texture métal, contraste faible
+  </div>
+</div>
+
+<!-- PROMPT 4 VF/EN - VOLCAN ISLANDAIS -->
+<div class="prompt-block" style="background: linear-gradient(135deg, #d5f4e6 0%, #b2e6d7 100%);">
+  <div class="prompt-title">4. Volcan Islandais</div>
+  <div class="copy-buttons">
+    <button class="copy-btn" onclick="copyPrompt(4, 'vf')">Copier VF</button>
+    <button class="copy-btn en" onclick="copyPrompt(4, 'en')">Copier EN</button>
+  </div>
+  <div class="lang-pair">
+    <div class="prompt-text" id="prompt4-vf">
+dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique kangourou robotique métal glacé poche circuits ouverte pattes hydrauliques yeux néon bleu chat cybernétique siamois steampunk fumant yeux bleu luminescent explorent volcan islandais éruption, lave rouge coulée géothermie geysers vapeur paysages lunaires basalte noir cendres volcaniques, éclairage dramatique lave orangée contrastes fumées épaisses lumière volcanique atmosphère apocalyptique, hyper-détaillé 8K photoréaliste profondeur champ particules cendres reflets lave ratio 16:9
+    </div>
+    <div class="prompt-text" id="prompt4-en">
+biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes robotic kangaroo iced metal fur open circuit pouch hydraulic legs neon blue eyes cybernetic siamese cat steampunk mechanisms steaming blue glowing eyes explore Icelandic volcano eruption, red lava flows geothermal geysers steam lunar landscapes black basalt volcanic ash, dramatic lava orange lighting contrasts thick smoke volcanic light apocalyptic atmosphere, hyper-detailed 8K photorealistic depth of field ash particles lava reflections 16:9 ratio
+    </div>
+  </div>
+  <div class="negative-prompt">
+Prompt négatif: ciel bleu, végétation abondante, couleurs pastel, netteté excessive, arrière-plan flou, proportions incorrectes, manque chaleur
+  </div>
+</div>
+
+<!-- PROMPT 5 VF/EN - ESPACE COSMIQUE -->
+<div class="prompt-block" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+  <div class="prompt-title" style="color: #ecf0f1;">5. Station Spatiale - Sci-Fi</div>
+  <div class="copy-buttons">
+    <button class="copy-btn" onclick="copyPrompt(5, 'vf')">Copier VF</button>
+    <button class="copy-btn en" onclick="copyPrompt(5, 'en')">Copier EN</button>
+  </div>
+  <div class="lang-pair">
+    <div class="prompt-text" id="prompt5-vf" style="color: #ecf0f1; background: rgba(255,255,255,0.15);">
+dragon biomécanique exosquelette blanc-argenté givré pistons engrenages ailes semi-déployées yeux bleu électrique kangourou robotique métal glacé poche circuits ouverte pattes hydrauliques yeux néon bleu chat cybernétique siamois steampunk fumant yeux bleu luminescent réparent station spatiale orbitale, Terre bleue hublots panneaux solaires débris spatiaux nébuleuses étoiles, éclairage sci-fi néons bleus hublots lumière Terre reflets métalliques vide spatial, hyper-détaillé 8K photoréaliste space opera ratio 16:9
+    </div>
+    <div class="prompt-text" id="prompt5-en" style="color: #ecf0f1; background: rgba(255,255,255,0.15);">
+biomechanical dragon frosted white-silver exoskeleton geared pistons semi-deployed wings electric blue eyes robotic kangaroo iced metal fur open circuit pouch hydraulic legs neon blue eyes cybernetic siamese cat steampunk mechanisms steaming blue glowing eyes repair orbital space station, blue Earth viewports solar panels space debris nebulae stars, sci-fi neon blue lighting viewports Earth light metallic reflections space void, hyper-detailed 8K photorealistic space opera 16:9 ratio
+    </div>
+  </div>
+  <div class="negative-prompt" style="color: #bdc3c7;">
+Prompt négatif: atmosphère terrestre, gravité visible, nuages planète, proportions déformées, arrière-plan étoilé générique, flou stellaire
+  </div>
+</div>
+
+
+  <!-- CONCLUSION - AJOUT À LA FIN DU BLOC HTML -->
+<div class="intro-section" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin-top: 30px;">
+  <div class="intro-title" style="color: #1a1a1a;">Pourquoi le Master Prompt Modulaire <br/>Révolutionne votre Workflow</div>
+  <div class="intro-text" style="color: #1a1a1a;">
+    <strong>Économie de temps x100 :</strong> 1 système = 225+ variantes au lieu de 225 prompts à réécrire<br>
+    <strong>Contrôle total :</strong> Changez 1 bloc = nouvelle scène instantanée<br>
+    <strong>Workflow pro :</strong> Compatible Firefly/Leonardo/Midjourney/DALL-E<br>
+    <strong>Base évolutive :</strong> Ajoutez actions/décors = multiplications exponentielles<br><br>
+    <em>De "chat cybernétique" unique → bibliothèque infinie en 5 minutes</em>
+  </div>
+</div>
+
+<!-- CONCLUSION ANGLAIS - AJOUT À LA FIN DU BLOC HTML -->
+<div class="intro-section" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); margin-top: 30px;">
+  <div class="intro-title" style="color: #1a1a1a;">Why the Modular Master Prompt <br/>Revolutionizes Your Workflow</div>
+  <div class="intro-text" style="color: #1a1a1a;">
+    <strong>100x Time Savings:</strong> 1 system = 225+ variants instead of rewriting 225 prompts<br>
+    <strong>Total Control:</strong> Change 1 block = instant new scene<br>
+    <strong>Pro Workflow:</strong> Firefly/Leonardo/Midjourney/DALL-E compatible<br>
+    <strong>Evolving Base:</strong> Add actions/settings = exponential multiplications<br><br>
+    <em>From single "cybernetic cat" → infinite library in 5 minutes</em>
+  </div>
+</div>
+
+
+<script>
+function copyPrompt(num, lang) {
+  const text = document.getElementById('prompt' + num + '-' + lang).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const isEn = btn.classList.contains('en');
+    btn.textContent = isEn ? 'Copié EN !' : 'Copié VF !';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = isEn ? 'Copier EN' : 'Copier VF';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    alert('Erreur de copie');
+  });
+}
+</script>
+
+</body>
+</html>
