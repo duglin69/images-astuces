@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Voyage Immobile Générateur Pro</title>
+<title>Voyage Immobile Générateur Pro v2</title>
 <style>
 body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0a1a,#1a1a3a);color:#e8f4ff;padding:25px;margin:0;overflow-x:hidden;}
 .container{max-width:1800px;margin:auto;background:linear-gradient(135deg,rgba(0,20,40,0.8),rgba(10,30,60,0.6));padding:40px;border-radius:30px;box-shadow:0 30px 100px rgba(0,212,255,0.2);backdrop-filter:blur(20px);}
@@ -24,37 +24,37 @@ button{padding:20px 45px;font-size:18px;border-radius:20px;border:none;cursor:po
 .random-zone:hover{transform:scale(1.1);box-shadow:0 15px 60px rgba(255,107,107,0.7);}
 .two-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
 @media(max-width:1200px){.two-columns{grid-template-columns:1fr;}}
-  .top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
+
+#copier {
+  background: linear-gradient(135deg, #00d4ff, #00b8ff);
+  color: #000;
+  font-size: 18px;
+  padding: 12px 25px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  margin: 15px 0 0 auto;
+  display: block;
+}
+#copier:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.6);
 }
 
-body {
-    padding-top: 80px;
-}
-  .btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
+.gender-age-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 </style>
 </head>
 <body>
-  <div class="top-right">
-    <a href="index.html" class="btn-retour">🏠 Accueil</a>
-    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
-</div>
 <div class="container">
-<h1>🌌 VOYAGE IMMOBILE PRO - GÉNÉRATEUR ÉVÉNEMENTS</h1>
-<p style="text-align:center;font-size:1.2em;color:#88ccff;">500 000+ variantes | Anachronismes créatifs | Personnages historiques | Scènes épiques</p>
+<h1>🌌 VOYAGE IMMOBILE PRO v2 - GÉNÉRATEUR ÉVÉNEMENTS</h1>
+<p style="text-align:center;font-size:1.2em;color:#88ccff;">Personnalisation complète | Genres & Âges | 500 000+ variantes | Anachronismes créatifs</p>
 
 <label class="section-title">⚙️ MODE CRÉATIF & ÉPOQUE</label>
 <div class="group">
@@ -260,30 +260,37 @@ body {
 </div>
 
 <div>
-<label class="section-title">👤 COSTUMES & APPAREILLAGE (100+)</label>
+<label class="section-title">👤 COSTUMES & APPAREILLAGE (120+)</label>
 <div class="group">
 <select id="costume" size="8">
-<optgroup label="Tenues Classiques">
-<option>smoking tuxedo noir</option>
-<option>costume trois pièces</option>
-<option>robe de soirée longue</option>
-<option>robe de cocktail</option>
-<option>tailleur chic</option>
-<option>jeans t-shirt casual</option>
-<option>tenue de sport</option>
-<option>pyjama confortable</option>
-<option>tenue de plage maillot</option>
-<option>tenue de ski</option>
-<option>tenue de randonnée</option>
-<option>uniforme de travail</option>
-<option>blouse de laboratoire</option>
-<option>tenue de cosplay</option>
-<option>costume de super-héros</option>
-<option>tenue de ninja</option>
-<option>tenue de pirate</option>
-<option>tenue de cow-boy</option>
-<option>tenue de vampire</option>
-<option>tenue de sorcier</option>
+<optgroup label="Tenues Féminines">
+<option>robe de soirée longue élégante</option>
+<option>robe de cocktail scintillante</option>
+<option>tailleur chic femme d'affaires</option>
+<option>maillot de bain une pièce élégant</option>
+<option>bikini plage estival</option>
+<option>chemisier soyeux col ouvert</option>
+<option>mini-jupe cuir ou tissu</option>
+<option>jupe plissée école rétro</option>
+<option>robe vintage années 50</option>
+<option>tenue de yoga confortable</option>
+<option>ensemble pyjama soyeux</option>
+<option>tenue de randonnée féminine</option>
+<option>combinaison jumpsuit élégante</option>
+<option>robe de mariée blanche voile</option>
+<option>tenue de cérémonie formelle</option>
+</optgroup>
+<optgroup label="Tenues Masculines">
+<option>smoking tuxedo noir classique</option>
+<option>costume trois pièces élégant</option>
+<option>jeans t-shirt casual décontracté</option>
+<option>tenue de sport performance</option>
+<option>costume de marié traditionnel</option>
+<option>tenue de plage short hawaïen</option>
+<option>tenue de ski montagne</option>
+<option>uniforme de travail professionnel</option>
+<option>blouse de laboratoire scientifique</option>
+<option>tenue de motard cuir</option>
 </optgroup>
 <optgroup label="Costumes Historiques">
 <option>centurion armure rouge romain</option>
@@ -303,16 +310,18 @@ body {
 <option>tenue hippie années 60</option>
 </optgroup>
 <optgroup label="Tenues Spéciales">
-<option>robe mariée blanche voile</option>
-<option>costume de marié</option>
-<option>tenue de cérémonie</option>
-<option>costume de clown</option>
+<option>tenue de cosplay personnage</option>
+<option>costume de super-héros</option>
+<option>tenue de ninja</option>
+<option>tenue de pirate</option>
+<option>tenue de cow-boy</option>
+<option>tenue de vampire</option>
+<option>tenue de sorcier</option>
 <option>tenue de magicien</option>
 <option>uniforme militaire</option>
 <option>tenue de pilote</option>
 <option>tenue d'astronaute NASA</option>
 <option>combinaison de plongée</option>
-<option>tenue de motard</option>
 <option>kimono japonais</option>
 <option>sari indien</option>
 <option>kilt écossais</option>
@@ -327,15 +336,48 @@ body {
 </select>
 </div>
 
-<label class="section-title">👥 COMPAGNONS & TRAITS PHYSIQUES</label>
+<label class="section-title">👥 PERSONNAGES : GENRE, ÂGE & COMPAGNONS</label>
+<div class="gender-age-group">
+<div>
+<label>Genre protagoniste</label>
+<select id="genreProtagoniste">
+<option value="">Non spécifié</option>
+<option value="homme">Homme</option>
+<option value="femme">Femme</option>
+<option value="non-binaire">Non-binaire</option>
+</select>
+</div>
+<div>
+<label>Âge protagoniste</label>
+<select id="ageProtagoniste">
+<option value="">Âge non spécifié</option>
+<option value="jeune adulte 18-30 ans">18-30 ans</option>
+<option value="adulte 31-50 ans">31-50 ans</option>
+<option value="adulte mature 51-65 ans">51-65 ans</option>
+<option value="sénior 66-75 ans">66-75 ans</option>
+<option value="âgé sage 76+ ans">76+ ans</option>
+</select>
+</div>
+<div>
+<label>Genre compagnon</label>
+<select id="genreCompagnon">
+<option value="">Non spécifié</option>
+<option value="homme">Homme</option>
+<option value="femme">Femme</option>
+<option value="non-binaire">Non-binaire</option>
+<option value="mixte">Groupe mixte</option>
+</select>
+</div>
+</div>
+
 <div class="group">
 <select id="compagnon">
-<option>solo dramatique</option>
-<option>fiancée robe blanche</option>
-<option>fiancé smoking</option>
+<option>protagoniste principal seulement</option>
+<option>fiancé(e) amoureux(se)</option>
+<option>partenaire romantique</option>
 <option>enfants émerveillés</option>
 <option>amis fêtards</option>
-<option>famille applaudir</option>
+<option>famille élargie</option>
 <option>collègues travail</option>
 <option>foule admirative</option>
 <option>robot assistant futuriste</option>
@@ -498,7 +540,7 @@ body {
 <option>guirlandes lumineuses</option>
 <option>bougies chaleureuses</option>
 <option>lampions fête</option>
--option>projecteurs scène</option>
+<option>projecteurs scène</option>
 <option>lasers discothèque</option>
 <option>lumières noires UV</option>
 <option>éclairage fluorescent</option>
@@ -544,7 +586,8 @@ body {
 </select>
 </div>
 
-<textarea id="prompt" readonly>✨ Sélectionne tes options → GÉNÉRER → Copie instantanée !</textarea>
+<textarea id="prompt" readonly>✨ Sélectionne tes options → GÉNÉRER → Copie automatique dans le presse-papier !</textarea>
+<button id="copier" onclick="copierPrompt()">📋 Copier manuellement</button>
 
 <div style="text-align:center;">
 <button id="generer" onclick="generer()">🚀 GÉNÉRER VOYAGE IMMOBILE PRO</button>
@@ -571,6 +614,9 @@ function generer() {
   const epoque = document.getElementById('epoque').value;
   const personnageHistorique = document.getElementById('personnageHistorique').value;
   const traits = document.getElementById('traitsPhysiques').value;
+  const genre = document.getElementById('genreProtagoniste').value;
+  const age = document.getElementById('ageProtagoniste').value;
+  const genreCompagnon = document.getElementById('genreCompagnon').value;
   
   let logique = '';
   if (!libre) {
@@ -578,15 +624,66 @@ function generer() {
   }
   
   let compagnonTexte = compagnon;
-  if (traits && traits !== 'Traits physiques standards') {
-    compagnonTexte += ` ${traits}`;
+  
+  // Gérer le cas "protagoniste principal seulement"
+  if (compagnon === 'protagoniste principal seulement') {
+    compagnonTexte = '';
   }
   
-  const prompt = `${epoque ? epoque + ' ' : ''}${evenement} ${lieu} ${lumieres}, ${personnageHistorique ? personnageHistorique + ' présent, ' : ''}foule joyeuse ${compagnonTexte}, protagoniste principal ${costume} ${logique} pose émouvante, ${esthetique}, ambiance magique célébration voyage immobile anachronique, wide shot cinématique 16:9 bokeh profondeur champ, ultra-détaillé 8K émotion pure`;
+  // Ajouter le genre du compagnon si spécifié et si pertinent
+  if (genreCompagnon && compagnonTexte && !compagnonTexte.includes('protagoniste')) {
+    if (compagnonTexte.includes('fiancé(e)') || compagnonTexte.includes('partenaire')) {
+      if (genreCompagnon === 'homme') compagnonTexte = 'fiancé ' + compagnonTexte;
+      if (genreCompagnon === 'femme') compagnonTexte = 'fiancée ' + compagnonTexte;
+    }
+  }
+  
+  if (traits && traits !== 'Traits physiques standards') {
+    if (compagnonTexte) {
+      compagnonTexte += ` ${traits}`;
+    }
+  }
+  
+  // Construire le prompt avec toutes les nouvelles options
+  let promptParts = [];
+  if (epoque) promptParts.push(epoque);
+  promptParts.push(evenement);
+  promptParts.push(lieu);
+  promptParts.push(lumieres);
+  
+  if (personnageHistorique) promptParts.push(personnageHistorique + ' présent');
+  
+  // Ajouter les informations sur le protagoniste
+  let protagonisteDesc = '';
+  if (genre) protagonisteDesc += genre + ' ';
+  if (age) protagonisteDesc += age + ' ';
+  protagonisteDesc += `en ${costume}`;
+  promptParts.push(protagonisteDesc);
+  
+  if (compagnonTexte) promptParts.push(compagnonTexte);
+  
+  promptParts.push(logique);
+  promptParts.push('pose émouvante');
+  promptParts.push(esthetique);
+  promptParts.push('ambiance magique célébration voyage immobile anachronique');
+  promptParts.push('wide shot cinématique 16:9 bokeh profondeur champ');
+  promptParts.push('ultra-détaillé 8K émotion pure');
+  
+  const prompt = promptParts.filter(p => p && p.trim() !== '').join(', ');
   
   document.getElementById('prompt').value = `#${voyages} ` + prompt.trim().replace(/\s+/g, ' ');
   navigator.clipboard.writeText(prompt.trim().replace(/\s+/g, ' '));
   document.querySelector('.random-zone').textContent = `🎲 ${voyages}`;
+  
+  // Feedback visuel
+  const btn = document.getElementById('generer');
+  const originalText = btn.textContent;
+  btn.textContent = '✅ COPIÉ !';
+  btn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = 'linear-gradient(135deg, #00d4ff, #00b8ff)';
+  }, 1000);
 }
 
 function getLogiqueComplete(evenement, lieu, epoque) {
@@ -614,7 +711,8 @@ function randomVoyage() {
   const elements = [
     'evenement', 'lieu', 'costume', 'compagnon', 
     'esthetique', 'lumieres', 'epoque', 
-    'personnageHistorique', 'traitsPhysiques'
+    'personnageHistorique', 'traitsPhysiques',
+    'genreProtagoniste', 'ageProtagoniste', 'genreCompagnon'
   ];
   
   elements.forEach(id => {
@@ -634,6 +732,10 @@ function exempleCenturion() {
   document.getElementById('costume').value = 'centurion armure rouge romain';
   document.getElementById('epoque').value = 'Rome antique gladiateurs';
   document.getElementById('personnageHistorique').value = 'avec Jules César';
+  document.getElementById('genreProtagoniste').value = 'homme';
+  document.getElementById('ageProtagoniste').value = 'adulte 31-50 ans';
+  document.getElementById('genreCompagnon').value = 'femme';
+  document.getElementById('compagnon').value = 'fiancé(e) amoureux(se)';
   document.getElementById('modeLibre').checked = true;
   generer();
 }
@@ -641,9 +743,11 @@ function exempleCenturion() {
 function exempleHistorique() {
   document.getElementById('evenement').value = 'GAIN LOTERIE 50 millions euros champagne';
   document.getElementById('lieu').value = 'supermarché local rayons';
-  document.getElementById('costume').value = 'costume trois pièces';
+  document.getElementById('costume').value = 'costume trois pièces élégant';
   document.getElementById('epoque').value = 'époque victorienne Londres';
   document.getElementById('personnageHistorique').value = 'avec Mozart';
+  document.getElementById('genreProtagoniste').value = 'femme';
+  document.getElementById('ageProtagoniste').value = 'jeune adulte 18-30 ans';
   document.getElementById('compagnon').value = 'foule admirative';
   document.getElementById('traitsPhysiques').value = 'cheveux bouclés';
   document.getElementById('esthetique').value = 'film Wes Anderson';
@@ -652,11 +756,21 @@ function exempleHistorique() {
   generer();
 }
 
+function copierPrompt() {
+  const promptText = document.getElementById('prompt').value;
+  navigator.clipboard.writeText(promptText.replace(/^#\d+\s*/, '')).then(() => {
+    const originalText = document.getElementById('copier').textContent;
+    document.getElementById('copier').textContent = '✅ Copié !';
+    setTimeout(() => {
+      document.getElementById('copier').textContent = originalText;
+    }, 1500);
+  });
+}
+
 // Initialisation avec un exemple
 window.onload = function() {
   setTimeout(exempleCenturion, 500);
 };
 </script>
 </body>
-
 </html>
