@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Prompts Universel v3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --accent: #ff6b9d;
+            --accent-secondary: #4ecdc4;
+            --text-primary: #e8eaf6;
+            --text-secondary: #9fa8da;
+            --border: #2a3f5f;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 157, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.08) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .language-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            animation: fadeInDown 0.8s ease;
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .language-toggle label {
+            font-family: 'Space Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch:hover {
+            border-color: var(--accent);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        #languageToggle:checked + .toggle-switch .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        #languageToggle {
+            display: none;
+        }
+
+        .generator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            animation: fadeInUp 0.8s ease;
+            animation-fill-mode: both;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.15);
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+
+        .section h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .character-inputs, .logo-section {
+            display: none;
+        }
+
+        .character-inputs.active, .logo-section.active {
+            display: block;
+        }
+
+        .character-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        button {
+            font-family: 'Space Mono', monospace;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .output-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .output-section.active {
+            display: block;
+        }
+
+        .output-section h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .prompt-box {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            width: auto;
+            margin: 0;
+            background: var(--accent-secondary);
+        }
+
+        .copy-btn:hover {
+            box-shadow: 0 4px 16px rgba(78, 205, 196, 0.4);
+        }
+
+        .info-box {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid var(--accent-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .generator-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ Générateur de Prompts Universel</h1>
+            <p class="subtitle">Créez des prompts optimisés pour vos designs personnalisés</p>
+        </header>
+
+        <div class="language-toggle">
+            <label>🇫🇷 Français</label>
+            <input type="checkbox" id="languageToggle">
+            <label for="languageToggle" class="toggle-switch">
+                <span class="toggle-slider"></span>
+            </label>
+            <label>🇬🇧 English</label>
+        </div>
+
+        <div class="generator-grid">
+            <!-- Type de produit -->
+            <div class="section">
+                <h2>🎨 Type de Produit</h2>
+                <label for="productType">Objet à personnaliser</label>
+                <select id="productType">
+                    <option value="">-- Sélectionner --</option>
+                    <optgroup label="Affiches & Posters">
+                        <option value="movie-poster">Affiche de Film</option>
+                        <option value="tv-poster">Affiche de Série TV</option>
+                        <option value="cartoon-poster">Affiche de Dessin Animé</option>
+                        <option value="poster">Poster Décoratif (idéal pour bannières Facebook au format 21:9)</option>
+                    </optgroup>
+                    <optgroup label="Musique & Livres">
+                        <option value="album-cover">Pochette d'Album Musical</option>
+                        <option value="book-cover">Couverture de Livre</option>
+                        <option value="book-plastic">Plastique pour Couverture de Livre</option>
+                        <option value="booklet-cover">Premier Feuillet de Livret Dépliant</option>
+                    </optgroup>
+                    <optgroup label="Objets du Quotidien">
+                        <option value="mug">Design de Mug/Tasse</option>
+                        <option value="blanket">Design de Couette/Coussin</option>
+                    </optgroup>
+                    <optgroup label="Cartes & Papeterie">
+                        <option value="postcard">Carte Postale</option>
+                        <option value="birthday-card">Carte d'Anniversaire</option>
+                        <option value="newyear-card">Carte de Nouvel An</option>
+                        <option value="christmas-card">Carte de Noël</option>
+                        <option value="easter-card">Carte de Pâques</option>
+                        <option value="mothers-card">Carte Fête des Mères</option>
+                        <option value="fathers-card">Carte Fête des Pères</option>
+                        <option value="vacation-card">Carte Bonnes Vacances</option>
+                        <option value="recovery-card">Carte Bon Rétablissement</option>
+                        <option value="congrats-card">Carte Félicitations</option>
+                    </optgroup>
+                    <optgroup label="Événements">
+                        <option value="cake-topper">Rondelle pour Gâteau d'Anniversaire</option>
+                    </optgroup>
+                </select>
+
+                <label for="format">Format</label>
+                <select id="format">
+                    <option value="">-- Optionnel --</option>
+                    <option value="square">Carré (1:1)</option>
+                    <option value="portrait">Portrait (2:3)</option>
+                    <option value="landscape">Paysage (3:2)</option>
+                    <option value="a4-portrait">A4 Portrait</option>
+                    <option value="a4-landscape">A4 Paysage</option>
+                    <option value="a3">A3</option>
+                    <option value="panoramic">Panoramique (16:9)</option>
+                    <option value="wide">Large (21:9)</option>
+                </select>
+            </div>
+
+            <!-- Mode création -->
+            <div class="section">
+                <h2>🎭 Mode de Création</h2>
+                <label for="creationMode">Original ou parodie ?</label>
+                <select id="creationMode">
+                    <option value="original">Création Originale</option>
+                    <option value="parody">Parodie d'Existant</option>
+                </select>
+
+                <div id="parodySection" style="display: none; margin-top: 1rem;">
+                    <label for="parodyReference">Référence à parodier</label>
+                    <select id="parodyReference">
+                        <option value="">-- Sélectionner --</option>
+                        <optgroup label="Films Iconiques">
+                            <option value="Titanic">Titanic</option>
+                            <option value="Star Wars">Star Wars</option>
+                            <option value="The Godfather">Le Parrain</option>
+                            <option value="Pulp Fiction">Pulp Fiction</option>
+                            <option value="The Matrix">Matrix</option>
+                            <option value="Jurassic Park">Jurassic Park</option>
+                            <option value="Back to the Future">Retour vers le Futur</option>
+                            <option value="Jaws">Les Dents de la Mer</option>
+                            <option value="E.T.">E.T.</option>
+                            <option value="Casablanca">Casablanca</option>
+                            <option value="The Shining">Shining</option>
+                            <option value="Blade Runner">Blade Runner</option>
+                            <option value="Indiana Jones">Indiana Jones</option>
+                            <option value="Lord of the Rings">Le Seigneur des Anneaux</option>
+                            <option value="Harry Potter">Harry Potter</option>
+                            <option value="Avatar">Avatar</option>
+                            <option value="Inception">Inception</option>
+                            <option value="The Dark Knight">The Dark Knight</option>
+                            <option value="Fight Club">Fight Club</option>
+                            <option value="Forrest Gump">Forrest Gump</option>
+                            <option value="Borsalino">Borsalino</option>
+                        </optgroup>
+                        <optgroup label="Séries TV">
+                            <option value="Breaking Bad">Breaking Bad</option>
+                            <option value="Game of Thrones">Game of Thrones</option>
+                            <option value="Stranger Things">Stranger Things</option>
+                            <option value="The Office">The Office</option>
+                            <option value="Friends">Friends</option>
+                            <option value="The Sopranos">Les Soprano</option>
+                            <option value="The Wire">The Wire</option>
+                            <option value="Mad Men">Mad Men</option>
+                            <option value="Lost">Lost</option>
+                            <option value="The Crown">The Crown</option>
+                            <option value="Sherlock">Sherlock</option>
+                            <option value="Black Mirror">Black Mirror</option>
+                            <option value="The Mandalorian">The Mandalorian</option>
+                            <option value="Westworld">Westworld</option>
+                            <option value="Twin Peaks">Twin Peaks</option>
+                        </optgroup>
+                        <optgroup label="Dessins Animés">
+                            <option value="The Simpsons">Les Simpson</option>
+                            <option value="SpongeBob">Bob l'Éponge</option>
+                            <option value="Rick and Morty">Rick et Morty</option>
+                            <option value="Adventure Time">Adventure Time</option>
+                            <option value="Avatar: The Last Airbender">Avatar: Le Dernier Maître de l'Air</option>
+                            <option value="Dragon Ball Z">Dragon Ball Z</option>
+                            <option value="One Piece">One Piece</option>
+                            <option value="Pokemon">Pokémon</option>
+                            <option value="Studio Ghibli">Films Ghibli</option>
+                            <option value="Disney Classic">Classique Disney</option>
+                        </optgroup>
+                        <optgroup label="Albums Musicaux">
+                            <option value="Abbey Road">Abbey Road - The Beatles</option>
+                            <option value="Dark Side of the Moon">Dark Side of the Moon - Pink Floyd</option>
+                            <option value="Thriller">Thriller - Michael Jackson</option>
+                            <option value="Nevermind">Nevermind - Nirvana</option>
+                            <option value="The Velvet Underground">The Velvet Underground & Nico</option>
+                            <option value="Born to Run">Born to Run - Bruce Springsteen</option>
+                            <option value="Sgt. Pepper">Sgt. Pepper's - The Beatles</option>
+                            <option value="OK Computer">OK Computer - Radiohead</option>
+                            <option value="Purple Rain">Purple Rain - Prince</option>
+                            <option value="Blonde on Blonde">Blonde on Blonde - Bob Dylan</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="customParody" style="margin-top: 1rem;">Ou saisissez votre propre référence</label>
+                    <input type="text" id="customParody" placeholder="Ex: Le Cinquième Élément, Breaking Bad, etc.">
+                </div>
+            </div>
+
+            <!-- Esthétique -->
+            <div class="section">
+                <h2>✨ Esthétique Principale</h2>
+                <label for="aesthetic">Style visuel</label>
+                <select id="aesthetic">
+                    <option value="">-- Sélectionner --</option>
+                    <optgroup label="Réaliste & Professionnel">
+                        <option value="photorealistic">Photoréaliste</option>
+                        <option value="cinematic">Cinématique</option>
+                        <option value="professional photo">Photo Professionnelle</option>
+                        <option value="magazine style">Style Magazine</option>
+                        <option value="editorial">Éditorial</option>
+                        <option value="fashion photography">Photographie de Mode</option>
+                    </optgroup>
+                    <optgroup label="Animation & Illustration">
+                        <option value="ghibli style">Style Ghibli</option>
+                        <option value="anime">Anime</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="pixar style">Style Pixar</option>
+                        <option value="disney style">Style Disney</option>
+                        <option value="comic book">Bande Dessinée</option>
+                        <option value="manga">Manga</option>
+                        <option value="ligne claire">Ligne Claire</option>
+                    </optgroup>
+                    <optgroup label="Rétro & Vintage">
+                        <option value="film noir">Film Noir</option>
+                        <option value="art deco">Art Déco</option>
+                        <option value="vintage">Vintage</option>
+                        <option value="retro futurism">Rétro-Futurisme</option>
+                        <option value="70s aesthetic">Esthétique Années 70</option>
+                        <option value="80s aesthetic">Esthétique Années 80</option>
+                        <option value="90s aesthetic">Esthétique Années 90</option>
+                        <option value="y2k aesthetic">Y2K</option>
+                    </optgroup>
+                    <optgroup label="Futuriste & Technologique">
+                        <option value="cyberpunk">Cyberpunk</option>
+                        <option value="steampunk">Steampunk</option>
+                        <option value="solarpunk">Solarpunk</option>
+                        <option value="sci-fi">Science-Fiction</option>
+                        <option value="neon noir">Néon Noir</option>
+                        <option value="glitchcore">Glitchcore</option>
+                        <option value="vaporwave">Vaporwave</option>
+                    </optgroup>
+                    <optgroup label="Artistique & Pictural">
+                        <option value="oil painting">Peinture à l'Huile</option>
+                        <option value="watercolor">Aquarelle</option>
+                        <option value="impressionist">Impressionniste</option>
+                        <option value="expressionist">Expressionniste</option>
+                        <option value="surrealist">Surréaliste</option>
+                        <option value="abstract">Abstrait</option>
+                        <option value="pop art">Pop Art</option>
+                        <option value="minimalist">Minimaliste</option>
+                    </optgroup>
+                    <optgroup label="Culturel & Atmosphérique">
+                        <option value="afrofuturism">Afrofuturisme</option>
+                        <option value="cottagecore">Cottagecore</option>
+                        <option value="dark academia">Dark Academia</option>
+                        <option value="gothic">Gothique</option>
+                        <option value="baroque">Baroque</option>
+                        <option value="brutalism">Brutalisme</option>
+                        <option value="wabi-sabi">Wabi-Sabi</option>
+                        <option value="kawaii">Kawaii</option>
+                    </optgroup>
+                    <optgroup label="Atmosphères Spécifiques">
+                        <option value="liminal spaces">Espaces Liminaux</option>
+                        <option value="dreamcore">Dreamcore</option>
+                        <option value="weirdcore">Weirdcore</option>
+                        <option value="nostalgiacore">Nostalgiacore</option>
+                        <option value="frutiger aero">Frutiger Aero</option>
+                    </optgroup>
+                </select>
+
+                <label for="customAesthetic" style="margin-top: 1rem;">Ou décrivez votre propre style</label>
+                <input type="text" id="customAesthetic" placeholder="Ex: mélange de baroque et de futurisme, style années 20...">
+            </div>
+
+            <!-- Personnages -->
+            <div class="section">
+                <h2>👥 Personnages</h2>
+                <label for="characterCount">Nombre de personnages</label>
+                <select id="characterCount">
+                    <option value="0">Aucun personnage</option>
+                    <option value="1">1 personnage</option>
+                    <option value="2">2 personnages</option>
+                    <option value="3">3 personnages</option>
+                    <option value="4">4 personnages</option>
+                </select>
+
+                <div id="characterInputs" class="character-inputs">
+                    <div class="character-item" id="char1">
+                        <label for="char1desc">Personnage 1</label>
+                        <input type="text" id="char1desc" placeholder="Ex: femme dans la trentaine, cheveux roux, veste en cuir">
+                    </div>
+                    <div class="character-item" id="char2">
+                        <label for="char2desc">Personnage 2</label>
+                        <input type="text" id="char2desc" placeholder="Description du personnage 2">
+                    </div>
+                    <div class="character-item" id="char3">
+                        <label for="char3desc">Personnage 3</label>
+                        <input type="text" id="char3desc" placeholder="Description du personnage 3">
+                    </div>
+                    <div class="character-item" id="char4">
+                        <label for="char4desc">Personnage 4</label>
+                        <input type="text" id="char4desc" placeholder="Description du personnage 4">
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    💡 Ajoutez des photos de référence dans votre outil de génération pour des résultats encore plus précis
+                </div>
+            </div>
+
+            <!-- Texte -->
+            <div class="section">
+                <h2>📝 Texte à Inclure</h2>
+                <label for="titleText">Titre / Nom du projet</label>
+                <input type="text" id="titleText" placeholder="Ex: L'Aventure Commence, Mon Café Préféré...">
+
+                <label for="textFont">Style de police</label>
+                <select id="textFont">
+                    <option value="">-- Optionnel --</option>
+                    <option value="bold sans-serif">Gras Sans-Serif</option>
+                    <option value="elegant serif">Élégant Serif</option>
+                    <option value="script handwritten">Script/Manuscrit</option>
+                    <option value="vintage retro">Vintage/Rétro</option>
+                    <option value="modern geometric">Moderne Géométrique</option>
+                    <option value="brush stroke">Coup de Pinceau</option>
+                    <option value="stencil">Pochoir</option>
+                    <option value="neon">Néon</option>
+                    <option value="3D dimensional">3D Dimensionnel</option>
+                </select>
+
+                <label for="customFont">Police personnalisée</label>
+                <input type="text" id="customFont" placeholder="Ex: style art déco, lettres métalliques...">
+
+                <label for="textColor">Couleur du texte</label>
+                <select id="textColor">
+                    <option value="high contrast">Contraste élevé (adapté au fond)</option>
+                    <option value="white">Blanc</option>
+                    <option value="black">Noir</option>
+                    <option value="gold">Or</option>
+                    <option value="silver">Argent</option>
+                    <option value="red">Rouge</option>
+                    <option value="blue">Bleu</option>
+                </select>
+
+                <label for="customTextColor">Couleur personnalisée</label>
+                <input type="text" id="customTextColor" placeholder="Ex: bleu électrique, orange vif...">
+
+                <label for="subtitleText">Sous-titre (optionnel)</label>
+                <input type="text" id="subtitleText" placeholder="Ex: Une histoire vraie, Edition limitée...">
+
+                <label for="additionalText">Texte additionnel (optionnel)</label>
+                <textarea id="additionalText" placeholder="Slogan, date, crédits, etc."></textarea>
+            </div>
+
+            <!-- Logo -->
+            <div class="section">
+                <h2>🏷️ Logo Stylisé</h2>
+                <label for="includeLogo">Ajouter un logo ?</label>
+                <select id="includeLogo">
+                    <option value="no">Non</option>
+                    <option value="yes">Oui</option>
+                </select>
+
+                <div id="logoSection" class="logo-section">
+                    <label for="logoDescription">Description du logo</label>
+                    <input type="text" id="logoDescription" placeholder="Ex: Borsalino style, chapeau élégant, couronne dorée...">
+
+                    <label for="logoPosition">Position du logo</label>
+                    <select id="logoPosition">
+                        <option value="top-left">En Haut à Gauche</option>
+                        <option value="top-center">En Haut au Centre</option>
+                        <option value="top-right">En Haut à Droite</option>
+                        <option value="bottom-left">En Bas à Gauche</option>
+                        <option value="bottom-center">En Bas au Centre</option>
+                        <option value="bottom-right">En Bas à Droite</option>
+                    </select>
+
+                    <div class="info-box">
+                        💡 Le logo sera généré avec une couleur qui contraste automatiquement avec le fond pour une visibilité optimale
+                    </div>
+                </div>
+            </div>
+
+            <!-- Options supplémentaires -->
+            <div class="section">
+                <h2>🎯 Options Supplémentaires</h2>
+                
+                <label for="mood">Ambiance / Genre</label>
+                <select id="mood">
+                    <option value="">-- Optionnel --</option>
+                    <option value="epic">Épique</option>
+                    <option value="dramatic">Dramatique</option>
+                    <option value="romantic">Romantique</option>
+                    <option value="mysterious">Mystérieux</option>
+                    <option value="horror">Horreur</option>
+                    <option value="comedy">Comédie</option>
+                    <option value="action">Action</option>
+                    <option value="adventure">Aventure</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="whimsical">Fantaisiste</option>
+                    <option value="melancholic">Mélancolique</option>
+                    <option value="uplifting">Inspirant</option>
+                    <option value="dark">Sombre</option>
+                    <option value="cheerful">Joyeux</option>
+                </select>
+
+                <label for="customMood">Ambiance personnalisée</label>
+                <input type="text" id="customMood" placeholder="Ex: atmosphère onirique et surréaliste">
+
+                <label for="colors">Couleurs dominantes</label>
+                <select id="colors">
+                    <option value="">-- Optionnel --</option>
+                    <option value="warm colors">Couleurs chaudes</option>
+                    <option value="cool colors">Couleurs froides</option>
+                    <option value="vibrant colors">Couleurs vibrantes</option>
+                    <option value="muted colors">Couleurs sourdes</option>
+                    <option value="monochrome">Monochrome</option>
+                    <option value="neon colors">Couleurs néon</option>
+                    <option value="pastel colors">Couleurs pastel</option>
+                    <option value="earth tones">Tons terreux</option>
+                    <option value="blue and gold">Bleu et or</option>
+                    <option value="red and black">Rouge et noir</option>
+                    <option value="purple and teal">Violet et turquoise</option>
+                </select>
+
+                <label for="customColors">Palette personnalisée</label>
+                <input type="text" id="customColors" placeholder="Ex: orange brûlé, bleu cobalt, touches de doré">
+
+                <label for="specificElements">Éléments spécifiques à inclure</label>
+                <textarea id="specificElements" placeholder="Ex: skyline urbain, coucher de soleil, animaux, véhicules, objets symboliques..."></textarea>
+            </div>
+        </div>
+
+        <button onclick="generatePrompt()">🚀 Générer les Prompts</button>
+
+        <div id="outputSection" class="output-section">
+            <h3>
+                <span id="positiveTitle">✨ Prompt Positif</span>
+                <button class="copy-btn" onclick="copyPrompt('positivePrompt')">📋 Copier</button>
+            </h3>
+            <div id="positivePrompt" class="prompt-box"></div>
+
+            <h3>
+                <span id="negativeTitle">🚫 Prompt Négatif</span>
+                <button class="copy-btn" onclick="copyPrompt('negativePrompt')">📋 Copier</button>
+            </h3>
+            <div id="negativePrompt" class="prompt-box"></div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion de l'affichage du mode parodie
+        document.getElementById('creationMode').addEventListener('change', function() {
+            const parodySection = document.getElementById('parodySection');
+            parodySection.style.display = this.value === 'parody' ? 'block' : 'none';
+        });
+
+        // Gestion de l'affichage des personnages
+        document.getElementById('characterCount').addEventListener('change', function() {
+            const count = parseInt(this.value);
+            const container = document.getElementById('characterInputs');
+            
+            if (count > 0) {
+                container.classList.add('active');
+                for (let i = 1; i <= 4; i++) {
+                    const charDiv = document.getElementById('char' + i);
+                    charDiv.style.display = i <= count ? 'block' : 'none';
+                }
+            } else {
+                container.classList.remove('active');
+            }
+        });
+
+        // Gestion de l'affichage du logo
+        document.getElementById('includeLogo').addEventListener('change', function() {
+            const logoSection = document.getElementById('logoSection');
+            logoSection.classList.toggle('active', this.value === 'yes');
+        });
+
+        // Dictionnaires de traduction
+        const translations = {
+            productType: {
+                'movie-poster': { fr: 'affiche de film', en: 'movie poster' },
+                'tv-poster': { fr: 'affiche de série TV', en: 'TV series poster' },
+                'cartoon-poster': { fr: 'affiche de dessin animé', en: 'cartoon poster' },
+                'album-cover': { fr: 'pochette d\'album', en: 'album cover' },
+                'book-cover': { fr: 'couverture de livre', en: 'book cover' },
+                'book-plastic': { fr: 'plastique de couverture de livre', en: 'book cover protective wrap design' },
+                'booklet-cover': { fr: 'première page de livret dépliant', en: 'booklet first page design' },
+                'poster': { fr: 'poster décoratif', en: 'decorative poster' },
+                'mug': { fr: 'design de mug, design enroulant', en: 'mug wrap-around design' },
+                'postcard': { fr: 'carte postale', en: 'postcard' },
+                'blanket': { fr: 'motif textile pour couette ou coussin', en: 'textile pattern for blanket or cushion' },
+                'birthday-card': { fr: 'carte d\'anniversaire', en: 'birthday greeting card' },
+                'newyear-card': { fr: 'carte de nouvel an', en: 'new year greeting card' },
+                'christmas-card': { fr: 'carte de Noël', en: 'christmas greeting card' },
+                'easter-card': { fr: 'carte de Pâques', en: 'easter greeting card' },
+                'mothers-card': { fr: 'carte fête des mères', en: 'mother\'s day card' },
+                'fathers-card': { fr: 'carte fête des pères', en: 'father\'s day card' },
+                'vacation-card': { fr: 'carte bonnes vacances', en: 'vacation greeting card' },
+                'recovery-card': { fr: 'carte bon rétablissement', en: 'get well soon card' },
+                'congrats-card': { fr: 'carte félicitations', en: 'congratulations card' },
+                'cake-topper': { fr: 'rondelle pour gâteau d\'anniversaire', en: 'birthday cake topper design' }
+            },
+            format: {
+                'square': { fr: 'format carré 1:1', en: 'square format 1:1' },
+                'portrait': { fr: 'format portrait 2:3', en: 'portrait format 2:3' },
+                'landscape': { fr: 'format paysage 3:2', en: 'landscape format 3:2' },
+                'a4-portrait': { fr: 'format A4 portrait', en: 'A4 portrait format' },
+                'a4-landscape': { fr: 'format A4 paysage', en: 'A4 landscape format' },
+                'a3': { fr: 'format A3', en: 'A3 format' },
+                'panoramic': { fr: 'format panoramique 16:9', en: 'panoramic format 16:9' },
+                'wide': { fr: 'format large 21:9', en: 'wide format 21:9' }
+            },
+            parody: {
+                fr: 'inspiré de la composition et mise en page de l\'affiche de',
+                en: 'inspired by poster composition and layout of'
+            },
+            aesthetic: {
+                fr: 'esthétique',
+                en: 'aesthetic'
+            },
+            characters: {
+                fr: 'avec',
+                en: 'featuring',
+                character: { fr: 'personnage', en: 'character' },
+                characters: { fr: 'personnages', en: 'characters' }
+            },
+            atmosphere: {
+                fr: 'atmosphère',
+                en: 'atmosphere'
+            },
+            including: {
+                fr: 'incluant',
+                en: 'including'
+            },
+            title: {
+                fr: 'texte du titre',
+                en: 'title text'
+            },
+            subtitle: {
+                fr: 'sous-titre',
+                en: 'subtitle'
+            },
+            additional: {
+                fr: 'texte additionnel',
+                en: 'additional text'
+            },
+            typography: {
+                fr: 'typographie',
+                en: 'typography'
+            },
+            color: {
+                fr: 'couleur',
+                en: 'color'
+            },
+            in: {
+                fr: 'en',
+                en: 'in'
+            },
+            logo: {
+                fr: 'logo stylisé',
+                en: 'stylized logo'
+            },
+            positioned: {
+                fr: 'positionné en',
+                en: 'positioned at'
+            },
+            logoPosition: {
+                'top-left': { fr: 'haut à gauche', en: 'top left corner' },
+                'top-center': { fr: 'haut au centre', en: 'top center' },
+                'top-right': { fr: 'haut à droite', en: 'top right corner' },
+                'bottom-left': { fr: 'bas à gauche', en: 'bottom left corner' },
+                'bottom-center': { fr: 'bas au centre', en: 'bottom center' },
+                'bottom-right': { fr: 'bas à droite', en: 'bottom right corner' }
+            },
+            quality: {
+                fr: 'qualité professionnelle, haute définition, mise au point nette, bien composé, mise en page équilibrée, visuellement frappant',
+                en: 'professional quality, high detail, sharp focus, well-composed, balanced layout, visually striking'
+            },
+            contrast: {
+                fr: 'couleur à contraste élevé pour visibilité',
+                en: 'high contrast color for visibility'
+            }
+        };
+
+        const negativePrompts = {
+            fr: 'mains mal dessinées, pieds mal dessinés, visage mal dessiné, mauvaise anatomie, membres supplémentaires, membres manquants, défiguré, déformé, flou, mauvaises proportions, doigts supplémentaires, moins de doigts, doigts fusionnés, mains mutées, membres flottants, membres déconnectés, hors cadre, recadré, basse qualité, pire qualité, artefacts jpeg, filigrane, signature, nom d\'utilisateur, logo, dupliqué, distordu, pixellisé, basse résolution, surexposé, sous-exposé, mauvais éclairage, éclairage plat, mauvaise composition, mauvais cadrage, mauvaise perspective, incliné, déséquilibré, mauvaise profondeur de champ, découpage, géométrie qui se croise, objets flottants, ombres incorrectes, ombres manquantes, éclairage incohérent, bruit, grain, sursaturé, sous-saturé, aberration chromatique, artefacts, glitchs, erreurs anatomiques, pose non naturelle, pose raide, yeux asymétriques, mal rendu, manque de détails, trop lissé, sur-accentué, texte mal orthographié, fautes d\'orthographe, fautes de frappe, erreurs grammaticales, lettres incorrectes, texte illisible, charabia, texte absurde, texte brouillé, texte non lisible, texte mal écrit, orthographe incorrecte, lettres mal formées, texte déformé, texte flou, texte pixellisé, texte cassé, texte fragmenté, texte à l\'envers, texte inversé, mauvaise police, police incohérente, polices mélangées',
+            en: 'poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra limbs, missing limbs, disfigured, deformed, blurry, bad proportions, extra fingers, fewer fingers, fused fingers, mutated hands, floating limbs, disconnected limbs, out of frame, cropped, low quality, worst quality, jpeg artifacts, watermark, signature, username, logo, duplicate, distorted, pixelated, low resolution, overexposed, underexposed, bad lighting, flat lighting, bad composition, bad framing, bad perspective, tilted, unbalanced, bad depth of field, clipping, intersecting geometry, floating objects, wrong shadows, missing shadows, inconsistent lighting, noise, grain, oversaturated, undersaturated, chromatic aberration, artefacts, glitches, anatomical errors, unnatural pose, stiff pose, asymmetric eyes, poorly rendered, lack of detail, oversmoothed, oversharpened, misspelled text, spelling errors, typos, grammatical errors, wrong letters, illegible text, gibberish text, nonsense text, garbled text, unreadable text, badly written text, incorrect spelling, malformed letters, distorted text, blurry text, pixelated text, broken text, fragmented text, backwards text, upside down text, wrong font, inconsistent font, mixed fonts'
+        };
+
+        function generatePrompt() {
+            // Détection de la langue
+            const isEnglish = document.getElementById('languageToggle').checked;
+            const lang = isEnglish ? 'en' : 'fr';
+
+            // Récupération des valeurs
+            const productType = document.getElementById('productType').value;
+            const format = document.getElementById('format').value;
+            const creationMode = document.getElementById('creationMode').value;
+            const parodyRef = document.getElementById('parodyReference').value;
+            const customParody = document.getElementById('customParody').value;
+            const aesthetic = document.getElementById('aesthetic').value;
+            const customAesthetic = document.getElementById('customAesthetic').value;
+            const characterCount = parseInt(document.getElementById('characterCount').value);
+            const titleText = document.getElementById('titleText').value;
+            const textFont = document.getElementById('textFont').value;
+            const customFont = document.getElementById('customFont').value;
+            const textColor = document.getElementById('textColor').value;
+            const customTextColor = document.getElementById('customTextColor').value;
+            const subtitleText = document.getElementById('subtitleText').value;
+            const additionalText = document.getElementById('additionalText').value;
+            const includeLogo = document.getElementById('includeLogo').value;
+            const logoDescription = document.getElementById('logoDescription').value;
+            const logoPosition = document.getElementById('logoPosition').value;
+            const mood = document.getElementById('mood').value;
+            const customMood = document.getElementById('customMood').value;
+            const colors = document.getElementById('colors').value;
+            const customColors = document.getElementById('customColors').value;
+            const specificElements = document.getElementById('specificElements').value;
+
+            // Vérifications basiques
+            if (!productType) {
+                alert(lang === 'fr' ? 'Veuillez sélectionner un type de produit' : 'Please select a product type');
+                return;
+            }
+
+            // Construction du prompt positif
+            let positivePrompt = '';
+
+            // Type de produit
+            positivePrompt += translations.productType[productType][lang];
+
+            // Format
+            if (format) {
+                positivePrompt += `, ${translations.format[format][lang]}`;
+            }
+
+            // Référence de parodie
+            if (creationMode === 'parody') {
+                const reference = customParody || parodyRef;
+                if (reference) {
+                    positivePrompt += `, ${translations.parody[lang]} ${reference}`;
+                }
+            }
+
+            // Esthétique
+            const finalAesthetic = customAesthetic || aesthetic;
+            if (finalAesthetic) {
+                positivePrompt += `, ${finalAesthetic} ${translations.aesthetic[lang]}`;
+            }
+
+            // Personnages
+            if (characterCount > 0) {
+                const charWord = characterCount > 1 ? translations.characters.characters[lang] : translations.characters.character[lang];
+                positivePrompt += `, ${translations.characters[lang]} ${characterCount} ${charWord}`;
+                for (let i = 1; i <= characterCount; i++) {
+                    const charDesc = document.getElementById('char' + i + 'desc').value;
+                    if (charDesc) {
+                        positivePrompt += `, ${translations.characters.character[lang]} ${i}: ${charDesc}`;
+                    }
+                }
+            }
+
+            // Ambiance
+            const finalMood = customMood || mood;
+            if (finalMood) {
+                positivePrompt += `, ${finalMood} ${translations.atmosphere[lang]}`;
+            }
+
+            // Couleurs
+            const finalColors = customColors || colors;
+            if (finalColors) {
+                positivePrompt += `, ${finalColors}`;
+            }
+
+            // Éléments spécifiques
+            if (specificElements) {
+                positivePrompt += `, ${translations.including[lang]} ${specificElements}`;
+            }
+
+            // Texte - avec police et couleur
+            if (titleText) {
+                let textStyle = '';
+                const finalFont = customFont || textFont;
+                if (finalFont) {
+                    textStyle += `${finalFont} ${translations.typography[lang]}`;
+                }
+                const finalTextColor = customTextColor || textColor;
+                if (finalTextColor) {
+                    textStyle += textStyle ? `, ${finalTextColor} ${translations.color[lang]}` : `${finalTextColor} ${translations.color[lang]}`;
+                }
+                positivePrompt += `, ${translations.title[lang]} "${titleText}"`;
+                if (textStyle) {
+                    positivePrompt += ` ${translations.in[lang]} ${textStyle}`;
+                }
+            }
+            if (subtitleText) {
+                positivePrompt += `, ${translations.subtitle[lang]} "${subtitleText}"`;
+            }
+            if (additionalText) {
+                positivePrompt += `, ${translations.additional[lang]} "${additionalText}"`;
+            }
+
+            // Logo
+            if (includeLogo === 'yes' && logoDescription) {
+                positivePrompt += `, ${translations.logo[lang]} (${logoDescription}) ${translations.positioned[lang]} ${translations.logoPosition[logoPosition][lang]}, ${translations.contrast[lang]}`;
+            }
+
+            // Qualité générale
+            positivePrompt += `, ${translations.quality[lang]}`;
+
+            // Prompt négatif
+            const negativePrompt = negativePrompts[lang];
+
+            // Affichage
+            document.getElementById('positivePrompt').textContent = positivePrompt;
+            document.getElementById('negativePrompt').textContent = negativePrompt;
+            
+            // Mise à jour des titres
+            document.getElementById('positiveTitle').textContent = lang === 'fr' ? '✨ Prompt Positif' : '✨ Positive Prompt';
+            document.getElementById('negativeTitle').textContent = lang === 'fr' ? '🚫 Prompt Négatif' : '🚫 Negative Prompt';
+            
+            document.getElementById('outputSection').classList.add('active');
+
+            // Scroll vers les résultats
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function copyPrompt(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const lang = document.getElementById('languageToggle').checked ? 'en' : 'fr';
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Feedback visuel
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.style.background = '#4caf50';
+                btn.textContent = lang === 'fr' ? '✓ Copié !' : '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                alert((lang === 'fr' ? 'Erreur lors de la copie : ' : 'Copy error: ') + err);
+            });
+        }
+    </script>
+</body>
+</html>
