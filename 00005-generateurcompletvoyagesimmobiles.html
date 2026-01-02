@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Voyage Immobile Générateur Pro</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0a1a,#1a1a3a);color:#e8f4ff;padding:25px;margin:0;overflow-x:hidden;}
+.container{max-width:1800px;margin:auto;background:linear-gradient(135deg,rgba(0,20,40,0.8),rgba(10,30,60,0.6));padding:40px;border-radius:30px;box-shadow:0 30px 100px rgba(0,212,255,0.2);backdrop-filter:blur(20px);}
+h1,h2{text-align:center;font-size:2.6em;margin:35px 0 25px;text-shadow:0 0 30px #00d4ff;}
+.group{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:25px;}
+select{padding:16px;font-size:16px;border-radius:15px;border:3px solid #00d4ff;background:rgba(0,0,0,0.7);color:#fff;width:100%;cursor:pointer;transition:all 0.4s;box-shadow:0 8px 25px rgba(0,0,0,0.4);}
+select:focus,select:hover{box-shadow:0 0 30px #00d4ff;transform:translateY(-2px);}
+#libreVoyage{padding:25px;background:linear-gradient(135deg,rgba(255,107,107,0.3),rgba(255,20,147,0.3));border-radius:20px;margin:30px 0;border-left:6px solid #ff6b6b;box-shadow:0 10px 40px rgba(255,107,107,0.3);}
+#prompt{width:100%;height:350px;background:linear-gradient(135deg,#000,#111,#000);color:#00ff88;font-family:'Fira Code',monospace;padding:30px;border-radius:25px;border:4px solid #00d4ff;font-size:15px;box-sizing:border-box;resize:vertical;box-shadow:inset 0 0 30px rgba(0,255,136,0.1);}
+button{padding:20px 45px;font-size:18px;border-radius:20px;border:none;cursor:pointer;font-weight:bold;box-shadow:0 12px 40px rgba(0,0,0,0.5);margin:20px;transition:all 0.4s;}
+#generer{background:linear-gradient(135deg,#00d4ff,#00b8ff);color:#000;font-size:22px;}
+#random{background:linear-gradient(135deg,#ff6b6b,#ff8e8e);color:#fff;font-size:20px;}
+#exemples{background:linear-gradient(135deg,#4ecdc4,#44a08d);color:#000;}
+#historique{background:linear-gradient(135deg,#9d4edd,#560bad);color:#fff;}
+.section-title{font-size:1.5em;margin:40px 0 20px;color:#00d4ff;border-bottom:4px solid #00d4ff;padding-bottom:15px;display:flex;align-items:center;position:relative;}
+.section-title::before{content:"✨";margin-right:15px;font-size:1.8em;animation:glow 2s infinite;}
+@keyframes glow{0%,100%{text-shadow:0 0 20px #00d4ff;}50%{text-shadow:0 0 40px #00d4ff,0 0 60px #00d4ff;}}
+.random-zone{position:fixed;bottom:30px;right:30px;background:rgba(255,107,107,0.9);padding:20px;border-radius:20px;cursor:pointer;font-size:24px;box-shadow:0 10px 50px rgba(255,107,107,0.5);transition:all 0.3s;z-index:1000;}
+.random-zone:hover{transform:scale(1.1);box-shadow:0 15px 60px rgba(255,107,107,0.7);}
+.two-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
+@media(max-width:1200px){.two-columns{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🌌 VOYAGE IMMOBILE PRO - GÉNÉRATEUR ÉVÉNEMENTS</h1>
+<p style="text-align:center;font-size:1.2em;color:#88ccff;">500 000+ variantes | Anachronismes créatifs | Personnages historiques | Scènes épiques</p>
+
+<label class="section-title">⚙️ MODE CRÉATIF & ÉPOQUE</label>
+<div class="group">
+<select id="epoque">
+<option value="">Époque non spécifiée</option>
+<option value="préhistorique grotte peintures rupestres">Préhistorique</option>
+<option value="antiquité égyptienne pharaons">Antiquité Égyptienne</option>
+<option value="Grèce antique Parthénon">Grèce Antique</option>
+<option value="Rome antique gladiateurs">Rome Antique</option>
+<option value="Moyen Âge château fort">Moyen Âge</option>
+<option value="Renaissance Florence">Renaissance</option>
+<option value="XVIIe siècle Versailles">XVIIe Siècle</option>
+<option value="XVIIIe siècle révolution">XVIIIe Siècle</option>
+<option value="époque victorienne Londres">Époque Victorienne</option>
+<option value="années folles 1920">Années Folles 1920</option>
+<option value="années 1950 rétro">Années 1950</option>
+<option value="années 1980 néon">Années 1980</option>
+<option value="années 2000 nostalgie">Années 2000</option>
+<option value="futur proche 2030">Futur Proche 2030</option>
+<option value="futur lointain 2500">Futur Lointain 2500</option>
+<option value="ère cyberpunk 2077">Ère Cyberpunk</option>
+<option value="ère steampunk">Ère Steampunk</option>
+<option value="ère post-apocalyptique">Ère Post-Apocalyptique</option>
+</select>
+<select id="personnageHistorique">
+<option value="">Aucun personnage historique</option>
+<option value="avec Jules César">Jules César</option>
+<option value="avec Cléopâtre">Cléopâtre</option>
+<option value="avec Léonard de Vinci">Léonard de Vinci</option>
+<option value="avec Jeanne d'Arc">Jeanne d'Arc</option>
+<option value="avec Napoléon">Napoléon Bonaparte</option>
+<option value="avec Marie-Antoinette">Marie-Antoinette</option>
+<option value="avec Albert Einstein">Albert Einstein</option>
+<option value="avec Mozart">Mozart</option>
+<option value="avec Shakespeare">Shakespeare</option>
+<option value="avec Marilyn Monroe">Marilyn Monroe</option>
+<option value="avec Elvis Presley">Elvis Presley</option>
+<option value="avec Michael Jackson">Michael Jackson</option>
+<option value="avec Freddie Mercury">Freddie Mercury</option>
+<option value="avec Stephen Hawking">Stephen Hawking</option>
+<option value="avec Frida Kahlo">Frida Kahlo</option>
+<option value="avec Pablo Picasso">Pablo Picasso</option>
+<option value="avec Charlie Chaplin">Charlie Chaplin</option>
+<option value="avec David Bowie">David Bowie</option>
+<option value="avec Lady Diana">Lady Diana</option>
+<option value="avec Steve Jobs">Steve Jobs</option>
+<option value="avec Elon Musk">Elon Musk</option>
+<option value="avec Beyoncé">Beyoncé</option>
+<option value="avec Cristiano Ronaldo">Cristiano Ronaldo</option>
+<option value="avec Serena Williams">Serena Williams</option>
+<option value="avec Zinedine Zidane">Zinedine Zidane</option>
+</select>
+</div>
+
+<div id="libreVoyage">
+<input type="checkbox" id="modeLibre" checked> <label><strong>MODE ANACHRONIQUE LIBRE</strong> (combinaisons impossibles)</label>
+<input type="checkbox" id="randomiser"> <label><strong>RANDOM TOTAL</strong> (surprise absolue)</label>
+</div>
+
+<div class="two-columns">
+<div>
+<label class="section-title">🎯 ÉVÉNEMENTS FESTIFS (75+)</label>
+<div class="group">
+<select id="evenement" size="8">
+<optgroup label="Célébrations Personnelles">
+<option value="JOYEUSE ANNÉE 2026 réveillon confettis néons feux d'artifice">Réveillon 2026</option>
+<option value="DEMANDE MARIAGE bague genoux alliance champagne">Demande mariage romantique</option>
+<option value="DÉCLARATION AMOUR roses baiser coucher soleil">Déclaration amour</option>
+<option value="ANNIVERSAIRE gâteau bougies 30 chandelles">Anniversaire 30 ans</option>
+<option value="DIPLÔME chapeau toge lancé air">Obtention diplôme</option>
+<option value="NAISSANCE bébé ballons rose bleu">Naissance bébé</option>
+<option value="MARIAGE vœux dragées alliance">Mariage</option>
+<option value="PROMOTION boulot champagne collègues">Promotion professionnelle</option>
+<option value="PREMIER RENDEZ-VOUS café sourire">Premier rendez-vous</option>
+<option value="RETROUVAILLES FAMILIALES émotion">Retrouvailles familiales</option>
+<option value="JUBILÉ 50 ans de mariage">Jubilé 50 ans</option>
+<option value="GRADUATION cérémonie diplôme">Graduation universitaire</option>
+<option value="BAPTÊME église famille">Baptême</option>
+<option value="PREMIER EMPLOI contrat">Premier emploi</option>
+</optgroup>
+<optgroup label="Succès & Victoires">
+<option value="GAIN LOTERIE 50 millions euros champagne">Gain à la loterie (50M€)</option>
+<option value="VICTOIRE JEU TÉLÉVISION trophée">Victoire jeu télévisé</option>
+<option value="CHAMPIONNAT MONDIAL coupe médaille">Championnat mondial</option>
+<option value="PREMIER ROMAN publié signature">Premier roman publié</option>
+<option value="INVENTION RÉVOLUTIONNAIRE brevet">Invention révolutionnaire</option>
+<option value="CONCERT À GUICHETS FERMÉS standing ovation">Concert à guichets fermés</option>
+<option value="OSCAR cérémonie trophée">Remise d'Oscar</option>
+<option value="NOUVEAU RECORD MONDIAL">Nouveau record mondial</option>
+<option value="START-UP VENDUE MILLIONS">Start-up vendue millions</option>
+<option value="PREMIÈRE EXPOSITION musée">Première exposition artistique</option>
+</optgroup>
+<optgroup label="Expériences Uniques">
+<option value="PREMIER PAS SUR LA LUNE drapeau">Premier pas sur la Lune</option>
+<option value="TOURNAGE FILM CÉLÈBRE plateau">Tournage de film célèbre</option>
+<option value="RENCONTRE AVEC IDOLE backstage">Rencontre avec idole</option>
+<option value="VOYAGE SPACEX fusée">Voyage SpaceX</option>
+<option value="PLONGÉE GRANDE BARRIÈRE CORAIL">Plongée Grande Barrière</option>
+<option value="SAFARI AFRICAIN lions">Safari africain</option>
+<option value="ASCENSION EVEREST sommet">Ascension Everest</option>
+<option value="CROISIÈRE AUTOUR DU MONDE">Croisière autour du monde</option>
+<option value="BALLOON FESTIVAL montgolfières">Festival de montgolfières</option>
+<option value="CARNIVAL RIO défilé">Carnaval de Rio</option>
+<option value="FESTIVAL COACHELLA musique">Festival Coachella</option>
+<option value="MARDI GRAS LA NOUVELLE-ORLÉANS">Mardi Gras La Nouvelle-Orléans</option>
+</optgroup>
+</select>
+</div>
+
+<label class="section-title">📍 LIEUX ÉPIQUES (100+)</label>
+<div class="group">
+<select id="lieu" size="8">
+<optgroup label="Lieux Réels Célèbres">
+<option>Times Square New York néons</option>
+<option>Notre-Dame de Paris</option>
+<option>Colisée Rome antique</option>
+<option>Tour Eiffel Paris</option>
+<option>Grande Muraille de Chine</option>
+<option>Pyramides de Gizeh Égypte</option>
+<option>Taj Mahal Inde</option>
+<option>Chutes du Niagara</option>
+<option>Grand Canyon Arizona</option>
+<option>Machu Picchu Pérou</option>
+<option>Venise canaux gondoles</option>
+<option>Plage de Copacabana Rio</option>
+<option>Mont Saint-Michel</option>
+<option>Château de Versailles</option>
+<option>Shibuya Crossing Tokyo</option>
+<option>Opéra de Sydney</option>
+<option>Big Ben Londres</option>
+<option>Sagrada Familia Barcelone</option>
+<option>Parthénon Athènes</option>
+<option>Christ Rédempteur Rio</option>
+</optgroup>
+<optgroup label="Lieux du Quotidien">
+<option>supermarché local rayons</option>
+<option>bibliothèque municipale livres</option>
+<option>lycée cour récréation</option>
+<option>salle classe tableau craie</option>
+<option>jardin public banc</option>
+<option>café terrasse</option>
+<option>gare SNCF quais</option>
+<option>centre commercial</option>
+<option>métro parisien</option>
+<option>parking souterrain</option>
+<option>laverie automatique</option>
+<option>boulangerie matin</option>
+<option>marché aux puces</option>
+<option>piscine municipale</option>
+<option>salle de sport</option>
+<option>cinéma multiplexe</option>
+<option>supermarché 24/7</option>
+<option>bibliothèque universitaire</option>
+<option>cantine scolaire</option>
+<option>ascenseur transparent</option>
+</optgroup>
+<optgroup label="Lieux Imaginaires & SF">
+<option>Station Spatiale Internationale</option>
+<option>Ville sous-marine Atlantis</option>
+<option>Forêt enchantée licornes</option>
+<option>Château dans les nuages</option>
+<option>Ville flottante aérienne</option>
+<option>Labyrinthe de cristal</option>
+<option>Jardin des délices surréaliste</option>
+<option>Bibliothèque infinie Borges</option>
+<option>Ville cyberpunk néons</option>
+<option>Base lunaire 2040</option>
+<option>Vaisseau générationnel</option>
+<option>Dimension parallèle</option>
+<option>Monde de steampunk</option>
+<option>Cité des robots</option>
+<option>Forêt bioluminescente</option>
+<option>Océan de méthane Titan</option>
+<option>Planète aux deux soleils</option>
+<option>Nébuleuse colorée</option>
+<option>Trou de ver interstellaire</option>
+<option>Mégalopole verticale 2200</option>
+</optgroup>
+<optgroup label="Situations Excitantes">
+<option>Vésuve en éruption lave</option>
+<option>Premier pas sur Mars</option>
+<option>Ouragan catégorie 5</option>
+<option>Aurore boréale Norvège</option>
+<option>Jeu télévisé en direct</option>
+<option>Concert rock backstage</option>
+<option>Défilé mode Paris</option>
+<option>Plateau tournage Star Wars</option>
+<option>Mission Apollo 11</option>
+<option>Sauvetage héroïque</option>
+<option>Éclipse solaire totale</option>
+<option>Tsunami vue héliport</option>
+<option>Volcan actif Hawaii</option>
+<option>Sous-marin fond marin</option>
+<option>Fusée au décollage</option>
+<option>Grand prix Formule 1</option>
+<option>Chute libre parachute</option>
+<option>Plongée cage requins</option>
+<option>Helicoptère survol ville</option>
+<option>Safari éléphants charge</option>
+</optgroup>
+</select>
+</div>
+</div>
+
+<div>
+<label class="section-title">👤 COSTUMES & APPAREILLAGE (100+)</label>
+<div class="group">
+<select id="costume" size="8">
+<optgroup label="Tenues Classiques">
+<option>smoking tuxedo noir</option>
+<option>costume trois pièces</option>
+<option>robe de soirée longue</option>
+<option>robe de cocktail</option>
+<option>tailleur chic</option>
+<option>jeans t-shirt casual</option>
+<option>tenue de sport</option>
+<option>pyjama confortable</option>
+<option>tenue de plage maillot</option>
+<option>tenue de ski</option>
+<option>tenue de randonnée</option>
+<option>uniforme de travail</option>
+<option>blouse de laboratoire</option>
+<option>tenue de cosplay</option>
+<option>costume de super-héros</option>
+<option>tenue de ninja</option>
+<option>tenue de pirate</option>
+<option>tenue de cow-boy</option>
+<option>tenue de vampire</option>
+<option>tenue de sorcier</option>
+</optgroup>
+<optgroup label="Costumes Historiques">
+<option>centurion armure rouge romain</option>
+<option>gladiateur tunique cuir</option>
+<option>chevalier armure complète</option>
+<option>samurai armure laquée</option>
+<option>pharaon égyptien</option>
+<option>roi médiéval couronne</option>
+<option>reine renaissance</option>
+<option>marquis XVIIIe siècle</option>
+<option>tenue années 1920 flapper</option>
+<option>tenue années 1950 pin-up</option>
+<option>tenue années 1980 disco</option>
+<option>tenue victorienne</option>
+<option>tenue steampunk</option>
+<option>tenue punk des années 70</option>
+<option>tenue hippie années 60</option>
+</optgroup>
+<optgroup label="Tenues Spéciales">
+<option>robe mariée blanche voile</option>
+<option>costume de marié</option>
+<option>tenue de cérémonie</option>
+<option>costume de clown</option>
+<option>tenue de magicien</option>
+<option>uniforme militaire</option>
+<option>tenue de pilote</option>
+<option>tenue d'astronaute NASA</option>
+<option>combinaison de plongée</option>
+<option>tenue de motard</option>
+<option>kimono japonais</option>
+<option>sari indien</option>
+<option>kilt écossais</option>
+<option>tenue traditionnelle africaine</option>
+<option>costume de loup-garou</option>
+<option>tenue de robot</option>
+<option>combinaison futuriste</option>
+<option>armure cyberpunk</option>
+<option>tenue post-apocalyptique</option>
+<option>costume d'extraterrestre</option>
+</optgroup>
+</select>
+</div>
+
+<label class="section-title">👥 COMPAGNONS & TRAITS PHYSIQUES</label>
+<div class="group">
+<select id="compagnon">
+<option>solo dramatique</option>
+<option>fiancée robe blanche</option>
+<option>fiancé smoking</option>
+<option>enfants émerveillés</option>
+<option>amis fêtards</option>
+<option>famille applaudir</option>
+<option>collègues travail</option>
+<option>foule admirative</option>
+<option>robot assistant futuriste</option>
+<option>cheval blanc majestueux</option>
+<option>chat cybernétique</option>
+<option>chien fidèle</option>
+<option>dragon amical</option>
+<option>licorne magique</option>
+<option>alien curieux</option>
+<option>fantôme sympathique</option>
+<option>ninja silencieux</option>
+<option>pirates équipage</option>
+<option>chevaliers table ronde</option>
+<option>extraterrestres bienveillants</option>
+</select>
+<select id="traitsPhysiques">
+<option value="">Traits physiques standards</option>
+<optgroup label="Type Physique">
+<option>grand et mince</option><option>petit et vif</option><option>corpulent et jovial</option><option>athlétique musclé</option><option>svelte et élégant</option><option>robuste costaud</option><option>frêle délicat</option><option>imposant majestueux</option>
+</optgroup>
+<optgroup label="Cheveux">
+<option>cheveux blonds dorés</option><option>cheveux bruns chocolat</option><option>cheveux noirs de jais</option><option>cheveux roux flamboyants</option><option>cheveux blancs neige</option><option>cheveux gris argentés</option><option>cheveux roses pastel</option><option>cheveux bleus électriques</option><option>cheveux verts</option><option>cheveux violets</option><option>cheveux arc-en-ciel</option><option>cheveux longs soyeux</option><option>cheveux courts coupés</option><option>cheveux bouclés</option><option>cheveux frisés</option><option>cheveux raides</option><option>cheveux ondulés</option><option>chauve crâne lisse</option><option>crête colorée</option><option>dreadlocks</option><option>tresses africaines</option><option>chignon élégant</option>
+</optgroup>
+<optgroup label="Yeux">
+<option>yeux bleus saphir</option><option>yeux verts émeraude</option><option>yeux marron chaleureux</option><option>yeux noirs profonds</option><option>yeux gris acier</option><option>yeux vairons hétérochromie</option><option>yeux dorés</option><option>yeux violets</option><option>yeux rouges</option><option>yeux en amande</option><option>yeux ronds grands</option><option>yeux bridés</option>
+</optgroup>
+<optgroup label="Visage & Détails">
+<option>visage angélique</option><option>visage martial</option><option>visage rond</option><option>visage carré</option><option>visage ovale</option><option>visage fin</option><option>barbe soignée</option><option>moustache style</option><option>barbe de trois jours</option><option>visage glabre</option><option>lunettes rondes</option><option>lunettes carrées</option><option>lunettes futuristes</option><option>lunettes de soleil</option><option>monocle</option><option>piercing nez</option><option>piercing sourcil</option><option>piercing langue</option><option>tatouages visage</option><option>tatouages corps</option><option>cicatrice légendaire</option><option>taches de rousseur</option><option>fossettes charmantes</option><option>sourire éclatant</option><option>regard intense</option><option>regard doux</option><option>regard mystérieux</option>
+</optgroup>
+<optgroup label="Peau">
+<option>peau pâle porcelaine</option><option>peau mate</option><option>peau olive</option><option>peau foncée ébène</option><option>peau dorée</option><option>peau bleutée extraterrestre</option><option>peau verte alien</option><option>peau argentée robotique</option><option>peau translucide</option><option>peau recouverte écailles</option>
+</optgroup>
+</select>
+</div>
+</div>
+</div>
+
+<label class="section-title">🎨 ESTHÉTIQUES COMPLÈTES (75+)</label>
+<div class="group">
+<select id="esthetique" size="8">
+<optgroup label="Photographie & Réalisme">
+<option>réaliste photographique</option>
+<option>photo de magazine glossy</option>
+<option>carte postale vintage</option>
+<option>hyperréaliste 8K</option>
+<option>photographie de rue</option>
+<option>photo reportage</option>
+<option>photo de mode Vogue</option>
+<option>photographie noir et blanc</option>
+<option>photographie couleur sépia</option>
+<option>photographie argentique</option>
+<option>photo Lomography</option>
+<option>photographie infrarouge</option>
+<option>photographie HDR</option>
+</optgroup>
+<optgroup label="Cinéma & TV">
+<option>cinématique épique</option>
+<option>film Hollywood blockbuster</option>
+<option>film noir 1940s</option>
+<option>film muet 1920s</option>
+<option>film Wes Anderson</option>
+<option>film Tim Burton</option>
+<option>film David Lynch</option>
+<option>film Christopher Nolan</option>
+<option>film d'animation Disney</option>
+<option>série TV Netflix</option>
+<option>télévision années 80</option>
+<option>vidéo VHS rétro</option>
+<option>style cinéma vérité</option>
+</optgroup>
+<optgroup label="Dessin & Illustration">
+<option>digital illustration détaillée</option>
+<option>aquarelle douce</option>
+<option>peinture à l'huile classique</option>
+<option>crayon dessin esquisse</option>
+<option>encre de Chine</option>
+<option>pastels tendres</option>
+<option>gouache opaque</option>
+<option>acrylique vibrant</option>
+<option>gravure sur bois</option>
+<option>linogravure</option>
+<option>sérigraphie pop</option>
+</optgroup>
+<optgroup label="Styles Artistiques">
+<option>impressionniste Monet</option>
+<option>pointillisme Seurat</option>
+<option>fauvisme Matisse</option>
+<option>expressionniste Munch</option>
+<option>cubiste Picasso</option>
+<option>surrealiste Dalí</option>
+<option>art nouveau Mucha</option>
+<option>art déco 1920s</option>
+<option>pop art Warhol</option>
+<option>art abstrait Kandinsky</option>
+<option>renaissance Léonard</option>
+<option>baroque ornemental</option>
+<option>romantique Turner</option>
+<option>néo-classique David</option>
+<option>préraphaélite</option>
+<option>symboliste</option>
+<option>constructiviste</option>
+<option>De Stijl Mondrian</option>
+<option>Bauhaus</option>
+</optgroup>
+<optgroup label="Animation & BD">
+<option>anime japonais</option>
+<option>Ghibli magique</option>
+<option>cartoon Pixar 3D</option>
+<option>BD franco-belge Hergé</option>
+<option>manga shonen</option>
+<option>manga shojo</option>
+<option>style Disney</option>
+<option>style Warner Bros</option>
+<option>animation stop motion</option>
+<option>claymation</option>
+<option>animation 2D traditionnelle</option>
+<option>style Adventure Time</option>
+<option>style Rick and Morty</option>
+</optgroup>
+<optgroup label="Styles Modernes">
+<option>cyberpunk néon</option>
+<option>afrohemian vibrant</option>
+<option>ice blue élégant</option>
+<option>vaporwave 80s</option>
+<option>synthwave</option>
+<option>outrun</option>
+<option>steampunk</option>
+<option>dieselpunk</option>
+<option>biopunk</option>
+<option>solarpunk</option>
+<option>street art Banksy</option>
+<option>graffiti urbain</option>
+<option>sticker art</option>
+<option>minimaliste japonais</option>
+<option>flat design</option>
+<option>polygonal low poly</option>
+<option>pixel art 8-bit</option>
+<option>vectoriel</option>
+<option>glitch art</option>
+<option>fractal art</option>
+</optgroup>
+</select>
+<select id="lumieres" size="8">
+<optgroup label="Lumières Naturelles">
+<option>soleil couchant doré</option>
+<option>aurore rosée douce</option>
+<option>midi soleil éclatant</option>
+<option>lune pleine argentée</option>
+<option>ciel étoilé voie lactée</option>
+<option>aurore boréale verte</option>
+<option>crépuscule bleu heure</option>
+<option>brume matinale</option>
+<option>éclair orage</option>
+<option>arc-en-ciel</option>
+<option>luminescence biologique</option>
+</optgroup>
+<optgroup label="Lumières Artificielles">
+<option>néons bleu orange futuriste</option>
+<option>feux d'artifice multicolore</option>
+<option>guirlandes lumineuses</option>
+<option>bougies chaleureuses</option>
+<option>lampions fête</option>
+-option>projecteurs scène</option>
+<option>lasers discothèque</option>
+<option>lumières noires UV</option>
+<option>éclairage fluorescent</option>
+<option>LED RGB colorées</option>
+<option>réverbère vintage</option>
+<option>enseignes néon</option>
+</optgroup>
+<optgroup label="Ambiances Colorées">
+<option>ice blue glacial élégant</option>
+<option>afrohemian chaud vibrant</option>
+<option>monochrome sépia</option>
+<option>noir et blanc contrasté</option>
+<option>teintes pastel douces</option>
+<option>couleurs saturées pop</option>
+<option>désaturation partielle</option>
+<option>gradient violet-orange</option>
+<option>palette terre naturelle</option>
+<option>couleurs métalliques</option>
+<option>effet cinématique teal/orange</option>
+<option>tonalités chaudes automne</option>
+<option>tonalités froides hiver</option>
+<option>contraste élevé dramatique</option>
+<option>luminescence douce</option>
+<option>ombres profondes</option>
+<option>éclairage Rembrandt</option>
+<option>clair-obscur</option>
+</optgroup>
+<optgroup label="Effets Spéciaux">
+<option>pluie réfléchissante néon</option>
+<option>brouillard mystique lune</option>
+<option>neige tombante</option>
+<option>poussière d'étoiles</option>
+<option>particules lumineuses</option>
+<option>effet de vitesse flou</option>
+<option>profondeur de champ faible</option>
+<option>lentille anamorphique</option>
+<option>flare objectif</option>
+<option>reflets miroir</option>
+<option>transparence spectrale</option>
+<option>effet holographique</option>
+<option>scintillement</option>
+</optgroup>
+</select>
+</div>
+
+<textarea id="prompt" readonly>✨ Sélectionne tes options → GÉNÉRER → Copie instantanée !</textarea>
+
+<div style="text-align:center;">
+<button id="generer" onclick="generer()">🚀 GÉNÉRER VOYAGE IMMOBILE PRO</button>
+<button onclick="randomVoyage()" id="random">🎲 SURPRISE RANDOM TOTALE</button>
+<button onclick="exempleCenturion()" id="exemples">⚔️ CENTURION BIBLIOTHÈQUE</button>
+<button onclick="exempleHistorique()" id="historique">👑 MOZART SUPERMARCHÉ</button>
+</div>
+</div>
+
+<div class="random-zone" onclick="randomVoyage()">🎲</div>
+
+<script>
+let voyages = 0;
+
+function generer() {
+  voyages++;
+  const libre = document.getElementById('modeLibre').checked;
+  const evenement = document.getElementById('evenement').value;
+  const lieu = document.getElementById('lieu').value;
+  const costume = document.getElementById('costume').value;
+  const compagnon = document.getElementById('compagnon').value;
+  const esthetique = document.getElementById('esthetique').value;
+  const lumieres = document.getElementById('lumieres').value;
+  const epoque = document.getElementById('epoque').value;
+  const personnageHistorique = document.getElementById('personnageHistorique').value;
+  const traits = document.getElementById('traitsPhysiques').value;
+  
+  let logique = '';
+  if (!libre) {
+    logique = getLogiqueComplete(evenement, lieu, epoque);
+  }
+  
+  let compagnonTexte = compagnon;
+  if (traits && traits !== 'Traits physiques standards') {
+    compagnonTexte += ` ${traits}`;
+  }
+  
+  const prompt = `${epoque ? epoque + ' ' : ''}${evenement} ${lieu} ${lumieres}, ${personnageHistorique ? personnageHistorique + ' présent, ' : ''}foule joyeuse ${compagnonTexte}, protagoniste principal ${costume} ${logique} pose émouvante, ${esthetique}, ambiance magique célébration voyage immobile anachronique, wide shot cinématique 16:9 bokeh profondeur champ, ultra-détaillé 8K émotion pure`;
+  
+  document.getElementById('prompt').value = `#${voyages} ` + prompt.trim().replace(/\s+/g, ' ');
+  navigator.clipboard.writeText(prompt.trim().replace(/\s+/g, ' '));
+  document.querySelector('.random-zone').textContent = `🎲 ${voyages}`;
+}
+
+function getLogiqueComplete(evenement, lieu, epoque) {
+  const regles = {
+    'Colisée Rome antique': 'costume gladiateur/centurion romain authentique',
+    'devant Notre-Dame Paris': 'silhouette gothique chevaleresque',
+    'supermarché local': 'shopping casual quotidien',
+    'bibliothèque municipale': 'intellectuel studieux',
+    'salle classe tableau': 'professeur dynamique',
+    'Tour Eiffel Paris': 'touriste émerveillé',
+    'Station Spatiale Internationale': 'combinaison spatiale',
+    'Vésuve en éruption lave': 'panique fuite survie',
+    'Premier pas sur Mars': 'combinaison spatiale NASA',
+    'Plateau tournage Star Wars': 'costume de la saga'
+  };
+  
+  if (epoque) {
+    return `${regles[lieu] || ''} contexte historique ${epoque}`;
+  }
+  
+  return regles[lieu] || '';
+}
+
+function randomVoyage() {
+  const elements = [
+    'evenement', 'lieu', 'costume', 'compagnon', 
+    'esthetique', 'lumieres', 'epoque', 
+    'personnageHistorique', 'traitsPhysiques'
+  ];
+  
+  elements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element.options.length > 0) {
+      const randomIndex = Math.floor(Math.random() * element.options.length);
+      element.selectedIndex = randomIndex;
+    }
+  });
+  
+  generer();
+}
+
+function exempleCenturion() {
+  document.getElementById('evenement').value = 'DEMANDE MARIAGE bague genoux alliance champagne';
+  document.getElementById('lieu').value = 'bibliothèque municipale';
+  document.getElementById('costume').value = 'centurion armure rouge romain';
+  document.getElementById('epoque').value = 'Rome antique gladiateurs';
+  document.getElementById('personnageHistorique').value = 'avec Jules César';
+  document.getElementById('modeLibre').checked = true;
+  generer();
+}
+
+function exempleHistorique() {
+  document.getElementById('evenement').value = 'GAIN LOTERIE 50 millions euros champagne';
+  document.getElementById('lieu').value = 'supermarché local rayons';
+  document.getElementById('costume').value = 'costume trois pièces';
+  document.getElementById('epoque').value = 'époque victorienne Londres';
+  document.getElementById('personnageHistorique').value = 'avec Mozart';
+  document.getElementById('compagnon').value = 'foule admirative';
+  document.getElementById('traitsPhysiques').value = 'cheveux bouclés';
+  document.getElementById('esthetique').value = 'film Wes Anderson';
+  document.getElementById('lumieres').value = 'éclairage fluorescent';
+  document.getElementById('modeLibre').checked = true;
+  generer();
+}
+
+// Initialisation avec un exemple
+window.onload = function() {
+  setTimeout(exempleCenturion, 500);
+};
+</script>
+</body>
+</html>
