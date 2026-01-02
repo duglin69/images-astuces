@@ -24,9 +24,34 @@ button{padding:20px 45px;font-size:18px;border-radius:20px;border:none;cursor:po
 .random-zone:hover{transform:scale(1.1);box-shadow:0 15px 60px rgba(255,107,107,0.7);}
 .two-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
 @media(max-width:1200px){.two-columns{grid-template-columns:1fr;}}
+  .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+  .btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
 </style>
 </head>
 <body>
+  <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
 <div class="container">
 <h1>🌌 VOYAGE IMMOBILE PRO - GÉNÉRATEUR ÉVÉNEMENTS</h1>
 <p style="text-align:center;font-size:1.2em;color:#88ccff;">500 000+ variantes | Anachronismes créatifs | Personnages historiques | Scènes épiques</p>
@@ -633,4 +658,5 @@ window.onload = function() {
 };
 </script>
 </body>
+
 </html>
