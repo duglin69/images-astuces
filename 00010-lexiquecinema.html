@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexique Cinéma - Anglais/Français</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f1f3f4;
+            border-radius: 5px;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            color: #444;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .filter-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .filter-btn.active {
+            background: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #ddd;
+            background: #f8f9fa;
+        }
+        
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .term-en {
+            color: #2c3e50;
+            font-weight: 500;
+            width: 45%;
+            border-right: 1px solid #eee;
+        }
+        
+        .term-fr {
+            color: #2c3e50;
+            width: 55%;
+        }
+        
+        .category-label {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-right: 10px;
+            background: #f1f3f4;
+            border: 1px solid #ddd;
+        }
+        
+        .note {
+            background: #f8f9fa;
+            border-left: 4px solid #2c3e50;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 3px;
+        }
+        
+        .note h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+            
+            .category-label {
+                display: block;
+                margin-bottom: 5px;
+                margin-right: 0;
+            }
+            
+            .filters {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lexique Cinéma & IA</h1>
+        <div class="subtitle">Termes techniques anglais/français pour prompts et réalisation</div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">Tous</button>
+            <button class="filter-btn" data-category="cadrage">Cadrage</button>
+            <button class="filter-btn" data-category="mouvement">Mouvement</button>
+            <button class="filter-btn" data-category="eclairage">Éclairage</button>
+            <button class="filter-btn" data-category="son">Son</button>
+            <button class="filter-btn" data-category="montage">Montage</button>
+            <button class="filter-btn" data-category="artistique">Artistique</button>
+            <button class="filter-btn" data-category="effets">Effets</button>
+            <button class="filter-btn" data-category="production">Production</button>
+            <button class="filter-btn" data-category="postprod">Post-production</button>
+        </div>
+        
+        <table id="lexique-table">
+            <thead>
+                <tr>
+                    <th width="45%">Terme anglais / Franglais</th>
+                    <th width="55%">Terme français correct</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Cadrage et Composition -->
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Wide shot / Long shot</td>
+                    <td class="term-fr">Plan large / Plan d'ensemble</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Extreme wide shot / Establishing shot</td>
+                    <td class="term-fr">Plan très large / Plan de situation</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Medium shot</td>
+                    <td class="term-fr">Plan moyen</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Close-up / CU</td>
+                    <td class="term-fr">Gros plan</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Extreme close-up / ECU</td>
+                    <td class="term-fr">Très gros plan</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>American shot / Medium full shot</td>
+                    <td class="term-fr">Plan américain (coupe aux cuisses)</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Italian shot / Extreme low angle</td>
+                    <td class="term-fr">Plan italien (contre-plongée extrême)</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Dutch angle / Tilted shot</td>
+                    <td class="term-fr">Plan incliné / Plan en diagonale</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Over-the-shoulder shot</td>
+                    <td class="term-fr">Plongée sur l'épaule</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Point of view shot / POV</td>
+                    <td class="term-fr">Plan subjectif</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Two shot</td>
+                    <td class="term-fr">Plan à deux personnages</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Rule of thirds</td>
+                    <td class="term-fr">Règle des tiers</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Golden ratio / Fibonacci spiral</td>
+                    <td class="term-fr">Nombre d'or / Spirale de Fibonacci</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Deep focus</td>
+                    <td class="term-fr">Profondeur de champ</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Shallow focus</td>
+                    <td class="term-fr">Faible profondeur de champ</td>
+                </tr>
+                <tr class="cadrage">
+                    <td class="term-en"><span class="category-label">Cadrage</span>Rack focus / Focus pull</td>
+                    <td class="term-fr">Changement de plan focal</td>
+                </tr>
+                
+                <!-- Mouvement de caméra -->
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Pan / Panning</td>
+                    <td class="term-fr">Panoramique horizontal</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Tilt</td>
+                    <td class="term-fr">Panoramique vertical</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Zoom in / Zoom out</td>
+                    <td class="term-fr">Zoom avant / Zoom arrière</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Dolly in / Dolly out</td>
+                    <td class="term-fr">Travelling avant / Travelling arrière</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Tracking shot / Follow shot</td>
+                    <td class="term-fr">Travelling latéral</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Crane shot</td>
+                    <td class="term-fr">Plan en grue</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Steadicam shot</td>
+                    <td class="term-fr">Plan Steadicam</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Handheld shot</td>
+                    <td class="term-fr">Caméra portée / Plan à l'épaule</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Whip pan / Swish pan</td>
+                    <td class="term-fr">Panoramique rapide (effet de flou)</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Arc shot</td>
+                    <td class="term-fr">Travelling circulaire</td>
+                </tr>
+                <tr class="mouvement">
+                    <td class="term-en"><span class="category-label">Mouvement</span>Pedestal shot</td>
+                    <td class="term-fr">Travelling vertical</td>
+                </tr>
+                
+                <!-- Éclairage -->
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Key light</td>
+                    <td class="term-fr">Lumière principale</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Fill light</td>
+                    <td class="term-fr">Lumière de remplissage</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Back light / Rim light</td>
+                    <td class="term-fr">Contre-jour / Lumière de contour</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Practical light</td>
+                    <td class="term-fr">Lumière pratique (source visible)</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>High-key lighting</td>
+                    <td class="term-fr">Éclairage haute clé (peu de contrastes)</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Low-key lighting</td>
+                    <td class="term-fr">Éclairage basse clé (forts contrastes)</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Chiaroscuro</td>
+                    <td class="term-fr">Clair-obscur</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Hard light</td>
+                    <td class="term-fr">Lumière dure (ombres nettes)</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Soft light / Diffused light</td>
+                    <td class="term-fr">Lumière douce / Lumière diffuse</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Bounce light</td>
+                    <td class="term-fr">Lumière par rebond</td>
+                </tr>
+                <tr class="eclairage">
+                    <td class="term-en"><span class="category-label">Éclairage</span>Motivated lighting</td>
+                    <td class="term-fr">Éclairage motivé (justifié diégétiquement)</td>
+                </tr>
+                
+                <!-- Son -->
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>Diegetic sound</td>
+                    <td class="term-fr">Son diégétique (dans l'univers du film)</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>Non-diegetic sound</td>
+                    <td class="term-fr">Son extradiégétique (hors univers du film)</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>Foley</td>
+                    <td class="term-fr">Bruitage (post-synchronisation)</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>Ambient sound / Atmosphere</td>
+                    <td class="term-fr">Ambiance sonore</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>Voice-over / VO</td>
+                    <td class="term-fr">Voix off</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>ADR (Automated Dialogue Replacement)</td>
+                    <td class="term-fr">Post-synchronisation des dialogues</td>
+                </tr>
+                <tr class="son">
+                    <td class="term-en"><span class="category-label">Son</span>LFE (Low Frequency Effects)</td>
+                    <td class="term-fr">Effets de basse fréquence (canal .1)</td>
+                </tr>
+                
+                <!-- Montage -->
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Cut</td>
+                    <td class="term-fr">Cut / Changement de plan</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Jump cut</td>
+                    <td class="term-fr">Cut sauté</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Cross-cutting / Parallel editing</td>
+                    <td class="term-fr">Montage parallèle</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Match cut</td>
+                    <td class="term-fr">Raccord dans le mouvement</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>L-cut / J-cut</td>
+                    <td class="term-fr">Raccord son anticipé ou différé</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Montage sequence</td>
+                    <td class="term-fr">Séquence de montage</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Continuity editing</td>
+                    <td class="term-fr">Montage de continuité</td>
+                </tr>
+                <tr class="montage">
+                    <td class="term-en"><span class="category-label">Montage</span>Russian montage / Soviet montage</td>
+                    <td class="term-fr">Montage soviétique (intellectuel)</td>
+                </tr>
+                
+                <!-- Direction artistique -->
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Mise-en-scène</td>
+                    <td class="term-fr">Mise en scène</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Production design</td>
+                    <td class="term-fr">Direction artistique</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Set dressing</td>
+                    <td class="term-fr">Décor de plateau</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Props (properties)</td>
+                    <td class="term-fr">Accessoires</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Wardrobe / Costume design</td>
+                    <td class="term-fr">Costumes</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Makeup & Hairstyling</td>
+                    <td class="term-fr">Maquillage et coiffure</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Color palette</td>
+                    <td class="term-fr">Palette de couleurs</td>
+                </tr>
+                <tr class="artistique">
+                    <td class="term-en"><span class="category-label">Artistique</span>Color grading</td>
+                    <td class="term-fr">Étalonnage couleur</td>
+                </tr>
+                
+                <!-- Effets visuels et techniques -->
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>CGI (Computer-Generated Imagery)</td>
+                    <td class="term-fr">Images de synthèse</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>VFX (Visual Effects)</td>
+                    <td class="term-fr">Effets visuels</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>SFX (Special Effects)</td>
+                    <td class="term-fr">Effets spéciaux (pratiques)</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Green screen / Chroma key</td>
+                    <td class="term-fr">Écran vert / Incrustation</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Matte painting</td>
+                    <td class="term-fr">Décor peint / Matte painting</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Motion capture / Mo-cap</td>
+                    <td class="term-fr">Capture de mouvement</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Bullet time</td>
+                    <td class="term-fr">Temps ralenti extrême</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Lens flare</td>
+                    <td class="term-fr">Reflet d'objectif / Lens flare</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Bokeh</td>
+                    <td class="term-fr">Flou d'arrière-plan artistique</td>
+                </tr>
+                <tr class="effets">
+                    <td class="term-en"><span class="category-label">Effets</span>Depth of field</td>
+                    <td class="term-fr">Profondeur de champ</td>
+                </tr>
+                
+                <!-- Production -->
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Pre-production</td>
+                    <td class="term-fr">Pré-production</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Principal photography</td>
+                    <td class="term-fr">Tournage principal</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Post-production</td>
+                    <td class="term-fr">Post-production</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Call sheet</td>
+                    <td class="term-fr">Feuille de service</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Shot list</td>
+                    <td class="term-fr">Liste des plans</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Storyboard</td>
+                    <td class="term-fr">Storyboard</td>
+                </tr>
+                <tr class="production">
+                    <td class="term-en"><span class="category-label">Production</span>Blocking</td>
+                    <td class="term-fr">Mise en place (des acteurs)</td>
+                </tr>
+                
+                <!-- Post-production -->
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Color correction</td>
+                    <td class="term-fr">Correction couleur</td>
+                </tr>
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Color grading</td>
+                    <td class="term-fr">Étalonnage couleur (artistique)</td>
+                </tr>
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Compositing</td>
+                    <td class="term-fr">Composition (d'images)</td>
+                </tr>
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Rendering</td>
+                    <td class="term-fr">Rendu</td>
+                </tr>
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Sound design</td>
+                    <td class="term-fr">Design sonore</td>
+                </tr>
+                <tr class="postprod">
+                    <td class="term-en"><span class="category-label">Post-prod</span>Foley artistry</td>
+                    <td class="term-fr">Art du bruitage</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="note">
+            <h3>Pourquoi ce lexique ?</h3>
+            <p>Les IA génératives sont entraînées en anglais, mais utiliser le terme français précis donne souvent de meilleurs résultats en évitant les confusions sémantiques.</p>
+            <p><strong>Exemple :</strong> "Plan large cinématographique" est plus précis que "wide shot cinematic".</p>
+            <p><strong>Objectif :</strong> Maîtriser notre vocabulaire technique en français pour une communication claire dans l'équipe.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Lexique technique cinéma & IA • Studio "Le Temps du Chaos"</p>
+            <p>Formation contre le franglais paresseux</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const tableRows = document.querySelectorAll('#lexique-table tbody tr');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    tableRows.forEach(row => {
+                        if (category === 'all' || row.classList.contains(category)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
