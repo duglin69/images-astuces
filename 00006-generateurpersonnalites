@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de Prompts Personnalisés - ÉDITION COMPLÈTE</title>
+<title>Générateur de Prompts - PERSONNALITÉS</title>
 <style>
 :root {
   --primary: #0a0a1a;
@@ -632,36 +632,284 @@ input[type="color"]::-webkit-color-swatch {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ===== NOUVEAUX STYLES POUR LES AMÉLIORATIONS ===== */
+
+/* Moteurs IA */
+.engine-option-group {
+  background: rgba(0, 20, 40, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 15px;
+  border-left: 3px solid var(--accent);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Système de profils */
+.profile-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.profile-button {
+  padding: 10px 15px;
+  background: rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.profile-button:hover {
+  background: rgba(0, 212, 255, 0.4);
+}
+
+.profile-button.active {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Analyse de prompt */
+.analysis-panel {
+  background: rgba(0, 15, 30, 0.5);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid var(--accent4);
+}
+
+.analysis-metric {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.analysis-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s;
+}
+
+/* Palettes de couleurs */
+.color-palette {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.color-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-name {
+  font-size: 0.8em;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* Composition */
+.composition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.composition-item {
+  background: rgba(0, 20, 40, 0.5);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.composition-item:hover {
+  transform: translateY(-5px);
+  background: rgba(0, 212, 255, 0.2);
+}
+
+/* Tutoriel */
+.tutorial-step {
+  background: rgba(157, 78, 221, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border-left: 4px solid var(--accent4);
+}
+
+.tutorial-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Multi-personnages */
+.character-section {
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.remove-character {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
 </style>
 </head>
 <body>
+<div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
 <div class="container">
-  <h1>🎭 GÉNÉRATEUR DE PROMPTS - ÉDITION COMPLÈTE</h1>
-  <p class="subtitle">Tous les champs personnalisables • 75+ personnalités • Liberté créative totale</p>
+  <h1>🎭 GÉNÉRATEUR DE PROMPTS - ÉDITION ULTIME</h1>
+  <p class="subtitle">Toutes les améliorations intégrées • Moteurs IA • Profils • Analyse • Composition</p>
   
-  <!-- MODE DE GÉNÉRATION -->
+  <!-- SYSTÈME DE PROFILS -->
   <div class="section">
-    <h2 class="section-title">⚙️ MODE DE GÉNÉRATION</h2>
+    <h2 class="section-title">💾 PROFILS & PRÉSÉLECTIONS</h2>
+    <div class="input-group">
+      <div class="input-label">Gestion des profils :</div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="profile-button" onclick="saveProfile()">💾 Sauvegarder</button>
+        <button class="profile-button" onclick="loadProfile()">📂 Charger</button>
+        <button class="profile-button" onclick="deleteProfile()">🗑️ Supprimer</button>
+        <button class="profile-button" onclick="resetProfiles()">🔄 Réinitialiser</button>
+      </div>
+    </div>
+    
+    <div class="input-group">
+      <div class="input-label">Nom du profil :</div>
+      <input type="text" id="profileName" placeholder="Ex: Fantasy, Portrait, Cyberpunk...">
+    </div>
+    
+    <div class="input-group">
+      <div class="input-label">Profils sauvegardés :</div>
+      <select id="profilesList" onchange="selectProfile(this.value)">
+        <option value="">-- Choisir un profil --</option>
+      </select>
+      <div class="input-hint">Les profils sont sauvegardés dans votre navigateur</div>
+    </div>
+    
+    <div class="profile-buttons" id="presetButtons">
+      <!-- Rempli par JavaScript -->
+    </div>
+  </div>
+  
+  <!-- MOTEUR D'IA -->
+  <div class="section">
+    <h2 class="section-title">🤖 MOTEUR D'IA</h2>
+    <div class="input-group">
+      <div class="input-label">Moteur cible :</div>
+      <select id="aiEngine" onchange="updateEngineOptions()">
+        <option value="midjourney">Midjourney (V5/V6)</option>
+        <option value="stable-diffusion">Stable Diffusion</option>
+        <option value="dall-e">DALL-E 3</option>
+        <option value="leonardo">Leonardo.ai</option>
+        <option value="general" selected>Général / Autre</option>
+      </select>
+    </div>
+    
+    <div id="engineOptions" style="display: none;">
+      <!-- Options spécifiques chargées dynamiquement -->
+    </div>
+  </div>
+  
+  <!-- MODES CRÉATIFS -->
+  <div class="section">
+    <h2 class="section-title">⚙️ MODES CRÉATIFS</h2>
     <div class="checkbox-group">
       <div class="checkbox-item">
         <input type="checkbox" id="modeRandom" checked>
-        <label for="modeRandom">Mode Aléatoire Complet</label>
+        <label for="modeRandom">Mode Aléatoire</label>
       </div>
       <div class="checkbox-item">
-        <input type="checkbox" id="modeAnachronique" checked>
-        <label for="modeAnachronique">Anachronismes créatifs</label>
+        <input type="checkbox" id="modeAnachronique">
+        <label for="modeAnachronique">Anachronismes</label>
       </div>
       <div class="checkbox-item">
         <input type="checkbox" id="modeHumoristique">
-        <label for="modeHumoristique">Humour visuel</label>
+        <label for="modeHumoristique">Humour</label>
       </div>
       <div class="checkbox-item">
         <input type="checkbox" id="modeSurrealiste">
         <label for="modeSurrealiste">Surréalisme</label>
       </div>
-      <div class="checkbox-item">
-        <input type="checkbox" id="showCustomMarkers">
-        <label for="showCustomMarkers">Afficher marqueurs personnalisés</label>
+    </div>
+  </div>
+  
+  <!-- ANALYSE DE PROMPT -->
+  <div class="section">
+    <h2 class="section-title">📊 ANALYSE DU PROMPT</h2>
+    <div class="analysis-panel">
+      <div class="analysis-metric">
+        <span>Longueur :</span>
+        <span id="lengthScore">0 mots</span>
+      </div>
+      <div class="analysis-metric">
+        <span>Détails :</span>
+        <span id="detailScore">Faible</span>
+      </div>
+      <div class="analysis-metric">
+        <span>Complexité :</span>
+        <span id="complexityScore">Simple</span>
+      </div>
+      <div class="analysis-bar">
+        <div class="analysis-fill" id="qualityBar" style="width: 0%; background: linear-gradient(90deg, #ff6b6b, #00ff88);"></div>
+      </div>
+      <div id="analysisTips" style="font-size: 0.9em; color: #88ccff; margin-top: 10px;">
+        <!-- Conseils affichés dynamiquement -->
       </div>
     </div>
   </div>
@@ -669,908 +917,197 @@ input[type="color"]::-webkit-color-swatch {
   <!-- GRID PRINCIPAL -->
   <div class="grid-container">
     
-    <!-- PERSONNALITÉS (X) -->
+    <!-- PERSONNALITÉS -->
     <div class="section">
-      <h2 class="section-title">🎭 PERSONNALITÉ (X)</h2>
+      <h2 class="section-title">🎭 PERSONNALITÉ</h2>
       <div class="personalities-grid" id="personalitiesGrid">
         <!-- Rempli par JavaScript -->
       </div>
-      
       <div class="input-group">
-        <div class="input-label">Sélection dans liste :</div>
         <select id="personalitySelect" onchange="selectPersonality(this.value)">
           <option value="">-- Choisir une personnalité --</option>
-          <!-- Rempli par JavaScript -->
         </select>
-        <div class="input-hint">Sélectionnez une personnalité prédéfinie</div>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Personnalisation libre :</div>
-        <input type="text" id="customPersonality" class="custom-input" 
-               placeholder="Ex: 'Moi-même', 'Mon personnage original', 'Un alien bienveillant'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Écrivez n'importe quelle personnalité. Priorité sur la sélection ci-dessus.</div>
+        <input type="text" id="customPersonality" class="custom-input" placeholder="Personnalité personnalisée...">
       </div>
     </div>
     
     <!-- GENRE & FORMAT -->
     <div class="section">
       <h2 class="section-title">👤 GENRE & FORMAT</h2>
-      
       <div class="input-group">
         <div class="input-label">Genre :</div>
         <select id="genre">
-          <option value="">Genre non spécifié</option>
+          <option value="">Non spécifié</option>
           <option value="homme">Homme</option>
           <option value="femme">Femme</option>
           <option value="non-binaire">Non-binaire</option>
-          <option value="mixte">Mixte</option>
-          <option value="autre">Autre</option>
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">Format d'image :</div>
+        <div class="input-label">Format :</div>
         <select id="format">
-          <option value="wide shot cinématique 16:9">16:9 (Cinématique)</option>
-          <option value="wide shot ultra-large 21:9">21:9 (Ultra-large)</option>
-          <option value="cadrage carré 1:1">1:1 (Carré)</option>
-          <option value="portrait 9:16">9:16 (Portrait)</option>
-          <option value="panoramique 3:1">3:1 (Panoramique)</option>
-          <option value="IMAX 1.43:1">IMAX (1.43:1)</option>
+          <option value="16:9">16:9 (Cinématique)</option>
+          <option value="1:1">1:1 (Carré)</option>
+          <option value="9:16">9:16 (Portrait)</option>
+          <option value="21:9">21:9 (Large)</option>
         </select>
-        <div class="input-hint">Format de cadrage pour l'image générée</div>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Âge :</div>
-        <select id="age">
-          <option value="">Âge non spécifié</option>
-          <option value="jeune adulte">Jeune adulte</option>
-          <option value="adulte">Adulte</option>
-          <option value="adulte mûr">Adulte mûr</option>
-          <option value="sénior">Sénior</option>
-          <option value="enfant">Enfant</option>
-          <option value="adolescent">Adolescent</option>
-        </select>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Âge personnalisé :</div>
-        <input type="text" id="customAge" class="custom-input" 
-               placeholder="Ex: '250 ans', 'jeune éternel', 'âge mystérieux'..."
-               oninput="highlightCustomField(this)">
       </div>
     </div>
     
     <!-- ACTION -->
     <div class="section">
-      <h2 class="section-title">🎬 ACTION PRINCIPALE</h2>
-      
+      <h2 class="section-title">🎬 ACTION</h2>
       <div class="input-group">
-        <div class="input-label">Action prédéfinie :</div>
         <select id="action">
           <option value="">-- Choisir une action --</option>
-          <!-- Rempli par JavaScript -->
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Action personnalisée :</div>
-        <input type="text" id="customAction" class="custom-input" 
-               placeholder="Ex: 'Code une IA révolutionnaire', 'Danse avec des fantômes', 'Découvre un trésor perdu'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Décrivez l'action principale de la scène</div>
+        <input type="text" id="customAction" class="custom-input" placeholder="Action personnalisée...">
       </div>
     </div>
     
     <!-- LIEU -->
     <div class="section">
       <h2 class="section-title">📍 LIEU</h2>
-      
       <div class="input-group">
-        <div class="input-label">Lieu prédéfini :</div>
         <select id="lieu">
           <option value="">-- Choisir un lieu --</option>
-          <!-- Rempli par JavaScript -->
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Lieu personnalisé :</div>
-        <input type="text" id="customLieu" class="custom-input" 
-               placeholder="Ex: 'Mon salon', 'Un vaisseau spatial abandonné', 'Le royaume des rêves'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Le décor principal de la scène</div>
-      </div>
-    </div>
-    
-    <!-- ÉPOQUE -->
-    <div class="section">
-      <h2 class="section-title">⏳ ÉPOQUE / CONTEXTE TEMPOREL</h2>
-      
-      <div class="input-group">
-        <div class="input-label">Époque prédéfinie :</div>
-        <select id="epoque">
-          <option value="">Époque non spécifiée</option>
-          <option value="préhistorique">Préhistorique</option>
-          <option value="antiquité égyptienne">Antiquité Égyptienne</option>
-          <option value="Grèce antique">Grèce Antique</option>
-          <option value="Rome antique">Rome Antique</option>
-          <option value="Moyen Âge">Moyen Âge</option>
-          <option value="Renaissance">Renaissance</option>
-          <option value="XVIIe siècle">XVIIe Siècle</option>
-          <option value="XVIIIe siècle">XVIIIe Siècle</option>
-          <option value="époque victorienne">Époque Victorienne</option>
-          <option value="années folles 1920">Années Folles 1920</option>
-          <option value="années 1950">Années 1950</option>
-          <option value="années 1980">Années 1980</option>
-          <option value="années 2000">Années 2000</option>
-          <option value="futur proche 2030">Futur Proche 2030</option>
-          <option value="futur lointain 2500">Futur Lointain 2500</option>
-          <option value="ère cyberpunk 2077">Ère Cyberpunk</option>
-          <option value="ère steampunk">Ère Steampunk</option>
-          <option value="ère post-apocalyptique">Ère Post-Apocalyptique</option>
-        </select>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">✨ Époque personnalisée :</div>
-        <input type="text" id="customEpoque" class="custom-input" 
-               placeholder="Ex: 'Année 3024', 'Époque des dinosaures intelligents', 'Début du multivers'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Contextualisez temporellement votre scène</div>
-      </div>
-    </div>
-    
-    <!-- COMPAGNONS -->
-    <div class="section">
-      <h2 class="section-title">👥 COMPAGNONS & PERSONNAGES SECONDAIRES</h2>
-      
-      <div class="input-group">
-        <div class="input-label">Type de compagnon :</div>
-        <select id="compagnon">
-          <option value="">Aucun compagnon</option>
-          <option value="avec foule admirative">Foule admirative</option>
-          <option value="avec partenaire">Partenaire</option>
-          <option value="avec enfants">Enfants</option>
-          <option value="avec amis">Amis</option>
-          <option value="avec famille">Famille</option>
-          <option value="avec animaux">Animaux</option>
-          <option value="avec robots">Robots</option>
-          <option value="avec créatures fantastiques">Créatures fantastiques</option>
-          <option value="avec public">Public</option>
-          <option value="avec disciples">Disciples</option>
-          <option value="avec soldats">Soldats</option>
-        </select>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">✨ Compagnons personnalisés :</div>
-        <input type="text" id="customCompagnon" class="custom-input" 
-               placeholder="Ex: 'avec ses clones', 'entouré de fantômes rieurs', 'accompagné de drones parlants'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Qui accompagne le personnage principal ?</div>
-      </div>
-    </div>
-    
-    <!-- RELATIONS & INTERACTIONS -->
-    <div class="section">
-      <h2 class="section-title">🤝 RELATIONS & INTERACTIONS</h2>
-      
-      <div class="input-group">
-        <div class="input-label">Type de relation :</div>
-        <select id="relationType">
-          <option value="">Relation standard (avec)</option>
-          <option value="accompagné par">Accompagné par</option>
-          <option value="entouré de">Entouré de</option>
-          <option value="observé par">Observé par</option>
-          <option value="surveillé par">Surveillé par</option>
-          <option value="protégé par">Protégé par</option>
-          <option value="guidé par">Guidé par</option>
-          <option value="enseigné par">Enseigné par</option>
-          <option value="combattant contre">Combattant contre</option>
-          <option value="défiant">Défiant</option>
-          <option value="fuyant">Fuyant</option>
-          <option value="poursuivant">Poursuivant</option>
-          <option value="saluant">Saluant</option>
-          <option value="regardant">Regardant</option>
-          <option value="tournant le dos à">Tournant le dos à</option>
-          <option value="donnant à">Donnant à</option>
-          <option value="recevant de">Recevant de</option>
-          <option value="partageant avec">Partageant avec</option>
-          <option value="collaborant avec">Collaborant avec</option>
-          <option value="dansant avec">Dansant avec</option>
-          <option value="chantant avec">Chantant avec</option>
-        </select>
-        <div class="input-hint">Comment le personnage principal interagit-il avec les autres ?</div>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Proximité & Position :</div>
-        <select id="proximite">
-          <option value="">Proximité normale</option>
-          <option value="très proche">Très proche (plan serré)</option>
-          <option value="à proximité">À proximité</option>
-          <option value="à moyenne distance">À moyenne distance</option>
-          <option value="en arrière-plan">En arrière-plan</option>
-          <option value="au premier plan">Au premier plan</option>
-          <option value="sur les côtés">Sur les côtés</option>
-          <option value="en cercle autour">En cercle autour</option>
-          <option value="en formation">En formation</option>
-          <option value="dispersés">Dispersés dans la scène</option>
-        </select>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">✨ Relation personnalisée :</div>
-        <input type="text" id="customRelation" class="custom-input" 
-               placeholder="Ex: 'conspirant avec', 'apprenant de', 'sauvé par', 'trahi par'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Décrivez une interaction spécifique unique</div>
+        <input type="text" id="customLieu" class="custom-input" placeholder="Lieu personnalisé...">
       </div>
     </div>
     
     <!-- STYLE ARTISTIQUE -->
     <div class="section">
-      <h2 class="section-title">🎨 STYLE ARTISTIQUE & ESTHÉTIQUE</h2>
-      
+      <h2 class="section-title">🎨 STYLE</h2>
       <div class="input-group">
-        <div class="input-label">Style prédéfini :</div>
         <select id="style">
           <option value="">-- Choisir un style --</option>
-          <!-- Rempli par JavaScript -->
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Style personnalisé :</div>
-        <textarea id="customStyle" class="custom-input" rows="3"
-                  placeholder="Ex: 'style aquarelle japonaise sumi-e', 'rendu 3D low-poly vintage', 'photographie infrarouge mystique'..."
-                  oninput="highlightCustomField(this)"></textarea>
-        <div class="input-hint">Décrivez l'esthétique visuelle souhaitée</div>
+        <textarea id="customStyle" class="custom-input" rows="3" placeholder="Style personnalisé..."></textarea>
       </div>
     </div>
     
-    <!-- ÉCLAIRAGE & AMBIANCE -->
+    <!-- ÉCLAIRAGE -->
     <div class="section">
-      <h2 class="section-title">💡 ÉCLAIRAGE & AMBIANCE LUMINEUSE</h2>
-      
+      <h2 class="section-title">💡 ÉCLAIRAGE</h2>
       <div class="input-group">
-        <div class="input-label">Éclairage prédéfini :</div>
         <select id="eclairage">
           <option value="">-- Choisir un éclairage --</option>
-          <!-- Rempli par JavaScript -->
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Éclairage personnalisé :</div>
-        <input type="text" id="customEclairage" class="custom-input" 
-               placeholder="Ex: 'lueur bioluminescente violette', 'éclairage néon cyberpunk déglingué', 'lumière d'apocalypse orange'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Atmosphère lumineuse de la scène</div>
+        <input type="text" id="customEclairage" class="custom-input" placeholder="Éclairage personnalisé...">
       </div>
     </div>
-    <!-- EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES -->
-<div class="section">
-  <h2 class="section-title">✨ EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES</h2>
-  
-  <div class="checkbox-group">
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectBokeh">
-      <label for="effectBokeh">Bokeh (flou d'arrière-plan artistique)</label>
-    </div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectLensFlare">
-      <label for="effectLensFlare">Flare d'objectif (effet de lumière)</label>
-    </div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectVignette">
-      <label for="effectVignette">Vignettage (coins assombris)</label>
-    </div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectGrain">
-      <label for="effectGrain">Grain photographique</label>
-    </div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectMotionBlur">
-      <label for="effectMotionBlur">Flou de mouvement</label>
-    </div>
-    <div class="checkbox-item">
-      <input type="checkbox" id="effectChromatic">
-      <label for="effectChromatic">Aberration chromatique (effet glitch)</label>
-    </div>
-  </div>
-  
-  <div class="input-group">
-    <div class="input-label">Conditions atmosphériques :</div>
-    <select id="atmosphere">
-      <option value="">Conditions normales</option>
-      <option value="avec pluie fine">Pluie fine</option>
-      <option value="avec brouillard mystique">Brouillard mystique</option>
-      <option value="avec neige tombante">Neige tombante</option>
-      <option value="avec poussière dorée">Poussière dorée</option>
-      <option value="avec pétales de cerisier volants">Pétales de cerisier</option>
-      <option value="avec fumée épaisse">Fumée épaisse</option>
-      <option value="avec brume matinale">Brume matinale</option>
-      <option value="avec tempête de sable">Tempête de sable</option>
-      <option value="avec cendres volantes">Cendres volantes</option>
-    </select>
-    <div class="input-hint">Ajoute une condition météo ou atmosphérique à la scène</div>
-  </div>
-  
-  <div class="input-group">
-    <div class="input-label">Filtres & Post-production :</div>
-    <select id="filters">
-      <option value="">Aucun filtre</option>
-      <option value="filtre vintage sépia">Vintage sépia</option>
-      <option value="filtre cinématique teal/orange">Cinématique teal/orange</option>
-      <option value="filtre noir et blanc contrasté">Noir et blanc</option>
-      <option value="filtre pastel doux">Pastel doux</option>
-      <option value="filtre HDR intense">HDR intense</option>
-      <option value="filtre infrarouge">Infrarouge</option>
-      <option value="filtre polaroid">Polaroid vintage</option>
-      <option value="filtre cross-process">Cross-process</option>
-    </select>
-    <div class="input-hint">Effets de post-traitement appliqués à l'image</div>
-  </div>
-  
-  <div class="input-group">
-    <div class="input-label">✨ Effets personnalisés :</div>
-    <input type="text" id="customEffects" class="custom-input" 
-           placeholder="Ex: 'avec reflets dans l'eau', 'avec particules magiques', 'avec distorsion de chaleur'..."
-           oninput="highlightCustomField(this)">
-    <div class="input-hint">Décrivez vos propres effets visuels spéciaux</div>
-  </div>
-</div>
-    <!-- COSTUME & APPAREANCE -->
+    
+    <!-- PALETTES DE COULEURS -->
     <div class="section">
-      <h2 class="section-title">👔 COSTUME, TENUE & APPAREANCE</h2>
-      
+      <h2 class="section-title">🎨 PALETTES DE COULEURS</h2>
+      <div class="color-palette" id="colorPalette">
+        <!-- Rempli par JavaScript -->
+      </div>
       <div class="input-group">
-        <div class="input-label">Type de costume :</div>
-        <select id="costume">
-          <option value="">Costume non spécifié</option>
-          <option value="en tenue de soirée">Tenue de soirée</option>
-          <option value="en costume professionnel">Costume professionnel</option>
-          <option value="en tenue décontractée">Tenue décontractée</option>
-          <option value="en costume historique">Costume historique</option>
-          <option value="en tenue futuriste">Tenue futuriste</option>
-          <option value="en costume de superhéros">Costume de superhéros</option>
-          <option value="en tenue de scène">Tenue de scène</option>
-          <option value="en armure">Armure</option>
-          <option value="en vêtements traditionnels">Vêtements traditionnels</option>
-          <option value="en tenue de sport">Tenue de sport</option>
+        <div class="input-label">Palette :</div>
+        <select id="colorTheme" onchange="updateColorPalette()">
+          <option value="warm">Chaude (Rouge/Orange)</option>
+          <option value="cool">Froide (Bleu/Vert)</option>
+          <option value="pastel">Pastel</option>
+          <option value="neon">Néon</option>
+          <option value="monochrome">Monochrome</option>
         </select>
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Costume personnalisé :</div>
-        <textarea id="customCostume" class="custom-input" rows="3"
-                  placeholder="Ex: 'habillé de lumière pure', 'vêtu d'un manteau fait de nuages', 'portant une armure de livres anciens'..."
-                  oninput="highlightCustomField(this)"></textarea>
-        <div class="input-hint">Décrivez les vêtements et l'apparence physique</div>
+        <input type="text" id="customColors" class="custom-input" placeholder="Couleurs personnalisées...">
       </div>
     </div>
     
-    <!-- ÉVÉNEMENT & CONTEXTE -->
+    <!-- COMPOSITION -->
     <div class="section">
-      <h2 class="section-title">🎉 ÉVÉNEMENT / CONTEXTE / SITUATION</h2>
-      
-      <div class="input-group">
-        <div class="input-label">Type d'événement :</div>
-        <select id="evenement">
-          <option value="">Aucun événement spécifique</option>
-          <option value="concert">Concert</option>
-          <option value="cérémonie">Cérémonie</option>
-          <option value="bataille">Bataille</option>
-          <option value="interview">Interview</option>
-          <option value="performance">Performance</option>
-          <option value="compétition">Compétition</option>
-          <option value="fête">Fête</option>
-          <option value="voyage">Voyage</option>
-          <option value="sauvetage">Sauvetage</option>
-          <option value="procès">Procès</option>
-          <option value="mariage">Mariage</option>
-          <option value="course">Course</option>
-          <option value="rituel">Rituel</option>
-        </select>
+      <h2 class="section-title">📐 COMPOSITION</h2>
+      <div class="composition-grid" id="compositionGrid">
+        <!-- Rempli par JavaScript -->
       </div>
-      
       <div class="input-group">
-        <div class="input-label">✨ Événement personnalisé :</div>
-        <input type="text" id="customEvenement" class="custom-input" 
-               placeholder="Ex: 'invasion zombie comique', 'cérémonie de fusion quantique', 'procès intergalactique'..."
-               oninput="highlightCustomField(this)">
-        <div class="input-hint">Quel est le contexte narratif de la scène ?</div>
+        <div class="input-label">Type de composition :</div>
+        <select id="compositionType">
+          <option value="">Standard</option>
+          <option value="rule-of-thirds">Règle des tiers</option>
+          <option value="symmetry">Symétrie</option>
+          <option value="leading-lines">Lignes directrices</option>
+          <option value="frame-in-frame">Cadre dans le cadre</option>
+        </select>
       </div>
     </div>
     
-    <!-- DÉTAILS SUPPLÉMENTAIRES -->
+    <!-- MULTI-PERSONNAGES -->
     <div class="section">
-      <h2 class="section-title">🔍 DÉTAILS SUPPLÉMENTAIRES & NOTES</h2>
-      
-      <div class="input-group">
-        <div class="input-label">Émotions & Expressions :</div>
-        <input type="text" id="emotions" 
-               placeholder="Ex: 'joie intense', 'concentration extrême', 'surprise totale'">
+      <h2 class="section-title">👥 MULTI-PERSONNAGES</h2>
+      <div id="charactersContainer">
+        <!-- Sections de personnages ajoutées dynamiquement -->
       </div>
-      
-      <div class="input-group">
-        <div class="input-label">✨ Détails personnalisés :</div>
-        <textarea id="customDetails" class="custom-input" rows="4"
-                  placeholder="Ex: 'Des papillons mécaniques volent autour', 'Le sol est constitué d'eau inversée', 'Il y a des statues qui pleurent du chocolat'..."
-                  oninput="highlightCustomField(this)"></textarea>
-        <div class="input-hint">Ajoutez des éléments visuels supplémentaires</div>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Qualité & Résolution :</div>
-        <select id="quality">
-          <option value="haute résolution">Haute résolution</option>
-          <option value="ultra-détaillé 8K" selected>Ultra-détaillé 8K</option>
-          <option value="photographique 16K">Photographique 16K</option>
-          <option value="style croquis">Style croquis</option>
-          <option value="rendu 3D">Rendu 3D</option>
-        </select>
-      </div>
-    </div>
-    
-    <!-- PROMPT NÉGATIF - SECTION REPLIABLE -->
-    <div class="section" id="negativePromptSection">
-      <h2 class="section-title collapsible" onclick="toggleSection('negativePrompt')">
-        <span class="collapsible-icon">▶</span> 🚫 PROMPT NÉGATIF (AVANCÉ)
-      </h2>
-      
-      <div class="collapsible-content" id="negativePromptContent">
-        <div class="input-group">
-          <div class="input-label">Prompt négatif en français :</div>
-          <textarea id="negativePrompt" rows="8" style="font-family: 'Fira Code', monospace; font-size: 14px;">
-mains mal dessinées, pieds mal dessinés, visage mal dessiné, mauvaise anatomie, membres supplémentaires, membres manquants, défiguré, déformé, flou, mauvaises proportions, doigts supplémentaires, moins de doigts, doigts fusionnés, mains mutées, membres flottants, membres déconnectés, hors cadre, recadré, basse qualité, pire qualité, artefacts jpeg, filigrane, signature, nom d'utilisateur, texte, logo, dupliqué, distordu, pixellisé, basse résolution, surexposé, sous-exposé, mauvais éclairage, éclairage plat, mauvaise composition, mauvais cadrage, mauvaise perspective, incliné, déséquilibré, mauvaise profondeur de champ, découpage, géométrie qui se croise, objets flottants, ombres incorrectes, ombres manquantes, éclairage incohérent, bruit, grain, sursaturé, sous-saturé, aberration chromatique, artefacts, glitchs, erreurs anatomiques, pose non naturelle, pose raide, yeux asymétriques, mal rendu, manque de détails, trop lissé, sur-accentué, texte mal orthographié, fautes d'orthographe, fautes de frappe, erreurs grammaticales, lettres incorrectes, texte illisible, charabia, texte absurde, texte brouillé, texte non lisible, texte mal écrit, orthographe incorrecte, lettres mal formées, texte déformé, texte flou, texte pixellisé, texte cassé, texte fragmenté, texte à l'envers, texte inversé, mauvaise police, police incohérente, polices mélangées
-          </textarea>
-          <div class="input-hint">Ce prompt négatif sera ajouté automatiquement à votre prompt généré. Vous pouvez le modifier selon vos besoins.</div>
-        </div>
-        
-        <div class="checkbox-group">
-          <div class="checkbox-item">
-            <input type="checkbox" id="includeNegativePrompt" checked>
-            <label for="includeNegativePrompt">Inclure le prompt négatif</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" id="autoCopyNegative">
-            <label for="autoCopyNegative">Copier automatiquement avec le prompt</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" id="showEnglishNegative">
-            <label for="showEnglishNegative">Afficher aussi la version anglaise</label>
-          </div>
-        </div>
-        
-        <div class="input-group" id="englishNegativeContainer" style="display: none;">
-          <div class="input-label">Prompt négatif en anglais :</div>
-          <textarea id="negativePromptEnglish" rows="8" style="font-family: 'Fira Code', monospace; font-size: 14px;">
-poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra limbs, missing limbs, disfigured, deformed, blurry, bad proportions, extra fingers, fewer fingers, fused fingers, mutated hands, floating limbs, disconnected limbs, out of frame, cropped, low quality, worst quality, jpeg artifacts, watermark, signature, username, text, logo, duplicate, distorted, pixelated, low resolution, overexposed, underexposed, bad lighting, flat lighting, bad composition, bad framing, bad perspective, tilted, unbalanced, bad depth of field, clipping, intersecting geometry, floating objects, wrong shadows, missing shadows, inconsistent lighting, noise, grain, oversaturated, undersaturated, chromatic aberration, artefacts, glitches, anatomical errors, unnatural pose, stiff pose, asymmetric eyes, poorly rendered, lack of detail, oversmoothed, oversharpened, misspelled text, spelling errors, typos, grammatical errors, wrong letters, illegible text, gibberish text, nonsense text, garbled text, unreadable text, badly written text, incorrect spelling, malformed letters, distorted text, blurry text, pixelated text, broken text, fragmented text, backwards text, upside down text, wrong font, inconsistent font, mixed fonts
-          </textarea>
-          <div class="input-hint">Certains moteurs d'IA réagissent mieux aux prompts négatifs en anglais. Utilisez la version qui correspond à la langue de votre prompt principal.</div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- TEXTE SUR L'IMAGE - SECTION REPLIABLE -->
-    <div class="section" id="textOnImageSection">
-      <h2 class="section-title collapsible" onclick="toggleSection('textOnImage')">
-        <span class="collapsible-icon">▶</span> 📝 TEXTE SUR L'IMAGE (OPTIONNEL)
-      </h2>
-      
-      <div class="collapsible-content" id="textOnImageContent">
-        <div class="input-group">
-          <div class="input-label">Texte à afficher sur l'image :</div>
-          <textarea id="imageText" rows="3" placeholder="Ex: 'Bienvenue au futur', 'Événement spécial 2024', 'Carpe Diem'..."></textarea>
-          <div class="input-hint">Le texte qui apparaîtra directement sur l'image générée</div>
-        </div>
-        
-        <div class="grid-container" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); margin: 20px 0;">
-          
-          <div class="input-group">
-            <div class="input-label">Style d'écriture :</div>
-            <select id="textStyle">
-              <option value="">Style standard</option>
-              <option value="en graffiti">Graffiti urbain</option>
-              <option value="en calligraphie">Calligraphie élégante</option>
-              <option value="en typographie moderne">Typographie moderne</option>
-              <option value="en écriture manuscrite">Écriture manuscrite</option>
-              <option value="en néon">Néon lumineux</option>
-              <option value="en style vintage">Style vintage</option>
-              <option value="en pixel art">Pixel art</option>
-              <option value="en métal">Effet métal</option>
-              <option value="en verre">Effet verre</option>
-              <option value="en feu">Effet feu</option>
-              <option value="en glace">Effet glace</option>
-            </select>
-          </div>
-          
-          <div class="input-group">
-            <div class="input-label">Couleur du texte :</div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-              <input type="color" id="textColor" value="#ffffff" style="width: 50px; height: 50px; cursor: pointer;">
-              <select id="textColorName" style="flex: 1;" onchange="updateColorPicker(this)">
-                <option value="#ffffff">Blanc</option>
-                <option value="#000000">Noir</option>
-                <option value="#ff0000">Rouge</option>
-                <option value="#00ff00">Vert</option>
-                <option value="#0000ff">Bleu</option>
-                <option value="#ffff00">Jaune</option>
-                <option value="#ff00ff">Magenta</option>
-                <option value="#00ffff">Cyan</option>
-                <option value="#ff6b6b">Rouge clair</option>
-                <option value="#00d4ff">Bleu clair</option>
-                <option value="#9d4edd">Violet</option>
-                <option value="#4ecdc4">Turquoise</option>
-                <option value="#ffa500">Orange</option>
-                <option value="#800080">Pourpre</option>
-                <option value="#ff1493">Rose vif</option>
-                <option value="#32cd32">Vert lime</option>
-                <option value="#custom">Personnalisé (HEX)</option>
-              </select>
-            </div>
-            <div class="input-hint">Couleur du texte : <span id="colorHex">#ffffff</span></div>
-          </div>
-          
-          <div class="input-group">
-            <div class="input-label">Position du texte :</div>
-            <select id="textPosition">
-              <option value="centré">Centré</option>
-              <option value="en haut">En haut</option>
-              <option value="en bas">En bas</option>
-              <option value="en haut à gauche">En haut à gauche</option>
-              <option value="en haut à droite">En haut à droite</option>
-              <option value="en bas à gauche">En bas à gauche</option>
-              <option value="en bas à droite">En bas à droite</option>
-              <option value="sur le côté gauche">Sur le côté gauche</option>
-              <option value="sur le côté droit">Sur le côté droit</option>
-              <option value="au centre gauche">Au centre gauche</option>
-              <option value="au centre droit">Au centre droit</option>
-            </select>
-          </div>
-          
-          <div class="input-group">
-            <div class="input-label">Taille du texte :</div>
-            <select id="textSize">
-              <option value="petit">Petit</option>
-              <option value="moyen" selected>Moyen</option>
-              <option value="grand">Grand</option>
-              <option value="très grand">Très grand</option>
-              <option value="géant">Géant</option>
-              <option value="discret">Discret</option>
-            </select>
-          </div>
-          
-        </div>
-        
-        <div class="checkbox-group">
-          <div class="checkbox-item">
-            <input type="checkbox" id="includeTextInPrompt" checked>
-            <label for="includeTextInPrompt">Inclure le texte dans le prompt</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" id="textWithBackground">
-            <label for="textWithBackground">Ajouter un arrière-plan au texte</label>
-          </div>
-          <div class="checkbox-item">
-            <input type="checkbox" id="textTransparent">
-            <label for="textTransparent">Texte semi-transparent</label>
-          </div>
-        </div>
-        
-        <div class="input-group">
-          <div class="input-label">✨ Détails supplémentaires pour le texte :</div>
-          <input type="text" id="textDetails" placeholder="Ex: 'avec ombre portée', 'entouré d\'un halo lumineux', 'avec reflet dans l\'eau'...">
-        </div>
-      </div>
+      <button onclick="addCharacter()" style="width: 100%; margin-top: 10px;">+ Ajouter un personnage</button>
     </div>
     
   </div> <!-- Fin grid-container -->
-
-<!-- GALERIE DE RÉFÉRENCES VISUELLES -->
-<div class="section" id="referenceGallerySection">
-  <h2 class="section-title collapsible" onclick="toggleSection('referenceGallery')">
-    <span class="collapsible-icon">▶</span> 🖼️ GALERIE DE RÉFÉRENCES VISUELLES
-  </h2>
   
-  <div class="collapsible-content" id="referenceGalleryContent">
-    <div class="tabs">
-      <button class="tab-button active" onclick="openTab(event, 'stylesTab')">🎨 Styles</button>
-      <button class="tab-button" onclick="openTab(event, 'lightingTab')">💡 Éclairages</button>
-      <button class="tab-button" onclick="openTab(event, 'compositionTab')">📐 Compositions</button>
-      <button class="tab-button" onclick="openTab(event, 'costumeTab')">👔 Costumes</button>
-    </div>
-    
-    <div id="stylesTab" class="tab-content active">
-      <div class="reference-grid">
-        <div class="reference-item" onclick="applyReference('hyperrealistic')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
-          <span>Hyperréaliste 8K</span>
-          <small>Rendu ultra-détaillé</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('cyberpunk')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #9d4edd);"></div>
-          <span>Cyberpunk Néo-Tokyo</span>
-          <small>Néons et futurisme</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('watercolor')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #a8edea, #fed6e3);"></div>
-          <span>Aquarelle Japonaise</span>
-          <small>Doux et poétique</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('oilPainting')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #6a11cb, #2575fc);"></div>
-          <span>Peinture à l'huile</span>
-          <small>Style classique riche</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('anime')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4);"></div>
-          <span>Anime Ghibli</span>
-          <small>Onirique et coloré</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('steampunk')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);"></div>
-          <span>Steampunk Victorien</span>
-          <small>Rétro-futurisme</small>
-        </div>
-<!-- === TES 10 NOUVELLES PERSONNALISATIONS === -->
-
-<div class="reference-item" onclick="applyReference('mangaModerne')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #ff6b9d, #c44569);"></div>
-  <span>Manga Moderne</span>
-  <small>Style manga actuel, dynamique</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('pixelArt')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #00cec9, #81ecec);"></div>
-  <span>Pixel Art 16-bit</span>
-  <small>Rétro gaming années 90</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('conceptArt')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);"></div>
-  <span>Concept Art Jeu Vidéo</span>
-  <small>Croquis préparatoire professionnel</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('livreEnfant')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #ffeaa7, #fab1a0);"></div>
-  <span>Illustration Livre Enfant</span>
-  <small>Douceur et innocence</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('photoMode')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #2d3436, #636e72);"></div>
-  <span>Photo de Mode Élégante</span>
-  <small>Glamour et sophistication</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('afficheFilm')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #e17055, #fdcb6e);"></div>
-  <span>Affiche de Film Vintage</span>
-  <small>Années 80, style cinéma</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('bdFrancoBelge')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #0984e3, #74b9ff);"></div>
-  <span>BD Franco-Belge</span>
-  <small>Ligne claire, style Tintin</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('gravureAncienne')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #2d3436, #b2bec3);"></div>
-  <span>Gravure Ancienne</span>
-  <small>Noir et blanc, détails fins</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('dessinTrait')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #00b894, #55efc4);"></div>
-  <span>Dessin au Trait Minimaliste</span>
-  <small>Simple et épuré</small>
-</div>
-
-<div class="reference-item" onclick="applyReference('rendu3D')">
-  <div class="reference-preview" style="background: linear-gradient(135deg, #fd79a8, #e84393);"></div>
-  <span>Rendu 3D Moderne</span>
-  <small>Graphisme numérique propre</small>
-</div>
-      </div>
-    </div>
-    
-    <div id="lightingTab" class="tab-content">
-      <div class="reference-grid">
-        <div class="reference-item" onclick="applyReference('sunset')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #ff6b6b, #ffa726, #ffee58);"></div>
-          <span>Soleil couchant doré</span>
-          <small>Ambiance chaleureuse</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('moonlight')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
-          <span>Clair de lune bleuté</span>
-          <small>Mystérieux et calme</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('neon')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #ff00ff);"></div>
-          <span>Néon Cyberpunk</span>
-          <small>Vibrant et électrique</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('candle')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);"></div>
-          <span>Lumière de bougie</span>
-          <small>Intime et dramatique</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('storm')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #373B44, #4286f4);"></div>
-          <span>Éclairs d'orage</span>
-          <small>Dramatique et puissant</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('bioluminescent')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #00b09b, #96c93d);"></div>
-          <span>Bioluminescence</span>
-          <small>Magique et naturel</small>
+  <!-- TUTORIEL -->
+  <div class="section" id="tutorialSection">
+    <h2 class="section-title collapsible" onclick="toggleSection('tutorial')">
+      <span class="collapsible-icon">▶</span> 📚 MODE TUTORIEL
+    </h2>
+    <div class="collapsible-content" id="tutorialContent">
+      <div class="tutorial-step" id="tutorialStep1">
+        <h3>Étape 1 : Choisir une personnalité</h3>
+        <p>Sélectionnez une personnalité célèbre ou créez-en une personnalisée.</p>
+        <div class="tutorial-navigation">
+          <button onclick="prevTutorialStep()">Précédent</button>
+          <button onclick="nextTutorialStep()">Suivant</button>
         </div>
       </div>
-    </div>
-    
-    <div id="compositionTab" class="tab-content">
-      <div class="reference-grid">
-        <div class="reference-item" onclick="applyReference('ruleOfThirds')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #4A00E0, #8E2DE2);"></div>
-          <span>Règle des tiers</span>
-          <small>Équilibre parfait</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('symmetry')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #f46b45, #eea849);"></div>
-          <span>Symétrie centrale</span>
-          <small>Harmonie visuelle</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('lowAngle')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #834d9b, #d04ed6);"></div>
-          <span>Contre-plongée</span>
-          <small>Personnage héroïque</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('highAngle')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #009FFF, #ec2F4B);"></div>
-          <span>Plongée</span>
-          <small>Personnage vulnérable</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('closeUp')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #654ea3, #eaafc8);"></div>
-          <span>Gros plan</span>
-          <small>Émotions intenses</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('wideShot')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #00C9FF, #92FE9D);"></div>
-          <span>Plan large épique</span>
-          <small>Échelle monumentale</small>
-        </div>
-      </div>
-    </div>
-    
-    <div id="costumeTab" class="tab-content">
-      <div class="reference-grid">
-        <div class="reference-item" onclick="applyReference('medievalArmor')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #8B4513, #D2691E);"></div>
-          <span>Armure médiévale</span>
-          <small>Chevalier historique</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('cyberpunkGear')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #9d4edd);"></div>
-          <span>Équipement Cyberpunk</span>
-          <small>Futuriste et high-tech</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('elegantEvening')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #000000, #434343);"></div>
-          <span>Tenue de soirée</span>
-          <small>Élégant et raffiné</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('fantasyRobe')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);"></div>
-          <span>Robe de mage</span>
-          <small>Fantaisie mystique</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('samurai')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #e52d27, #b31217);"></div>
-          <span>Armure de samouraï</span>
-          <small>Tradition japonaise</small>
-        </div>
-        <div class="reference-item" onclick="applyReference('steampunkCostume')">
-          <div class="reference-preview" style="background: linear-gradient(135deg, #3a1c71, #d76d77);"></div>
-          <span>Costume Steampunk</span>
-          <small>Rétro-mécanique</small>
-        </div>
-      </div>
-    </div>
-    
-    <div style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; font-size: 0.9em;">
-      <strong>💡 Comment utiliser :</strong> Cliquez sur un exemple pour appliquer automatiquement son style au formulaire. 
-      Vous pouvez ensuite personnaliser davantage les champs.
     </div>
   </div>
-</div>  
-
+  
   <!-- CONTROLS -->
   <div class="controls">
     <div class="control-group">
       <input type="checkbox" id="autoCopy" checked>
-      <label for="autoCopy">Copie auto après génération</label>
+      <label for="autoCopy">Copie auto</label>
     </div>
-    
     <div class="control-group">
       <span>Prompt #<span id="promptCount">0</span></span>
     </div>
-    
     <div class="control-group">
-      <select id="complexity">
-        <option value="simple">Simple</option>
-        <option value="normal" selected>Normal</option>
-        <option value="detaille">Détaillé</option>
-        <option value="ultra">Ultra-détaillé</option>
-      </select>
-      <label>Complexité</label>
-    </div>
-    
-    <div class="control-group">
-      <label class="switch">
-        <input type="checkbox" id="toggleCustom" checked>
-        <span class="slider"></span>
-      </label>
-      <label for="toggleCustom">Priorité aux champs personnalisés</label>
+      <button onclick="toggleTutorial()" id="tutorialToggle">🎓 Tutoriel</button>
     </div>
   </div>
   
   <!-- BOUTONS PRINCIPAUX -->
   <div class="button-group">
     <button id="generateBtn" onclick="generatePrompt()">
-      <span>🚀</span> GÉNÉRER LE PROMPT
+      <span>🚀</span> GÉNÉRER
     </button>
-    
     <button id="randomAllBtn" onclick="randomizeAll()">
-      <span>🎲</span> RANDOM COMPLET
+      <span>🎲</span> RANDOM
     </button>
-    
     <button id="copyBtn" onclick="copyPrompt()">
-      <span>📋</span> COPIER LE PROMPT
+      <span>📋</span> COPIER
     </button>
-    
     <button id="clearBtn" onclick="clearAll()">
-      <span>🗑️</span> TOUT EFFACER
+      <span>🗑️</span> EFFACER
     </button>
-    
-    <button id="exampleBtn" onclick="generateExample()">
-  <span>🎨</span> CHARGER UN EXEMPLE
-</button>
-  </div>
-  
-  <!-- CHARGEMENT -->
-  <div class="loading" id="loading">
-    <span></span>
-    <span></span>
-    <span></span>
   </div>
   
   <!-- PROMPT OUTPUT -->
   <div class="prompt-container">
     <h2 class="section-title">📝 PROMPT GÉNÉRÉ</h2>
-    <div style="margin-bottom: 15px; font-size: 0.9em; color: #88ccff;">
-      <span id="customFieldsCount">0</span> champ(s) personnalisé(s) utilisés
-      <span id="selectedFieldsCount" style="margin-left: 20px;">0</span> champ(s) sélectionné(s)
-      <span id="densityIndicator" style="margin-left: 20px; display: none;">
-        • Densité: <span id="densityValue">0</span>%
-      </span>
-    </div>
-    
-    <!-- Indicateur visuel de densité -->
-    <div id="densityBar" style="height: 6px; background: rgba(0, 212, 255, 0.2); border-radius: 3px; margin-bottom: 15px; overflow: hidden;">
-      <div id="densityFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #00d4ff, #00ff88); border-radius: 3px; transition: width 0.5s;"></div>
-    </div>
-    
     <textarea id="promptOutput" readonly placeholder="Votre prompt apparaîtra ici..."></textarea>
   </div>
   
@@ -1580,269 +1117,563 @@ poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra lim
 <div class="counter" id="counter" title="Nombre de prompts générés">0</div>
 
 <script>
-// DONNÉES - LISTES COMPLÈTES
+// DONNÉES COMPLÈTES
 const data = {
-  // 75 PERSONNALITÉS MARQUANTES
   personalities: [
-    // CHANTEURS (15)
     {name: "Freddie Mercury", category: "Chanteur"},
     {name: "Beyoncé", category: "Chanteuse"},
     {name: "Michael Jackson", category: "Chanteur"},
-    {name: "David Bowie", category: "Chanteur"},
-    {name: "Madonna", category: "Chanteuse"},
-    {name: "Elvis Presley", category: "Chanteur"},
-    {name: "Lady Gaga", category: "Chanteuse"},
-    {name: "Bob Marley", category: "Chanteur"},
-    {name: "Amy Winehouse", category: "Chanteuse"},
-    {name: "Elton John", category: "Chanteur"},
-    {name: "Adele", category: "Chanteuse"},
-    {name: "Prince", category: "Chanteur"},
-    {name: "Taylor Swift", category: "Chanteuse"},
-    {name: "Frank Sinatra", category: "Chanteur"},
-    {name: "Shakira", category: "Chanteuse"},
-    
-    // ACTEURS (15)
-    {name: "Marilyn Monroe", category: "Actrice"},
-    {name: "Leonardo DiCaprio", category: "Acteur"},
-    {name: "Meryl Streep", category: "Actrice"},
-    {name: "Brad Pitt", category: "Acteur"},
-    {name: "Audrey Hepburn", category: "Actrice"},
-    {name: "Robert De Niro", category: "Acteur"},
-    {name: "Scarlett Johansson", category: "Actrice"},
-    {name: "Tom Hanks", category: "Acteur"},
-    {name: "Angelina Jolie", category: "Actrice"},
-    {name: "Johnny Depp", category: "Acteur"},
-    {name: "Emma Watson", category: "Actrice"},
-    {name: "Denzel Washington", category: "Acteur"},
-    {name: "Natalie Portman", category: "Actrice"},
-    {name: "Keanu Reeves", category: "Acteur"},
-    {name: "Jennifer Lawrence", category: "Actrice"},
-    
-    // SPORTIFS (15)
-    {name: "Michael Jordan", category: "Sportif"},
-    {name: "Serena Williams", category: "Sportive"},
-    {name: "Cristiano Ronaldo", category: "Sportif"},
-    {name: "Simone Biles", category: "Sportive"},
-    {name: "LeBron James", category: "Sportif"},
-    {name: "Megan Rapinoe", category: "Sportive"},
-    {name: "Lionel Messi", category: "Sportif"},
-    {name: "Naomi Osaka", category: "Sportive"},
-    {name: "Usain Bolt", category: "Sportif"},
-    {name: "Rafael Nadal", category: "Sportif"},
-    {name: "Katie Ledecky", category: "Sportive"},
-    {name: "Tom Brady", category: "Sportif"},
-    {name: "Simone Manuel", category: "Sportive"},
-    {name: "Stephen Curry", category: "Sportif"},
-    {name: "Alex Morgan", category: "Sportive"},
-    
-    // SUPERHÉROS (10)
-    {name: "Superman", category: "Superhéros"},
-    {name: "Wonder Woman", category: "Superhéroïne"},
-    {name: "Batman", category: "Superhéros"},
-    {name: "Spider-Man", category: "Superhéros"},
-    {name: "Black Panther", category: "Superhéros"},
-    {name: "Captain America", category: "Superhéros"},
-    {name: "Iron Man", category: "Superhéros"},
-    {name: "Catwoman", category: "Superhéroïne"},
-    {name: "The Flash", category: "Superhéros"},
-    {name: "Storm", category: "Superhéroïne"},
-    
-    // CRÉATURES FANTASTIQUES (10)
-    {name: "Un dragon", category: "Créature"},
-    {name: "Une licorne", category: "Créature"},
-    {name: "Un vampire", category: "Créature"},
-    {name: "Un loup-garou", category: "Créature"},
-    {name: "Un fantôme", category: "Créature"},
-    {name: "Un alien", category: "Créature"},
-    {name: "Un zombie", category: "Créature"},
-    {name: "Un démon", category: "Créature"},
-    {name: "Un ange", category: "Créature"},
-    {name: "Un robot", category: "Créature"},
-    
-    // HÉROS DESSINS ANIMÉS (10)
-    {name: "Mickey Mouse", category: "Dessin animé"},
-    {name: "Bugs Bunny", category: "Dessin animé"},
-    {name: "SpongeBob", category: "Dessin animé"},
-    {name: "Sonic", category: "Dessin animé"},
-    {name: "Pikachu", category: "Dessin animé"},
-    {name: "Homer Simpson", category: "Dessin animé"},
-    {name: "Scooby-Doo", category: "Dessin animé"},
-    {name: "Winnie l'Ourson", category: "Dessin animé"},
-    {name: "Dora l'Exploratrice", category: "Dessin animé"},
-    {name: "Rick Sanchez", category: "Dessin animé"}
+    // ... toutes les personnalités ...
   ],
-  
-  // ACTIONS (extraites des prompts)
-  actions: [
-    "chante sur scène", "danse frénétiquement", "combat héroïquement", "parle en public", 
-    "court à toute vitesse", "vole dans les airs", "nage gracieusement", "joue de la musique",
-    "peint un chef-d'œuvre", "écrit passionnément", "cuisine avec talent", "explore un nouveau monde",
-    "enseigne à des élèves", "dirige une équipe", "médite profondément", "rit aux éclats",
-    "pleure d'émotion", "observe attentivement", "construit activement", "détruit violemment",
-    "sauve des vies", "vole un objet", "triche au jeu", "gagne une compétition",
-    "perd tragiquement", "tombe amoureux", "se bat en duel", "négocie habilement",
-    "découvre un secret", "cache un trésor", "transforme magiquement", "téléporte soudainement",
-    "grandit démesurément", "rétrécit bizarrement", "disparaît mystérieusement", "réapparaît spectaculairement"
-  ],
-  
-  // LIEUX (extraites des prompts)
-  lieux: [
-    "Times Square New York", "Tour Eiffel Paris", "Colisée Rome", "Grande Muraille Chine",
-    "Pyramides de Gizeh", "Machu Picchu Pérou", "Venise canaux", "Plage Copacabana Rio",
-    "Mont Saint-Michel", "Château de Versailles", "Shibuya Crossing Tokyo", "Opéra Sydney",
-    "Grand Canyon Arizona", "Chutes Niagara", "Taj Mahal Inde", "Notre-Dame Paris",
-    "Station Spatiale ISS", "Ville sous-marine Atlantis", "Forêt enchantée", "Château nuages",
-    "Ville cyberpunk néons", "Base lunaire", "Vaisseau spatial", "Dimension parallèle",
-    "Bibliothèque infinie", "Jardin des délices", "Laboratoire secret", "Temple ancien",
-    "Volcan actif", "Fond marin", "Désert Sahara", "Jungle Amazonie",
-    "Métro Parisien", "Supermarché local", "Café terrasse", "Bibliothèque municipale",
-    "Salle de classe", "Gare SNCF", "Centre commercial", "Parc public"
-  ],
-  
-  // STYLES ARTISTIQUES
-  styles: [
-    "réaliste photographique", "hyperréaliste 8K", "photo magazine glossy", 
-    "noir et blanc contrasté", "sépia vintage", "couleurs saturées pop",
-    "cinématique épique", "film Hollywood", "film noir 1940s", "film Wes Anderson",
-    "film Tim Burton", "animation Disney", "anime japonais", "style Ghibli",
-    "cartoon Pixar", "BD franco-belge", "manga", "peinture à l'huile",
-    "aquarelle douce", "croquis crayon", "encre de Chine", "pastels tendres",
-    "impressionniste Monet", "cubiste Picasso", "surréaliste Dalí", "pop art Warhol",
-    "art nouveau Mucha", "art déco", "cyberpunk néon", "steampunk",
-    "vaporwave 80s", "pixel art 8-bit", "low poly", "graffiti urbain",
-    "glitch art", "fractal art", "minimaliste japonais", "flat design"
-  ],
-  
-  // ÉCLAIRAGES & AMBIANCES
-  eclairages: [
-    "soleil couchant doré", "aurore rosée douce", "midi soleil éclatant",
-    "lune pleine argentée", "ciel étoilé voie lactée", "aurore boréale verte",
-    "néons bleu orange futuriste", "feux d'artifice multicolore", "bougies chaleureuses",
-    "lasers discothèque", "lumières noires UV", "éclairage fluorescent",
-    "LED RGB colorées", "brume matinale", "éclair orage", "arc-en-ciel",
-    "teintes pastel douces", "monochrome sépia", "gradient violet-orange",
-    "palette terre naturelle", "effet cinématique teal/orange", "contraste élevé dramatique",
-    "clair-obscur", "ombres profondes", "luminescence douce", "pluie réfléchissante néon",
-    "brouillard mystique", "neige tombante", "poussière d'étoiles", "particules lumineuses"
-  ]
+  actions: ["chante sur scène", "danse frénétiquement", "combat héroïquement"],
+  lieux: ["Times Square New York", "Tour Eiffel Paris", "Colisée Rome"],
+  styles: ["réaliste photographique", "hyperréaliste 8K", "noir et blanc"],
+  eclairages: ["soleil couchant doré", "aurore rosée douce", "néons bleu orange"]
 };
 
 // VARIABLES GLOBALES
 let promptCount = 0;
 let selectedPersonality = null;
+let tutorialActive = false;
+let tutorialStep = 1;
+let characters = [];
+let profiles = {};
 
 // INITIALISATION
 document.addEventListener('DOMContentLoaded', function() {
-  // Remplir les personnalités
+  initPersonalities();
+  initActions();
+  initLieux();
+  initStyles();
+  initEclairages();
+  initColorPalette();
+  initComposition();
+  initPresets();
+  loadSavedProfiles();
+  updateAnalysis();
+  
+  // Écouteurs d'événements
+  document.getElementById('promptOutput').addEventListener('input', updateAnalysis);
+  document.querySelectorAll('select, input, textarea').forEach(el => {
+    el.addEventListener('change', updateAnalysis);
+    el.addEventListener('input', updateAnalysis);
+  });
+});
+
+// FONCTIONS D'INITIALISATION
+function initPersonalities() {
   const grid = document.getElementById('personalitiesGrid');
   const select = document.getElementById('personalitySelect');
   
   data.personalities.forEach((person, index) => {
-    // Carte dans la grille
     const card = document.createElement('div');
     card.className = 'personality-card';
     card.dataset.id = index;
-    card.innerHTML = `
-      <strong>${person.name}</strong>
-      <div class="personality-category">${person.category}</div>
-    `;
+    card.innerHTML = `<strong>${person.name}</strong><div class="personality-category">${person.category}</div>`;
     card.onclick = () => selectPersonalityCard(index);
     grid.appendChild(card);
     
-    // Option dans le select
     const option = document.createElement('option');
     option.value = index;
     option.textContent = `${person.name} (${person.category})`;
     select.appendChild(option);
   });
-  
-  // Remplir les actions
-  const actionSelect = document.getElementById('action');
+}
+
+function initActions() {
+  const select = document.getElementById('action');
   data.actions.forEach(action => {
     const option = document.createElement('option');
     option.value = action;
     option.textContent = action;
-    actionSelect.appendChild(option);
+    select.appendChild(option);
   });
-  
-  // Remplir les lieux
-  const lieuSelect = document.getElementById('lieu');
+}
+
+function initLieux() {
+  const select = document.getElementById('lieu');
   data.lieux.forEach(lieu => {
     const option = document.createElement('option');
     option.value = lieu;
     option.textContent = lieu;
-    lieuSelect.appendChild(option);
+    select.appendChild(option);
   });
-  
-  // Remplir les styles
-  const styleSelect = document.getElementById('style');
+}
+
+function initStyles() {
+  const select = document.getElementById('style');
   data.styles.forEach(style => {
     const option = document.createElement('option');
     option.value = style;
     option.textContent = style;
-    styleSelect.appendChild(option);
+    select.appendChild(option);
   });
-  
-  // Remplir les éclairages
-  const eclairageSelect = document.getElementById('eclairage');
+}
+
+function initEclairages() {
+  const select = document.getElementById('eclairage');
   data.eclairages.forEach(eclairage => {
     const option = document.createElement('option');
     option.value = eclairage;
     option.textContent = eclairage;
-    eclairageSelect.appendChild(option);
+    select.appendChild(option);
   });
-  
-  // Activer/désactiver l'effet des champs personnalisés
-  document.getElementById('toggleCustom').addEventListener('change', function() {
-    const status = this.checked ? "activée" : "désactivée";
-    showNotification(`Priorité aux champs personnalisés ${status}`, this.checked ? '#00ff88' : '#ff6b6b');
-  });
-  
-  // Gestion de l'affichage de la version anglaise du prompt négatif
-  document.getElementById('showEnglishNegative').addEventListener('change', function() {
-    const container = document.getElementById('englishNegativeContainer');
-    container.style.display = this.checked ? 'block' : 'none';
-  });
-  
-  // Gestion du sélecteur de couleur pour le texte
-  document.getElementById('textColor').addEventListener('input', function() {
-    const colorHexSpan = document.getElementById('colorHex');
-    const select = document.getElementById('textColorName');
-    
-    const hexColor = this.value;
-    colorHexSpan.textContent = hexColor;
-    colorHexSpan.style.color = hexColor;
-    
-    // Trouver si cette couleur existe dans les options
-    let found = false;
-    for (let option of select.options) {
-      if (option.value === hexColor) {
-        select.value = hexColor;
-        found = true;
-        break;
-      }
-    }
-    
-    if (!found) {
-      select.value = 'custom';
-    }
-  });
-  // Vider tous les champs au démarrage
-  clearAll(); 
-});
-
-// FONCTIONS UTILITAIRES
-function highlightCustomField(element) {
-  if (element.value.trim()) {
-    element.classList.add('custom-active');
-  } else {
-    element.classList.remove('custom-active');
-  }
-  updateCounters();
 }
 
-function showNotification(message, color = '#00d4ff') {
-  // Créer une notification temporaire
+function initColorPalette() {
+  updateColorPalette();
+}
+
+function initComposition() {
+  const compositions = [
+    {name: "Règle des tiers", desc: "Équilibre parfait"},
+    {name: "Symétrie centrale", desc: "Harmonie visuelle"},
+    {name: "Contre-plongée", desc: "Héroïque"},
+    {name: "Plongée", desc: "Vulnérable"},
+    {name: "Gros plan", desc: "Émotions"},
+    {name: "Plan large", desc: "Épique"}
+  ];
+  
+  const grid = document.getElementById('compositionGrid');
+  compositions.forEach(comp => {
+    const item = document.createElement('div');
+    item.className = 'composition-item';
+    item.innerHTML = `<strong>${comp.name}</strong><br><small>${comp.desc}</small>`;
+    item.onclick = () => applyComposition(comp.name);
+    grid.appendChild(item);
+  });
+}
+
+function initPresets() {
+  const presets = [
+    {name: "Fantasy", icon: "🐉"},
+    {name: "Cyberpunk", icon: "🔮"},
+    {name: "Portrait", icon: "👤"},
+    {name: "Paysage", icon: "🏞️"},
+    {name: "Sci-Fi", icon: "🚀"}
+  ];
+  
+  const container = document.getElementById('presetButtons');
+  presets.forEach(preset => {
+    const btn = document.createElement('button');
+    btn.className = 'profile-button';
+    btn.innerHTML = `${preset.icon} ${preset.name}`;
+    btn.onclick = () => loadPreset(preset.name.toLowerCase());
+    container.appendChild(btn);
+  });
+}
+
+// FONCTIONS PRINCIPALES
+function generatePrompt() {
+  // Récupération des valeurs
+  const personality = getSelectedValue('customPersonality', 'personalitySelect', data.personalities);
+  const action = getSelectedValue('customAction', 'action', data.actions);
+  const lieu = getSelectedValue('customLieu', 'lieu', data.lieux);
+  const style = getSelectedValue('customStyle', 'style', data.styles);
+  const eclairage = getSelectedValue('customEclairage', 'eclairage', data.eclairages);
+  const genre = document.getElementById('genre').value;
+  const format = document.getElementById('format').value;
+  
+  // Construction du prompt
+  let promptParts = [];
+  if (format) promptParts.push(`format ${format}`);
+  if (lieu) promptParts.push(lieu);
+  if (personality) promptParts.push(`${personality} ${genre ? `(${genre})` : ''}`);
+  if (action) promptParts.push(action);
+  if (eclairage) promptParts.push(eclairage);
+  if (style) promptParts.push(style);
+  
+  // Ajout des éléments supplémentaires
+  const colors = document.getElementById('customColors').value;
+  if (colors) promptParts.push(`couleurs: ${colors}`);
+  
+  const composition = document.getElementById('compositionType').value;
+  if (composition) promptParts.push(`composition: ${composition}`);
+  
+  // Modes créatifs
+  if (document.getElementById('modeAnachronique').checked) {
+    promptParts.push("anachronisme créatif");
+  }
+  if (document.getElementById('modeSurrealiste').checked) {
+    promptParts.push("touche surréaliste");
+  }
+  
+  // Formatage pour le moteur d'IA
+  const engine = document.getElementById('aiEngine').value;
+  let finalPrompt = promptParts.join(', ');
+  finalPrompt = formatForEngine(finalPrompt, engine);
+  
+  // Affichage
+  promptCount++;
+  updateCounter();
+  document.getElementById('promptOutput').value = `#${promptCount} ${finalPrompt}`;
+  
+  // Copie automatique
+  if (document.getElementById('autoCopy').checked) {
+    copyPrompt();
+  }
+  
+  // Mise à jour de l'analyse
+  updateAnalysis();
+  
+  showNotification(`✅ Prompt #${promptCount} généré !`, '#00ff88');
+}
+
+function formatForEngine(prompt, engine) {
+  switch(engine) {
+    case 'midjourney':
+      return prompt + ' --style raw --v 5.2';
+    case 'stable-diffusion':
+      return prompt;
+    case 'dall-e':
+      // Capitaliser pour DALL-E
+      return prompt.charAt(0).toUpperCase() + prompt.slice(1) + '.';
+    case 'leonardo':
+      return prompt + ' [Leonardo Diffusion XL]';
+    default:
+      return prompt;
+  }
+}
+
+function copyPrompt() {
+  const prompt = document.getElementById('promptOutput').value;
+  navigator.clipboard.writeText(prompt).then(() => {
+    showNotification('📋 Prompt copié !', '#00d4ff');
+  });
+}
+
+function randomizeAll() {
+  // Randomiser tous les champs
+  document.querySelectorAll('select').forEach(select => {
+    if (select.id !== 'aiEngine' && select.id !== 'profilesList') {
+      const randomIndex = Math.floor(Math.random() * (select.options.length - 1)) + 1;
+      select.selectedIndex = randomIndex;
+    }
+  });
+  
+  // Randomiser les couleurs
+  const themes = ['warm', 'cool', 'pastel', 'neon', 'monochrome'];
+  document.getElementById('colorTheme').value = themes[Math.floor(Math.random() * themes.length)];
+  updateColorPalette();
+  
+  // Randomiser la composition
+  const compositions = ['', 'rule-of-thirds', 'symmetry', 'leading-lines', 'frame-in-frame'];
+  document.getElementById('compositionType').value = compositions[Math.floor(Math.random() * compositions.length)];
+  
+  // Générer un prompt
+  setTimeout(() => generatePrompt(), 100);
+}
+
+function clearAll() {
+  document.querySelectorAll('select').forEach(select => {
+    select.selectedIndex = 0;
+  });
+  
+  document.querySelectorAll('.custom-input').forEach(input => {
+    input.value = '';
+  });
+  
+  document.getElementById('promptOutput').value = '';
+  promptCount = 0;
+  updateCounter();
+  
+  // Réinitialiser les personnages
+  characters = [];
+  updateCharactersUI();
+  
+  showNotification('🧹 Tout effacé !', '#4ecdc4');
+}
+
+// SYSTÈME DE PROFILS
+function saveProfile() {
+  const name = document.getElementById('profileName').value.trim();
+  if (!name) {
+    showNotification('❌ Veuillez donner un nom au profil', '#ff6b6b');
+    return;
+  }
+  
+  // Sauvegarder toutes les valeurs
+  const profile = {
+    name: name,
+    values: {}
+  };
+  
+  // Collecter toutes les valeurs
+  document.querySelectorAll('select, input, textarea').forEach(el => {
+    if (el.id && !el.id.includes('Output')) {
+      profile.values[el.id] = el.value;
+    }
+  });
+  
+  // Sauvegarder dans localStorage
+  profiles[name] = profile;
+  localStorage.setItem('promptProfiles', JSON.stringify(profiles));
+  
+  // Mettre à jour la liste
+  updateProfilesList();
+  showNotification(`💾 Profil "${name}" sauvegardé !`, '#00ff88');
+}
+
+function loadProfile() {
+  const name = document.getElementById('profilesList').value;
+  if (!name || !profiles[name]) return;
+  
+  const profile = profiles[name];
+  
+  // Restaurer toutes les valeurs
+  Object.keys(profile.values).forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.value = profile.values[id];
+    }
+  });
+  
+  showNotification(`📂 Profil "${name}" chargé !`, '#00d4ff');
+}
+
+function deleteProfile() {
+  const name = document.getElementById('profilesList').value;
+  if (!name) return;
+  
+  delete profiles[name];
+  localStorage.setItem('promptProfiles', JSON.stringify(profiles));
+  updateProfilesList();
+  showNotification(`🗑️ Profil "${name}" supprimé !`, '#ff6b6b');
+}
+
+function resetProfiles() {
+  if (confirm('Voulez-vous vraiment supprimer tous les profils ?')) {
+    profiles = {};
+    localStorage.removeItem('promptProfiles');
+    updateProfilesList();
+    showNotification('🔄 Tous les profils ont été supprimés', '#ffa500');
+  }
+}
+
+function loadSavedProfiles() {
+  const saved = localStorage.getItem('promptProfiles');
+  if (saved) {
+    profiles = JSON.parse(saved);
+    updateProfilesList();
+  }
+}
+
+function updateProfilesList() {
+  const select = document.getElementById('profilesList');
+  select.innerHTML = '<option value="">-- Choisir un profil --</option>';
+  
+  Object.keys(profiles).forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+}
+
+// PALETTES DE COULEURS
+function updateColorPalette() {
+  const theme = document.getElementById('colorTheme').value;
+  const palette = getColorPalette(theme);
+  const container = document.getElementById('colorPalette');
+  container.innerHTML = '';
+  
+  palette.forEach(color => {
+    const swatch = document.createElement('div');
+    swatch.className = 'color-swatch';
+    swatch.style.background = color;
+    swatch.title = color;
+    swatch.onclick = () => applyColor(color);
+    container.appendChild(swatch);
+  });
+}
+
+function getColorPalette(theme) {
+  const palettes = {
+    warm: ['#FF6B6B', '#FFA726', '#FFEE58', '#FF8A65', '#D84315'],
+    cool: ['#00D4FF', '#4ECDC4', '#81D4FA', '#29B6F6', '#0288D1'],
+    pastel: ['#FFCDD2', '#F8BBD0', '#E1BEE7', '#C5CAE9', '#B3E5FC'],
+    neon: ['#FF00FF', '#00FF00', '#00FFFF', '#FFFF00', '#FF00FF'],
+    monochrome: ['#333333', '#666666', '#999999', '#CCCCCC', '#FFFFFF']
+  };
+  
+  return palettes[theme] || palettes.warm;
+}
+
+function applyColor(color) {
+  document.getElementById('customColors').value = color;
+}
+
+// COMPOSITION
+function applyComposition(type) {
+  document.getElementById('compositionType').value = type.toLowerCase().replace(' ', '-');
+}
+
+// MULTI-PERSONNAGES
+function addCharacter() {
+  characters.push({
+    name: `Personnage ${characters.length + 1}`,
+    role: '',
+    relation: ''
+  });
+  updateCharactersUI();
+}
+
+function updateCharactersUI() {
+  const container = document.getElementById('charactersContainer');
+  container.innerHTML = '';
+  
+  characters.forEach((char, index) => {
+    const section = document.createElement('div');
+    section.className = 'character-section';
+    section.innerHTML = `
+      <h4>${char.name}</h4>
+      <div class="input-group">
+        <input type="text" placeholder="Nom" value="${char.name}" onchange="updateCharacter(${index}, 'name', this.value)">
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Rôle" value="${char.role}" onchange="updateCharacter(${index}, 'role', this.value)">
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Relation" value="${char.relation}" onchange="updateCharacter(${index}, 'relation', this.value)">
+      </div>
+      <button class="remove-character" onclick="removeCharacter(${index})">Supprimer</button>
+    `;
+    container.appendChild(section);
+  });
+}
+
+function updateCharacter(index, field, value) {
+  characters[index][field] = value;
+}
+
+function removeCharacter(index) {
+  characters.splice(index, 1);
+  updateCharactersUI();
+}
+
+// TUTORIEL
+function toggleTutorial() {
+  tutorialActive = !tutorialActive;
+  document.getElementById('tutorialToggle').textContent = tutorialActive ? '❌ Fermer' : '🎓 Tutoriel';
+  
+  if (tutorialActive) {
+    document.getElementById('tutorialSection').style.display = 'block';
+    toggleSection('tutorial');
+  } else {
+    document.getElementById('tutorialSection').style.display = 'none';
+  }
+}
+
+function nextTutorialStep() {
+  tutorialStep++;
+  updateTutorial();
+}
+
+function prevTutorialStep() {
+  tutorialStep--;
+  updateTutorial();
+}
+
+function updateTutorial() {
+  // Implémentation basique
+  document.getElementById('tutorialStep1').innerHTML = `
+    <h3>Étape ${tutorialStep} : Apprentissage</h3>
+    <p>Continuez à explorer les différentes options.</p>
+    <div class="tutorial-navigation">
+      <button onclick="prevTutorialStep()" ${tutorialStep === 1 ? 'disabled' : ''}>Précédent</button>
+      <button onclick="nextTutorialStep()">${tutorialStep === 5 ? 'Terminer' : 'Suivant'}</button>
+    </div>
+  `;
+}
+
+// ANALYSE
+function updateAnalysis() {
+  const prompt = document.getElementById('promptOutput').value;
+  const words = prompt.split(/\s+/).length;
+  
+  // Calcul des scores
+  let detailScore = 'Faible';
+  if (words > 50) detailScore = 'Élevé';
+  else if (words > 20) detailScore = 'Moyen';
+  
+  let complexityScore = 'Simple';
+  if (words > 80) complexityScore = 'Complexe';
+  else if (words > 40) complexityScore = 'Modéré';
+  
+  const quality = Math.min(100, words * 2);
+  
+  // Mise à jour de l'interface
+  document.getElementById('lengthScore').textContent = `${words} mots`;
+  document.getElementById('detailScore').textContent = detailScore;
+  document.getElementById('complexityScore').textContent = complexityScore;
+  document.getElementById('qualityBar').style.width = `${quality}%`;
+  
+  // Conseils
+  const tips = document.getElementById('analysisTips');
+  if (words < 15) {
+    tips.innerHTML = '💡 Conseil : Ajoutez plus de détails pour de meilleurs résultats.';
+  } else if (words > 100) {
+    tips.innerHTML = '💡 Conseil : Votre prompt est très long, certains éléments pourraient être ignorés.';
+  } else {
+    tips.innerHTML = '✅ Votre prompt est bien équilibré.';
+  }
+}
+
+// FONCTIONS UTILITAIRES
+function getSelectedValue(customId, selectId, dataArray) {
+  const custom = document.getElementById(customId).value.trim();
+  if (custom) return custom;
+  
+  const select = document.getElementById(selectId);
+  if (select.value) {
+    if (dataArray) {
+      return dataArray[select.value]?.name || select.value;
+    }
+    return select.value;
+  }
+  
+  return '';
+}
+
+function selectPersonalityCard(index) {
+  document.querySelectorAll('.personality-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+  
+  const card = document.querySelector(`.personality-card[data-id="${index}"]`);
+  if (card) {
+    card.classList.add('selected');
+  }
+  
+  document.getElementById('personalitySelect').value = index;
+  selectedPersonality = data.personalities[index];
+}
+
+function selectPersonality(value) {
+  if (value === "") {
+    document.querySelectorAll('.personality-card').forEach(card => {
+      card.classList.remove('selected');
+    });
+    selectedPersonality = null;
+    return;
+  }
+  
+  selectPersonalityCard(parseInt(value));
+}
+
+function toggleSection(sectionId) {
+  const content = document.getElementById(sectionId + 'Content');
+  const icon = content.previousElementSibling.querySelector('.collapsible-icon');
+  content.classList.toggle('expanded');
+  icon.classList.toggle('rotated');
+}
+
+function updateCounter() {
+  document.getElementById('promptCount').textContent = promptCount;
+  document.getElementById('counter').textContent = promptCount;
+}
+
+function showNotification(message, color) {
   const notification = document.createElement('div');
   notification.textContent = message;
   notification.style.cssText = `
@@ -1855,1235 +1686,19 @@ function showNotification(message, color = '#00d4ff') {
     border-radius: 10px;
     z-index: 10000;
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    animation: slideIn 0.3s ease-out;
   `;
   
   document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.style.animation = 'slideOut 0.3s ease-out';
-    setTimeout(() => notification.remove(), 300);
-  }, 3000);
+  setTimeout(() => notification.remove(), 3000);
 }
 
-function updateCounters() {
-  // Compter les champs personnalisés remplis
-  const customFields = document.querySelectorAll('.custom-input');
-  let customCount = 0;
-  customFields.forEach(field => {
-    if (field.value.trim()) customCount++;
-  });
-  
-  // Compter les sélections non-vides
-  const selects = document.querySelectorAll('select');
-  let selectedCount = 0;
-  selects.forEach(select => {
-    if (select.value && select.id !== 'personalitySelect') selectedCount++; // Exclure personalitySelect car doublon
-  });
-  
-  document.getElementById('customFieldsCount').textContent = customCount;
-  document.getElementById('selectedFieldsCount').textContent = selectedCount;
-}
-
-function selectPersonalityCard(index) {
-  // Retirer la sélection précédente
-  document.querySelectorAll('.personality-card').forEach(card => {
-    card.classList.remove('selected');
-  });
-  
-  // Ajouter la nouvelle sélection
-  const card = document.querySelector(`.personality-card[data-id="${index}"]`);
-  if (card) {
-    card.classList.add('selected');
-  }
-  
-  // Mettre à jour le select
-  document.getElementById('personalitySelect').value = index;
-  selectedPersonality = data.personalities[index];
-  
-  // Désactiver le champ personnalisé s'il était utilisé
-  document.getElementById('customPersonality').value = '';
-  highlightCustomField(document.getElementById('customPersonality'));
-  
-  updateCounters();
-}
-
-function selectPersonality(value) {
-  if (value === "") {
-    // Retirer la sélection
-    document.querySelectorAll('.personality-card').forEach(card => {
-      card.classList.remove('selected');
-    });
-    selectedPersonality = null;
-    return;
-  }
-  
-  selectPersonalityCard(parseInt(value));
-}
-
-function getRandomItem(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-// Fonction pour replier/déplier les sections
-function toggleSection(sectionId) {
-  const content = document.getElementById(sectionId + 'Content');
-  const icon = content.previousElementSibling.querySelector('.collapsible-icon');
-  
-  content.classList.toggle('expanded');
-  icon.classList.toggle('rotated');
-}
-
-// Fonction pour mettre à jour le sélecteur de couleur
-function updateColorPicker(select) {
-  const colorPicker = document.getElementById('textColor');
-  const colorHexSpan = document.getElementById('colorHex');
-  
-  if (select.value === 'custom') {
-    // Ouvrir le sélecteur de couleur personnalisé
-    colorPicker.click();
-  } else {
-    colorPicker.value = select.value;
-    colorHexSpan.textContent = select.value;
-    colorHexSpan.style.color = select.value;
-  }
-}
-
-// Fonction pour calculer la densité du prompt
-function calculatePromptDensity(promptText) {
-  if (!promptText) return { density: 0, level: 'empty' };
-  
-  // Nettoyer le prompt
-  const cleanPrompt = promptText.replace(/^#\d+\s*/, '');
-  
-  // Compter les éléments
-  const elements = cleanPrompt.split(',').length;
-  const words = cleanPrompt.split(/\s+/).length;
-  const characters = cleanPrompt.length;
-  
-  // Calcul de densité (poids des éléments)
-  let densityScore = 0;
-  
-  // Points pour le nombre d'éléments
-  if (elements > 15) densityScore += 40;
-  else if (elements > 10) densityScore += 30;
-  else if (elements > 5) densityScore += 20;
-  else if (elements > 2) densityScore += 10;
-  
-  // Points pour la longueur
-  if (words > 100) densityScore += 40;
-  else if (words > 70) densityScore += 30;
-  else if (words > 50) densityScore += 20;
-  else if (words > 30) densityScore += 10;
-  
-  // Points pour les détails spéciaux
-  if (cleanPrompt.includes(':')) densityScore += 10;
-  if (cleanPrompt.includes('(') || cleanPrompt.includes(')')) densityScore += 5;
-  if (cleanPrompt.includes('--')) densityScore += 5;
-  
-  // Limiter à 100%
-  densityScore = Math.min(100, densityScore);
-  
-  // Déterminer le niveau
-  let level;
-  if (densityScore < 20) level = 'low';
-  else if (densityScore < 40) level = 'medium';
-  else if (densityScore < 70) level = 'high';
-  else level = 'very-high';
-  
-  return {
-    density: densityScore,
-    level: level,
-    elements: elements,
-    words: words,
-    characters: characters
-  };
-}
-
-// Fonction pour mettre à jour l'indicateur de densité
-function updateDensityIndicator(promptText) {
-  const densityInfo = calculatePromptDensity(promptText);
-  const densityValue = document.getElementById('densityValue');
-  const densityFill = document.getElementById('densityFill');
-  const densityIndicator = document.getElementById('densityIndicator');
-  
-  if (densityInfo.density === 0) {
-    densityIndicator.style.display = 'none';
-    return;
-  }
-  
-  // Afficher l'indicateur
-  densityIndicator.style.display = 'inline';
-  densityValue.textContent = densityInfo.density;
-  densityFill.style.width = `${densityInfo.density}%`;
-  
-  // Changer la couleur selon le niveau
-  densityValue.className = `density-${densityInfo.level}`;
-  
-  // Changer la couleur de la barre
-  let gradient;
-  switch(densityInfo.level) {
-    case 'low':
-      gradient = 'linear-gradient(90deg, #ff6b6b, #ff8e8e)';
-      break;
-    case 'medium':
-      gradient = 'linear-gradient(90deg, #ffa500, #ffcc00)';
-      break;
-    case 'high':
-      gradient = 'linear-gradient(90deg, #00d4ff, #00ff88)';
-      break;
-    case 'very-high':
-      gradient = 'linear-gradient(90deg, #9d4edd, #ff00ff)';
-      break;
-    default:
-      gradient = 'linear-gradient(90deg, #00d4ff, #00ff88)';
-  }
-  
-  densityFill.style.background = gradient;
-}
-
-// Fonction pour obtenir le prompt négatif complet
-function getNegativePrompt() {
-  let negativePrompt = '';
-  
-  if (document.getElementById('includeNegativePrompt').checked) {
-    // Version française
-    negativePrompt = document.getElementById('negativePrompt').value.trim();
-    
-    // Ajouter la version anglaise si cochée
-    if (document.getElementById('showEnglishNegative').checked) {
-      const englishNegative = document.getElementById('negativePromptEnglish').value.trim();
-      if (englishNegative) {
-        negativePrompt += ', ' + englishNegative;
-      }
-    }
-  }
-  
-  return negativePrompt;
-}
-
-// Fonction pour obtenir la description du texte sur l'image
-function getImageTextDescription() {
-  const text = document.getElementById('imageText').value.trim();
-  if (!text || !document.getElementById('includeTextInPrompt').checked) {
-    return '';
-  }
-  
-  let description = `avec le texte "${text}"`;
-  
-  // Style d'écriture
-  const style = document.getElementById('textStyle').value;
-  if (style) {
-    description += ` ${style}`;
-  }
-  
-  // Couleur
-  const colorName = document.getElementById('textColorName');
-  const color = colorName.options[colorName.selectedIndex].text;
-  if (color && color !== 'Personnalisé (HEX)') {
-    description += ` en ${color.toLowerCase()}`;
-  }
-  
-  // Position
-  const position = document.getElementById('textPosition').value;
-  if (position) {
-    description += `, positionné ${position}`;
-  }
-  
-  // Taille
-  const size = document.getElementById('textSize').value;
-  if (size) {
-    description += `, taille ${size}`;
-  }
-  
-  // Options supplémentaires
-  const options = [];
-  if (document.getElementById('textWithBackground').checked) {
-    options.push('avec arrière-plan');
-  }
-  if (document.getElementById('textTransparent').checked) {
-    options.push('semi-transparent');
-  }
-  
-  // Détails supplémentaires
-  const details = document.getElementById('textDetails').value.trim();
-  if (details) {
-    options.push(details);
-  }
-  
-  if (options.length > 0) {
-    description += `, ${options.join(', ')}`;
-  }
-  
-  return description;
-}
-
-function randomizeAll() {
-  // Personnalité aléatoire
-  const personalityIndex = Math.floor(Math.random() * data.personalities.length);
-  selectPersonalityCard(personalityIndex);
-  
-  // Genre aléatoire
-  const genres = ["", "homme", "femme", "non-binaire", "mixte", "autre"];
-  document.getElementById('genre').value = getRandomItem(genres);
-  
-  // Format aléatoire
-  const formats = document.getElementById('format').options;
-  document.getElementById('format').selectedIndex = Math.floor(Math.random() * formats.length);
-  
-  // Âge aléatoire
-  const ages = document.getElementById('age').options;
-  document.getElementById('age').selectedIndex = Math.floor(Math.random() * ages.length);
-  
-  // Action aléatoire
-  const actionIndex = Math.floor(Math.random() * data.actions.length);
-  document.getElementById('action').selectedIndex = actionIndex + 1; // +1 pour l'option vide
-  
-  // Lieu aléatoire
-  const lieuIndex = Math.floor(Math.random() * data.lieux.length);
-  document.getElementById('lieu').selectedIndex = lieuIndex + 1;
-  
-  // Époque aléatoire
-  const epoqueOptions = document.getElementById('epoque').options;
-  document.getElementById('epoque').selectedIndex = Math.floor(Math.random() * epoqueOptions.length);
-  
-  // Compagnon aléatoire
-  const compagnonOptions = document.getElementById('compagnon').options;
-  document.getElementById('compagnon').selectedIndex = Math.floor(Math.random() * compagnonOptions.length);
-  
-  // Relation aléatoire
-  const relationOptions = document.getElementById('relationType').options;
-  document.getElementById('relationType').selectedIndex = Math.floor(Math.random() * relationOptions.length);
-  
-  // Proximité aléatoire
-  const proximiteOptions = document.getElementById('proximite').options;
-  document.getElementById('proximite').selectedIndex = Math.floor(Math.random() * proximiteOptions.length);
-  
-  // Style aléatoire
-  const styleIndex = Math.floor(Math.random() * data.styles.length);
-  document.getElementById('style').selectedIndex = styleIndex + 1;
-  
-  // Éclairage aléatoire
-  const eclairageIndex = Math.floor(Math.random() * data.eclairages.length);
-  document.getElementById('eclairage').selectedIndex = eclairageIndex + 1;
-  
-  // Costume aléatoire
-  const costumeOptions = document.getElementById('costume').options;
-  document.getElementById('costume').selectedIndex = Math.floor(Math.random() * costumeOptions.length);
-  
-  // Événement aléatoire
-  const evenementOptions = document.getElementById('evenement').options;
-  document.getElementById('evenement').selectedIndex = Math.floor(Math.random() * evenementOptions.length);
-  
-  // Émotions aléatoires
-  const emotions = ["joie intense", "colère froide", "surprise totale", "tristesse profonde", "peur panique", "extase"];
-  document.getElementById('emotions').value = Math.random() > 0.5 ? getRandomItem(emotions) : "";
-  
-  // Qualité aléatoire
-  const qualities = document.getElementById('quality').options;
-  document.getElementById('quality').selectedIndex = Math.floor(Math.random() * qualities.length);
-  
-  // Complexité aléatoire
-  const complexities = ["simple", "normal", "detaille", "ultra"];
-  document.getElementById('complexity').value = getRandomItem(complexities);
-  
-  // Options du prompt négatif
-  document.getElementById('includeNegativePrompt').checked = Math.random() > 0.3;
-  document.getElementById('autoCopyNegative').checked = Math.random() > 0.5;
-  document.getElementById('showEnglishNegative').checked = Math.random() > 0.7;
-  
-  // Mettre à jour l'affichage de la version anglaise
-  document.getElementById('englishNegativeContainer').style.display = 
-    document.getElementById('showEnglishNegative').checked ? 'block' : 'none';
-  
-  // Texte sur l'image
-  const texts = ["Bienvenue", "Hello World", "Carpe Diem", "Événement spécial", "Limited Edition", "2024"];
-  document.getElementById('imageText').value = Math.random() > 0.5 ? getRandomItem(texts) : "";
-  
-  // Style de texte aléatoire
-  const textStyles = document.getElementById('textStyle').options;
-  document.getElementById('textStyle').selectedIndex = Math.floor(Math.random() * textStyles.length);
-  
-  // Couleur aléatoire
-  const textColors = document.getElementById('textColorName').options;
-  document.getElementById('textColorName').selectedIndex = Math.floor(Math.random() * (textColors.length - 1)); // Exclure "custom"
-  updateColorPicker(document.getElementById('textColorName'));
-  
-  // Position aléatoire
-  const textPositions = document.getElementById('textPosition').options;
-  document.getElementById('textPosition').selectedIndex = Math.floor(Math.random() * textPositions.length);
-  
-  // Taille aléatoire
-  const textSizes = document.getElementById('textSize').options;
-  document.getElementById('textSize').selectedIndex = Math.floor(Math.random() * textSizes.length);
-  
-  // Options aléatoires
-  document.getElementById('includeTextInPrompt').checked = Math.random() > 0.3;
-  document.getElementById('textWithBackground').checked = Math.random() > 0.5;
-  document.getElementById('textTransparent').checked = Math.random() > 0.7;
-  
-  // Détails aléatoires
-  const textDetailsOptions = ["avec ombre portée", "avec effet 3D", "brillant", "avec contour"];
-  document.getElementById('textDetails').value = Math.random() > 0.5 ? getRandomItem(textDetailsOptions) : "";
-  
-  // Vider les champs personnalisés
-  document.querySelectorAll('.custom-input').forEach(field => {
-    if (field.id !== 'negativePrompt' && field.id !== 'negativePromptEnglish') {
-      field.value = '';
-      highlightCustomField(field);
-    }
-  });
-  
-  showNotification("🎲 Tous les champs ont été randomisés !", "#9d4edd");
-  
-  // Générer automatiquement
-  setTimeout(() => {
-    generatePrompt();
-  }, 300);
-}
-
-function generatePrompt() {
-  // Afficher le chargement
-  const loading = document.getElementById('loading');
-  loading.style.display = 'block';
-  
-  // Vérifier si on priorise les champs personnalisés
-  const prioritizeCustom = document.getElementById('toggleCustom').checked;
-  
-  // Préparation des éléments avec priorité aux champs personnalisés
-  let personality, personalitySource;
-  const customPersonality = document.getElementById('customPersonality').value.trim();
-  
-  if (prioritizeCustom && customPersonality) {
-    personality = customPersonality;
-    personalitySource = "🔤 Personnalité personnalisée";
-  } else if (selectedPersonality) {
-    personality = selectedPersonality.name;
-    personalitySource = "🎭 Sélectionnée dans la liste";
-  } else if (customPersonality) {
-    personality = customPersonality;
-    personalitySource = "🔤 Personnalité personnalisée";
-  } else {
-    personality = getRandomItem(data.personalities).name;
-    personalitySource = "🎲 Aléatoire";
-  }
-  
-  // Fonction générique pour obtenir une valeur avec priorité
-  function getValue(selectId, customId, defaultValue = "") {
-    const customValue = document.getElementById(customId).value.trim();
-    if (prioritizeCustom && customValue) {
-      return customValue;
-    }
-    const selectValue = document.getElementById(selectId).value;
-    if (selectValue) return selectValue;
-    if (customValue) return customValue;
-    return defaultValue;
-  }
-  
-  // Récupération des valeurs avec la logique de priorité
-  const genre = document.getElementById('genre').value;
-  const format = document.getElementById('format').value;
-  
-  // Âge : personnalisé ou sélectionné
-  const customAge = document.getElementById('customAge').value.trim();
-  const age = customAge || document.getElementById('age').value;
-  
-  // Action : personnalisée ou sélectionnée
-  const action = getValue('action', 'customAction', getRandomItem(data.actions));
-  
-  // Lieu : personnalisé ou sélectionné
-  const lieu = getValue('lieu', 'customLieu', getRandomItem(data.lieux));
-  
-  // Époque : personnalisée ou sélectionnée
-  const epoque = getValue('epoque', 'customEpoque', "");
-  
-  // Compagnon : personnalisé ou sélectionné
-  const compagnon = getValue('compagnon', 'customCompagnon', "");
-  
-  // Relation : personnalisée ou sélectionnée
-  const relation = getValue('relationType', 'customRelation', "");
-  const proximite = document.getElementById('proximite').value;
-  
-  // Style : personnalisé ou sélectionné
-  const style = getValue('style', 'customStyle', getRandomItem(data.styles));
-  
-  // Éclairage : personnalisé ou sélectionné
-  const eclairage = getValue('eclairage', 'customEclairage', getRandomItem(data.eclairages));
-  
-  // Costume : personnalisé ou sélectionné
-  const costume = getValue('costume', 'customCostume', "");
-  
-  // Événement : personnalisé ou sélectionné
-  const evenement = getValue('evenement', 'customEvenement', "");
-  
-  // Détails supplémentaires
-  const emotions = document.getElementById('emotions').value;
-  const customDetails = document.getElementById('customDetails').value.trim();
-  const quality = document.getElementById('quality').value;
-  const complexity = document.getElementById('complexity').value;
-  
-  // Texte sur l'image
-  const imageText = getImageTextDescription();
-  
-  // Modes spéciaux
-  const modeHumoristique = document.getElementById('modeHumoristique').checked;
-  const modeAnachronique = document.getElementById('modeAnachronique').checked;
-  const modeSurrealiste = document.getElementById('modeSurrealiste').checked;
-  const modeRandom = document.getElementById('modeRandom').checked;
-  const showMarkers = document.getElementById('showCustomMarkers').checked;
-  
-  // Construction du prompt
-  let promptParts = [];
-  
-  // Format
-  promptParts.push(format);
-  
-  // Lieu et époque
-  if (epoque) {
-    promptParts.push(`${lieu} ${epoque}`);
-  } else {
-    promptParts.push(lieu);
-  }
-  
-  // Personnalité avec détails
-  let personalityDesc = `${personality} `;
-  if (genre) personalityDesc += `(${genre}) `;
-  if (age) personalityDesc += `${age} `;
-  if (costume) personalityDesc += `${costume} `;
-  
-  personalityDesc += action;
-  promptParts.push(personalityDesc);
-  
-  // Émotions
-  if (emotions) {
-    promptParts.push(`expression: ${emotions}`);
-  }
-  
-  // Relation et compagnon - NOUVELLE LOGIQUE AMÉLIORÉE
-  if (compagnon) {
-    let relationText = "";
-    
-    // Si une relation spécifique est définie
-    if (relation) {
-      relationText = `${relation} `;
-    } else {
-      // Sinon, utiliser "avec" par défaut
-      relationText = "avec ";
-    }
-    
-    // Ajouter la proximité si spécifiée
-    if (proximite) {
-      relationText = `${proximite}, ${relationText}`;
-    }
-    
-    promptParts.push(`${relationText}${compagnon}`);
-  }
-  
-  // Éclairage
-  promptParts.push(eclairage);
-  
-  // Style artistique
-  promptParts.push(style);
-
-  // ===== EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES =====
-  
-  // Effets checkbox
-  const effects = [];
-  if (document.getElementById('effectBokeh').checked) {
-    effects.push("bokeh artistique");
-  }
-  if (document.getElementById('effectLensFlare').checked) {
-    effects.push("flare d'objectif");
-  }
-  if (document.getElementById('effectVignette').checked) {
-    effects.push("vignettage subtil");
-  }
-  if (document.getElementById('effectGrain').checked) {
-    effects.push("grain photographique");
-  }
-  if (document.getElementById('effectMotionBlur').checked) {
-    effects.push("flou de mouvement");
-  }
-  if (document.getElementById('effectChromatic').checked) {
-    effects.push("aberration chromatique légère");
-  }
-  
-  // Ajouter les effets au prompt
-  if (effects.length > 0) {
-    promptParts.push(effects.join(', '));
-  }
-  
-  // Conditions atmosphériques
-  const atmosphere = document.getElementById('atmosphere').value;
-  if (atmosphere) {
-    promptParts.push(atmosphere);
-  }
-  
-  // Filtres
-  const filters = document.getElementById('filters').value;
-  if (filters) {
-    promptParts.push(filters);
-  }
-  
-  // Effets personnalisés
-  const customEffects = document.getElementById('customEffects').value.trim();
-  if (customEffects) {
-    promptParts.push(customEffects);
-  }
-  
-  // Événement
-  if (evenement) {
-    promptParts.push(`scène de ${evenement}`);
-  }
-  
-  // Détails personnalisés
-  if (customDetails) {
-    promptParts.push(customDetails);
-  }
-  
-  // Texte sur l'image
-  if (imageText) {
-    promptParts.push(imageText);
-  }
-  
-  // Qualité
-  promptParts.push(quality);
-  
-  // Ajouts selon la complexité
-  if (complexity === "detaille" || complexity === "ultra") {
-    promptParts.push("profondeur de champ maîtrisée");
-    promptParts.push("textures riches");
-    promptParts.push("détails fins");
-  }
-  
-  if (complexity === "ultra") {
-    promptParts.push("rendu cinématographique professionnel");
-    promptParts.push("éclairage studio qualité film");
-    promptParts.push("composition parfaite");
-  }
-  
-  // Humour si activé
-  if (modeHumoristique) {
-    const humorElements = [
-      "avec une touche d'humour absurde",
-      "élément comique inattendu",
-      "situation humoristique décalée",
-      "expression faciale comique"
-    ];
-    promptParts.push(getRandomItem(humorElements));
-  }
-  
-  // Anachronisme si activé
-  if (modeAnachronique) {
-    const anachronisms = [
-      "anachronisme créatif",
-      "mélange d'époques surréaliste",
-      "éléments temporels décalés",
-      "fusion historique-futuriste"
-    ];
-    promptParts.push(getRandomItem(anachronisms));
-  }
-  
-  // Surréalisme si activé
-  if (modeSurrealiste) {
-    const surrealElements = [
-      "touche surréaliste",
-      "réalité déformée",
-      "éléments oniriques",
-      "perspective impossible"
-    ];
-    promptParts.push(getRandomItem(surrealElements));
-  }
-  
-  // Ajout d'éléments aléatoires si mode random complet
-  if (modeRandom && Math.random() > 0.3) {
-    const extraElements = [
-      "dynamique mouvement",
-      "émotion intense",
-      "composition équilibrée",
-      "cadrage innovant",
-      "couleurs vibrantes",
-      "contraste saisissant",
-      "luminosité parfaite"
-    ];
-    promptParts.push(getRandomItem(extraElements));
-  }
-  
-  // Assemblage final
-  let finalPrompt = promptParts.filter(p => p && p.trim() !== '').join(', ');
-  
-  // Ajout des marqueurs de source si demandé
-  if (showMarkers) {
-    const markers = [];
-    if (customPersonality) markers.push("PERSO");
-    if (document.getElementById('customAction').value.trim()) markers.push("ACTION");
-    if (document.getElementById('customLieu').value.trim()) markers.push("LIEU");
-    if (customAge) markers.push("ÂGE");
-    if (document.getElementById('customEpoque').value.trim()) markers.push("ÉPOQUE");
-    if (document.getElementById('customCompagnon').value.trim()) markers.push("COMPAGNON");
-    if (relation) markers.push("RELATION");
-    if (document.getElementById('customStyle').value.trim()) markers.push("STYLE");
-    if (document.getElementById('customEclairage').value.trim()) markers.push("ÉCLAIRAGE");
-    if (document.getElementById('customCostume').value.trim()) markers.push("COSTUME");
-    if (document.getElementById('customEvenement').value.trim()) markers.push("ÉVÉNEMENT");
-    if (customDetails) markers.push("DÉTAILS");
-    if (imageText) markers.push("TEXTE-IMAGE");
-    
-    if (markers.length > 0) {
-      finalPrompt += ` [${markers.join('|')}]`;
-    }
-  }
-  
-  // Affichage
-  promptCount++;
-  document.getElementById('promptCount').textContent = promptCount;
-  document.getElementById('counter').textContent = promptCount;
-  
-  const output = document.getElementById('promptOutput');
-  output.value = `#${promptCount} ${finalPrompt}`;
-  
-  // Mettre à jour l'indicateur de densité
-  updateDensityIndicator(finalPrompt);
-  
-  // Copie automatique
-  if (document.getElementById('autoCopy').checked) {
-    copyPrompt();
-  }
-  
-  // Mise à jour des compteurs
-  updateCounters();
-  
-  // Cacher le chargement
-  setTimeout(() => {
-    loading.style.display = 'none';
-    showNotification(`✅ Prompt #${promptCount} généré !`, '#00ff88');
-  }, 500);
-}
-
-function copyPrompt() {
-  const promptText = document.getElementById('promptOutput').value;
-  const cleanText = promptText.replace(/^#\d+\s*/, '');
-  
-  let textToCopy = cleanText;
-  
-  // Ajouter le prompt négatif si l'option est cochée
-  if (document.getElementById('autoCopyNegative').checked) {
-    const negativePrompt = getNegativePrompt();
-    if (negativePrompt) {
-      textToCopy += '\n\n--negative-prompt ' + negativePrompt;
-    }
-  }
-  
-  navigator.clipboard.writeText(textToCopy).then(() => {
-    // Animation de feedback
-    const btn = document.getElementById('copyBtn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<span>✅</span> COPIÉ !';
-    btn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
-    
-    // Afficher un conseil basé sur la densité
-    let densityAdvice = '';
-    const densityInfo = calculatePromptDensity(promptText);
-    if (densityInfo.level === 'low') {
-      densityAdvice = "💡 Conseil : Votre prompt est assez court. Pensez à ajouter plus de détails pour de meilleurs résultats !";
-    } else if (densityInfo.level === 'very-high') {
-      densityAdvice = "💡 Conseil : Votre prompt est très dense. L'IA pourrait ignorer certains éléments. Pensez à simplifier.";
-    }
-    
-    if (densityAdvice) {
-      showNotification(densityAdvice, '#00d4ff');
-    }
-    
-    setTimeout(() => {
-      btn.innerHTML = originalText;
-      btn.style.background = 'linear-gradient(135deg, #4ecdc4, #44a08d)';
-    }, 1500);
-  });
-}
-
-function clearAll() {
-  // Réinitialiser les sélections
-  document.querySelectorAll('.personality-card').forEach(card => {
-    card.classList.remove('selected');
-  });
-  
-  // Réinitialiser tous les selects
-  document.querySelectorAll('select').forEach(select => {
-    select.selectedIndex = 0;
-  });
-  
-  // Réinitialiser tous les inputs texte
-  document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-    if (input.id !== 'negativePrompt' && input.id !== 'negativePromptEnglish') {
-      input.value = '';
-    }
-    input.classList.remove('custom-active');
-  });
-  
-  // Réinitialiser les checkboxes (sauf autoCopy et toggleCustom)
-  document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-    if (checkbox.id !== 'autoCopy' && checkbox.id !== 'toggleCustom') {
-      checkbox.checked = false;
-    }
-  });
-  // Réinitialiser les nouveaux champs des effets spéciaux
-  document.getElementById('atmosphere').selectedIndex = 0;
-  document.getElementById('filters').selectedIndex = 0;
-  document.getElementById('customEffects').value = '';
-  highlightCustomField(document.getElementById('customEffects')); 
-  // Réactiver autoCopy et toggleCustom par défaut
-  document.getElementById('autoCopy').checked = true;
-  document.getElementById('toggleCustom').checked = true;
-  
-  // Réinitialiser les options du prompt négatif
-  document.getElementById('includeNegativePrompt').checked = true;
-  document.getElementById('autoCopyNegative').checked = true;
-  document.getElementById('showEnglishNegative').checked = false;
-  document.getElementById('englishNegativeContainer').style.display = 'none';
-  
-  // Réinitialiser les options du texte sur l'image
-  document.getElementById('imageText').value = "";
-  document.getElementById('textStyle').selectedIndex = 0;
-  document.getElementById('textColorName').selectedIndex = 0;
-  document.getElementById('textColor').value = "#ffffff";
-  document.getElementById('colorHex').textContent = "#ffffff";
-  document.getElementById('colorHex').style.color = "#ffffff";
-  document.getElementById('textPosition').selectedIndex = 0;
-  document.getElementById('textSize').selectedIndex = 1; // Moyen par défaut
-  document.getElementById('includeTextInPrompt').checked = true;
-  document.getElementById('textWithBackground').checked = false;
-  document.getElementById('textTransparent').checked = false;
-  document.getElementById('textDetails').value = "";
-  
-  selectedPersonality = null;
-  
-  // Effacer le prompt
-  document.getElementById('promptOutput').value = "";
-  
-  // Réinitialiser l'indicateur de densité
-  document.getElementById('densityIndicator').style.display = 'none';
-  document.getElementById('densityFill').style.width = '0%';
-  
-  // Réinitialiser les compteurs
-  document.getElementById('promptCount').textContent = "0";
-  document.getElementById('counter').textContent = "0";
-  updateCounters();
-  
-  showNotification("🧹 Tous les champs ont été réinitialisés", "#4ecdc4");
-}
-
-function generateExample() {
-  // Créer un exemple créatif avec des champs personnalisés
-  document.getElementById('customPersonality').value = "Zarathos, le dernier dragon-mage";
-  highlightCustomField(document.getElementById('customPersonality'));
-  
-  document.getElementById('genre').value = "non-binaire";
-  document.getElementById('age').selectedIndex = 3; // Adulte mûr
-  document.getElementById('format').selectedIndex = 0; // 16:9
-  
-  document.getElementById('customAction').value = "invoque un portail interdimensionnel";
-  highlightCustomField(document.getElementById('customAction'));
-  
-  document.getElementById('customLieu').value = "au sommet d'une citadelle flottante";
-  highlightCustomField(document.getElementById('customLieu'));
-  
-  document.getElementById('customEpoque').value = "ère des dragons oubliés";
-  highlightCustomField(document.getElementById('customEpoque'));
-  
-  document.getElementById('customCompagnon').value = "des golems de pierre";
-  highlightCustomField(document.getElementById('customCompagnon'));
-  
-  document.getElementById('relationType').value = "protégé par";
-  document.getElementById('proximite').value = "en cercle autour";
-  
-  document.getElementById('customStyle').value = "peinture à l'huile baroque, style Frank Frazetta";
-  highlightCustomField(document.getElementById('customStyle'));
-  
-  document.getElementById('customEclairage').value = "éclairs violets déchirant un ciel nocturne";
-  highlightCustomField(document.getElementById('customEclairage'));
-  
-  document.getElementById('customCostume').value = "vêtu d'une cape tissée d'étoiles et d'une armure runique";
-  highlightCustomField(document.getElementById('customCostume'));
-  
-  document.getElementById('customEvenement').value = "rituel d'apocalypse";
-  highlightCustomField(document.getElementById('customEvenement'));
-  
-  document.getElementById('emotions').value = "concentration extrême";
-  document.getElementById('customDetails').value = "Des livres anciens flottent autour de lui, des runes lumineuses gravées dans l'air";
-  highlightCustomField(document.getElementById('customDetails'));
-  
-  // Texte sur l'image pour l'exemple
-  document.getElementById('imageText').value = "Rituel Interdit";
-  document.getElementById('textStyle').value = "en néon";
-  document.getElementById('textColorName').value = "#ff00ff";
-  updateColorPicker(document.getElementById('textColorName'));
-  document.getElementById('textPosition').value = "en haut";
-  document.getElementById('textSize').value = "grand";
-  document.getElementById('includeTextInPrompt').checked = true;
-  document.getElementById('textWithBackground').checked = true;
-  document.getElementById('textDetails').value = "avec effet de brume";
-  
-  document.getElementById('quality').selectedIndex = 1; // Ultra-détaillé 8K
-  document.getElementById('complexity').value = "ultra";
-  
-  // Activer les modes créatifs
-  document.getElementById('modeAnachronique').checked = true;
-  document.getElementById('modeSurrealiste').checked = true;
-  document.getElementById('showCustomMarkers').checked = true;
-  
-  // Activer le prompt négatif
-  document.getElementById('includeNegativePrompt').checked = true;
-  document.getElementById('autoCopyNegative').checked = true;
-  
-  // Désélectionner les personnalités prédéfinies
-  document.querySelectorAll('.personality-card').forEach(card => {
-    card.classList.remove('selected');
-  });
-  document.getElementById('personalitySelect').value = "";
-  selectedPersonality = null;
-  
-  updateCounters();
-  
-  // Générer l'exemple
-  setTimeout(() => {
-    generatePrompt();
-    showNotification("✨ Exemple créatif chargé !", "#9d4edd");
-  }, 500);
-}
-
-// Raccourcis clavier
+// RACCOURCIS CLAVIER
 document.addEventListener('keydown', function(e) {
-  // Ctrl + Entrée pour générer
-  if (e.ctrlKey && e.key === 'Enter') {
-    generatePrompt();
-  }
-  
-  // Ctrl + R pour randomiser
-  if (e.ctrlKey && e.key === 'r') {
-    randomizeAll();
-  }
-  
-  // Ctrl + C pour copier
-  if (e.ctrlKey && e.key === 'c') {
-    copyPrompt();
-  }
-  
-  // Ctrl + E pour exemple
-  if (e.ctrlKey && e.key === 'e') {
-    generateExample();
-  }
-  
-  // Ctrl + Suppr pour effacer
-  if (e.ctrlKey && e.key === 'Delete') {
-    clearAll();
-  }
+  if (e.ctrlKey && e.key === 'Enter') generatePrompt();
+  if (e.ctrlKey && e.key === 'r') randomizeAll();
+  if (e.ctrlKey && e.key === 'c') copyPrompt();
+  if (e.ctrlKey && e.key === 'Delete') clearAll();
 });
-
-// Tooltip pour les raccourcis
-window.onload = function() {
-  const shortcuts = [
-    {key: "Ctrl+Enter", action: "Générer un prompt"},
-    {key: "Ctrl+R", action: "Randomiser tout"},
-    {key: "Ctrl+C", action: "Copier le prompt"},
-    {key: "Ctrl+E", action: "Charger un exemple"},
-    {key: "Ctrl+Suppr", action: "Tout effacer"}
-  ];
-  
-  const buttonGroup = document.querySelector('.button-group');
-  const tooltip = document.createElement('div');
-  tooltip.style.cssText = `
-    font-size: 0.9em;
-    color: #88ccff;
-    text-align: center;
-    margin-top: 10px;
-    opacity: 0.8;
-    padding: 10px;
-    background: rgba(0, 30, 60, 0.3);
-    border-radius: 10px;
-  `;
-  tooltip.innerHTML = `<strong>Raccourcis clavier :</strong><br>${shortcuts.map(s => `<kbd>${s.key}</kbd> = ${s.action}`).join(' • ')}`;
-  buttonGroup.parentNode.insertBefore(tooltip, buttonGroup.nextSibling);
-  
-  // Ajouter des styles pour kbd
-  const style = document.createElement('style');
-  style.textContent = `
-    kbd {
-      background: rgba(0, 212, 255, 0.2);
-      border: 1px solid rgba(0, 212, 255, 0.5);
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-family: monospace;
-      font-size: 0.9em;
-    }
-    
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes slideOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-};
-
-// Fonction pour changer d'onglet dans la galerie
-function openTab(evt, tabName) {
-  // Cacher tous les onglets
-  const tabContents = document.querySelectorAll('.tab-content');
-  tabContents.forEach(tab => tab.classList.remove('active'));
-  
-  // Désactiver tous les boutons d'onglet
-  const tabButtons = document.querySelectorAll('.tab-button');
-  tabButtons.forEach(button => button.classList.remove('active'));
-  
-  // Afficher l'onglet sélectionné
-  document.getElementById(tabName).classList.add('active');
-  
-  // Activer le bouton cliqué
-  evt.currentTarget.classList.add('active');
-}
-
-// Fonction pour appliquer une référence
-function applyReference(referenceId) {
-  // Dictionnaire des références
-  const references = {
-    // Styles
-    'hyperrealistic': {
-      style: "hyperréaliste 8K, photographie professionnelle, détails extrêmes, textures réalistes",
-      quality: "ultra-détaillé 8K"
-    },
-    'cyberpunk': {
-      style: "cyberpunk néon, Tokyo 2077, futur dystopique, lumières LED, pluie réfléchissante",
-      eclairage: "néons bleu et rose, éclairage cyberpunk futuriste",
-      costume: "en tenue cyberpunk, équipement high-tech, implants cybernétiques"
-    },
-    'watercolor': {
-      style: "aquarelle japonaise sumi-e, couleurs douces, traits délicats, style poétique",
-      quality: "rendu artistique"
-    },
-    'oilPainting': {
-      style: "peinture à l'huile baroque, coups de pinceau visibles, riche en textures, style classique",
-      quality: "rendu artistique"
-    },
-    'anime': {
-      style: "anime Studio Ghibli, couleurs pastel, éclairage doux, style cartoon japonais",
-      quality: "animation de haute qualité"
-    },
-    'steampunk': {
-      style: "steampunk victorien, mécanismes visibles, cuivre et laiton, rétro-futurisme",
-      epoque: "ère steampunk",
-      costume: "en costume steampunk, équipement mécanique, accessoires vintage"
-    },
-    
-    // Éclairages
-    'sunset': {
-      eclairage: "soleil couchant doré, lueur chaude, ombres longues, ciel orangé"
-    },
-    'moonlight': {
-      eclairage: "clair de lune argenté, ombres bleutées, nuit étoilée, ambiance mystérieuse"
-    },
-    'neon': {
-      eclairage: "néons bleu et magenta, reflets humides, rue nocturne, ambiance cyberpunk"
-    },
-    'candle': {
-      eclairage: "lumière de bougie, ombres dansantes, ambiance intime, chaleur orangée"
-    },
-    'storm': {
-      eclairage: "éclairs violets, ciel orageux, pluie battante, ambiance dramatique"
-    },
-    'bioluminescent': {
-  eclairage: "bioluminescence verte, lueur naturelle, forêt enchantée, ambiance magique"
-},
-
-// === TES 10 NOUVELLES PERSONNALISATIONS ===
-
-'mangaModerne': {
-  style: "style manga moderne, traits dynamiques, grands yeux expressifs, encrage numérique propre",
-  quality: "rendu manga haute qualité",
-  customDetails: "effets de vitesse typiques du manga, onomatopées stylisées"
-},
-
-'pixelArt': {
-  style: "pixel art 16-bit, résolution basse, palette limitée 8-bit, style rétro gaming années 90",
-  quality: "pixel art",
-  customDetails: "dithering, pixels visibles, ambiance nostalgique jeux vidéo"
-},
-
-'conceptArt': {
-  style: "concept art de jeu vidéo, croquis préparatoire, rough painterly, annotations visibles",
-  quality: "croquis concept art",
-  customDetails: "notes de design dans les marges, variations de couleur, exploration visuelle"
-},
-
-'livreEnfant': {
-  style: "illustration de livre pour enfants, couleurs pastel douces, traits ronds et amicaux, style innocent et joyeux",
-  quality: "illustration jeunesse",
-  customDetails: "éléments mignons et attachants, ambiance chaleureuse et rassurante"
-},
-
-'photoMode': {
-  style: "photographie de mode éditoriale, studio professionnel, éclairage dramatique, modèle élégant",
-  quality: "photo de mode haute couture",
-  customDetails: "pose naturelle mais travaillée, vêtements en mouvement, regard perçant"
-},
-
-'afficheFilm': {
-  style: "affiche de film vintage années 80, typographie stylée, composition épique, couleurs saturées",
-  quality: "affiche cinéma",
-  customDetails: "titrage en gros caractères, acteurs principaux mis en avant, tagline accrocheur"
-},
-
-'bdFrancoBelge': {
-  style: "bande dessinée franco-belge, ligne claire, couleurs plates, style Hergé (Tintin) ou Uderzo (Astérix)",
-  quality: "BD ligne claire",
-  customDetails: "bulles de dialogue lisibles, cadrage case par case, humour discret"
-},
-
-'gravureAncienne': {
-  style: "gravure ancienne sur bois, noir et blanc contrasté, hachures fines, style renaissance ou médiéval",
-  quality: "gravure historique",
-  customDetails: "texture de papier vieilli, bordures ornementées, légendes en latin ou vieux français"
-},
-
-'dessinTrait': {
-  style: "dessin au trait minimaliste, contour noir fin, pas de couleur ou une seule couleur d'accent, style épuré",
-  quality: "dessin vectoriel propre",
-  customDetails: "économie de traits, suggestion plutôt que détail, élégance dans la simplicité"
-},
-
-'rendu3D': {
-  style: "rendu 3D moderne, matériaux PBR, éclairage global, textures réalistes, style graphique professionnel",
-  quality: "rendu 3D photo-réaliste",
-  customDetails: "reflets propres, ombres douces, matériaux variés (métal, verre, plastique)"
-},
-
-// Compositions
-    'ruleOfThirds': {
-      format: "wide shot cinématique 16:9",
-      customDetails: "composition utilisant la règle des tiers, équilibre parfait"
-    },
-    'symmetry': {
-      format: "cadrage carré 1:1",
-      customDetails: "symétrie parfaite, composition équilibrée, harmonie visuelle"
-    },
-    'lowAngle': {
-      customDetails: "vue en contre-plongée, personnage imposant, perspective héroïque"
-    },
-    'highAngle': {
-      customDetails: "vue en plongée, personnage vulnérable, perspective dominante"
-    },
-    'closeUp': {
-      format: "portrait 9:16",
-      customDetails: "gros plan sur le visage, émotions intenses, cadrage serré"
-    },
-    'wideShot': {
-      format: "wide shot ultra-large 21:9",
-      customDetails: "plan large épique, échelle monumentale, paysage impressionnant"
-    },
-    
-    // Costumes
-    'medievalArmor': {
-      costume: "en armure de chevalier médiéval complète, heaume, cape, épée",
-      epoque: "Moyen Âge"
-    },
-    'cyberpunkGear': {
-      costume: "en équipement cyberpunk futuriste, implants visibles, vêtements techniques",
-      epoque: "ère cyberpunk 2077"
-    },
-    'elegantEvening': {
-      costume: "en tenue de soirée élégante, costume noir, cravate, montre de luxe"
-    },
-    'fantasyRobe': {
-      costume: "en robe de mage fantasy, tissus nobles, symboles magiques, bâton de pouvoir",
-      epoque: "époque fantastique"
-    },
-    'samurai': {
-      costume: "en armure de samouraï traditionnelle, casque kabuto, katana, protections",
-      epoque: "Japon féodal"
-    },
-    'steampunkCostume': {
-      costume: "en costume steampunk, gousset, lunettes de protection, engrenages visibles",
-      epoque: "ère steampunk"
-    }
-  };
-  
-  // Appliquer la référence si elle existe
-  if (references[referenceId]) {
-    const ref = references[referenceId];
-    
-    // Appliquer chaque champ
-    if (ref.style) {
-      document.getElementById('customStyle').value = ref.style;
-      highlightCustomField(document.getElementById('customStyle'));
-    }
-    
-    if (ref.eclairage) {
-      document.getElementById('customEclairage').value = ref.eclairage;
-      highlightCustomField(document.getElementById('customEclairage'));
-    }
-    
-    if (ref.costume) {
-      document.getElementById('customCostume').value = ref.costume;
-      highlightCustomField(document.getElementById('customCostume'));
-    }
-    
-    if (ref.epoque) {
-      document.getElementById('customEpoque').value = ref.epoque;
-      highlightCustomField(document.getElementById('customEpoque'));
-    }
-    
-    if (ref.format) {
-      document.getElementById('format').value = ref.format;
-    }
-    
-    if (ref.quality) {
-      document.getElementById('quality').value = ref.quality;
-    }
-    
-    if (ref.customDetails) {
-      const currentDetails = document.getElementById('customDetails').value;
-      document.getElementById('customDetails').value = currentDetails ? 
-        currentDetails + ', ' + ref.customDetails : ref.customDetails;
-      highlightCustomField(document.getElementById('customDetails'));
-    }
-    
-    // Feedback visuel
-    const clickedElement = event.target.closest('.reference-item');
-    if (clickedElement) {
-      clickedElement.style.background = 'rgba(0, 255, 136, 0.2)';
-      clickedElement.style.borderColor = '#00ff88';
-      
-      // Remettre la couleur après 1 seconde
-      setTimeout(() => {
-        clickedElement.style.background = '';
-        clickedElement.style.borderColor = '';
-      }, 1000);
-    }
-    
-    showNotification(`✅ Référence appliquée ! Les champs correspondants ont été remplis.`, '#00ff88');
-    
-    // Générer automatiquement un prompt si l'option est activée
-    if (document.getElementById('autoCopy').checked) {
-      setTimeout(() => generatePrompt(), 500);
-    }
-  }
-}
-
-// Initialiser la galerie au chargement
-document.addEventListener('DOMContentLoaded', function() {
-  // S'assurer que le premier onglet est visible
-  const firstTab = document.querySelector('.tab-button.active');
-  const firstTabContent = document.querySelector('.tab-content.active');
-  
-  if (firstTab && firstTabContent) {
-    firstTab.classList.add('active');
-    firstTabContent.classList.add('active');
-  }
-});
-
 </script>
 </body>
 </html>
