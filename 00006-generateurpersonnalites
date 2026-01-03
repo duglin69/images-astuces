@@ -539,6 +539,99 @@ input[type="color"]::-webkit-color-swatch {
 .density-medium { color: #ffa500 !important; }
 .density-high { color: #00ff88 !important; }
 .density-very-high { color: #ff00ff !important; }
+
+/* Styles pour la galerie de références */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: rgba(0, 20, 40, 0.6);
+  border: 2px solid transparent;
+  border-radius: 10px 10px 0 0;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.tab-button:hover {
+  background: rgba(0, 212, 255, 0.2);
+}
+
+.tab-button.active {
+  background: var(--accent);
+  color: #000;
+  border-bottom: 3px solid #000;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.reference-item {
+  background: rgba(0, 15, 30, 0.5);
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.reference-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+  background: rgba(0, 30, 60, 0.7);
+}
+
+.reference-preview {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.reference-item span {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #e8f4ff;
+}
+
+.reference-item small {
+  color: #88ccff;
+  font-size: 0.8em;
+}
+
+/* Animation pour le changement d'onglet */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 </style>
 </head>
 <body>
@@ -860,7 +953,78 @@ input[type="color"]::-webkit-color-swatch {
         <div class="input-hint">Atmosphère lumineuse de la scène</div>
       </div>
     </div>
-    
+    <!-- EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES -->
+<div class="section">
+  <h2 class="section-title">✨ EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES</h2>
+  
+  <div class="checkbox-group">
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectBokeh">
+      <label for="effectBokeh">Bokeh (flou d'arrière-plan artistique)</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectLensFlare">
+      <label for="effectLensFlare">Flare d'objectif (effet de lumière)</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectVignette">
+      <label for="effectVignette">Vignettage (coins assombris)</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectGrain">
+      <label for="effectGrain">Grain photographique</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectMotionBlur">
+      <label for="effectMotionBlur">Flou de mouvement</label>
+    </div>
+    <div class="checkbox-item">
+      <input type="checkbox" id="effectChromatic">
+      <label for="effectChromatic">Aberration chromatique (effet glitch)</label>
+    </div>
+  </div>
+  
+  <div class="input-group">
+    <div class="input-label">Conditions atmosphériques :</div>
+    <select id="atmosphere">
+      <option value="">Conditions normales</option>
+      <option value="avec pluie fine">Pluie fine</option>
+      <option value="avec brouillard mystique">Brouillard mystique</option>
+      <option value="avec neige tombante">Neige tombante</option>
+      <option value="avec poussière dorée">Poussière dorée</option>
+      <option value="avec pétales de cerisier volants">Pétales de cerisier</option>
+      <option value="avec fumée épaisse">Fumée épaisse</option>
+      <option value="avec brume matinale">Brume matinale</option>
+      <option value="avec tempête de sable">Tempête de sable</option>
+      <option value="avec cendres volantes">Cendres volantes</option>
+    </select>
+    <div class="input-hint">Ajoute une condition météo ou atmosphérique à la scène</div>
+  </div>
+  
+  <div class="input-group">
+    <div class="input-label">Filtres & Post-production :</div>
+    <select id="filters">
+      <option value="">Aucun filtre</option>
+      <option value="filtre vintage sépia">Vintage sépia</option>
+      <option value="filtre cinématique teal/orange">Cinématique teal/orange</option>
+      <option value="filtre noir et blanc contrasté">Noir et blanc</option>
+      <option value="filtre pastel doux">Pastel doux</option>
+      <option value="filtre HDR intense">HDR intense</option>
+      <option value="filtre infrarouge">Infrarouge</option>
+      <option value="filtre polaroid">Polaroid vintage</option>
+      <option value="filtre cross-process">Cross-process</option>
+    </select>
+    <div class="input-hint">Effets de post-traitement appliqués à l'image</div>
+  </div>
+  
+  <div class="input-group">
+    <div class="input-label">✨ Effets personnalisés :</div>
+    <input type="text" id="customEffects" class="custom-input" 
+           placeholder="Ex: 'avec reflets dans l'eau', 'avec particules magiques', 'avec distorsion de chaleur'..."
+           oninput="highlightCustomField(this)">
+    <div class="input-hint">Décrivez vos propres effets visuels spéciaux</div>
+  </div>
+</div>
     <!-- COSTUME & APPAREANCE -->
     <div class="section">
       <h2 class="section-title">👔 COSTUME, TENUE & APPAREANCE</h2>
@@ -1108,7 +1272,229 @@ poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra lim
     </div>
     
   </div> <!-- Fin grid-container -->
+
+<!-- GALERIE DE RÉFÉRENCES VISUELLES -->
+<div class="section" id="referenceGallerySection">
+  <h2 class="section-title collapsible" onclick="toggleSection('referenceGallery')">
+    <span class="collapsible-icon">▶</span> 🖼️ GALERIE DE RÉFÉRENCES VISUELLES
+  </h2>
   
+  <div class="collapsible-content" id="referenceGalleryContent">
+    <div class="tabs">
+      <button class="tab-button active" onclick="openTab(event, 'stylesTab')">🎨 Styles</button>
+      <button class="tab-button" onclick="openTab(event, 'lightingTab')">💡 Éclairages</button>
+      <button class="tab-button" onclick="openTab(event, 'compositionTab')">📐 Compositions</button>
+      <button class="tab-button" onclick="openTab(event, 'costumeTab')">👔 Costumes</button>
+    </div>
+    
+    <div id="stylesTab" class="tab-content active">
+      <div class="reference-grid">
+        <div class="reference-item" onclick="applyReference('hyperrealistic')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+          <span>Hyperréaliste 8K</span>
+          <small>Rendu ultra-détaillé</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('cyberpunk')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #9d4edd);"></div>
+          <span>Cyberpunk Néo-Tokyo</span>
+          <small>Néons et futurisme</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('watercolor')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #a8edea, #fed6e3);"></div>
+          <span>Aquarelle Japonaise</span>
+          <small>Doux et poétique</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('oilPainting')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #6a11cb, #2575fc);"></div>
+          <span>Peinture à l'huile</span>
+          <small>Style classique riche</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('anime')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4);"></div>
+          <span>Anime Ghibli</span>
+          <small>Onirique et coloré</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('steampunk')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);"></div>
+          <span>Steampunk Victorien</span>
+          <small>Rétro-futurisme</small>
+        </div>
+<!-- === TES 10 NOUVELLES PERSONNALISATIONS === -->
+
+<div class="reference-item" onclick="applyReference('mangaModerne')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #ff6b9d, #c44569);"></div>
+  <span>Manga Moderne</span>
+  <small>Style manga actuel, dynamique</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('pixelArt')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #00cec9, #81ecec);"></div>
+  <span>Pixel Art 16-bit</span>
+  <small>Rétro gaming années 90</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('conceptArt')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);"></div>
+  <span>Concept Art Jeu Vidéo</span>
+  <small>Croquis préparatoire professionnel</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('livreEnfant')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #ffeaa7, #fab1a0);"></div>
+  <span>Illustration Livre Enfant</span>
+  <small>Douceur et innocence</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('photoMode')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #2d3436, #636e72);"></div>
+  <span>Photo de Mode Élégante</span>
+  <small>Glamour et sophistication</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('afficheFilm')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #e17055, #fdcb6e);"></div>
+  <span>Affiche de Film Vintage</span>
+  <small>Années 80, style cinéma</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('bdFrancoBelge')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #0984e3, #74b9ff);"></div>
+  <span>BD Franco-Belge</span>
+  <small>Ligne claire, style Tintin</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('gravureAncienne')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #2d3436, #b2bec3);"></div>
+  <span>Gravure Ancienne</span>
+  <small>Noir et blanc, détails fins</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('dessinTrait')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #00b894, #55efc4);"></div>
+  <span>Dessin au Trait Minimaliste</span>
+  <small>Simple et épuré</small>
+</div>
+
+<div class="reference-item" onclick="applyReference('rendu3D')">
+  <div class="reference-preview" style="background: linear-gradient(135deg, #fd79a8, #e84393);"></div>
+  <span>Rendu 3D Moderne</span>
+  <small>Graphisme numérique propre</small>
+</div>
+      </div>
+    </div>
+    
+    <div id="lightingTab" class="tab-content">
+      <div class="reference-grid">
+        <div class="reference-item" onclick="applyReference('sunset')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #ff6b6b, #ffa726, #ffee58);"></div>
+          <span>Soleil couchant doré</span>
+          <small>Ambiance chaleureuse</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('moonlight')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+          <span>Clair de lune bleuté</span>
+          <small>Mystérieux et calme</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('neon')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #ff00ff);"></div>
+          <span>Néon Cyberpunk</span>
+          <small>Vibrant et électrique</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('candle')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);"></div>
+          <span>Lumière de bougie</span>
+          <small>Intime et dramatique</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('storm')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #373B44, #4286f4);"></div>
+          <span>Éclairs d'orage</span>
+          <small>Dramatique et puissant</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('bioluminescent')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #00b09b, #96c93d);"></div>
+          <span>Bioluminescence</span>
+          <small>Magique et naturel</small>
+        </div>
+      </div>
+    </div>
+    
+    <div id="compositionTab" class="tab-content">
+      <div class="reference-grid">
+        <div class="reference-item" onclick="applyReference('ruleOfThirds')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #4A00E0, #8E2DE2);"></div>
+          <span>Règle des tiers</span>
+          <small>Équilibre parfait</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('symmetry')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #f46b45, #eea849);"></div>
+          <span>Symétrie centrale</span>
+          <small>Harmonie visuelle</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('lowAngle')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #834d9b, #d04ed6);"></div>
+          <span>Contre-plongée</span>
+          <small>Personnage héroïque</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('highAngle')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #009FFF, #ec2F4B);"></div>
+          <span>Plongée</span>
+          <small>Personnage vulnérable</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('closeUp')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #654ea3, #eaafc8);"></div>
+          <span>Gros plan</span>
+          <small>Émotions intenses</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('wideShot')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #00C9FF, #92FE9D);"></div>
+          <span>Plan large épique</span>
+          <small>Échelle monumentale</small>
+        </div>
+      </div>
+    </div>
+    
+    <div id="costumeTab" class="tab-content">
+      <div class="reference-grid">
+        <div class="reference-item" onclick="applyReference('medievalArmor')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #8B4513, #D2691E);"></div>
+          <span>Armure médiévale</span>
+          <small>Chevalier historique</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('cyberpunkGear')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #00d4ff, #9d4edd);"></div>
+          <span>Équipement Cyberpunk</span>
+          <small>Futuriste et high-tech</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('elegantEvening')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #000000, #434343);"></div>
+          <span>Tenue de soirée</span>
+          <small>Élégant et raffiné</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('fantasyRobe')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);"></div>
+          <span>Robe de mage</span>
+          <small>Fantaisie mystique</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('samurai')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #e52d27, #b31217);"></div>
+          <span>Armure de samouraï</span>
+          <small>Tradition japonaise</small>
+        </div>
+        <div class="reference-item" onclick="applyReference('steampunkCostume')">
+          <div class="reference-preview" style="background: linear-gradient(135deg, #3a1c71, #d76d77);"></div>
+          <span>Costume Steampunk</span>
+          <small>Rétro-mécanique</small>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; font-size: 0.9em;">
+      <strong>💡 Comment utiliser :</strong> Cliquez sur un exemple pour appliquer automatiquement son style au formulaire. 
+      Vous pouvez ensuite personnaliser davantage les champs.
+    </div>
+  </div>
+</div>  
+
   <!-- CONTROLS -->
   <div class="controls">
     <div class="control-group">
@@ -1158,8 +1544,8 @@ poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra lim
     </button>
     
     <button id="exampleBtn" onclick="generateExample()">
-      <span>✨</span> EXEMPLE CRÉATIF
-    </button>
+  <span>🎨</span> CHARGER UN EXEMPLE
+</button>
   </div>
   
   <!-- CHARGEMENT -->
@@ -1441,11 +1827,8 @@ document.addEventListener('DOMContentLoaded', function() {
       select.value = 'custom';
     }
   });
-  
-  // Générer un premier prompt d'exemple
-  setTimeout(() => {
-    generateExample();
-  }, 1000);
+  // Vider tous les champs au démarrage
+  clearAll(); 
 });
 
 // FONCTIONS UTILITAIRES
@@ -2001,6 +2384,52 @@ function generatePrompt() {
   
   // Style artistique
   promptParts.push(style);
+
+  // ===== EFFETS SPÉCIAUX & CONDITIONS ATMOSPHÉRIQUES =====
+  
+  // Effets checkbox
+  const effects = [];
+  if (document.getElementById('effectBokeh').checked) {
+    effects.push("bokeh artistique");
+  }
+  if (document.getElementById('effectLensFlare').checked) {
+    effects.push("flare d'objectif");
+  }
+  if (document.getElementById('effectVignette').checked) {
+    effects.push("vignettage subtil");
+  }
+  if (document.getElementById('effectGrain').checked) {
+    effects.push("grain photographique");
+  }
+  if (document.getElementById('effectMotionBlur').checked) {
+    effects.push("flou de mouvement");
+  }
+  if (document.getElementById('effectChromatic').checked) {
+    effects.push("aberration chromatique légère");
+  }
+  
+  // Ajouter les effets au prompt
+  if (effects.length > 0) {
+    promptParts.push(effects.join(', '));
+  }
+  
+  // Conditions atmosphériques
+  const atmosphere = document.getElementById('atmosphere').value;
+  if (atmosphere) {
+    promptParts.push(atmosphere);
+  }
+  
+  // Filtres
+  const filters = document.getElementById('filters').value;
+  if (filters) {
+    promptParts.push(filters);
+  }
+  
+  // Effets personnalisés
+  const customEffects = document.getElementById('customEffects').value.trim();
+  if (customEffects) {
+    promptParts.push(customEffects);
+  }
   
   // Événement
   if (evenement) {
@@ -2197,7 +2626,11 @@ function clearAll() {
       checkbox.checked = false;
     }
   });
-  
+  // Réinitialiser les nouveaux champs des effets spéciaux
+  document.getElementById('atmosphere').selectedIndex = 0;
+  document.getElementById('filters').selectedIndex = 0;
+  document.getElementById('customEffects').value = '';
+  highlightCustomField(document.getElementById('customEffects')); 
   // Réactiver autoCopy et toggleCustom par défaut
   document.getElementById('autoCopy').checked = true;
   document.getElementById('toggleCustom').checked = true;
@@ -2395,6 +2828,262 @@ window.onload = function() {
   `;
   document.head.appendChild(style);
 };
+
+// Fonction pour changer d'onglet dans la galerie
+function openTab(evt, tabName) {
+  // Cacher tous les onglets
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabContents.forEach(tab => tab.classList.remove('active'));
+  
+  // Désactiver tous les boutons d'onglet
+  const tabButtons = document.querySelectorAll('.tab-button');
+  tabButtons.forEach(button => button.classList.remove('active'));
+  
+  // Afficher l'onglet sélectionné
+  document.getElementById(tabName).classList.add('active');
+  
+  // Activer le bouton cliqué
+  evt.currentTarget.classList.add('active');
+}
+
+// Fonction pour appliquer une référence
+function applyReference(referenceId) {
+  // Dictionnaire des références
+  const references = {
+    // Styles
+    'hyperrealistic': {
+      style: "hyperréaliste 8K, photographie professionnelle, détails extrêmes, textures réalistes",
+      quality: "ultra-détaillé 8K"
+    },
+    'cyberpunk': {
+      style: "cyberpunk néon, Tokyo 2077, futur dystopique, lumières LED, pluie réfléchissante",
+      eclairage: "néons bleu et rose, éclairage cyberpunk futuriste",
+      costume: "en tenue cyberpunk, équipement high-tech, implants cybernétiques"
+    },
+    'watercolor': {
+      style: "aquarelle japonaise sumi-e, couleurs douces, traits délicats, style poétique",
+      quality: "rendu artistique"
+    },
+    'oilPainting': {
+      style: "peinture à l'huile baroque, coups de pinceau visibles, riche en textures, style classique",
+      quality: "rendu artistique"
+    },
+    'anime': {
+      style: "anime Studio Ghibli, couleurs pastel, éclairage doux, style cartoon japonais",
+      quality: "animation de haute qualité"
+    },
+    'steampunk': {
+      style: "steampunk victorien, mécanismes visibles, cuivre et laiton, rétro-futurisme",
+      epoque: "ère steampunk",
+      costume: "en costume steampunk, équipement mécanique, accessoires vintage"
+    },
+    
+    // Éclairages
+    'sunset': {
+      eclairage: "soleil couchant doré, lueur chaude, ombres longues, ciel orangé"
+    },
+    'moonlight': {
+      eclairage: "clair de lune argenté, ombres bleutées, nuit étoilée, ambiance mystérieuse"
+    },
+    'neon': {
+      eclairage: "néons bleu et magenta, reflets humides, rue nocturne, ambiance cyberpunk"
+    },
+    'candle': {
+      eclairage: "lumière de bougie, ombres dansantes, ambiance intime, chaleur orangée"
+    },
+    'storm': {
+      eclairage: "éclairs violets, ciel orageux, pluie battante, ambiance dramatique"
+    },
+    'bioluminescent': {
+  eclairage: "bioluminescence verte, lueur naturelle, forêt enchantée, ambiance magique"
+},
+
+// === TES 10 NOUVELLES PERSONNALISATIONS ===
+
+'mangaModerne': {
+  style: "style manga moderne, traits dynamiques, grands yeux expressifs, encrage numérique propre",
+  quality: "rendu manga haute qualité",
+  customDetails: "effets de vitesse typiques du manga, onomatopées stylisées"
+},
+
+'pixelArt': {
+  style: "pixel art 16-bit, résolution basse, palette limitée 8-bit, style rétro gaming années 90",
+  quality: "pixel art",
+  customDetails: "dithering, pixels visibles, ambiance nostalgique jeux vidéo"
+},
+
+'conceptArt': {
+  style: "concept art de jeu vidéo, croquis préparatoire, rough painterly, annotations visibles",
+  quality: "croquis concept art",
+  customDetails: "notes de design dans les marges, variations de couleur, exploration visuelle"
+},
+
+'livreEnfant': {
+  style: "illustration de livre pour enfants, couleurs pastel douces, traits ronds et amicaux, style innocent et joyeux",
+  quality: "illustration jeunesse",
+  customDetails: "éléments mignons et attachants, ambiance chaleureuse et rassurante"
+},
+
+'photoMode': {
+  style: "photographie de mode éditoriale, studio professionnel, éclairage dramatique, modèle élégant",
+  quality: "photo de mode haute couture",
+  customDetails: "pose naturelle mais travaillée, vêtements en mouvement, regard perçant"
+},
+
+'afficheFilm': {
+  style: "affiche de film vintage années 80, typographie stylée, composition épique, couleurs saturées",
+  quality: "affiche cinéma",
+  customDetails: "titrage en gros caractères, acteurs principaux mis en avant, tagline accrocheur"
+},
+
+'bdFrancoBelge': {
+  style: "bande dessinée franco-belge, ligne claire, couleurs plates, style Hergé (Tintin) ou Uderzo (Astérix)",
+  quality: "BD ligne claire",
+  customDetails: "bulles de dialogue lisibles, cadrage case par case, humour discret"
+},
+
+'gravureAncienne': {
+  style: "gravure ancienne sur bois, noir et blanc contrasté, hachures fines, style renaissance ou médiéval",
+  quality: "gravure historique",
+  customDetails: "texture de papier vieilli, bordures ornementées, légendes en latin ou vieux français"
+},
+
+'dessinTrait': {
+  style: "dessin au trait minimaliste, contour noir fin, pas de couleur ou une seule couleur d'accent, style épuré",
+  quality: "dessin vectoriel propre",
+  customDetails: "économie de traits, suggestion plutôt que détail, élégance dans la simplicité"
+},
+
+'rendu3D': {
+  style: "rendu 3D moderne, matériaux PBR, éclairage global, textures réalistes, style graphique professionnel",
+  quality: "rendu 3D photo-réaliste",
+  customDetails: "reflets propres, ombres douces, matériaux variés (métal, verre, plastique)"
+},
+
+// Compositions
+    'ruleOfThirds': {
+      format: "wide shot cinématique 16:9",
+      customDetails: "composition utilisant la règle des tiers, équilibre parfait"
+    },
+    'symmetry': {
+      format: "cadrage carré 1:1",
+      customDetails: "symétrie parfaite, composition équilibrée, harmonie visuelle"
+    },
+    'lowAngle': {
+      customDetails: "vue en contre-plongée, personnage imposant, perspective héroïque"
+    },
+    'highAngle': {
+      customDetails: "vue en plongée, personnage vulnérable, perspective dominante"
+    },
+    'closeUp': {
+      format: "portrait 9:16",
+      customDetails: "gros plan sur le visage, émotions intenses, cadrage serré"
+    },
+    'wideShot': {
+      format: "wide shot ultra-large 21:9",
+      customDetails: "plan large épique, échelle monumentale, paysage impressionnant"
+    },
+    
+    // Costumes
+    'medievalArmor': {
+      costume: "en armure de chevalier médiéval complète, heaume, cape, épée",
+      epoque: "Moyen Âge"
+    },
+    'cyberpunkGear': {
+      costume: "en équipement cyberpunk futuriste, implants visibles, vêtements techniques",
+      epoque: "ère cyberpunk 2077"
+    },
+    'elegantEvening': {
+      costume: "en tenue de soirée élégante, costume noir, cravate, montre de luxe"
+    },
+    'fantasyRobe': {
+      costume: "en robe de mage fantasy, tissus nobles, symboles magiques, bâton de pouvoir",
+      epoque: "époque fantastique"
+    },
+    'samurai': {
+      costume: "en armure de samouraï traditionnelle, casque kabuto, katana, protections",
+      epoque: "Japon féodal"
+    },
+    'steampunkCostume': {
+      costume: "en costume steampunk, gousset, lunettes de protection, engrenages visibles",
+      epoque: "ère steampunk"
+    }
+  };
+  
+  // Appliquer la référence si elle existe
+  if (references[referenceId]) {
+    const ref = references[referenceId];
+    
+    // Appliquer chaque champ
+    if (ref.style) {
+      document.getElementById('customStyle').value = ref.style;
+      highlightCustomField(document.getElementById('customStyle'));
+    }
+    
+    if (ref.eclairage) {
+      document.getElementById('customEclairage').value = ref.eclairage;
+      highlightCustomField(document.getElementById('customEclairage'));
+    }
+    
+    if (ref.costume) {
+      document.getElementById('customCostume').value = ref.costume;
+      highlightCustomField(document.getElementById('customCostume'));
+    }
+    
+    if (ref.epoque) {
+      document.getElementById('customEpoque').value = ref.epoque;
+      highlightCustomField(document.getElementById('customEpoque'));
+    }
+    
+    if (ref.format) {
+      document.getElementById('format').value = ref.format;
+    }
+    
+    if (ref.quality) {
+      document.getElementById('quality').value = ref.quality;
+    }
+    
+    if (ref.customDetails) {
+      const currentDetails = document.getElementById('customDetails').value;
+      document.getElementById('customDetails').value = currentDetails ? 
+        currentDetails + ', ' + ref.customDetails : ref.customDetails;
+      highlightCustomField(document.getElementById('customDetails'));
+    }
+    
+    // Feedback visuel
+    const clickedElement = event.target.closest('.reference-item');
+    if (clickedElement) {
+      clickedElement.style.background = 'rgba(0, 255, 136, 0.2)';
+      clickedElement.style.borderColor = '#00ff88';
+      
+      // Remettre la couleur après 1 seconde
+      setTimeout(() => {
+        clickedElement.style.background = '';
+        clickedElement.style.borderColor = '';
+      }, 1000);
+    }
+    
+    showNotification(`✅ Référence appliquée ! Les champs correspondants ont été remplis.`, '#00ff88');
+    
+    // Générer automatiquement un prompt si l'option est activée
+    if (document.getElementById('autoCopy').checked) {
+      setTimeout(() => generatePrompt(), 500);
+    }
+  }
+}
+
+// Initialiser la galerie au chargement
+document.addEventListener('DOMContentLoaded', function() {
+  // S'assurer que le premier onglet est visible
+  const firstTab = document.querySelector('.tab-button.active');
+  const firstTabContent = document.querySelector('.tab-content.active');
+  
+  if (firstTab && firstTabContent) {
+    firstTab.classList.add('active');
+    firstTabContent.classList.add('active');
+  }
+});
+
 </script>
 </body>
 </html>
