@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html lang="fr"> 
+<head> 
+<meta charset="UTF-8" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<title>Blocs interactifs</title> 
+<style> 
+:root{ 
+--rose:#ffd6e4; 
+--vert:#d6f5d8; 
+--bleu:#dbe8ff; 
+--rouge:#ffd6d6; 
+--text:#1a1a1a; 
+--padding:12px; 
+--border:1px solid #e5e5e5; 
+--radius:10px; 
+} 
+body{ 
+font-family: Arial, sans-serif; 
+color:var(--text); 
+padding:20px; 
+background:#f7f7f7; 
+} 
+.block-wrap{ 
+display:flex; 
+flex-direction:column; 
+gap:20px; 
+max-width:900px; 
+margin:0 auto; 
+} 
+.block{ 
+border:var(--border); 
+border-radius:var(--radius); 
+padding:var(--padding); 
+position:relative; 
+overflow:hidden; 
+} 
+/* Palette par bloc (alternance) */ 
+.block.pink{ 
+background:var(--rose); 
+} 
+.block.green{ 
+background:var(--vert); 
+} 
+.block.blue{ 
+background:var(--bleu); 
+} 
+.block.red{ 
+background:var(--rouge); 
+}
+
+.block h3{
+margin:0 0 8px 0;
+font-size:14px;
+font-weight:700;
+letter-spacing:.5px;
+}
+
+.copy-btn{
+margin-top:8px;
+padding:8px 12px;
+font-size:14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#ffffffcc;
+box-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+.copy-btn:hover{ background:#ffffff; }
+.sr{ position:absolute; left:-9999px; }
+
+@media (max-width: 700px){
+.block-wrap{ padding:0 12px; }
+}
+</style>
+</head> 
+<body> 
+<div class="block-wrap" id="blocks">
+
+<section class="block pink" aria-label="COURT GB">
+  <h3>COURT GB</h3>
+  <p id="p1" class="sentences">
+    poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra limbs, missing limbs, disfigured, deformed, blurry, bad proportions, extra fingers, fewer fingers, fused fingers, mutated hands, floating limbs, disconnected limbs, out of frame, cropped, low quality, worst quality, jpeg artifacts, watermark, signature, username, text, logo, duplicate, distorted, pixelated, low resolution, overexposed, underexposed, bad lighting, flat lighting, bad composition, bad framing, bad perspective, tilted, unbalanced, bad depth of field, clipping, intersecting geometry, floating objects, wrong shadows, missing shadows, inconsistent lighting, noise, grain, oversaturated, undersaturated, chromatic aberration, artefacts, glitches, anatomical errors, unnatural pose, stiff pose, asymmetric eyes, poorly rendered, lack of detail, oversmoothed, oversharpened, misspelled text, spelling errors, typos, grammatical errors, wrong letters, illegible text, gibberish text, nonsense text, garbled text, unreadable text, badly written text, incorrect spelling, malformed letters, distorted text, blurry text, pixelated text, broken text, fragmented text, backwards text, upside down text, wrong font, inconsistent font, mixed fonts
+  </p>
+  <button class="copy-btn" onclick="copyParagraph('p1')">Copy</button>
+  <span class="sr" aria-live="polite" id="status1"></span>
+</section>
+
+<section class="block green" aria-label="COURT FR">
+  <h3>COURT FR</h3>
+  <p id="p2" class="sentences">
+    mains mal dessinées, pieds mal dessinés, visage mal dessiné, dé mauvaise anatomie, membres supplémentaires, membres manquants, défiguré, déformé, flou, mauvaises proportions, doigts supplémentaires, moins de doigts, doigts fusionnés, mains mutées, membres flottants, membres déconnectés, hors cadre, recadré, basse qualité, pire qualité, artefacts jpeg, filigrane, signature, nom d'utilisateur, texte, logo, dupliqué, distordu, pixellisé, basse résolution, surexposé, sous-exposé, mauvais éclairage, éclairage plat, mauvaise composition, mauvais cadrage, mauvaise perspective, incliné, déséquilibré, mauvaise profondeur de champ, découpage, géométrie qui se croise, objets flottants, ombres incorrectes, ombres manquantes, éclairage incohérent, bruit, grain, sursaturé, sous-saturé, aberration chromatique, artefacts, glitchs, erreurs anatomiques, pose non naturelle, pose raide, yeux asymétriques, mal rendu, manque de détails, trop lissé, sur-accentué, texte mal orthographié, fautes d'orthographe, fautes de frappe, erreurs grammaticales, lettres incorrectes, texte illisible, charabia, texte absurde, texte brouillé, texte non lisible, texte mal écrit, orthographe incorrecte, lettres mal formées, texte déformé, texte flou, texte pixellisé, texte cassé, texte fragmenté, texte à l'envers, texte inversé, mauvaise police, police incohérente, polices mélangées
+  </p>
+  <button class="copy-btn" onclick="copyParagraph('p2')">Copy</button>
+  <span class="sr" aria-live="polite" id="status2"></span>
+</section>
+
+<section class="block blue" aria-label="LONG GB">
+  <h3>LONG GB</h3>
+  <p id="p3" class="sentences">
+    ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, signature, cut off, draft, duplicate, distortion of proportions, anatomy errors, error, cropped, worst quality, low quality, jpeg artifacts, username, artist name, text, caption, label, logo, banner, extra fingers, fewer fingers, mutated hands, mutation, mutilated, amputation, floating limbs, disconnected limbs, malformed hands, long neck, long body, disgusting, childish, mutilated, mangled, old, surreal, unrealistic proportions, unnatural pose, stiff pose, awkward pose, impossible anatomy, fused fingers, too many fingers, extra arms, extra legs, missing arms, missing legs, missing fingers, cloned face, gross proportions, malformed limbs, missing hands, poorly rendered hands, bad hands, fused hand, bad fingers, malformed fingers, extra digit, fewer digits, bad feet, bad proportions, cross-eyed, asymmetric eyes, different sized eyes, misplaced eyes, bad lips, bad teeth, bad mouth, bad nose, bad ears, bad hair, bad skin, bad texture, plastic skin, waxy skin, oversaturated, undersaturated, overexposed, underexposed, bad lighting, harsh shadows, flat lighting, monochrome when color expected, wrong colors, muddy colors, color bleeding, chromatic aberration, noise, grain, pixelated, low resolution, low detail, lack of detail, oversharpened, oversmoothed, oversimplified, cartoonish when realism expected, realistic when stylized expected, uncanny valley, lifeless, soulless, expressionless, empty eyes, dead eyes, blank stare, boring, generic, uninspired, cliché, kitsch, tacky, cluttered, messy, chaotic, disorganized, incoherent, nonsensical, illogical, contradictory elements, anachronistic, historically inaccurate, culturally insensitive, offensive, inappropriate, NSFW elements when SFW expected, partial nudity, visible underwear, wardrobe malfunction, transparent clothing when opaque expected, bad clothing, poorly drawn clothing, clothing clipping through body, floating clothing, wrinkled clothing when smooth expected, torn clothing when intact expected, mismatched clothing, bad fashion, dated fashion when modern expected, bad accessories, missing clothing parts, extra clothing parts, bad framing, bad composition, rule of thirds violated, unbalanced, tilted horizon, dutch angle when straight expected, bad perspective, wrong perspective, vanishing point errors, scale errors, size inconsistencies, depth errors, foreground background confusion, bad bokeh, bad depth of field, everything in focus when selective focus expected, bad camera angle, unflattering angle, bad crop, important elements cut off, too much empty space, bad negative space, tangents, merging, bad separation of elements, overlapping when separate expected, gaps when connected expected, bad reflections, missing reflections, wrong reflections, bad shadows, missing shadows, wrong shadows, shadow direction errors, multiple light sources when single expected, inconsistent lighting, bad rim lighting, bad ambient occlusion, bad subsurface scattering, bad specularity, bad materials, wrong materials, anachronistic materials, bad textures, repetitive textures, texture stretching, texture warping, missing textures, low polygon count when high expected, visible polygons, hard edges when smooth expected, bad topology, z-fighting, clipping, intersecting geometry, floating objects, objects defying gravity, impossible physics, bad weather when clear expected, wrong weather, wrong time of day, wrong season, wrong location, wrong architecture, bad buildings, impossible buildings, bad vehicles, bad animals, bad plants, bad food, bad objects, unidentifiable objects, AI artifacts, algorithm errors, training data artifacts, overfitting artifacts, mode collapse, adversarial artifacts, prompt bleeding, style inconsistency within single image, multiple styles when single expected, wrong style, bad parody, bad pastiche, bad homage, misspelled text, spelling errors, typos, grammatical errors, wrong letters, illegible text, gibberish text, nonsense text, garbled text, unreadable text, badly written text, incorrect spelling, malformed letters, distorted text, blurry text, pixelated text, broken text, fragmented text, backwards text, upside down text, wrong font, inconsistent font, mixed fonts
+  </p>
+  <button class="copy-btn" onclick="copyParagraph('p3')">Copy</button>
+  <span class="sr" aria-live="polite" id="status3"></span>
+</section>
+
+<section class="block red" aria-label="LONG FR">
+  <h3>LONG FR</h3>
+  <p id="p4" class="sentences">
+    laid, moche, carrelage répétitif, mains mal dessinées, pieds mal dessinés, visage mal dessiné, hors cadre, membres supplémentaires, défiguré, déformé, corps hors cadre, flou, mauvaise anatomie, image floue, filigrane, granuleux, signature, coupé, brouillon, dupliqué, distorsion des proportions, erreurs anatomiques, erreur, recadré, pire qualité, basse qualité, artefacts jpeg, nom d'utilisateur, nom d'artiste, texte, légende, étiquette, logo, bannière, doigts supplémentaires, moins de doigts, mains mutées, mutation, mutilé, amputation, membres flottants, membres déconnectés, mains mal formées, long cou, corps long, dégoûtant, enfantin, mutilé, massacré, vieux, surréaliste, proportions irréalistes, pose non naturelle, pose raide, pose maladroite, anatomie impossible, doigts fusionnés, trop de doigts, bras supplémentaires, jambes supplémentaires, bras manquants, jambes manquantes, doigts manquants, visage cloné, proportions grossières, membres mal formés, mains manquantes, mains mal rendues, mauvaises mains, main fusionnée, mauvais doigts, doigts mal formés, chiffre supplémentaire, moins de chiffres, mauvais pieds, mauvaises proportions, yeux qui louchent, yeux asymétriques, yeux de tailles différentes, yeux mal placés, mauvaises lèvres, mauvaises dents, mauvaise bouche, mauvais nez, mauvaises oreilles, mauvais cheveux, mauvaise peau, mauvaise texture, peau plastique, peau cireuse, sursaturé, sous-saturé, surexposé, sous-exposé, mauvais éclairage, ombres dures, éclairage plat, monochrome quand couleur attendue, mauvaises couleurs, couleurs boueuses, couleurs qui bavent, aberration chromatique, bruit, grain, pixellisé, basse résolution, faible détail, manque de détails, sur-accentué, trop lissé, trop simplifié, cartoon quand réalisme attendu, réaliste quand stylisé attendu, vallée de l'étrange, sans vie, sans âme, inexpressif, yeux vides, yeux morts, regard vide, ennuyeux, généraliste, cliché, kitsch, de mauvais goût, encombré, désordonné, chaotique, désorganisé, incohérent, absurde, illogique, éléments contradictoires, anachronique, historiquement inexact, culturellement insensible, offensant, inapproprié, NSFW éléments quand SFW attendu, nudité partielle, sous-vêtements visibles, dysfonctionnement vestimentaire, vêtements transparents quand opaques attendus, mauvais vêtements, vêtements mal dessinés, vêtements qui traversent le corps, vêtements flottants, vêtements froissés quand lisses attendus, vêtements déchirés quand intacts attendus, vêtements dépareillés, mauvaise mode, mode datée quand moderne attendue, mauvais accessoires, parties de vêtements manquantes, parties de vêtements supplémentaires, mauvais cadrage, mauvaise composition, règle des tiers violée, déséquilibré, horizon incliné, angle hollandais quand droit attendu, mauvaise perspective, perspective incorrecte, erreurs de point de fuite, erreurs d'échelle, incohérences de taille, erreurs de profondeur, confusion premier plan arrière-plan, mauvais bokeh, mauvaise profondeur de champ, tout est net quand mise au point sélective attendue, mauvais angle de caméra, angle peu flatteur, mauvais recadrage, éléments importants coupés, trop d'espace vide, mauvais espace négatif, tangentes, fusion, mauvaise séparation des éléments, chevauchement quand séparation attendue, espaces quand connexion attendue, mauvais reflets, reflets manquants, reflets incorrects, mauvaises ombres, ombres manquantes, wrong shadows etc.
+  </p>
+  <button class="copy-btn" onclick="copyParagraph('p4')">Copy</button>
+  <span class="sr" aria-live="polite" id="status4"></span>
+</section>
+
+</div> 
+<script> 
+function copyParagraph(paragraphId){ 
+  const p = document.getElementById(paragraphId); 
+  if(!p) return; 
+  
+  // Récupérer le texte du paragraphe
+  const originalText = p.innerText || p.textContent; 
+  
+  // Trouver le bloc parent et déterminer la langue
+  const block = p.closest('.block');
+  const h3 = block.querySelector('h3');
+  const title = h3 ? h3.textContent : '';
+  
+  // Déterminer le préfixe en fonction de la langue
+  let prefix = '';
+  if (title.includes('FR')) {
+    prefix = 'Prompt négatif : ';
+  } else if (title.includes('GB')) {
+    prefix = 'Negative prompt : ';
+  }
+  
+  // Ajouter le préfixe au texte
+  const textToCopy = prefix + originalText.trim();
+  
+  // Copier dans le presse-papier
+  navigator.clipboard.writeText(textToCopy).then(function(){ 
+    const status = document.getElementById('status'+paragraphId.slice(-1)); 
+    if(status){ 
+      status.textContent = 'Copié!'; 
+      setTimeout(()=>{ status.textContent=''; }, 1500); 
+    } 
+  }).catch(function(err){ 
+    console.error('Copy failed', err); 
+  }); 
+} 
+</script> 
+</body> 
+</html>
