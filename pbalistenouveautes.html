@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de fiche bibliographique muséale</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-title-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            flex-shrink: 0;
+        }
+        
+        .logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .title-area {
+            flex-grow: 1;
+        }
+        
+        .title-input {
+            width: 100%;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 2px solid #ddd;
+            padding: 8px 0;
+            outline: none;
+            transition: border-color 0.3s;
+            background-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .title-input:focus {
+            border-color: #2c5aa0;
+        }
+        
+        .subtitle-input {
+            width: 100%;
+            font-size: 18px;
+            border: none;
+            border-bottom: 2px solid #ddd;
+            padding: 8px 0;
+            outline: none;
+            transition: border-color 0.3s;
+            background-color: transparent;
+        }
+        
+        .subtitle-input:focus {
+            border-color: #2c5aa0;
+        }
+        
+        .logo-upload {
+            margin-top: 10px;
+        }
+        
+        .upload-btn {
+            background-color: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #1d3d6f;
+        }
+        
+        .table-container {
+            width: 100%;
+        }
+        
+        .book-row {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        
+        .book-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .book-info {
+            flex: 1.5;
+            padding: 10px 15px 10px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .book-cover {
+            flex: 1;
+            padding: 10px 20px 10px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .book-text {
+            width: 100%;
+            min-height: 160px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 18px;
+            line-height: 1.5;
+            outline: none;
+            resize: vertical;
+            background-color: #fdfdfd;
+            cursor: text;
+            transition: border-color 0.3s;
+        }
+        
+        .book-text:focus {
+            border-color: #2c5aa0;
+            background-color: #fff;
+        }
+        
+        .formatting-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .format-btn {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            min-width: 40px;
+            transition: all 0.2s;
+        }
+        
+        .format-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .format-btn.active {
+            background-color: #2c5aa0;
+            color: white;
+            border-color: #2c5aa0;
+        }
+        
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .color-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .image-container {
+            width: 160px;
+            height: 220px;
+            border: 2px dashed #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .image-upload {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remove-image-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.3s;
+        }
+        
+        .remove-image-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .export-btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        
+        .export-html {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .export-html:hover {
+            background-color: #229954;
+        }
+        
+        .export-pdf {
+            background-color: #d32f2f;
+            color: white;
+        }
+        
+        .export-pdf:hover {
+            background-color: #b71c1c;
+        }
+        
+        .preview-area {
+            margin-top: 40px;
+            border-top: 2px solid #ddd;
+            padding-top: 30px;
+        }
+        
+        .preview-title {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2c5aa0;
+        }
+        
+        .preview-container {
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 40px;
+            background-color: white;
+            min-height: 550px;
+        }
+        
+        .preview-logo-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .preview-logo {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 0;
+            flex-shrink: 0;
+        }
+        
+        .preview-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .preview-main-title {
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        .preview-books {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .preview-book-row {
+            display: table-row;
+            margin-bottom: 10px;
+        }
+        
+        .preview-book-info {
+            display: table-cell;
+            width: 60%;
+            padding: 10px 30px 10px 10px;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .preview-book-cover {
+            display: table-cell;
+            width: 40%;
+            padding: 10px 30px 10px 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .preview-book-cover img {
+            max-width: 160px;
+            max-height: 220px;
+            object-fit: contain;
+        }
+        
+        .instructions {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c5aa0;
+        }
+        
+        @media (max-width: 768px) {
+            .logo-title-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .logo-container {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .book-row {
+                flex-direction: column;
+            }
+            
+            .preview-book-row {
+                display: block;
+                margin-bottom: 20px;
+            }
+            
+            .preview-book-info, .preview-book-cover {
+                display: block;
+                width: 100%;
+            }
+            
+            .preview-logo-title {
+                flex-direction: column;
+                align-items: center;
+                position: static;
+            }
+            
+            .preview-logo {
+                position: static;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Création de fiche bibliographique muséale</h1>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>1. Entrez les titres de votre document dans les champs prévus</p>
+            <p>2. Téléchargez un logo</p>
+            <p>3. Pour formater le texte : <strong>sélectionnez d'abord le texte</strong>, puis cliquez sur G (gras), I (italique), N (normal) ou changez la couleur</p>
+            <p>4. Téléchargez les images de couverture des livres</p>
+            <p>5. <strong>Vous pouvez ajouter jusqu'à 10 pages</strong> en utilisant les boutons + et -</p>
+            <p>6. Sauvegardez votre travail pour le reprendre plus tard, ou exportez en HTML/PDF</p>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button class="export-btn export-html" id="addPage">+ Ajouter une page</button>
+            <button class="export-btn export-pdf" id="removePage">- Retirer la dernière page</button>
+            <span id="pageCount" style="margin-left: 20px; font-weight: bold;">Pages : 1</span>
+        </div>
+        
+        <div class="logo-title-section">
+            <div class="logo-container" id="logoContainer">
+                <span style="color: #aaa;">Logo</span>
+            </div>
+            <div class="title-area">
+                <input type="text" class="title-input" id="mainTitle" placeholder="Centre de Ressources" value="Centre de Ressources">
+                <input type="text" class="subtitle-input" id="subTitle" placeholder="Nouveautés 2025.12" value="Nouveautés 2025.12">
+                <div class="logo-upload">
+                    <input type="file" id="logoUpload" accept="image/*">
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-container" id="tableContainer">
+            <!-- Les 5 lignes seront générées par JavaScript -->
+        </div>
+        
+        <div class="controls">
+            <button class="export-btn export-html" id="saveWork">Sauvegarder mon travail</button>
+            <button class="export-btn export-html" id="loadWork">Charger mon travail</button>
+            <button class="export-btn export-html" id="exportHtml">Exporter en HTML</button>
+            <button class="export-btn export-pdf" id="exportPdf">Exporter en PDF</button>
+        </div>
+        <input type="file" id="loadFileInput" accept=".json" style="display: none;">
+        
+        <div class="preview-area">
+            <div class="preview-title">Aperçu du document final</div>
+            <div class="preview-container" id="previewContainer"></div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        const MAX_PAGES = 10;
+        let currentPages = 1;
+        
+        const defaultBookData = [
+            {
+                text: '<div style="text-align: center;"><strong>Recourir à l\'humour en médiation muséale</strong></div><div style="text-align: center;">État des lieux, enjeux, perspectives</div><div style="text-align: center;"><em>(2025 - Raphaël Ginisty)</em></div>',
+                image: null
+            },
+            {
+                text: '<div style="text-align: center;"><strong>Les bébés au musée</strong></div><div style="text-align: center;">Pourquoi ? Comment ?</div><div style="text-align: center;"><em>(2022 – dir. Sylvie Rayna)</em></div>',
+                image: null
+            },
+            {
+                text: '<div style="text-align: center;"><strong>L\'éducation artistique et culturelle</strong></div><div style="text-align: center;">Une utopie à l\'épreuve des sciences sociales</div><div style="text-align: center;"><em>(2022 – dir. Anne Jonchery et Sylvie Octobre)</em></div>',
+                image: null
+            },
+            {
+                text: '<div style="text-align: center;"><strong>Musées et accessibilité</strong></div><div style="text-align: center;">Nouvelles approches pour tous les publics</div><div style="text-align: center;"><em>(2024 – dir. Jean Dupont)</em></div>',
+                image: null
+            },
+            {
+                text: '<div style="text-align: center;"><strong>Le numérique au musée</strong></div><div style="text-align: center;">Expériences immersives et médiation innovante</div><div style="text-align: center;"><em>(2023 – dir. Marie Martin)</em></div>',
+                image: null
+            }
+        ];
+
+        let allPagesData = [
+            JSON.parse(JSON.stringify(defaultBookData))
+        ];
+
+        let logoImage = null;
+
+        function createBookRows() {
+            const container = document.getElementById('tableContainer');
+            container.innerHTML = '';
+
+            for (let pageIndex = 0; pageIndex < currentPages; pageIndex++) {
+                // Ajouter un titre de page
+                if (pageIndex > 0) {
+                    const pageHeader = document.createElement('div');
+                    pageHeader.style.cssText = 'margin: 40px 0 20px 0; padding: 15px; background-color: #f0f7ff; border-radius: 5px; text-align: center;';
+                    pageHeader.innerHTML = `<h2 style="margin: 0; color: #2c5aa0;">Page ${pageIndex + 1}</h2>`;
+                    container.appendChild(pageHeader);
+                }
+
+                for (let i = 0; i < 5; i++) {
+                    const bookIndex = pageIndex * 5 + i;
+                    const row = document.createElement('div');
+                    row.className = 'book-row';
+                    row.innerHTML = `
+                        <div class="book-info">
+                            <div class="formatting-toolbar">
+                                <button class="format-btn" data-index="${bookIndex}" data-command="bold" title="Gras">G</button>
+                                <button class="format-btn" data-index="${bookIndex}" data-command="italic" title="Italique">I</button>
+                                <button class="format-btn" data-index="${bookIndex}" data-command="normal" title="Normal">N</button>
+                                <div class="color-picker-container">
+                                    <span class="color-label">Couleur:</span>
+                                    <input type="color" class="color-picker" data-index="${bookIndex}" value="#000000">
+                                </div>
+                            </div>
+                            <div class="book-text" data-index="${bookIndex}" contenteditable="true">${allPagesData[pageIndex][i].text}</div>
+                        </div>
+                        <div class="book-cover">
+                            <div class="image-container" data-index="${bookIndex}">
+                                <span style="color: #aaa;">Couverture du livre</span>
+                            </div>
+                            <div class="image-upload">
+                                <input type="file" class="image-upload-input" data-index="${bookIndex}" accept="image/*">
+                                <button class="remove-image-btn" data-index="${bookIndex}" style="display: none;">Retirer l'image</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                }
+            }
+
+            // Restaurer les images
+            for (let pageIndex = 0; pageIndex < currentPages; pageIndex++) {
+                for (let i = 0; i < 5; i++) {
+                    const bookIndex = pageIndex * 5 + i;
+                    if (allPagesData[pageIndex][i].image) {
+                        const container = document.querySelector(`.image-container[data-index="${bookIndex}"]`);
+                        if (container) {
+                            container.innerHTML = `<img src="${allPagesData[pageIndex][i].image}" alt="Couverture">`;
+                            const btn = document.querySelector(`.remove-image-btn[data-index="${bookIndex}"]`);
+                            if (btn) btn.style.display = 'block';
+                        }
+                    }
+                }
+            }
+
+            attachEventListeners();
+            updatePageCount();
+        }
+
+        function updatePageCount() {
+            document.getElementById('pageCount').textContent = `Pages : ${currentPages}`;
+        }
+
+        function attachEventListeners() {
+            // Add page button
+            document.getElementById('addPage').onclick = function() {
+                if (currentPages >= MAX_PAGES) {
+                    alert('Vous avez atteint le maximum de 10 pages.');
+                    return;
+                }
+                
+                // Sauvegarder les données actuelles
+                saveCurrentTextData();
+                
+                // Ajouter une nouvelle page
+                allPagesData.push(JSON.parse(JSON.stringify(defaultBookData)));
+                currentPages++;
+                
+                createBookRows();
+                updatePreview();
+            };
+
+            // Remove page button
+            document.getElementById('removePage').onclick = function() {
+                if (currentPages <= 1) {
+                    alert('Vous devez garder au moins une page.');
+                    return;
+                }
+                
+                if (confirm('Êtes-vous sûr de vouloir supprimer la dernière page ?')) {
+                    allPagesData.pop();
+                    currentPages--;
+                    createBookRows();
+                    updatePreview();
+                }
+            };
+
+            // Logo upload
+            document.getElementById('logoUpload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        logoImage = e.target.result;
+                        document.getElementById('logoContainer').innerHTML = `<img src="${logoImage}" alt="Logo">`;
+                        updatePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Image uploads
+            document.querySelectorAll('.image-upload-input').forEach(input => {
+                input.addEventListener('change', function(e) {
+                    const bookIndex = parseInt(this.getAttribute('data-index'));
+                    const pageIndex = Math.floor(bookIndex / 5);
+                    const itemIndex = bookIndex % 5;
+                    
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            allPagesData[pageIndex][itemIndex].image = e.target.result;
+                            const container = document.querySelector(`.image-container[data-index="${bookIndex}"]`);
+                            container.innerHTML = `<img src="${e.target.result}" alt="Couverture">`;
+                            document.querySelector(`.remove-image-btn[data-index="${bookIndex}"]`).style.display = 'block';
+                            updatePreview();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            // Remove image buttons
+            document.querySelectorAll('.remove-image-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const bookIndex = parseInt(this.getAttribute('data-index'));
+                    const pageIndex = Math.floor(bookIndex / 5);
+                    const itemIndex = bookIndex % 5;
+                    
+                    allPagesData[pageIndex][itemIndex].image = null;
+                    const container = document.querySelector(`.image-container[data-index="${bookIndex}"]`);
+                    container.innerHTML = '<span style="color: #aaa;">Couverture du livre</span>';
+                    document.querySelector(`.image-upload-input[data-index="${bookIndex}"]`).value = '';
+                    this.style.display = 'none';
+                    updatePreview();
+                });
+            });
+
+            // Format buttons
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const command = this.getAttribute('data-command');
+                    const index = parseInt(this.getAttribute('data-index'));
+                    const textArea = document.querySelector(`.book-text[data-index="${index}"]`);
+                    
+                    textArea.focus();
+                    
+                    if (command === 'bold') {
+                        document.execCommand('bold', false, null);
+                    } else if (command === 'italic') {
+                        document.execCommand('italic', false, null);
+                    } else if (command === 'normal') {
+                        document.execCommand('removeFormat', false, null);
+                    }
+                    
+                    setTimeout(updatePreview, 10);
+                });
+            });
+
+            // Color pickers
+            document.querySelectorAll('.color-picker').forEach(picker => {
+                picker.addEventListener('change', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    const textArea = document.querySelector(`.book-text[data-index="${index}"]`);
+                    
+                    textArea.focus();
+                    document.execCommand('foreColor', false, this.value);
+                    
+                    setTimeout(updatePreview, 10);
+                });
+            });
+
+            // Text area changes
+            document.querySelectorAll('.book-text').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    const bookIndex = parseInt(this.getAttribute('data-index'));
+                    const pageIndex = Math.floor(bookIndex / 5);
+                    const itemIndex = bookIndex % 5;
+                    allPagesData[pageIndex][itemIndex].text = this.innerHTML;
+                    updatePreview();
+                });
+            });
+
+            // Title changes
+            document.getElementById('mainTitle').addEventListener('input', updatePreview);
+            document.getElementById('subTitle').addEventListener('input', updatePreview);
+        }
+
+        function saveCurrentTextData() {
+            document.querySelectorAll('.book-text').forEach((textarea) => {
+                const bookIndex = parseInt(textarea.getAttribute('data-index'));
+                const pageIndex = Math.floor(bookIndex / 5);
+                const itemIndex = bookIndex % 5;
+                if (allPagesData[pageIndex] && allPagesData[pageIndex][itemIndex]) {
+                    allPagesData[pageIndex][itemIndex].text = textarea.innerHTML;
+                }
+            });
+        }
+
+        function updatePreview() {
+            const mainTitle = document.getElementById('mainTitle').value || 'Centre de Ressources';
+            const subTitle = document.getElementById('subTitle').value || 'Nouveautés 2025.12';
+            
+            let allPagesHtml = '';
+            
+            for (let pageIndex = 0; pageIndex < currentPages; pageIndex++) {
+                let logoHtml = '';
+                if (logoImage) {
+                    logoHtml = `<div class="preview-logo"><img src="${logoImage}" alt="Logo"></div>`;
+                }
+                
+                let booksHtml = '';
+                for (let i = 0; i < 5; i++) {
+                    const bookIndex = pageIndex * 5 + i;
+                    const textArea = document.querySelector(`.book-text[data-index="${bookIndex}"]`);
+                    const textContent = textArea ? textArea.innerHTML : allPagesData[pageIndex][i].text;
+                    
+                    let imageContent = '';
+                    if (allPagesData[pageIndex][i].image) {
+                        imageContent = `<img src="${allPagesData[pageIndex][i].image}" alt="Couverture">`;
+                    }
+                    
+                    booksHtml += `
+                        <div class="preview-book-row">
+                            <div class="preview-book-info">${textContent}</div>
+                            <div class="preview-book-cover">${imageContent}</div>
+                        </div>
+                    `;
+                }
+                
+                allPagesHtml += `
+                    <div style="page-break-after: always; margin-bottom: 60px;">
+                        <div class="preview-logo-title">
+                            ${logoHtml}
+                            <div class="preview-main-title">${mainTitle} – ${subTitle}</div>
+                        </div>
+                        <div class="preview-books">
+                            ${booksHtml}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('previewContainer').innerHTML = allPagesHtml;
+        }
+
+        // Export HTML
+        document.getElementById('exportHtml').addEventListener('click', function() {
+            const preview = document.getElementById('previewContainer').innerHTML;
+            
+            const htmlContent = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Bibliographique</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; }
+        .preview-logo-title { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative; }
+        .preview-logo { width: 80px; height: 80px; position: absolute; left: 0; }
+        .preview-logo img { max-width: 100%; max-height: 100%; }
+        .preview-main-title { font-weight: bold; font-size: 24px; text-align: center; }
+        .preview-books { display: table; width: 100%; }
+        .preview-book-row { display: table-row; }
+        .preview-book-info { display: table-cell; width: 50%; padding: 15px; vertical-align: middle; text-align: center; font-size: 18px; }
+        .preview-book-cover { display: table-cell; width: 50%; padding: 15px; text-align: center; vertical-align: middle; }
+        .preview-book-cover img { max-width: 140px; max-height: 190px; }
+    </style>
+</head>
+<body>
+${preview}
+</body>
+</html>`;
+            
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fiche-bibliographique.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Export PDF - Version corrigée pour toutes les pages
+        document.getElementById('exportPdf').addEventListener('click', async function() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const mainTitle = document.getElementById('mainTitle').value || 'Centre de Ressources';
+            const subTitle = document.getElementById('subTitle').value || 'Nouveautés 2025.12';
+            
+            for (let pageIndex = 0; pageIndex < currentPages; pageIndex++) {
+                if (pageIndex > 0) {
+                    pdf.addPage();
+                }
+                
+                // Créer un conteneur temporaire pour cette page
+                const tempContainer = document.createElement('div');
+                tempContainer.style.cssText = 'width: 800px; padding: 40px; background: white; position: absolute; left: -9999px;';
+                
+                let logoHtml = '';
+                if (logoImage) {
+                    logoHtml = `<div class="preview-logo"><img src="${logoImage}" alt="Logo"></div>`;
+                }
+                
+                let booksHtml = '';
+                for (let i = 0; i < 5; i++) {
+                    const bookIndex = pageIndex * 5 + i;
+                    const textArea = document.querySelector(`.book-text[data-index="${bookIndex}"]`);
+                    const textContent = textArea ? textArea.innerHTML : allPagesData[pageIndex][i].text;
+                    
+                    let imageContent = '';
+                    if (allPagesData[pageIndex][i].image) {
+                        imageContent = `<img src="${allPagesData[pageIndex][i].image}" alt="Couverture">`;
+                    }
+                    
+                    booksHtml += `
+                        <div style="display: table-row;">
+                            <div style="display: table-cell; width: 60%; padding: 10px 30px 10px 10px; vertical-align: middle; text-align: center; font-size: 18px;">${textContent}</div>
+                            <div style="display: table-cell; width: 40%; padding: 10px 30px 10px 10px; text-align: center; vertical-align: middle;">
+                                ${imageContent ? `<img src="${allPagesData[pageIndex][i].image}" style="max-width: 160px; max-height: 220px;" alt="Couverture">` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                tempContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative;">
+                        ${logoHtml ? `<div style="width: 80px; height: 80px; position: absolute; left: 0;"><img src="${logoImage}" style="max-width: 100%; max-height: 100%;" alt="Logo"></div>` : ''}
+                        <div style="font-weight: bold; font-size: 24px; text-align: center;">${mainTitle} – ${subTitle}</div>
+                    </div>
+                    <div style="display: table; width: 100%;">
+                        ${booksHtml}
+                    </div>
+                `;
+                
+                document.body.appendChild(tempContainer);
+                
+                try {
+                    const canvas = await html2canvas(tempContainer, { 
+                        scale: 2, 
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = 190;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, Math.min(imgHeight, 277));
+                    
+                    // Ajouter le numéro de page en bas à droite
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(100);
+                    pdf.text(`${pageIndex + 1}`, 200, 287, { align: 'right' });
+                } catch (error) {
+                    console.error('Erreur page', pageIndex + 1, error);
+                }
+                
+                document.body.removeChild(tempContainer);
+            }
+            
+            pdf.save('fiche-bibliographique.pdf');
+        });
+
+        // Save work
+        document.getElementById('saveWork').addEventListener('click', function() {
+            // Sauvegarder les données actuelles des zones de texte
+            saveCurrentTextData();
+
+            const saveData = {
+                mainTitle: document.getElementById('mainTitle').value,
+                subTitle: document.getElementById('subTitle').value,
+                logoImage: logoImage,
+                currentPages: currentPages,
+                allPagesData: allPagesData
+            };
+
+            const dataStr = JSON.stringify(saveData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fiche-bibliographique-sauvegarde.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('Travail sauvegardé ! Vous pouvez le recharger plus tard avec le bouton "Charger mon travail".');
+        });
+
+        // Load work
+        document.getElementById('loadWork').addEventListener('click', function() {
+            document.getElementById('loadFileInput').click();
+        });
+
+        document.getElementById('loadFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const loadedData = JSON.parse(e.target.result);
+                        
+                        // Restaurer les titres
+                        document.getElementById('mainTitle').value = loadedData.mainTitle;
+                        document.getElementById('subTitle').value = loadedData.subTitle;
+                        
+                        // Restaurer le logo
+                        if (loadedData.logoImage) {
+                            logoImage = loadedData.logoImage;
+                            document.getElementById('logoContainer').innerHTML = `<img src="${logoImage}" alt="Logo">`;
+                        }
+                        
+                        // Restaurer le nombre de pages et les données
+                        currentPages = loadedData.currentPages || 1;
+                        allPagesData = loadedData.allPagesData || [JSON.parse(JSON.stringify(defaultBookData))];
+                        
+                        // Recréer les lignes avec les données chargées
+                        createBookRows();
+                        updatePreview();
+                        
+                        alert('Travail chargé avec succès !');
+                    } catch (error) {
+                        alert('Erreur lors du chargement du fichier. Assurez-vous qu\'il s\'agit d\'un fichier de sauvegarde valide.');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Initialize
+        createBookRows();
+        updatePreview();
+    </script>
+</body>
+</html>
