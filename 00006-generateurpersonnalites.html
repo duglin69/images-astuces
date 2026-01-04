@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de Prompts - PERSONNALITÉS</title>
+<title>Générateur de Prompts Personnalisés - ÉDITION ULTIME</title>
 <style>
+/* Tous les styles CSS précédents restent identiques */
 :root {
   --primary: #0a0a1a;
   --secondary: #1a1a3a;
@@ -784,36 +785,12 @@ input[type="color"]::-webkit-color-swatch {
   cursor: pointer;
   margin-top: 10px;
 }
-.top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
 
-body {
-    padding-top: 80px;
-}
-.btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-}
 </style>
 </head>
 <body>
-<div class="top-right">
-    <a href="index.html" class="btn-retour">🏠 Accueil</a>
-    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
-</div>
 <div class="container">
-  <h1>🎭 GÉNÉRATEUR DE PROMPTS - PERSONNALITÉS</h1>
+  <h1>🎭 GÉNÉRATEUR DE PROMPTS - ÉDITION ULTIME</h1>
   <p class="subtitle">Toutes les améliorations intégrées • Moteurs IA • Profils • Analyse • Composition</p>
   
   <!-- SYSTÈME DE PROFILS -->
@@ -943,15 +920,19 @@ body {
           <option value="homme">Homme</option>
           <option value="femme">Femme</option>
           <option value="non-binaire">Non-binaire</option>
+          <option value="mixte">Mixte</option>
+          <option value="autre">Autre</option>
         </select>
       </div>
       <div class="input-group">
         <div class="input-label">Format :</div>
         <select id="format">
-          <option value="16:9">16:9 (Cinématique)</option>
-          <option value="1:1">1:1 (Carré)</option>
-          <option value="9:16">9:16 (Portrait)</option>
-          <option value="21:9">21:9 (Large)</option>
+          <option value="plan large cinématographique 16:9">16:9 (Cinématographique)</option>
+          <option value="plan large ultra-large 21:9">21:9 (Large)</option>
+          <option value="cadrage carré 1:1">1:1 (Carré)</option>
+          <option value="portrait 9:16">9:16 (Portrait)</option>
+          <option value="panoramique 3:1">3:1 (Panoramique)</option>
+          <option value="IMAX 1.43:1">IMAX (1.43:1)</option>
         </select>
       </div>
     </div>
@@ -960,7 +941,7 @@ body {
     <div class="section">
       <h2 class="section-title">🎬 ACTION</h2>
       <div class="input-group">
-        <select id="action">
+        <select id="action" onchange="clearCustom('customAction')">
           <option value="">-- Choisir une action --</option>
         </select>
       </div>
@@ -973,7 +954,7 @@ body {
     <div class="section">
       <h2 class="section-title">📍 LIEU</h2>
       <div class="input-group">
-        <select id="lieu">
+        <select id="lieu" onchange="clearCustom('customLieu')">
           <option value="">-- Choisir un lieu --</option>
         </select>
       </div>
@@ -986,7 +967,7 @@ body {
     <div class="section">
       <h2 class="section-title">🎨 STYLE</h2>
       <div class="input-group">
-        <select id="style">
+        <select id="style" onchange="clearCustom('customStyle')">
           <option value="">-- Choisir un style --</option>
         </select>
       </div>
@@ -999,7 +980,7 @@ body {
     <div class="section">
       <h2 class="section-title">💡 ÉCLAIRAGE</h2>
       <div class="input-group">
-        <select id="eclairage">
+        <select id="eclairage" onchange="clearCustom('customEclairage')">
           <option value="">-- Choisir un éclairage --</option>
         </select>
       </div>
@@ -1016,7 +997,7 @@ body {
       </div>
       <div class="input-group">
         <div class="input-label">Palette :</div>
-        <select id="colorTheme" onchange="updateColorPalette()">
+        <select id="colorTheme" onchange="updateColorPalette(); clearCustom('customColors');">
           <option value="warm">Chaude (Rouge/Orange)</option>
           <option value="cool">Froide (Bleu/Vert)</option>
           <option value="pastel">Pastel</option>
@@ -1038,12 +1019,12 @@ body {
       <div class="input-group">
         <div class="input-label">Type de composition :</div>
         <select id="compositionType">
-          <option value="">Standard</option>
-          <option value="rule-of-thirds">Règle des tiers</option>
-          <option value="symmetry">Symétrie</option>
-          <option value="leading-lines">Lignes directrices</option>
-          <option value="frame-in-frame">Cadre dans le cadre</option>
-        </select>
+  <option value="">Standard</option>
+  <option value="regle-des-tiers">Règle des tiers</option>
+  <option value="symetrie">Symétrie</option>
+  <option value="lignes-directrices">Lignes directrices</option>
+  <option value="cadre-dans-le-cadre">Cadre dans le cadre</option>
+</select>
       </div>
     </div>
     
@@ -1057,23 +1038,6 @@ body {
     </div>
     
   </div> <!-- Fin grid-container -->
-  
-  <!-- TUTORIEL -->
-  <div class="section" id="tutorialSection">
-    <h2 class="section-title collapsible" onclick="toggleSection('tutorial')">
-      <span class="collapsible-icon">▶</span> 📚 MODE TUTORIEL
-    </h2>
-    <div class="collapsible-content" id="tutorialContent">
-      <div class="tutorial-step" id="tutorialStep1">
-        <h3>Étape 1 : Choisir une personnalité</h3>
-        <p>Sélectionnez une personnalité célèbre ou créez-en une personnalisée.</p>
-        <div class="tutorial-navigation">
-          <button onclick="prevTutorialStep()">Précédent</button>
-          <button onclick="nextTutorialStep()">Suivant</button>
-        </div>
-      </div>
-    </div>
-  </div>
   
   <!-- CONTROLS -->
   <div class="controls">
@@ -1110,25 +1074,255 @@ body {
     <h2 class="section-title">📝 PROMPT GÉNÉRÉ</h2>
     <textarea id="promptOutput" readonly placeholder="Votre prompt apparaîtra ici..."></textarea>
   </div>
-  
-</div>
+   <!-- TUTORIEL -->
+  <div class="section" id="tutorialSection" style="display: none; margin-top: 40px;">
+    <h2 class="section-title">🎓 GUIDE RAPIDE - COMMENT UTILISER CE GÉNÉRATEUR</h2>
+    
+    <div class="tutorial-step">
+      <h3>🎭 ÉTAPE 1 : Choisissez une personnalité</h3>
+      <p>Cliquez sur une carte ou sélectionnez dans la liste déroulante. Vous pouvez aussi créer une personnalité personnalisée.</p>
+    </div>
+    
+    <div class="tutorial-step">
+      <h3>🎬 ÉTAPE 2 : Définissez l'action et le lieu</h3>
+      <p>Que fait votre personnage ? Où se trouve-t-il ? Ces éléments créent le contexte de votre image.</p>
+    </div>
+    
+    <div class="tutorial-step">
+      <h3>🎨 ÉTAPE 3 : Personnalisez le style artistique</h3>
+      <p>Style, éclairage, composition et couleurs - ces paramètres définissent l'ambiance visuelle.</p>
+    </div>
+    
+    <div class="tutorial-step">
+      <h3>🤖 ÉTAPE 4 : Configurez le moteur d'IA</h3>
+      <p>Sélectionnez le moteur cible (Midjourney, Stable Diffusion, DALL-E, etc.) pour optimiser le prompt.</p>
+    </div>
+    
+    <div class="tutorial-step">
+      <h3>🚀 ÉTAPE 5 : Générez et utilisez</h3>
+      <p>Cliquez sur "GÉNÉRER" pour créer le prompt, puis "COPIER" pour l'utiliser dans votre moteur d'IA préféré.</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+      <button onclick="toggleTutorial()" style="padding: 12px 30px; font-size: 16px; background: linear-gradient(135deg, #9d4edd, #560bad); color: white; border: none; border-radius: 10px; cursor: pointer;">
+        ❌ Fermer le guide
+      </button>
+    </div>
+  </div>
+</div> <!-- Fin du .container -->
 
 <!-- COMPTEUR -->
-<div class="counter" id="counter" title="Nombre de prompts générés">0</div>
+<div class="counter" id="counter" title="Nombre de prompts générés">0</div> 
 
 <script>
-// DONNÉES COMPLÈTES
+// DONNÉES COMPLÈTES AVEC TOUTES LES VALEURS
 const data = {
+  // 75 PERSONNALITÉS COMPLÈTES
   personalities: [
+    // CHANTEURS (15)
     {name: "Freddie Mercury", category: "Chanteur"},
     {name: "Beyoncé", category: "Chanteuse"},
     {name: "Michael Jackson", category: "Chanteur"},
-    // ... toutes les personnalités ...
+    {name: "David Bowie", category: "Chanteur"},
+    {name: "Madonna", category: "Chanteuse"},
+    {name: "Elvis Presley", category: "Chanteur"},
+    {name: "Lady Gaga", category: "Chanteuse"},
+    {name: "Bob Marley", category: "Chanteur"},
+    {name: "Amy Winehouse", category: "Chanteuse"},
+    {name: "Elton John", category: "Chanteur"},
+    {name: "Adele", category: "Chanteuse"},
+    {name: "Prince", category: "Chanteur"},
+    {name: "Taylor Swift", category: "Chanteuse"},
+    {name: "Frank Sinatra", category: "Chanteur"},
+    {name: "Shakira", category: "Chanteuse"},
+    
+    // ACTEURS (15)
+    {name: "Marilyn Monroe", category: "Actrice"},
+    {name: "Leonardo DiCaprio", category: "Acteur"},
+    {name: "Meryl Streep", category: "Actrice"},
+    {name: "Brad Pitt", category: "Acteur"},
+    {name: "Audrey Hepburn", category: "Actrice"},
+    {name: "Robert De Niro", category: "Acteur"},
+    {name: "Scarlett Johansson", category: "Actrice"},
+    {name: "Tom Hanks", category: "Acteur"},
+    {name: "Angelina Jolie", category: "Actrice"},
+    {name: "Johnny Depp", category: "Acteur"},
+    {name: "Emma Watson", category: "Actrice"},
+    {name: "Denzel Washington", category: "Acteur"},
+    {name: "Natalie Portman", category: "Actrice"},
+    {name: "Keanu Reeves", category: "Acteur"},
+    {name: "Jennifer Lawrence", category: "Actrice"},
+    
+    // SPORTIFS (15)
+    {name: "Michael Jordan", category: "Sportif"},
+    {name: "Serena Williams", category: "Sportive"},
+    {name: "Cristiano Ronaldo", category: "Sportif"},
+    {name: "Simone Biles", category: "Sportive"},
+    {name: "LeBron James", category: "Sportif"},
+    {name: "Megan Rapinoe", category: "Sportive"},
+    {name: "Lionel Messi", category: "Sportif"},
+    {name: "Naomi Osaka", category: "Sportive"},
+    {name: "Usain Bolt", category: "Sportif"},
+    {name: "Rafael Nadal", category: "Sportif"},
+    {name: "Katie Ledecky", category: "Sportive"},
+    {name: "Tom Brady", category: "Sportif"},
+    {name: "Simone Manuel", category: "Sportive"},
+    {name: "Stephen Curry", category: "Sportif"},
+    {name: "Alex Morgan", category: "Sportive"},
+    
+    // SUPERHÉROS (10)
+    {name: "Superman", category: "Superhéros"},
+    {name: "Wonder Woman", category: "Superhéroïne"},
+    {name: "Batman", category: "Superhéros"},
+    {name: "Spider-Man", category: "Superhéros"},
+    {name: "Black Panther", category: "Superhéros"},
+    {name: "Captain America", category: "Superhéros"},
+    {name: "Iron Man", category: "Superhéros"},
+    {name: "Catwoman", category: "Superhéroïne"},
+    {name: "The Flash", category: "Superhéros"},
+    {name: "Storm", category: "Superhéroïne"},
+    
+    // CRÉATURES FANTASTIQUES (10)
+    {name: "Un dragon", category: "Créature"},
+    {name: "Une licorne", category: "Créature"},
+    {name: "Un vampire", category: "Créature"},
+    {name: "Un loup-garou", category: "Créature"},
+    {name: "Un fantôme", category: "Créature"},
+    {name: "Un alien", category: "Créature"},
+    {name: "Un zombie", category: "Créature"},
+    {name: "Un démon", category: "Créature"},
+    {name: "Un ange", category: "Créature"},
+    {name: "Un robot", category: "Créature"},
+    
+    // HÉROS DESSINS ANIMÉS (10)
+    {name: "Mickey Mouse", category: "Dessin animé"},
+    {name: "Bugs Bunny", category: "Dessin animé"},
+    {name: "SpongeBob", category: "Dessin animé"},
+    {name: "Sonic", category: "Dessin animé"},
+    {name: "Pikachu", category: "Dessin animé"},
+    {name: "Homer Simpson", category: "Dessin animé"},
+    {name: "Scooby-Doo", category: "Dessin animé"},
+    {name: "Winnie l'Ourson", category: "Dessin animé"},
+    {name: "Dora l'Exploratrice", category: "Dessin animé"},
+    {name: "Rick Sanchez", category: "Dessin animé"}
   ],
-  actions: ["chante sur scène", "danse frénétiquement", "combat héroïquement"],
-  lieux: ["Times Square New York", "Tour Eiffel Paris", "Colisée Rome"],
-  styles: ["réaliste photographique", "hyperréaliste 8K", "noir et blanc"],
-  eclairages: ["soleil couchant doré", "aurore rosée douce", "néons bleu orange"]
+  
+  // ACTIONS - Version COMPLÈTE et LOGIQUE
+actions: [
+  // Actions avec compléments intégrés
+  "chante sur scène devant un public en liesse",
+  "danse frénétiquement dans une boîte de nuit",
+  "combat héroïquement des ennemis invisibles",
+  "parle en public lors d'une conférence",
+  "court à toute vitesse dans une rue déserte",
+  "vole gracieusement dans les airs",
+  "nage avec élégance dans l'océan",
+  "joue de la guitare électrique avec passion",
+  "peint un chef-d'œuvre sur une toile géante",
+  "écrit un roman sur un vieil ordinateur",
+  "cuisine un plat gastronomique avec soin",
+  "explore une planète inconnue avec curiosité",
+  "enseigne à des élèves attentifs",
+  "dirige une réunion d'équipe avec autorité",
+  "médite paisiblement dans un jardin zen",
+  "rit aux éclats avec des amis",
+  "pleure silencieusement dans son coin",
+  "observe attentivement un phénomène étrange",
+  "construit une machine complexe",
+  "détruit un vieux bâtiment à la pelle mécanique",
+  "sauve un chat coincé dans un arbre",
+  "vole un diamant dans un musée",
+  "triche aux cartes avec malice",
+  "gagne une compétition sportive",
+  "perd un match important",
+  "tombe amoureux d'une inconnue",
+  "se bat au sabre laser",
+  "négocie un traité de paix",
+  "découvre un trésor enfoui",
+  "cache un secret de famille",
+  "transforme une citrouille en carrosse",
+  "téléporte dans une autre dimension",
+  "grandit jusqu'à atteindre la taille d'un géant",
+  "rétrécit jusqu'à devenir minuscule",
+  "disparaît mystérieusement sans laisser de traces",
+  "réapparaît dans une explosion de lumière"
+],
+  
+      // LIEUX - Version FRANÇAISE et COHÉRENTE
+  lieux: [
+    // Lieux réels
+    "Times Square à New York",
+    "au pied de la tour Eiffel à Paris",
+    "dans le Colisée de Rome",
+    "sur la Grande Muraille de Chine",
+    "devant les pyramides de Gizeh",
+    "au Machu Picchu au Pérou",
+    "dans les canaux de Venise",
+    "sur la plage de Copacabana à Rio",
+    "au Mont-Saint-Michel",
+    "dans le château de Versailles",
+    "au carrefour de Shibuya à Tokyo",
+    "à l'opéra de Sydney",
+    "dans le Grand Canyon en Arizona",
+    "aux chutes du Niagara",
+    "au Taj Mahal en Inde",
+    "devant Notre-Dame de Paris",
+    
+    // Lieux imaginaires
+    "dans la station spatiale internationale",
+    "dans la ville sous-marine de l'Atlantide",
+    "dans une forêt enchantée",
+    "dans un château dans les nuages",
+    "dans une ville cyberpunk aux néons fluorescents",
+    "sur une base lunaire",
+    "à bord d'un vaisseau spatial",
+    "dans une dimension parallèle",
+    "dans une bibliothèque infinie",
+    "dans le jardin des délices",
+    "dans un laboratoire secret",
+    "dans un temple antique",
+    "sur un volcan en éruption",
+    "au fond de l'océan",
+    "dans le désert du Sahara",
+    "dans la jungle amazonienne",
+    
+    // Lieux quotidiens (CORRIGÉS : on enlève les prépositions car elles seront ajoutées automatiquement)
+    "le métro parisien",
+    "un supermarché",
+    "la terrasse d'un café",
+    "une bibliothèque",
+    "une salle de classe",
+    "une gare",
+    "un centre commercial",
+    "un parc public"
+  ],
+  
+  // STYLES ARTISTIQUES
+  styles: [
+    "réaliste photographique", "hyperréaliste 8K", "photo magazine glossy", 
+    "noir et blanc contrasté", "sépia vintage", "couleurs saturées pop",
+    "cinématographique épique", "film Hollywood", "film noir 1940s", "film Wes Anderson",
+    "film Tim Burton", "animation Disney", "anime japonais", "style Ghibli",
+    "cartoon Pixar", "BD franco-belge", "manga", "peinture à l'huile",
+    "aquarelle douce", "croquis crayon", "encre de Chine", "pastels tendres",
+    "impressionniste Monet", "cubiste Picasso", "surréaliste Dalí", "pop art Warhol",
+    "art nouveau Mucha", "art déco", "cyberpunk néon", "steampunk",
+    "vaporwave 80s", "pixel art 8-bit", "low poly", "graffiti urbain",
+    "glitch art", "fractal art", "minimaliste japonais", "flat design"
+  ],
+  
+  // ÉCLAIRAGES & AMBIANCES
+  eclairages: [
+    "soleil couchant doré", "aurore rosée douce", "midi soleil éclatant",
+    "lune pleine argentée", "ciel étoilé voie lactée", "aurore boréale verte",
+    "néons bleu orange futuriste", "feux d'artifice multicolore", "bougies chaleureuses",
+    "lasers discothèque", "lumières noires UV", "éclairage fluorescent",
+    "LED RGB colorées", "brume matinale", "éclair orage", "arc-en-ciel",
+    "teintes pastel douces", "monochrome sépia", "gradient violet-orange",
+    "palette terre naturelle", "effet cinématique teal/orange", "contraste élevé dramatique",
+    "clair-obscur", "ombres profondes", "luminescence douce", "pluie réfléchissante néon",
+    "brouillard mystique", "neige tombante", "poussière d'étoiles", "particules lumineuses"
+  ]
 };
 
 // VARIABLES GLOBALES
@@ -1263,6 +1457,73 @@ function initPresets() {
   });
 }
 
+// FONCTION pour nettoyer et formater le texte
+function formatFrenchText(text) {
+  if (!text) return '';
+  
+  let formatted = text;
+  
+  const corrections = [
+    // Articles manquants
+    { regex: /dans station/g, replace: 'dans la station' },
+    { regex: /dans ville/g, replace: 'dans une ville' },
+    { regex: /dans vaisseau/g, replace: 'dans un vaisseau' },
+    { regex: /dans forêt/g, replace: 'dans une forêt' },
+    { regex: /dans château/g, replace: 'dans un château' },
+    { regex: /dans temple/g, replace: 'dans un temple' },
+    
+    // Majuscules inutiles
+    { regex: /\b(Station|Spatiale|Vaisseau|Ville|Forêt|Château|Temple)\b/g, 
+      replace: (match) => match.toLowerCase() },
+
+    // Corrige les prépositions doubles
+    { regex: /dans sur /g, replace: 'sur ' },
+    { regex: /dans à /g, replace: 'à ' },
+    { regex: /dans au /g, replace: 'au ' },
+    { regex: /dans aux /g, replace: 'aux ' },
+    { regex: /dans en /g, replace: 'en ' },
+    { regex: /dans dans /g, replace: 'dans ' },
+    
+    // Composition avec accents
+    { regex: /\bsymetrie\b/gi, replace: 'symétrie' },
+    { regex: /\bregle-des-tiers\b/gi, replace: 'règle des tiers' },
+    { regex: /\blignes-directrices\b/gi, replace: 'lignes directrices' },
+    { regex: /\bcadre-dans-le-cadre\b/gi, replace: 'cadre dans le cadre' },
+    
+    // Format
+    { regex: /cadrage carré/gi, replace: 'carré' },
+    { regex: /plan large/gi, replace: 'cadrage large' },
+    
+    // Majuscules inutiles
+    { regex: /\b(Forêt|Château|Temple|Ville|Station|Bibliothèque|Laboratoire|Jardin|Volcan|Désert|Jungle)\b/g,
+      replace: (match) => match.toLowerCase() },
+    
+    // Corrige "format format" -> "format"
+    { regex: /format format/g, replace: 'format' }
+  ];
+  
+  corrections.forEach(correction => {
+    formatted = formatted.replace(correction.regex, correction.replace);
+  });
+  
+  return formatted;
+}
+
+function capitalizeSentences(text) {
+  // Divise le texte en phrases (séparées par un point suivi d'un espace)
+  return text.split('. ').map(sentence => {
+    if (sentence.length === 0) return sentence;
+    // Capitalise la première lettre de la phrase
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }).join('. ');
+}
+
+function commenceParPreposition(lieu) {
+  if (!lieu) return false;
+  const prepositions = ['dans ', 'sur ', 'à ', 'au ', 'aux ', 'en ', 'sous ', 'devant ', 'derrière ', 'près de ', 'loin de ', 'à bord d\'', 'au pied de ', 'à l\'', 'aux ', 'devant ', 'chez '];
+  return prepositions.some(prep => lieu.toLowerCase().startsWith(prep));
+}
+
 // FONCTIONS PRINCIPALES
 function generatePrompt() {
   // Récupération des valeurs
@@ -1273,22 +1534,71 @@ function generatePrompt() {
   const eclairage = getSelectedValue('customEclairage', 'eclairage', data.eclairages);
   const genre = document.getElementById('genre').value;
   const format = document.getElementById('format').value;
-  
-  // Construction du prompt
-  let promptParts = [];
-  if (format) promptParts.push(`format ${format}`);
-  if (lieu) promptParts.push(lieu);
-  if (personality) promptParts.push(`${personality} ${genre ? `(${genre})` : ''}`);
-  if (action) promptParts.push(action);
-  if (eclairage) promptParts.push(eclairage);
-  if (style) promptParts.push(style);
-  
-  // Ajout des éléments supplémentaires
-  const colors = document.getElementById('customColors').value;
-  if (colors) promptParts.push(`couleurs: ${colors}`);
-  
   const composition = document.getElementById('compositionType').value;
-  if (composition) promptParts.push(`composition: ${composition}`);
+  const colors = document.getElementById('customColors').value;
+
+  // Construction structurée du prompt
+  let promptParts = [];
+  
+  // 1. SUJET PRINCIPAL
+let sujet = [];
+if (personality) {
+  // NE PAS ajouter le genre automatiquement
+  sujet.push(personality);
+}
+  
+  if (action) {
+    if (sujet.length > 0) {
+      promptParts.push(`${sujet.join(' ')} ${action}`);
+    } else {
+      promptParts.push(action);
+    }
+  } else if (sujet.length > 0) {
+    promptParts.push(sujet.join(' '));
+  }
+  
+  // 2. CONTEXTE (lieu) - VERSION CORRIGÉE
+  let contexte = [];
+  if (lieu) {
+    if (commenceParPreposition(lieu)) {
+      contexte.push(lieu);
+    } else {
+      contexte.push(`dans ${lieu}`);
+    }
+  }
+  
+  if (contexte.length > 0) {
+    if (promptParts.length > 0) {
+      promptParts[promptParts.length - 1] += ` ${contexte.join(', ')}`;
+    } else {
+      promptParts.push(contexte.join(', '));
+    }
+  }
+  
+  // 3. STYLE ARTISTIQUE
+  let styleSection = [];
+  if (style) styleSection.push(style);
+  if (eclairage) styleSection.push(`éclairage ${eclairage}`);
+  if (composition) styleSection.push(`composition ${composition}`);
+  if (colors) styleSection.push(`palette de couleurs ${colors}`);
+
+  // Ajout des détails spécifiques au thème (pour randomAll seulement)
+  const currentTheme = getCurrentTheme(); // Nous allons créer cette fonction
+  if (currentTheme && currentTheme.details) {
+    styleSection.push(currentTheme.details);
+  }
+  
+  if (styleSection.length > 0) {
+    promptParts.push(styleSection.join(', '));
+  }
+  
+  // 4. TECHNIQUE
+  let technique = [];
+  if (format) technique.push(`format ${format}`);
+  
+  if (technique.length > 0) {
+    promptParts.push(technique.join(', '));
+  }
   
   // Modes créatifs
   if (document.getElementById('modeAnachronique').checked) {
@@ -1298,9 +1608,41 @@ function generatePrompt() {
     promptParts.push("touche surréaliste");
   }
   
+  // Assemblage final
+  let finalPrompt = "";
+  
+  for (let i = 0; i < promptParts.length; i++) {
+    const part = promptParts[i].trim();
+    if (!part) continue;
+    
+    if (i === 0) {
+      finalPrompt += part.charAt(0).toUpperCase() + part.slice(1);
+    } else {
+      finalPrompt += part;
+    }
+    
+    if (i < promptParts.length - 1) {
+      if (!part.endsWith('.') && !part.endsWith('!') && !part.endsWith('?')) {
+        if (part.length > 40 || part.includes(',')) {
+          finalPrompt += '. ';
+        } else {
+          finalPrompt += ', ';
+        }
+      } else {
+        finalPrompt += ' ';
+      }
+    } else {
+      if (!part.endsWith('.') && !part.endsWith('!') && !part.endsWith('?')) {
+        finalPrompt += '.';
+      }
+    }
+  }
+
+      finalPrompt = formatFrenchText(finalPrompt);
+  finalPrompt = capitalizeSentences(finalPrompt);
+ 
   // Formatage pour le moteur d'IA
   const engine = document.getElementById('aiEngine').value;
-  let finalPrompt = promptParts.join(', ');
   finalPrompt = formatForEngine(finalPrompt, engine);
   
   // Affichage
@@ -1343,26 +1685,140 @@ function copyPrompt() {
 }
 
 function randomizeAll() {
-  // Randomiser tous les champs
-  document.querySelectorAll('select').forEach(select => {
-    if (select.id !== 'aiEngine' && select.id !== 'profilesList') {
-      const randomIndex = Math.floor(Math.random() * (select.options.length - 1)) + 1;
-      select.selectedIndex = randomIndex;
+  // 1. DÉFINIR 4 THÈMES COHÉRENTS
+  const coherentThemes = [
+    {
+      name: "cyberpunk",
+      personality: ["David Bowie", "Keanu Reeves", "Lady Gaga"],
+      action: [
+        "combat héroïquement des androïdes rebelles avec des lasers et des sabres d'énergie", 
+        "hacke un système de sécurité complexe avec des interfaces holographiques brillantes", 
+        "vole une puce neuronale rare sur le marché noir high-tech"
+      ],
+      lieu: [
+        "une ville cyberpunk immense avec des néons fluorescents et des gratte-ciel holographiques", 
+        "la station spatiale ISS en orbite autour de la Terre avec vue sur la planète bleue", 
+        "un vaisseau spatial futuriste traversant une nébuleuse colorée"
+      ],
+      style: "cyberpunk néon, détaillé, 8K, art conceptuel",
+      eclairage: "néons bleu et orange, contrastes forts, lumières artificielles",
+      colors: "neon",
+      composition: "règle des tiers",
+      details: "détails complexes, textures riches, métal polissé, circuits luminescens, interfaces holographiques, reflets sur surfaces mouillées, architecture néo-tokyo, vapeurs industrielles",
+      format: ["plan large cinématographique 16:9", "plan large ultra-large 21:9", "panoramique 3:1"]
+    },
+    {
+      name: "fantasy",
+      personality: ["Un dragon", "Une licorne", "Un vampire", "Un ange"],
+      action: [
+        "vole gracieusement avec ses ailes majestueuses déployées",
+        "protège un trésor antique",
+        "jette un sort puissant qui illumine le ciel nocturne d'éclairs colorés et magiques"
+      ],
+      lieu: [
+        "dans une forêt enchantée mystérieuse peuplée de créatures magiques et d'arbres luminescents", 
+        "dans un château médiéval majestueux perché sur une montagne entourée de nuages", 
+        "dans un temple antique mystique recouvert de lianes et de mousse, au milieu d'une jungle dense"
+      ],
+      style: "peinture à l'huile, style baroque, riche en détails, fantastique",
+      eclairage: "brume matinale épaisse, rayons de soleil perçant les nuages, ambiance mystique",
+      colors: "warm",
+      composition: "symétrie",
+      details: "détails complexes, textures riches, écailles iridescentes, fourrure soyeuse, plumes détaillées, armures ornées, pierreries brillantes, végétation luxuriante, lumières magiques",
+      format: ["plan large cinématographique 16:9", "panoramique 3:1", "IMAX 1.43:1"]
+    },
+    {
+      name: "réaliste-intérieur",
+      personality: ["Leonardo DiCaprio", "Meryl Streep", "Brad Pitt", "Angelina Jolie"],
+      action: [
+        "enseigne avec dynamisme à des élèves attentifs",
+        "dirige avec autorité une réunion d'équipe importante",
+        "parle avec passion en public lors d'une conférence"
+      ],
+      lieu: [
+        "dans une salle de classe spacieuse et lumineuse avec de grandes fenêtres", 
+        "dans un bureau moderne avec une décoration épurée",
+        "dans un amphithéâtre historique impressionnant aux sièges en bois et à l'acoustique parfaite"
+      ],
+      style: "réaliste photographique, haute résolution 8K, détails précis",
+      eclairage: "lumière naturelle diffuse, ombres douces, éclairage intérieur chaleureux",
+      colors: "cool",
+      composition: "lignes directrices",
+      details: "détails complexes, textures de peau réalistes, expressions faciales subtiles, vêtements avec plis naturels, reflets dans les yeux, pores de la peau visibles, cheveux détaillés",
+      format: ["portrait 9:16", "cadrage carré 1:1", "plan large cinématographique 16:9"]
+    },
+    {
+      name: "réaliste-extérieur",
+      personality: ["Leonardo DiCaprio", "Meryl Streep", "Brad Pitt", "Angelina Jolie"],
+      action: [
+        "se promène avec une expression pensive",
+        "donne une interview en plein air",
+        "participe à un événement culturel"
+      ],
+      lieu: [
+        "sur la terrasse d'un café parisien animé avec vue sur les rues pittoresques", 
+        "devant un monument historique célèbre avec l'architecture en arrière-plan",
+        "dans un parc urbain verdoyant avec des bancs et des passants"
+      ],
+      style: "réaliste photographique, haute résolution 8K, détails précis",
+      eclairage: "soleil couchant doré, ombres allongées, lumière naturelle",
+      colors: "cool",
+      composition: "regle-des-tiers",
+      details: "détails complexes, textures de peau réalistes, expressions faciales subtiles, vêtements avec plis naturels, cheveux détaillés, environnement réaliste",
+      format: ["plan large cinématographique 16:9", "plan large ultra-large 21:9", "cadrage carré 1:1"]
     }
-  });
+  ];
+
+  // 2. CHOISIR UN THÈME AU HASARD
+  const theme = coherentThemes[Math.floor(Math.random() * coherentThemes.length)];
   
-  // Randomiser les couleurs
-  const themes = ['warm', 'cool', 'pastel', 'neon', 'monochrome'];
-  document.getElementById('colorTheme').value = themes[Math.floor(Math.random() * themes.length)];
+  // 3. APPLIQUER LE THÈME CHOISI
+  
+  // 3a. Personnalité (dans le champ personnalisé, vider le select)
+  const randomPerson = theme.personality[Math.floor(Math.random() * theme.personality.length)];
+  document.getElementById('customPersonality').value = randomPerson;
+  document.getElementById('personalitySelect').value = '';
+  
+  // 3b. Action (dans le champ personnalisé, vider le select)
+  const randomAction = theme.action[Math.floor(Math.random() * theme.action.length)];
+  document.getElementById('customAction').value = randomAction;
+  document.getElementById('action').value = '';
+  
+  // 3c. Lieu (dans le champ personnalisé, vider le select)
+  const randomLieu = theme.lieu[Math.floor(Math.random() * theme.lieu.length)];
+  document.getElementById('customLieu').value = randomLieu;
+  document.getElementById('lieu').value = '';
+  
+  // 3d. Style (dans le select, vider le champ personnalisé)
+  document.getElementById('style').value = theme.style;
+  document.getElementById('customStyle').value = '';
+  
+  // 3e. Éclairage (dans le select, vider le champ personnalisé)
+  document.getElementById('eclairage').value = theme.eclairage;
+  document.getElementById('customEclairage').value = '';
+  
+  // 3f. Couleurs (dans le select, vider le champ personnalisé)
+  document.getElementById('colorTheme').value = theme.colors;
   updateColorPalette();
+  document.getElementById('customColors').value = '';
   
-  // Randomiser la composition
-  const compositions = ['', 'rule-of-thirds', 'symmetry', 'leading-lines', 'frame-in-frame'];
-  document.getElementById('compositionType').value = compositions[Math.floor(Math.random() * compositions.length)];
+  // 3g. Composition (dans le select)
+  document.getElementById('compositionType').value = theme.composition;
   
-  // Générer un prompt
+  // 3h. Format cohérent avec le thème
+  const randomFormat = theme.format[Math.floor(Math.random() * theme.format.length)];
+  document.getElementById('format').value = randomFormat;
+  
+  // 3i. Genre - LAISSÉ VIDE (pas de mention de genre pour éviter les incohérences)
+document.getElementById('genre').value = '';
+  
+  // 4. GÉNÉRER LE PROMPT
   setTimeout(() => generatePrompt(), 100);
+  
+  // 5. NOTIFICATION
+  showNotification(`🎲 Thème ${theme.name.toUpperCase()} appliqué !`, '#00d4ff');
 }
+  
 
 function clearAll() {
   document.querySelectorAll('select').forEach(select => {
@@ -1505,7 +1961,7 @@ function applyColor(color) {
 
 // COMPOSITION
 function applyComposition(type) {
-  document.getElementById('compositionType').value = type.toLowerCase().replace(' ', '-');
+  document.getElementById('compositionType').value = type.toLowerCase().replace(/\s+/g, '-');
 }
 
 // MULTI-PERSONNAGES
@@ -1553,43 +2009,30 @@ function removeCharacter(index) {
 
 // TUTORIEL
 function toggleTutorial() {
-  tutorialActive = !tutorialActive;
-  document.getElementById('tutorialToggle').textContent = tutorialActive ? '❌ Fermer' : '🎓 Tutoriel';
-  
-  if (tutorialActive) {
-    document.getElementById('tutorialSection').style.display = 'block';
-    toggleSection('tutorial');
-  } else {
-    document.getElementById('tutorialSection').style.display = 'none';
+  // Petite notification pour confirmer l'ouverture
+  if (!document.getElementById('tutorialSection').style.display || 
+      document.getElementById('tutorialSection').style.display === 'none') {
+    showNotification('📚 Tutoriel ouvert !', '#9d4edd');
   }
-}
-
-function nextTutorialStep() {
-  tutorialStep++;
-  updateTutorial();
-}
-
-function prevTutorialStep() {
-  tutorialStep--;
-  updateTutorial();
-}
-
-function updateTutorial() {
-  // Implémentation basique
-  document.getElementById('tutorialStep1').innerHTML = `
-    <h3>Étape ${tutorialStep} : Apprentissage</h3>
-    <p>Continuez à explorer les différentes options.</p>
-    <div class="tutorial-navigation">
-      <button onclick="prevTutorialStep()" ${tutorialStep === 1 ? 'disabled' : ''}>Précédent</button>
-      <button onclick="nextTutorialStep()">${tutorialStep === 5 ? 'Terminer' : 'Suivant'}</button>
-    </div>
-  `;
+  const tutorialSection = document.getElementById('tutorialSection');
+  const tutorialToggle = document.getElementById('tutorialToggle');
+  
+  if (tutorialSection.style.display === 'none' || tutorialSection.style.display === '') {
+    tutorialSection.style.display = 'block';
+    tutorialToggle.innerHTML = '<span>❌</span> FERMER';
+    tutorialToggle.style.background = 'linear-gradient(135deg, #ff6b6b, #ff8e8e)';
+  } else {
+    tutorialSection.style.display = 'none';
+    tutorialToggle.innerHTML = '<span>🎓</span> TUTORIEL';
+    tutorialToggle.style.background = '';
+  }
 }
 
 // ANALYSE
 function updateAnalysis() {
   const prompt = document.getElementById('promptOutput').value;
-  const words = prompt.split(/\s+/).length;
+  const cleanPrompt = prompt.replace(/^#\d+\s*/, '');
+  const words = cleanPrompt.split(/\s+/).filter(word => word.length > 0).length;
   
   // Calcul des scores
   let detailScore = 'Faible';
@@ -1626,7 +2069,7 @@ function getSelectedValue(customId, selectId, dataArray) {
   
   const select = document.getElementById(selectId);
   if (select.value) {
-    if (dataArray) {
+    if (dataArray && selectId === 'personalitySelect') {
       return dataArray[select.value]?.name || select.value;
     }
     return select.value;
@@ -1634,6 +2077,7 @@ function getSelectedValue(customId, selectId, dataArray) {
   
   return '';
 }
+
 
 function selectPersonalityCard(index) {
   document.querySelectorAll('.personality-card').forEach(card => {
@@ -1646,6 +2090,7 @@ function selectPersonalityCard(index) {
   }
   
   document.getElementById('personalitySelect').value = index;
+  document.getElementById('customPersonality').value = ''; // Vide le champ personnalisé
   selectedPersonality = data.personalities[index];
 }
 
@@ -1655,17 +2100,11 @@ function selectPersonality(value) {
       card.classList.remove('selected');
     });
     selectedPersonality = null;
+    document.getElementById('customPersonality').value = ''; // Vide le champ personnalisé
     return;
   }
   
   selectPersonalityCard(parseInt(value));
-}
-
-function toggleSection(sectionId) {
-  const content = document.getElementById(sectionId + 'Content');
-  const icon = content.previousElementSibling.querySelector('.collapsible-icon');
-  content.classList.toggle('expanded');
-  icon.classList.toggle('rotated');
 }
 
 function updateCounter() {
@@ -1699,6 +2138,104 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'c') copyPrompt();
   if (e.ctrlKey && e.key === 'Delete') clearAll();
 });
+
+// Chargement des profils sauvegardés
+function loadPreset(presetName) {
+  // Exemple de configuration pour chaque preset
+  const presets = {
+    fantasy: {
+      genre: "",
+      format: "wide shot cinématique 16:9",
+      style: "peinture à l'huile baroque",
+      eclairage: "soleil couchant doré"
+    },
+    cyberpunk: {
+      genre: "",
+      format: "wide shot ultra-large 21:9",
+      style: "cyberpunk néon",
+      eclairage: "néons bleu orange futuriste"
+    },
+    portrait: {
+      genre: "homme",
+      format: "portrait 9:16",
+      style: "réaliste photographique",
+      eclairage: "clair-obscur"
+    },
+    paysage: {
+      genre: "",
+      format: "panoramique 3:1",
+      style: "hyperréaliste 8K",
+      eclairage: "aurore rosée douce"
+    },
+    "sci-fi": {
+      genre: "",
+      format: "wide shot cinématique 16:9",
+      style: "science-fiction futuriste",
+      eclairage: "lumières noires UV"
+    }
+  };
+  
+  if (presets[presetName]) {
+    const preset = presets[presetName];
+    Object.keys(preset).forEach(key => {
+      const element = document.getElementById(key);
+      if (element) {
+        element.value = preset[key];
+      }
+    });
+    showNotification(`✅ Preset "${presetName}" chargé !`, '#9d4edd');
+  }
+}
+
+function getCurrentTheme() {
+  // Vérifie si les valeurs actuelles correspondent à un thème
+  const personality = document.getElementById('customPersonality').value;
+  const action = document.getElementById('customAction').value;
+  const lieu = document.getElementById('customLieu').value;
+  
+  // Compare avec les thèmes définis dans randomizeAll()
+  const themes = [
+    {
+      name: "cyberpunk",
+      personalities: ["David Bowie", "Keanu Reeves", "Lady Gaga"],
+      actions: ["combat héroïquement des androïdes rebelles", "hacke un système de sécurité complexe", "vole une puce neuronale rare"],
+      lieux: ["une ville cyberpunk immense", "la station spatiale ISS", "un vaisseau spatial futuriste"],
+      details: "détails complexes, textures riches, métal polissé, circuits luminescents, interfaces holographiques"
+    },
+    {
+      name: "fantasy", 
+      personalities: ["Un dragon", "Une licorne", "Un vampire", "Un ange"],
+      actions: ["vole gracieusement au-dessus d'une forêt ancienne", "protège un trésor antique", "jette un sort puissant"],
+      lieux: ["une forêt enchantée mystérieuse", "un château médiéval majestueux", "un temple antique mystique"],
+      details: "détails complexes, textures riches, écailles iridescentes, fourrure soyeuse, plumes détaillées"
+    },
+    {
+      name: "réaliste",
+      personalities: ["Leonardo DiCaprio", "Meryl Streep", "Brad Pitt", "Angelina Jolie"],
+      actions: ["parle avec passion en public", "enseigne avec dynamisme", "dirige avec autorité"],
+      lieux: ["sur la terrasse d'un café parisien", "dans une salle de classe spacieuse", "dans un amphithéâtre historique"],
+      details: "détails complexes, textures de peau réalistes, expressions faciales subtiles"
+    }
+  ];
+  
+  for (const theme of themes) {
+    const isPersonalityMatch = theme.personalities.some(p => personality.includes(p));
+    const isActionMatch = theme.actions.some(a => action.includes(a));
+    const isLieuMatch = theme.lieux.some(l => lieu.includes(l));
+    
+    if (isPersonalityMatch && (isActionMatch || isLieuMatch)) {
+      return theme;
+    }
+  }
+  
+  return null;
+}
+
+function clearCustom(customId) {
+  document.getElementById(customId).value = '';
+}
+
+
 </script>
 </body>
 </html>
