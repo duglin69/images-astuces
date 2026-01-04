@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Prompts Universel v3</title>
+    <title>Générateur de Prompts Pro v4</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:wght@300;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -20,6 +20,8 @@
             --text-primary: #e8eaf6;
             --text-secondary: #9fa8da;
             --border: #2a3f5f;
+            --success: #4caf50;
+            --warning: #ff9800;
         }
 
         body {
@@ -35,7 +37,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -63,15 +65,65 @@
             font-weight: 300;
         }
 
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            margin-top: 0.5rem;
+        }
+
+        /* Barre d'outils supérieure */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-section {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .mode-btn {
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+        }
+
         .language-toggle {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            margin: 2rem 0;
-            animation: fadeInDown 0.8s ease;
-            animation-delay: 0.2s;
-            animation-fill-mode: both;
         }
 
         .language-toggle label {
@@ -84,7 +136,7 @@
             position: relative;
             width: 60px;
             height: 30px;
-            background: var(--bg-card);
+            background: var(--bg-dark);
             border: 2px solid var(--border);
             border-radius: 15px;
             cursor: pointer;
@@ -114,6 +166,102 @@
             display: none;
         }
 
+        .action-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border: none;
+            color: white;
+        }
+
+        /* Sidebar pour historique et exemples */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .history-item, .example-item {
+            padding: 0.8rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .history-item:hover, .example-item:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .history-item .timestamp {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+
+        .example-item .example-preview {
+            width: 100%;
+            height: 80px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Main content */
+        .main-content {
+            min-width: 0;
+        }
+
         .generator-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -129,6 +277,7 @@
             animation: fadeInUp 0.8s ease;
             animation-fill-mode: both;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
         .section:hover {
@@ -136,22 +285,106 @@
             box-shadow: 0 8px 24px rgba(255, 107, 157, 0.15);
         }
 
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.2s; }
-        .section:nth-child(3) { animation-delay: 0.3s; }
-        .section:nth-child(4) { animation-delay: 0.4s; }
-        .section:nth-child(5) { animation-delay: 0.5s; }
-        .section:nth-child(6) { animation-delay: 0.6s; }
-        .section:nth-child(7) { animation-delay: 0.7s; }
-        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section.collapsed .section-content {
+            display: none;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
 
         .section h2 {
             font-family: 'Space Mono', monospace;
             font-size: 1.1rem;
             color: var(--accent);
-            margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+
+        .collapse-icon {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .section.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            margin-top: 1rem;
+        }
+
+        .product-preview {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 1rem auto;
+            transition: transform 0.3s ease;
+        }
+
+        .product-preview:hover {
+            transform: scale(1.1);
+        }
+
+        .suggestions-box {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px dashed var(--accent-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .suggestions-box h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .suggestion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .suggestion-tag {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--accent-secondary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-tag:hover {
+            background: var(--accent-secondary);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        .compatibility-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 0.8rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .compatibility-warning.show {
+            display: block;
+            animation: slideIn 0.3s ease;
         }
 
         label {
@@ -170,8 +403,7 @@
             color: var(--text-primary);
             font-family: 'Crimson Pro', serif;
             font-size: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         select:focus, input:focus, textarea:focus {
@@ -181,114 +413,248 @@
         }
 
         textarea {
+            min-height: 100px;
             resize: vertical;
-            min-height: 80px;
         }
 
-        .character-inputs, .logo-section {
-            display: none;
-        }
-
-        .character-inputs.active, .logo-section.active {
-            display: block;
-        }
-
-        .character-item {
-            margin-bottom: 0.8rem;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        button {
-            font-family: 'Space Mono', monospace;
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            border: none;
+        .conditional-field {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 107, 157, 0.05);
+            border: 1px dashed var(--accent);
             border-radius: 8px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            width: 100%;
+            animation: slideDown 0.3s ease;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .character-inputs {
+            display: grid;
+            gap: 1rem;
             margin-top: 1rem;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+        .character-input {
+            padding: 1rem;
+            background: rgba(78, 205, 196, 0.05);
+            border: 1px solid var(--accent-secondary);
+            border-radius: 8px;
         }
 
-        button:active {
+        .character-input h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .generate-btn {
+            flex: 1;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+        }
+
+        .generate-btn:active {
             transform: translateY(0);
         }
 
+        .generate-btn.secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
         .output-section {
+            margin-top: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .output-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .prompt-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prompt-box h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .variations-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .variation-box {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .variation-box:hover {
+            border-color: var(--accent-secondary);
+            transform: translateY(-2px);
+        }
+
+        .variation-box.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.2);
+        }
+
+        .variation-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-content {
+            background: var(--bg-dark);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: 'Crimson Pro', serif;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .copy-btn, .export-btn, .save-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .copy-btn:hover, .export-btn:hover, .save-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+        }
+
+        .export-btn {
+            background: var(--accent-secondary);
+        }
+
+        .save-btn {
+            background: var(--success);
+        }
+
+        .info-note {
+            background: rgba(78, 205, 196, 0.1);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 2rem;
-            margin-top: 2rem;
-            display: none;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .output-section.active {
-            display: block;
-        }
-
-        .output-section h3 {
-            font-family: 'Space Mono', monospace;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .prompt-box {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 0.95rem;
-            line-height: 1.8;
-            max-height: 400px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
             overflow-y: auto;
         }
 
-        .copy-btn {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            width: auto;
-            margin: 0;
-            background: var(--accent-secondary);
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .copy-btn:hover {
-            box-shadow: 0 4px 16px rgba(78, 205, 196, 0.4);
+        .modal-header h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent);
         }
 
-        .info-box {
-            background: rgba(78, 205, 196, 0.1);
-            border: 1px solid var(--accent-secondary);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-size: 0.9rem;
+        .close-modal {
+            background: none;
+            border: none;
             color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
         }
 
         @keyframes fadeInDown {
@@ -313,542 +679,1092 @@
             }
         }
 
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mode expert - affichage compact */
+        .expert-mode .section {
+            padding: 1rem;
+        }
+
+        .expert-mode .section h2 {
+            font-size: 0.95rem;
+        }
+
+        .expert-mode .conditional-field {
+            padding: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+                max-height: none;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
             }
-            
+
             .generator-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.5rem;
             }
 
-            .grid-2 {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 2rem;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-section {
+                justify-content: center;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
         }
-.top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
 
-body {
-    padding-top: 80px;
-}
-.btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-}
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
     </style>
 </head>
 <body>
-<div class="top-right">
-    <a href="index.html" class="btn-retour">🏠 Accueil</a>
-    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
-</div>
     <div class="container">
         <header>
-            <h1>✨ Générateur de Prompts Universel</h1>
-            <p class="subtitle">Créez des prompts optimisés pour vos designs personnalisés</p>
+            <h1>🎨 Générateur de Prompts Pro</h1>
+            <p class="subtitle">Créez des visuels personnalisés pour tous vos supports</p>
+            <span class="version-badge">v4.0 - Edition Complète</span>
         </header>
 
-        <div class="language-toggle">
-            <label>🇫🇷 Français</label>
-            <input type="checkbox" id="languageToggle">
-            <label for="languageToggle" class="toggle-switch">
-                <span class="toggle-slider"></span>
-            </label>
-            <label>🇬🇧 English</label>
-        </div>
-
-        <div class="generator-grid">
-            <!-- Type de produit -->
-            <div class="section">
-                <h2>🎨 Type de Produit</h2>
-                <label for="productType">Objet à personnaliser</label>
-                <select id="productType">
-                    <option value="">-- Sélectionner --</option>
-                    <optgroup label="Affiches & Posters">
-                        <option value="movie-poster">Affiche de Film</option>
-                        <option value="tv-poster">Affiche de Série TV</option>
-                        <option value="cartoon-poster">Affiche de Dessin Animé</option>
-                        <option value="poster">Poster Décoratif (idéal pour bannières Facebook au format 21:9)</option>
-                    </optgroup>
-                    <optgroup label="Musique & Livres">
-                        <option value="album-cover">Pochette d'Album Musical</option>
-                        <option value="book-cover">Couverture de Livre</option>
-                        <option value="book-plastic">Plastique pour Couverture de Livre</option>
-                        <option value="booklet-cover">Premier Feuillet de Livret Dépliant</option>
-                    </optgroup>
-                    <optgroup label="Objets du Quotidien">
-                        <option value="mug">Design de Mug/Tasse</option>
-                        <option value="blanket">Design de Couette/Coussin</option>
-                    </optgroup>
-                    <optgroup label="Cartes & Papeterie">
-                        <option value="postcard">Carte Postale</option>
-                        <option value="birthday-card">Carte d'Anniversaire</option>
-                        <option value="newyear-card">Carte de Nouvel An</option>
-                        <option value="christmas-card">Carte de Noël</option>
-                        <option value="easter-card">Carte de Pâques</option>
-                        <option value="mothers-card">Carte Fête des Mères</option>
-                        <option value="fathers-card">Carte Fête des Pères</option>
-                        <option value="vacation-card">Carte Bonnes Vacances</option>
-                        <option value="recovery-card">Carte Bon Rétablissement</option>
-                        <option value="congrats-card">Carte Félicitations</option>
-                    </optgroup>
-                    <optgroup label="Événements">
-                        <option value="cake-topper">Rondelle pour Gâteau d'Anniversaire</option>
-                    </optgroup>
-                </select>
-
-                <label for="format">Format</label>
-                <select id="format">
-                    <option value="">-- Optionnel --</option>
-                    <option value="square">Carré (1:1)</option>
-                    <option value="portrait">Portrait (2:3)</option>
-                    <option value="landscape">Paysage (3:2)</option>
-                    <option value="a4-portrait">A4 Portrait</option>
-                    <option value="a4-landscape">A4 Paysage</option>
-                    <option value="a3">A3</option>
-                    <option value="panoramic">Panoramique (16:9)</option>
-                    <option value="wide">Large (21:9)</option>
-                </select>
-            </div>
-
-            <!-- Mode création -->
-            <div class="section">
-                <h2>🎭 Mode de Création</h2>
-                <label for="creationMode">Original ou parodie ?</label>
-                <select id="creationMode">
-                    <option value="original">Création Originale</option>
-                    <option value="parody">Parodie d'Existant</option>
-                </select>
-
-                <div id="parodySection" style="display: none; margin-top: 1rem;">
-                    <label for="parodyReference">Référence à parodier</label>
-                    <select id="parodyReference">
-                        <option value="">-- Sélectionner --</option>
-                        <optgroup label="Films Iconiques">
-                            <option value="Titanic">Titanic</option>
-                            <option value="Star Wars">Star Wars</option>
-                            <option value="The Godfather">Le Parrain</option>
-                            <option value="Pulp Fiction">Pulp Fiction</option>
-                            <option value="The Matrix">Matrix</option>
-                            <option value="Jurassic Park">Jurassic Park</option>
-                            <option value="Back to the Future">Retour vers le Futur</option>
-                            <option value="Jaws">Les Dents de la Mer</option>
-                            <option value="E.T.">E.T.</option>
-                            <option value="Casablanca">Casablanca</option>
-                            <option value="The Shining">Shining</option>
-                            <option value="Blade Runner">Blade Runner</option>
-                            <option value="Indiana Jones">Indiana Jones</option>
-                            <option value="Lord of the Rings">Le Seigneur des Anneaux</option>
-                            <option value="Harry Potter">Harry Potter</option>
-                            <option value="Avatar">Avatar</option>
-                            <option value="Inception">Inception</option>
-                            <option value="The Dark Knight">The Dark Knight</option>
-                            <option value="Fight Club">Fight Club</option>
-                            <option value="Forrest Gump">Forrest Gump</option>
-                            <option value="Borsalino">Borsalino</option>
-                        </optgroup>
-                        <optgroup label="Séries TV">
-                            <option value="Breaking Bad">Breaking Bad</option>
-                            <option value="Game of Thrones">Game of Thrones</option>
-                            <option value="Stranger Things">Stranger Things</option>
-                            <option value="The Office">The Office</option>
-                            <option value="Friends">Friends</option>
-                            <option value="The Sopranos">Les Soprano</option>
-                            <option value="The Wire">The Wire</option>
-                            <option value="Mad Men">Mad Men</option>
-                            <option value="Lost">Lost</option>
-                            <option value="The Crown">The Crown</option>
-                            <option value="Sherlock">Sherlock</option>
-                            <option value="Black Mirror">Black Mirror</option>
-                            <option value="The Mandalorian">The Mandalorian</option>
-                            <option value="Westworld">Westworld</option>
-                            <option value="Twin Peaks">Twin Peaks</option>
-                        </optgroup>
-                        <optgroup label="Dessins Animés">
-                            <option value="The Simpsons">Les Simpson</option>
-                            <option value="SpongeBob">Bob l'Éponge</option>
-                            <option value="Rick and Morty">Rick et Morty</option>
-                            <option value="Adventure Time">Adventure Time</option>
-                            <option value="Avatar: The Last Airbender">Avatar: Le Dernier Maître de l'Air</option>
-                            <option value="Dragon Ball Z">Dragon Ball Z</option>
-                            <option value="One Piece">One Piece</option>
-                            <option value="Pokemon">Pokémon</option>
-                            <option value="Studio Ghibli">Films Ghibli</option>
-                            <option value="Disney Classic">Classique Disney</option>
-                        </optgroup>
-                        <optgroup label="Albums Musicaux">
-                            <option value="Abbey Road">Abbey Road - The Beatles</option>
-                            <option value="Dark Side of the Moon">Dark Side of the Moon - Pink Floyd</option>
-                            <option value="Thriller">Thriller - Michael Jackson</option>
-                            <option value="Nevermind">Nevermind - Nirvana</option>
-                            <option value="The Velvet Underground">The Velvet Underground & Nico</option>
-                            <option value="Born to Run">Born to Run - Bruce Springsteen</option>
-                            <option value="Sgt. Pepper">Sgt. Pepper's - The Beatles</option>
-                            <option value="OK Computer">OK Computer - Radiohead</option>
-                            <option value="Purple Rain">Purple Rain - Prince</option>
-                            <option value="Blonde on Blonde">Blonde on Blonde - Bob Dylan</option>
-                        </optgroup>
-                    </select>
-
-                    <label for="customParody" style="margin-top: 1rem;">Ou saisissez votre propre référence</label>
-                    <input type="text" id="customParody" placeholder="Ex: Le Cinquième Élément, Breaking Bad, etc.">
+        <!-- Barre d'outils -->
+        <div class="toolbar">
+            <div class="toolbar-section">
+                <div class="mode-switch">
+                    <button class="mode-btn active" onclick="switchMode('guided')">🎯 Mode Guidé</button>
+                    <button class="mode-btn" onclick="switchMode('expert')">⚡ Mode Expert</button>
                 </div>
             </div>
 
-            <!-- Esthétique -->
-            <div class="section">
-                <h2>✨ Esthétique Principale</h2>
-                <label for="aesthetic">Style visuel</label>
-                <select id="aesthetic">
-                    <option value="">-- Sélectionner --</option>
-                    <optgroup label="Réaliste & Professionnel">
-                        <option value="photorealistic">Photoréaliste</option>
-                        <option value="cinematic">Cinématique</option>
-                        <option value="professional photo">Photo Professionnelle</option>
-                        <option value="magazine style">Style Magazine</option>
-                        <option value="editorial">Éditorial</option>
-                        <option value="fashion photography">Photographie de Mode</option>
-                    </optgroup>
-                    <optgroup label="Animation & Illustration">
-                        <option value="ghibli style">Style Ghibli</option>
-                        <option value="anime">Anime</option>
-                        <option value="cartoon">Cartoon</option>
-                        <option value="pixar style">Style Pixar</option>
-                        <option value="disney style">Style Disney</option>
-                        <option value="comic book">Bande Dessinée</option>
-                        <option value="manga">Manga</option>
-                        <option value="ligne claire">Ligne Claire</option>
-                    </optgroup>
-                    <optgroup label="Rétro & Vintage">
-                        <option value="film noir">Film Noir</option>
-                        <option value="art deco">Art Déco</option>
-                        <option value="vintage">Vintage</option>
-                        <option value="retro futurism">Rétro-Futurisme</option>
-                        <option value="70s aesthetic">Esthétique Années 70</option>
-                        <option value="80s aesthetic">Esthétique Années 80</option>
-                        <option value="90s aesthetic">Esthétique Années 90</option>
-                        <option value="y2k aesthetic">Y2K</option>
-                    </optgroup>
-                    <optgroup label="Futuriste & Technologique">
-                        <option value="cyberpunk">Cyberpunk</option>
-                        <option value="steampunk">Steampunk</option>
-                        <option value="solarpunk">Solarpunk</option>
-                        <option value="sci-fi">Science-Fiction</option>
-                        <option value="neon noir">Néon Noir</option>
-                        <option value="glitchcore">Glitchcore</option>
-                        <option value="vaporwave">Vaporwave</option>
-                    </optgroup>
-                    <optgroup label="Artistique & Pictural">
-                        <option value="oil painting">Peinture à l'Huile</option>
-                        <option value="watercolor">Aquarelle</option>
-                        <option value="impressionist">Impressionniste</option>
-                        <option value="expressionist">Expressionniste</option>
-                        <option value="surrealist">Surréaliste</option>
-                        <option value="abstract">Abstrait</option>
-                        <option value="pop art">Pop Art</option>
-                        <option value="minimalist">Minimaliste</option>
-                    </optgroup>
-                    <optgroup label="Culturel & Atmosphérique">
-                        <option value="afrofuturism">Afrofuturisme</option>
-                        <option value="cottagecore">Cottagecore</option>
-                        <option value="dark academia">Dark Academia</option>
-                        <option value="gothic">Gothique</option>
-                        <option value="baroque">Baroque</option>
-                        <option value="brutalism">Brutalisme</option>
-                        <option value="wabi-sabi">Wabi-Sabi</option>
-                        <option value="kawaii">Kawaii</option>
-                    </optgroup>
-                    <optgroup label="Atmosphères Spécifiques">
-                        <option value="liminal spaces">Espaces Liminaux</option>
-                        <option value="dreamcore">Dreamcore</option>
-                        <option value="weirdcore">Weirdcore</option>
-                        <option value="nostalgiacore">Nostalgiacore</option>
-                        <option value="frutiger aero">Frutiger Aero</option>
-                    </optgroup>
-                </select>
-
-                <label for="customAesthetic" style="margin-top: 1rem;">Ou décrivez votre propre style</label>
-                <input type="text" id="customAesthetic" placeholder="Ex: mélange de baroque et de futurisme, style années 20...">
+            <div class="toolbar-section language-toggle">
+                <label for="languageToggle">Français</label>
+                <input type="checkbox" id="languageToggle" onchange="updateLanguage()">
+                <label for="languageToggle" class="toggle-switch">
+                    <span class="toggle-slider"></span>
+                </label>
+                <label for="languageToggle">English</label>
             </div>
 
-            <!-- Personnages -->
-            <div class="section">
-                <h2>👥 Personnages</h2>
-                <label for="characterCount">Nombre de personnages</label>
-                <select id="characterCount">
-                    <option value="0">Aucun personnage</option>
-                    <option value="1">1 personnage</option>
-                    <option value="2">2 personnages</option>
-                    <option value="3">3 personnages</option>
-                    <option value="4">4 personnages</option>
-                </select>
-
-                <div id="characterInputs" class="character-inputs">
-                    <div class="character-item" id="char1">
-                        <label for="char1desc">Personnage 1</label>
-                        <input type="text" id="char1desc" placeholder="Ex: femme dans la trentaine, cheveux roux, veste en cuir">
-                    </div>
-                    <div class="character-item" id="char2">
-                        <label for="char2desc">Personnage 2</label>
-                        <input type="text" id="char2desc" placeholder="Description du personnage 2">
-                    </div>
-                    <div class="character-item" id="char3">
-                        <label for="char3desc">Personnage 3</label>
-                        <input type="text" id="char3desc" placeholder="Description du personnage 3">
-                    </div>
-                    <div class="character-item" id="char4">
-                        <label for="char4desc">Personnage 4</label>
-                        <input type="text" id="char4desc" placeholder="Description du personnage 4">
-                    </div>
-                </div>
-
-                <div class="info-box">
-                    💡 Ajoutez des photos de référence dans votre outil de génération pour des résultats encore plus précis
-                </div>
-            </div>
-
-            <!-- Texte -->
-            <div class="section">
-                <h2>📝 Texte à Inclure</h2>
-                <label for="titleText">Titre / Nom du projet</label>
-                <input type="text" id="titleText" placeholder="Ex: L'Aventure Commence, Mon Café Préféré...">
-
-                <label for="textFont">Style de police</label>
-                <select id="textFont">
-                    <option value="">-- Optionnel --</option>
-                    <option value="bold sans-serif">Gras Sans-Serif</option>
-                    <option value="elegant serif">Élégant Serif</option>
-                    <option value="script handwritten">Script/Manuscrit</option>
-                    <option value="vintage retro">Vintage/Rétro</option>
-                    <option value="modern geometric">Moderne Géométrique</option>
-                    <option value="brush stroke">Coup de Pinceau</option>
-                    <option value="stencil">Pochoir</option>
-                    <option value="neon">Néon</option>
-                    <option value="3D dimensional">3D Dimensionnel</option>
-                </select>
-
-                <label for="customFont">Police personnalisée</label>
-                <input type="text" id="customFont" placeholder="Ex: style art déco, lettres métalliques...">
-
-                <label for="textColor">Couleur du texte</label>
-                <select id="textColor">
-                    <option value="high contrast">Contraste élevé (adapté au fond)</option>
-                    <option value="white">Blanc</option>
-                    <option value="black">Noir</option>
-                    <option value="gold">Or</option>
-                    <option value="silver">Argent</option>
-                    <option value="red">Rouge</option>
-                    <option value="blue">Bleu</option>
-                </select>
-
-                <label for="customTextColor">Couleur personnalisée</label>
-                <input type="text" id="customTextColor" placeholder="Ex: bleu électrique, orange vif...">
-
-                <label for="subtitleText">Sous-titre (optionnel)</label>
-                <input type="text" id="subtitleText" placeholder="Ex: Une histoire vraie, Edition limitée...">
-
-                <label for="additionalText">Texte additionnel (optionnel)</label>
-                <textarea id="additionalText" placeholder="Slogan, date, crédits, etc."></textarea>
-            </div>
-
-            <!-- Logo -->
-            <div class="section">
-                <h2>🏷️ Logo Stylisé</h2>
-                <label for="includeLogo">Ajouter un logo ?</label>
-                <select id="includeLogo">
-                    <option value="no">Non</option>
-                    <option value="yes">Oui</option>
-                </select>
-
-                <div id="logoSection" class="logo-section">
-                    <label for="logoDescription">Description du logo</label>
-                    <input type="text" id="logoDescription" placeholder="Ex: Borsalino style, chapeau élégant, couronne dorée...">
-
-                    <label for="logoPosition">Position du logo</label>
-                    <select id="logoPosition">
-                        <option value="top-left">En Haut à Gauche</option>
-                        <option value="top-center">En Haut au Centre</option>
-                        <option value="top-right">En Haut à Droite</option>
-                        <option value="bottom-left">En Bas à Gauche</option>
-                        <option value="bottom-center">En Bas au Centre</option>
-                        <option value="bottom-right">En Bas à Droite</option>
-                    </select>
-
-                    <div class="info-box">
-                        💡 Le logo sera généré avec une couleur qui contraste automatiquement avec le fond pour une visibilité optimale
-                    </div>
-                </div>
-            </div>
-
-            <!-- Options supplémentaires -->
-            <div class="section">
-                <h2>🎯 Options Supplémentaires</h2>
-                
-                <label for="mood">Ambiance / Genre</label>
-                <select id="mood">
-                    <option value="">-- Optionnel --</option>
-                    <option value="epic">Épique</option>
-                    <option value="dramatic">Dramatique</option>
-                    <option value="romantic">Romantique</option>
-                    <option value="mysterious">Mystérieux</option>
-                    <option value="horror">Horreur</option>
-                    <option value="comedy">Comédie</option>
-                    <option value="action">Action</option>
-                    <option value="adventure">Aventure</option>
-                    <option value="fantasy">Fantasy</option>
-                    <option value="whimsical">Fantaisiste</option>
-                    <option value="melancholic">Mélancolique</option>
-                    <option value="uplifting">Inspirant</option>
-                    <option value="dark">Sombre</option>
-                    <option value="cheerful">Joyeux</option>
-                </select>
-
-                <label for="customMood">Ambiance personnalisée</label>
-                <input type="text" id="customMood" placeholder="Ex: atmosphère onirique et surréaliste">
-
-                <label for="colors">Couleurs dominantes</label>
-                <select id="colors">
-                    <option value="">-- Optionnel --</option>
-                    <option value="warm colors">Couleurs chaudes</option>
-                    <option value="cool colors">Couleurs froides</option>
-                    <option value="vibrant colors">Couleurs vibrantes</option>
-                    <option value="muted colors">Couleurs sourdes</option>
-                    <option value="monochrome">Monochrome</option>
-                    <option value="neon colors">Couleurs néon</option>
-                    <option value="pastel colors">Couleurs pastel</option>
-                    <option value="earth tones">Tons terreux</option>
-                    <option value="blue and gold">Bleu et or</option>
-                    <option value="red and black">Rouge et noir</option>
-                    <option value="purple and teal">Violet et turquoise</option>
-                </select>
-
-                <label for="customColors">Palette personnalisée</label>
-                <input type="text" id="customColors" placeholder="Ex: orange brûlé, bleu cobalt, touches de doré">
-
-                <label for="specificElements">Éléments spécifiques à inclure</label>
-                <textarea id="specificElements" placeholder="Ex: skyline urbain, coucher de soleil, animaux, véhicules, objets symboliques..."></textarea>
+            <div class="toolbar-section">
+                <button class="action-btn" onclick="openHistoryModal()">📚 Historique</button>
+                <button class="action-btn primary" onclick="surpriseMe()">✨ Surprends-moi !</button>
             </div>
         </div>
 
-        <button onclick="generatePrompt()">🚀 Générer les Prompts</button>
+        <!-- Layout principal -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Historique récent -->
+                <div class="sidebar-section">
+                    <h3>📌 Récents</h3>
+                    <div id="recentHistory"></div>
+                </div>
 
-        <div id="outputSection" class="output-section">
-            <h3>
-                <span id="positiveTitle">✨ Prompt Positif</span>
-                <button class="copy-btn" onclick="copyPrompt('positivePrompt')">📋 Copier</button>
-            </h3>
-            <div id="positivePrompt" class="prompt-box"></div>
+                <!-- Exemples d'inspiration -->
+                <div class="sidebar-section">
+                    <h3>💡 Exemples</h3>
+                    <div id="examplesLibrary"></div>
+                </div>
 
-            <h3>
-                <span id="negativeTitle">🚫 Prompt Négatif</span>
-                <button class="copy-btn" onclick="copyPrompt('negativePrompt')">📋 Copier</button>
-            </h3>
-            <div id="negativePrompt" class="prompt-box"></div>
+                <!-- Tags / Catégories -->
+                <div class="sidebar-section">
+                    <h3>🏷️ Catégories</h3>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag" onclick="filterByTag('anniversaire')">🎂 Anniversaire</span>
+                        <span class="suggestion-tag" onclick="filterByTag('entreprise')">💼 Entreprise</span>
+                        <span class="suggestion-tag" onclick="filterByTag('humour')">😄 Humour</span>
+                        <span class="suggestion-tag" onclick="filterByTag('sport')">⚽ Sport</span>
+                        <span class="suggestion-tag" onclick="filterByTag('famille')">👨‍👩‍👧 Famille</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Contenu principal -->
+            <main class="main-content">
+                <div class="generator-grid" id="generatorGrid">
+                    <!-- Section 1: Type de produit -->
+                    <div class="section" data-section="product">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>📦 Type de produit</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="productType">Sur quel support souhaitez-vous imprimer ?</label>
+                            <select id="productType" onchange="onProductChange()">
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="tshirt">T-shirt</option>
+                                <option value="sweatshirt">Sweatshirt</option>
+                                <option value="hoodie">Hoodie</option>
+                                <option value="polo">Polo</option>
+                                <option value="tank">Débardeur</option>
+                                <option value="jacket">Veste</option>
+                                <option value="cap">Casquette</option>
+                                <option value="beanie">Bonnet</option>
+                                <option value="tote">Tote bag</option>
+                                <option value="backpack">Sac à dos</option>
+                                <option value="poster">Poster</option>
+                                <option value="canvas">Toile</option>
+                                <option value="frame">Cadre photo</option>
+                                <option value="sticker">Sticker</option>
+                                <option value="mug">Mug</option>
+                                <option value="waterbottle">Gourde</option>
+                                <option value="phonecase">Coque de téléphone</option>
+                                <option value="mousepad">Tapis de souris</option>
+                                <option value="pillow">Coussin</option>
+                                <option value="blanket">Couverture</option>
+                                <option value="towel">Serviette de bain</option>
+                                <option value="napkin">Serviette de table</option>
+                                <option value="apron">Tablier</option>
+                                <option value="magnet">Magnet</option>
+                                <option value="coaster">Dessous de verre</option>
+                                <option value="puzzle">Puzzle</option>
+                                <option value="calendar">Calendrier</option>
+                                <option value="notebook">Carnet</option>
+                                <option value="pingpong">Raquette de ping-pong</option>
+                                <option value="football">Ballon de football</option>
+                                <option value="basketball">Ballon de basket</option>
+                                <option value="tennis">Balle de tennis</option>
+                                <option value="frisbee">Frisbee</option>
+                                <option value="skateboard">Skateboard</option>
+                                <option value="canette">Canette (soda)</option>
+                                <option value="beerlabel">Étiquette de bière/alcool</option>
+                                <option value="custom">🌟 Autre objet (à préciser)</option>
+                            </select>
+
+                            <div id="productPreview" class="product-preview"></div>
+                            
+                            <div id="customProductField" class="conditional-field hidden">
+                                <label for="customProduct">Décrivez l'objet que vous souhaitez customiser :</label>
+                                <input type="text" id="customProduct" placeholder="Ex: coussin, agenda, gourde isotherme...">
+                                <p class="info-note">💡 Nous étudierons la faisabilité de votre projet et vous contacterons !</p>
+                            </div>
+
+                            <!-- Suggestions intelligentes -->
+                            <div id="productSuggestions" class="suggestions-box hidden">
+                                <h4>✨ Styles populaires pour ce produit :</h4>
+                                <div class="suggestion-tags" id="styleSuggestions"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Format et orientation -->
+                    <div class="section" data-section="format">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>📐 Format</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="format">Orientation du design</label>
+                            <select id="format" onchange="checkCompatibility()">
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="square">Carré (1:1)</option>
+                                <option value="portrait">Portrait (vertical)</option>
+                                <option value="landscape">Paysage (horizontal)</option>
+                                <option value="circle">Circulaire</option>
+                                <option value="custom">Format personnalisé</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Mode de création -->
+                    <div class="section" data-section="creation">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>🎭 Mode de création</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="creationMode">Type de design</label>
+                            <select id="creationMode" onchange="toggleParodyField()">
+                                <option value="original">Design original</option>
+                                <option value="parody">Parodie de référence culturelle</option>
+                            </select>
+
+                            <div id="parodyFields" class="conditional-field hidden">
+                                <label for="parodyReference">Référence à parodier</label>
+                                <select id="parodyReference" onchange="toggleCustomParody()">
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="star wars">Star Wars</option>
+                                    <option value="harry potter">Harry Potter</option>
+                                    <option value="marvel">Marvel</option>
+                                    <option value="disney">Disney</option>
+                                    <option value="game of thrones">Game of Thrones</option>
+                                    <option value="lord of the rings">Le Seigneur des Anneaux</option>
+                                    <option value="stranger things">Stranger Things</option>
+                                    <option value="pokemon">Pokémon</option>
+                                    <option value="breaking bad">Breaking Bad</option>
+                                    <option value="friends">Friends</option>
+                                    <option value="custom">Autre (à préciser)</option>
+                                </select>
+
+                                <div id="customParodyField" class="conditional-field hidden">
+                                    <label for="customParody">Précisez la référence</label>
+                                    <input type="text" id="customParody" placeholder="Ex: The Office, Matrix, etc.">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Style esthétique -->
+                    <div class="section" data-section="aesthetic">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>🎨 Style esthétique</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="aesthetic">Esthétique visuelle</label>
+                            <select id="aesthetic" onchange="onAestheticChange()">
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="minimalist">Minimaliste</option>
+                                <option value="vintage">Vintage / Rétro</option>
+                                <option value="modern">Moderne</option>
+                                <option value="grunge">Grunge</option>
+                                <option value="cartoon">Cartoon / BD</option>
+                                <option value="realistic">Réaliste</option>
+                                <option value="abstract">Abstrait</option>
+                                <option value="pop art">Pop Art</option>
+                                <option value="watercolor">Aquarelle</option>
+                                <option value="neon">Néon</option>
+                                <option value="gothic">Gothique</option>
+                                <option value="cyberpunk">Cyberpunk</option>
+                                <option value="steampunk">Steampunk</option>
+                                <option value="kawaii">Kawaii</option>
+                                <option value="custom">Autre (à préciser)</option>
+                            </select>
+
+                            <div id="customAestheticField" class="conditional-field hidden">
+                                <label for="customAesthetic">Précisez le style</label>
+                                <input type="text" id="customAesthetic" placeholder="Ex: art déco, bauhaus, vaporwave...">
+                            </div>
+
+                            <!-- Alerte de compatibilité -->
+                            <div id="compatibilityWarning" class="compatibility-warning">
+                                ⚠️ <span id="warningText"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Personnages -->
+                    <div class="section" data-section="characters">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>👥 Personnages</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="characterCount">Nombre de personnages</label>
+                            <select id="characterCount" onchange="updateCharacterInputs()">
+                                <option value="0">Aucun personnage</option>
+                                <option value="1">1 personnage</option>
+                                <option value="2">2 personnages</option>
+                                <option value="3">3 personnages</option>
+                                <option value="4">4 personnages</option>
+                                <option value="5">5 personnages ou plus</option>
+                            </select>
+
+                            <div id="characterInputs" class="character-inputs"></div>
+
+                            <div id="characterInteractionField" class="conditional-field hidden">
+                                <label for="characterInteraction">Interaction entre les personnages (optionnel)</label>
+                                <textarea id="characterInteraction" placeholder="Ex: se serrant la main, se battant en duel, dansant ensemble, jouant au poker..."></textarea>
+                                <p class="info-note">💡 Décrivez comment les personnages interagissent ou se positionnent les uns par rapport aux autres.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Texte -->
+                    <div class="section" data-section="text">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>✍️ Texte</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="titleText">Titre principal (optionnel)</label>
+                            <input type="text" id="titleText" placeholder='Ex: "BEST DAD EVER"'>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="textFont">Police de caractères</label>
+                                <select id="textFont" onchange="toggleCustomFont()">
+                                    <option value="">-- Par défaut --</option>
+                                    <option value="bold sans-serif">Gras sans-serif</option>
+                                    <option value="elegant serif">Serif élégant</option>
+                                    <option value="handwritten script">Script manuscrit</option>
+                                    <option value="modern geometric">Géométrique moderne</option>
+                                    <option value="retro vintage">Rétro vintage</option>
+                                    <option value="graffiti street art">Graffiti / Street art</option>
+                                    <option value="stencil military">Pochoir / Militaire</option>
+                                    <option value="cartoon comic">Cartoon / Comic</option>
+                                    <option value="futuristic tech">Futuriste / Tech</option>
+                                    <option value="custom">Autre (à préciser)</option>
+                                </select>
+                            </div>
+
+                            <div id="customFontField" class="conditional-field hidden">
+                                <label for="customFont">Précisez la police</label>
+                                <input type="text" id="customFont" placeholder="Ex: brushed, gothic, neon...">
+                            </div>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="textColor">Couleur du texte</label>
+                                <select id="textColor" onchange="toggleCustomTextColor()">
+                                    <option value="">-- Par défaut --</option>
+                                    <option value="white">Blanc</option>
+                                    <option value="black">Noir</option>
+                                    <option value="red">Rouge</option>
+                                    <option value="blue">Bleu</option>
+                                    <option value="yellow">Jaune</option>
+                                    <option value="green">Vert</option>
+                                    <option value="gold">Or</option>
+                                    <option value="silver">Argent</option>
+                                    <option value="gradient rainbow">Dégradé arc-en-ciel</option>
+                                    <option value="custom">Autre (à préciser)</option>
+                                </select>
+                            </div>
+
+                            <div id="customTextColorField" class="conditional-field hidden">
+                                <label for="customTextColor">Précisez la couleur</label>
+                                <input type="text" id="customTextColor" placeholder="Ex: violet pastel, orange vif...">
+                            </div>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="subtitleText">Sous-titre (optionnel)</label>
+                                <input type="text" id="subtitleText" placeholder="Ex: 2024">
+                            </div>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="additionalText">Texte additionnel (optionnel)</label>
+                                <textarea id="additionalText" placeholder="Autre texte à inclure..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 7: Logo -->
+                    <div class="section" data-section="logo">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>🏷️ Logo / Emblème</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="includeLogo">Inclure un logo ?</label>
+                            <select id="includeLogo" onchange="toggleLogoFields()">
+                                <option value="no">Non</option>
+                                <option value="yes">Oui</option>
+                            </select>
+
+                            <div id="logoFields" class="conditional-field hidden">
+                                <label for="logoDescription">Description du logo</label>
+                                <textarea id="logoDescription" placeholder="Ex: couronne dorée, étoile stylisée, blason médiéval..."></textarea>
+
+                                <div style="margin-top: 1rem;">
+                                    <label for="logoPosition">Position du logo</label>
+                                    <select id="logoPosition">
+                                        <option value="top">En haut</option>
+                                        <option value="bottom">En bas</option>
+                                        <option value="left">À gauche</option>
+                                        <option value="right">À droite</option>
+                                        <option value="center">Au centre</option>
+                                        <option value="corner">Dans un coin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 8: Ambiance et couleurs -->
+                    <div class="section" data-section="mood">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <h2>🌈 Ambiance & Couleurs</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <label for="mood">Ambiance générale</label>
+                            <select id="mood" onchange="toggleCustomMood()">
+                                <option value="">-- Sélectionnez --</option>
+                                <option value="joyful energetic">Joyeuse et énergique</option>
+                                <option value="calm peaceful">Calme et paisible</option>
+                                <option value="dramatic epic">Dramatique et épique</option>
+                                <option value="mysterious dark">Mystérieuse et sombre</option>
+                                <option value="playful fun">Ludique et amusante</option>
+                                <option value="elegant sophisticated">Élégante et sophistiquée</option>
+                                <option value="romantic dreamy">Romantique et rêveuse</option>
+                                <option value="aggressive powerful">Agressive et puissante</option>
+                                <option value="nostalgic melancholic">Nostalgique et mélancolique</option>
+                                <option value="custom">Autre (à préciser)</option>
+                            </select>
+
+                            <div id="customMoodField" class="conditional-field hidden">
+                                <label for="customMood">Précisez l'ambiance</label>
+                                <input type="text" id="customMood" placeholder="Ex: surréaliste, dystopique...">
+                            </div>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="colors">Palette de couleurs</label>
+                                <select id="colors" onchange="onColorChange()">
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="monochrome black and white">Monochrome noir et blanc</option>
+                                    <option value="vibrant rainbow">Arc-en-ciel vibrant</option>
+                                    <option value="pastel soft">Pastel doux</option>
+                                    <option value="neon bright">Néon éclatant</option>
+                                    <option value="earth tones warm">Tons terreux chauds</option>
+                                    <option value="cool blues and purples">Bleus et violets froids</option>
+                                    <option value="sunset orange and pink">Coucher de soleil (orange et rose)</option>
+                                    <option value="forest green and brown">Forêt (vert et marron)</option>
+                                    <option value="ocean teal and blue">Océan (turquoise et bleu)</option>
+                                    <option value="custom">Autre (à préciser)</option>
+                                </select>
+                            </div>
+
+                            <div id="customColorsField" class="conditional-field hidden">
+                                <label for="customColors">Précisez les couleurs</label>
+                                <input type="text" id="customColors" placeholder="Ex: or et noir, rouge bordeaux et crème...">
+                            </div>
+
+                            <div style="margin-top: 1rem;">
+                                <label for="specificElements">Éléments spécifiques à inclure (optionnel)</label>
+                                <textarea id="specificElements" placeholder="Ex: étoiles, flammes, nuages, motifs géométriques..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="button-group">
+                    <button class="generate-btn" onclick="generatePrompt()">Générer le prompt ✨</button>
+                    <button class="generate-btn secondary" onclick="generateVariations()">Générer 3 variations 🎲</button>
+                </div>
+
+                <!-- Section de résultats -->
+                <div id="outputSection" class="output-section">
+                    <div class="prompt-box">
+                        <h3>
+                            <span id="positiveTitle">✨ Prompt Positif</span>
+                            <div class="action-buttons">
+                                <button class="copy-btn" onclick="copyPrompt('positivePrompt', event)">📋 Copier</button>
+                                <button class="save-btn" onclick="saveToHistory()">💾 Sauvegarder</button>
+                                <button class="export-btn" onclick="exportToPDF()">📄 PDF</button>
+                            </div>
+                        </h3>
+                        <div class="prompt-content" id="positivePrompt"></div>
+                    </div>
+
+                    <div id="variationsSection" class="hidden">
+                        <h3 style="font-family: 'Space Mono', monospace; color: var(--accent-secondary); margin-bottom: 1rem;">🎲 Variations générées</h3>
+                        <div class="variations-container" id="variationsContainer"></div>
+                    </div>
+
+                    <div class="prompt-box">
+                        <h3>
+                            <span id="negativeTitle">🚫 Prompt Négatif</span>
+                            <button class="copy-btn" onclick="copyPrompt('negativePrompt', event)">📋 Copier</button>
+                        </h3>
+                        <div class="prompt-content" id="negativePrompt"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal pour historique complet -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📚 Historique complet</h3>
+                <button class="close-modal" onclick="closeModal('historyModal')">×</button>
+            </div>
+            <div id="fullHistoryList"></div>
         </div>
     </div>
 
     <script>
-        // Gestion de l'affichage du mode parodie
-        document.getElementById('creationMode').addEventListener('change', function() {
-            const parodySection = document.getElementById('parodySection');
-            parodySection.style.display = this.value === 'parody' ? 'block' : 'none';
-        });
+        // État global de l'application
+        let appState = {
+            mode: 'guided',
+            language: 'fr',
+            history: [],
+            currentPrompt: null,
+            currentTag: null
+        };
 
-        // Gestion de l'affichage des personnages
-        document.getElementById('characterCount').addEventListener('change', function() {
-            const count = parseInt(this.value);
-            const container = document.getElementById('characterInputs');
-            
-            if (count > 0) {
-                container.classList.add('active');
-                for (let i = 1; i <= 4; i++) {
-                    const charDiv = document.getElementById('char' + i);
-                    charDiv.style.display = i <= count ? 'block' : 'none';
-                }
-            } else {
-                container.classList.remove('active');
+        // Charger l'historique depuis localStorage
+        function loadHistory() {
+            const saved = localStorage.getItem('promptHistory');
+            if (saved) {
+                appState.history = JSON.parse(saved);
+                updateRecentHistory();
             }
+        }
+
+        // Sauvegarder l'historique
+        function saveHistory() {
+            localStorage.setItem('promptHistory', JSON.stringify(appState.history));
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHistory();
+            loadExamples();
+            updateLanguage();
         });
 
-        // Gestion de l'affichage du logo
-        document.getElementById('includeLogo').addEventListener('change', function() {
-            const logoSection = document.getElementById('logoSection');
-            logoSection.classList.toggle('active', this.value === 'yes');
-        });
+        // Basculer entre mode guidé et expert
+        function switchMode(mode) {
+            appState.mode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const body = document.body;
+            if (mode === 'expert') {
+                body.classList.add('expert-mode');
+            } else {
+                body.classList.remove('expert-mode');
+            }
+        }
 
-        // Dictionnaires de traduction
+        // Gestion des sections repliables
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('collapsed');
+        }
+
+        // Mise à jour de la langue
+        function updateLanguage() {
+            appState.language = document.getElementById('languageToggle').checked ? 'en' : 'fr';
+            // Mettre à jour tous les textes de l'interface
+            updateCharacterInputs();
+        }
+
+        // Changement de produit
+        function onProductChange() {
+            const productType = document.getElementById('productType').value;
+            toggleCustomProductField();
+            updateProductPreview(productType);
+            showProductSuggestions(productType);
+            checkCompatibility();
+        }
+
+        // Aperçu visuel du produit
+        function updateProductPreview(productType) {
+            const preview = document.getElementById('productPreview');
+            const icons = {
+                tshirt: '👕', sweatshirt: '👕', hoodie: '🧥', polo: '👔', tank: '🎽',
+                jacket: '🧥', cap: '🧢', beanie: '🎩', tote: '👜', backpack: '🎒',
+                poster: '🖼️', canvas: '🎨', frame: '🖼️', sticker: '🏷️', mug: '☕',
+                waterbottle: '🍶', phonecase: '📱', mousepad: '🖱️', pillow: '🛏️',
+                blanket: '🛏️', towel: '🧺', napkin: '🍽️', apron: '👨‍🍳', magnet: '🧲',
+                coaster: '🥤', puzzle: '🧩', calendar: '📅', notebook: '📓',
+                pingpong: '🏓', football: '⚽', basketball: '🏀', tennis: '🎾',
+                frisbee: '🥏', skateboard: '🛹', canette: '🥫', beerlabel: '🍺',
+                custom: '✨'
+            };
+            preview.textContent = icons[productType] || '📦';
+        }
+
+        // Suggestions intelligentes par produit
+        function showProductSuggestions(productType) {
+            const suggestions = {
+                tshirt: ['vintage', 'cartoon', 'minimalist', 'grunge'],
+                mug: ['kawaii', 'cartoon', 'minimalist'],
+                poster: ['pop art', 'abstract', 'modern', 'realistic'],
+                hoodie: ['grunge', 'cyberpunk', 'modern'],
+                cap: ['minimalist', 'graffiti street art', 'vintage'],
+                tote: ['minimalist', 'cartoon', 'pop art'],
+                sticker: ['kawaii', 'cartoon', 'neon'],
+                phonecase: ['minimalist', 'cyberpunk', 'kawaii', 'abstract']
+            };
+
+            const productSuggestions = suggestions[productType];
+            if (productSuggestions) {
+                const container = document.getElementById('styleSuggestions');
+                const lang = appState.language;
+                container.innerHTML = '';
+                productSuggestions.forEach(style => {
+                    const tag = document.createElement('span');
+                    tag.className = 'suggestion-tag';
+                    tag.textContent = style;
+                    tag.onclick = () => {
+                        document.getElementById('aesthetic').value = style;
+                        onAestheticChange();
+                    };
+                    container.appendChild(tag);
+                });
+                document.getElementById('productSuggestions').classList.remove('hidden');
+            } else {
+                document.getElementById('productSuggestions').classList.add('hidden');
+            }
+        }
+
+        // Changement d'esthétique
+        function onAestheticChange() {
+            toggleCustomAesthetic();
+            checkCompatibility();
+        }
+
+        // Changement de couleurs
+        function onColorChange() {
+            toggleCustomColors();
+            checkCompatibility();
+        }
+
+        // Vérification de compatibilité
+        function checkCompatibility() {
+            const aesthetic = document.getElementById('aesthetic').value;
+            const colors = document.getElementById('colors').value;
+            const format = document.getElementById('format').value;
+            const warning = document.getElementById('compatibilityWarning');
+            const warningText = document.getElementById('warningText');
+            const lang = appState.language;
+
+            let warnings = [];
+
+            // Vérifier les combinaisons problématiques
+            if (aesthetic === 'watercolor' && colors === 'neon bright') {
+                warnings.push(lang === 'fr' 
+                    ? 'Aquarelle + néon peut être difficile à réaliser harmonieusement'
+                    : 'Watercolor + neon can be difficult to achieve harmoniously');
+            }
+
+            if (aesthetic === 'minimalist' && colors === 'vibrant rainbow') {
+                warnings.push(lang === 'fr'
+                    ? 'Minimalisme + arc-en-ciel vibrant sont des styles opposés'
+                    : 'Minimalist + vibrant rainbow are opposing styles');
+            }
+
+            if (aesthetic === 'realistic' && format === 'circle') {
+                warnings.push(lang === 'fr'
+                    ? 'Format circulaire peut limiter les compositions réalistes'
+                    : 'Circular format may limit realistic compositions');
+            }
+
+            if (warnings.length > 0) {
+                warningText.textContent = warnings.join('. ');
+                warning.classList.add('show');
+            } else {
+                warning.classList.remove('show');
+            }
+        }
+
+        // Fonction "Surprends-moi !"
+        function surpriseMe() {
+            const lang = appState.language;
+            
+            // Produits aléatoires
+            const products = ['tshirt', 'mug', 'poster', 'hoodie', 'sticker', 'tote', 'phonecase'];
+            const randomProduct = products[Math.floor(Math.random() * products.length)];
+            
+            // Styles aléatoires
+            const aesthetics = ['minimalist', 'vintage', 'cartoon', 'pop art', 'cyberpunk', 'kawaii'];
+            const randomAesthetic = aesthetics[Math.floor(Math.random() * aesthetics.length)];
+            
+            // Ambiances aléatoires
+            const moods = ['joyful energetic', 'playful fun', 'elegant sophisticated', 'dramatic epic'];
+            const randomMood = moods[Math.floor(Math.random() * moods.length)];
+            
+            // Couleurs aléatoires
+            const colorPalettes = ['vibrant rainbow', 'pastel soft', 'monochrome black and white', 'neon bright'];
+            const randomColors = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+
+            // Appliquer les valeurs
+            document.getElementById('productType').value = randomProduct;
+            onProductChange();
+            
+            document.getElementById('aesthetic').value = randomAesthetic;
+            onAestheticChange();
+            
+            document.getElementById('mood').value = randomMood;
+            document.getElementById('colors').value = randomColors;
+            
+            document.getElementById('format').value = 'square';
+            
+            // Message de confirmation
+            alert(lang === 'fr' 
+                ? '✨ Design surprise généré ! Découvrez votre création aléatoire !' 
+                : '✨ Surprise design generated! Discover your random creation!');
+            
+            // Scroll vers le haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Charger les exemples
+        function loadExamples() {
+            const examples = [
+                { icon: '🎂', name: 'Anniversaire Papa', product: 'mug', style: 'vintage' },
+                { icon: '💼', name: 'Logo Entreprise', product: 'tshirt', style: 'minimalist' },
+                { icon: '😄', name: 'Citation Drôle', product: 'poster', style: 'cartoon' },
+                { icon: '⚽', name: 'Team Sports', product: 'hoodie', style: 'modern' },
+                { icon: '❤️', name: 'Cadeau Couple', product: 'pillow', style: 'romantic dreamy' }
+            ];
+
+            const container = document.getElementById('examplesLibrary');
+            container.innerHTML = '';
+            
+            examples.forEach(example => {
+                const item = document.createElement('div');
+                item.className = 'example-item';
+                item.innerHTML = `
+                    <div class="example-preview">${example.icon}</div>
+                    <strong>${example.name}</strong>
+                `;
+                item.onclick = () => loadExample(example);
+                container.appendChild(item);
+            });
+        }
+
+        // Charger un exemple
+        function loadExample(example) {
+            document.getElementById('productType').value = example.product;
+            onProductChange();
+            document.getElementById('aesthetic').value = example.style;
+            onAestheticChange();
+            
+            const lang = appState.language;
+            alert(lang === 'fr' 
+                ? `📋 Exemple "${example.name}" chargé !` 
+                : `📋 Example "${example.name}" loaded!`);
+        }
+
+        // Filtrer par tag
+        function filterByTag(tag) {
+            appState.currentTag = tag;
+            const lang = appState.language;
+            alert(lang === 'fr' 
+                ? `🏷️ Filtrage par catégorie: ${tag}` 
+                : `🏷️ Filtering by category: ${tag}`);
+        }
+
+        // Mise à jour de l'historique récent
+        function updateRecentHistory() {
+            const container = document.getElementById('recentHistory');
+            const recent = appState.history.slice(-5).reverse();
+            
+            if (recent.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">Aucun historique</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            recent.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <strong>${item.product || 'Design'}</strong>
+                    <div class="timestamp">${new Date(item.timestamp).toLocaleString()}</div>
+                `;
+                historyItem.onclick = () => loadFromHistory(item);
+                container.appendChild(historyItem);
+            });
+        }
+
+        // Charger depuis l'historique
+        function loadFromHistory(item) {
+            // Restaurer les valeurs
+            if (item.formData) {
+                Object.keys(item.formData).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = item.formData[key];
+                    }
+                });
+            }
+            
+            const lang = appState.language;
+            alert(lang === 'fr' 
+                ? '📋 Configuration restaurée !' 
+                : '📋 Configuration restored!');
+        }
+
+        // Ouvrir modal d'historique
+        function openHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            const list = document.getElementById('fullHistoryList');
+            
+            list.innerHTML = '';
+            appState.history.reverse().forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <strong>${item.product || 'Design'} - ${item.aesthetic || ''}</strong>
+                    <div class="timestamp">${new Date(item.timestamp).toLocaleString()}</div>
+                `;
+                historyItem.onclick = () => {
+                    loadFromHistory(item);
+                    closeModal('historyModal');
+                };
+                list.appendChild(historyItem);
+            });
+            
+            modal.classList.add('show');
+        }
+
+        // Fermer modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Sauvegarder dans l'historique
+        function saveToHistory() {
+            const formData = {
+                productType: document.getElementById('productType').value,
+                format: document.getElementById('format').value,
+                aesthetic: document.getElementById('aesthetic').value,
+                characterCount: document.getElementById('characterCount').value,
+                mood: document.getElementById('mood').value,
+                colors: document.getElementById('colors').value,
+                titleText: document.getElementById('titleText').value
+            };
+
+            const historyEntry = {
+                timestamp: Date.now(),
+                product: document.getElementById('productType').options[document.getElementById('productType').selectedIndex].text,
+                aesthetic: document.getElementById('aesthetic').value,
+                prompt: document.getElementById('positivePrompt').textContent,
+                formData: formData
+            };
+
+            appState.history.push(historyEntry);
+            saveHistory();
+            updateRecentHistory();
+
+            const lang = appState.language;
+            alert(lang === 'fr' 
+                ? '💾 Sauvegardé dans l\'historique !' 
+                : '💾 Saved to history!');
+        }
+
+        // Export PDF
+        function exportToPDF() {
+            const lang = appState.language;
+            const positivePrompt = document.getElementById('positivePrompt').textContent;
+            const negativePrompt = document.getElementById('negativePrompt').textContent;
+            
+            // Créer un contenu formaté pour l'export
+            const content = `
+GENERATEUR DE PROMPTS - BRIEF COMPLET
+======================================
+
+Date: ${new Date().toLocaleDateString()}
+
+PROMPT POSITIF:
+${positivePrompt}
+
+PROMPT NEGATIF:
+${negativePrompt}
+
+---
+Généré par Générateur de Prompts Pro v4.0
+            `.trim();
+
+            // Créer un blob et télécharger
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prompt-brief-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert(lang === 'fr' 
+                ? '📄 Brief exporté en TXT ! (PDF nécessite une bibliothèque externe)' 
+                : '📄 Brief exported as TXT! (PDF requires external library)');
+        }
+
+        // Toggle functions (mêmes que v3)
+        function toggleParodyField() {
+            const mode = document.getElementById('creationMode').value;
+            const parodyFields = document.getElementById('parodyFields');
+            parodyFields.classList.toggle('hidden', mode !== 'parody');
+        }
+
+        function toggleCustomParody() {
+            const ref = document.getElementById('parodyReference').value;
+            const customField = document.getElementById('customParodyField');
+            customField.classList.toggle('hidden', ref !== 'custom');
+        }
+
+        function toggleCustomAesthetic() {
+            const aesthetic = document.getElementById('aesthetic').value;
+            const customField = document.getElementById('customAestheticField');
+            customField.classList.toggle('hidden', aesthetic !== 'custom');
+        }
+
+        function toggleCustomFont() {
+            const font = document.getElementById('textFont').value;
+            const customField = document.getElementById('customFontField');
+            customField.classList.toggle('hidden', font !== 'custom');
+        }
+
+        function toggleCustomTextColor() {
+            const color = document.getElementById('textColor').value;
+            const customField = document.getElementById('customTextColorField');
+            customField.classList.toggle('hidden', color !== 'custom');
+        }
+
+        function toggleLogoFields() {
+            const includeLogo = document.getElementById('includeLogo').value;
+            const logoFields = document.getElementById('logoFields');
+            logoFields.classList.toggle('hidden', includeLogo !== 'yes');
+        }
+
+        function toggleCustomMood() {
+            const mood = document.getElementById('mood').value;
+            const customField = document.getElementById('customMoodField');
+            customField.classList.toggle('hidden', mood !== 'custom');
+        }
+
+        function toggleCustomColors() {
+            const colors = document.getElementById('colors').value;
+            const customField = document.getElementById('customColorsField');
+            customField.classList.toggle('hidden', colors !== 'custom');
+        }
+
+        function toggleCustomProductField() {
+            const productType = document.getElementById('productType').value;
+            const customField = document.getElementById('customProductField');
+            customField.classList.toggle('hidden', productType !== 'custom');
+        }
+
+        function updateCharacterInputs() {
+            const count = parseInt(document.getElementById('characterCount').value);
+            const container = document.getElementById('characterInputs');
+            const interactionField = document.getElementById('characterInteractionField');
+            const lang = appState.language;
+            
+            container.innerHTML = '';
+            
+            // Afficher le champ d'interaction seulement s'il y a 2+ personnages
+            interactionField.classList.toggle('hidden', count < 2);
+            
+            for (let i = 1; i <= count; i++) {
+                const charDiv = document.createElement('div');
+                charDiv.className = 'character-input';
+                charDiv.innerHTML = `
+                    <h3>${lang === 'fr' ? 'Personnage' : 'Character'} ${i}</h3>
+                    <textarea id="char${i}desc" placeholder="${lang === 'fr' ? 'Description (apparence, vêtements, pose, expression...)' : 'Description (appearance, clothing, pose, expression...)'}"></textarea>
+                `;
+                container.appendChild(charDiv);
+            }
+        }
+
+        // Traductions (même objet que v3)
         const translations = {
             productType: {
-                'movie-poster': { fr: 'affiche de film', en: 'movie poster' },
-                'tv-poster': { fr: 'affiche de série TV', en: 'TV series poster' },
-                'cartoon-poster': { fr: 'affiche de dessin animé', en: 'cartoon poster' },
-                'album-cover': { fr: 'pochette d\'album', en: 'album cover' },
-                'book-cover': { fr: 'couverture de livre', en: 'book cover' },
-                'book-plastic': { fr: 'plastique de couverture de livre', en: 'book cover protective wrap design' },
-                'booklet-cover': { fr: 'première page de livret dépliant', en: 'booklet first page design' },
-                'poster': { fr: 'poster décoratif', en: 'decorative poster' },
-                'mug': { fr: 'design de mug, design enroulant', en: 'mug wrap-around design' },
-                'postcard': { fr: 'carte postale', en: 'postcard' },
-                'blanket': { fr: 'motif textile pour couette ou coussin', en: 'textile pattern for blanket or cushion' },
-                'birthday-card': { fr: 'carte d\'anniversaire', en: 'birthday greeting card' },
-                'newyear-card': { fr: 'carte de nouvel an', en: 'new year greeting card' },
-                'christmas-card': { fr: 'carte de Noël', en: 'christmas greeting card' },
-                'easter-card': { fr: 'carte de Pâques', en: 'easter greeting card' },
-                'mothers-card': { fr: 'carte fête des mères', en: 'mother\'s day card' },
-                'fathers-card': { fr: 'carte fête des pères', en: 'father\'s day card' },
-                'vacation-card': { fr: 'carte bonnes vacances', en: 'vacation greeting card' },
-                'recovery-card': { fr: 'carte bon rétablissement', en: 'get well soon card' },
-                'congrats-card': { fr: 'carte félicitations', en: 'congratulations card' },
-                'cake-topper': { fr: 'rondelle pour gâteau d\'anniversaire', en: 'birthday cake topper design' }
+                tshirt: { fr: 'design pour t-shirt', en: 't-shirt design' },
+                sweatshirt: { fr: 'design pour sweatshirt', en: 'sweatshirt design' },
+                hoodie: { fr: 'design pour hoodie', en: 'hoodie design' },
+                polo: { fr: 'design pour polo', en: 'polo shirt design' },
+                tank: { fr: 'design pour débardeur', en: 'tank top design' },
+                jacket: { fr: 'design pour veste', en: 'jacket design' },
+                cap: { fr: 'design pour casquette', en: 'cap design' },
+                beanie: { fr: 'design pour bonnet', en: 'beanie design' },
+                tote: { fr: 'design pour tote bag', en: 'tote bag design' },
+                backpack: { fr: 'design pour sac à dos', en: 'backpack design' },
+                poster: { fr: 'design de poster', en: 'poster design' },
+                canvas: { fr: 'design sur toile', en: 'canvas design' },
+                frame: { fr: 'design pour cadre photo', en: 'photo frame design' },
+                sticker: { fr: 'design de sticker', en: 'sticker design' },
+                mug: { fr: 'design pour mug', en: 'mug design' },
+                waterbottle: { fr: 'design pour gourde', en: 'water bottle design' },
+                phonecase: { fr: 'design pour coque de téléphone', en: 'phone case design' },
+                mousepad: { fr: 'design pour tapis de souris', en: 'mousepad design' },
+                pillow: { fr: 'design pour coussin', en: 'pillow design' },
+                blanket: { fr: 'design pour couverture', en: 'blanket design' },
+                towel: { fr: 'design pour serviette de bain', en: 'bath towel design' },
+                napkin: { fr: 'design pour serviette de table', en: 'table napkin design' },
+                apron: { fr: 'design pour tablier', en: 'apron design' },
+                magnet: { fr: 'design pour magnet', en: 'magnet design' },
+                coaster: { fr: 'design pour dessous de verre', en: 'coaster design' },
+                puzzle: { fr: 'design pour puzzle', en: 'puzzle design' },
+                calendar: { fr: 'design pour calendrier', en: 'calendar design' },
+                notebook: { fr: 'design pour carnet', en: 'notebook design' },
+                pingpong: { fr: 'design pour raquette de ping-pong', en: 'ping-pong paddle design' },
+                football: { fr: 'design pour ballon de football', en: 'football design' },
+                basketball: { fr: 'design pour ballon de basket', en: 'basketball design' },
+                tennis: { fr: 'design pour balle de tennis', en: 'tennis ball design' },
+                frisbee: { fr: 'design pour frisbee', en: 'frisbee design' },
+                skateboard: { fr: 'design pour skateboard', en: 'skateboard design' },
+                canette: { fr: 'design pour canette', en: 'can design' },
+                beerlabel: { fr: 'design d\'étiquette pour bouteille', en: 'bottle label design' },
+                custom: { fr: 'design personnalisé pour', en: 'custom design for' }
             },
             format: {
-                'square': { fr: 'format carré 1:1', en: 'square format 1:1' },
-                'portrait': { fr: 'format portrait 2:3', en: 'portrait format 2:3' },
-                'landscape': { fr: 'format paysage 3:2', en: 'landscape format 3:2' },
-                'a4-portrait': { fr: 'format A4 portrait', en: 'A4 portrait format' },
-                'a4-landscape': { fr: 'format A4 paysage', en: 'A4 landscape format' },
-                'a3': { fr: 'format A3', en: 'A3 format' },
-                'panoramic': { fr: 'format panoramique 16:9', en: 'panoramic format 16:9' },
-                'wide': { fr: 'format large 21:9', en: 'wide format 21:9' }
+                square: { fr: 'format carré', en: 'square format' },
+                portrait: { fr: 'format portrait', en: 'portrait format' },
+                landscape: { fr: 'format paysage', en: 'landscape format' },
+                circle: { fr: 'format circulaire', en: 'circular format' },
+                custom: { fr: 'format personnalisé', en: 'custom format' }
             },
             parody: {
-                fr: 'inspiré de la composition et mise en page de l\'affiche de',
-                en: 'inspired by poster composition and layout of'
+                fr: 'parodie de style',
+                en: 'parody of'
             },
             aesthetic: {
-                fr: 'esthétique',
-                en: 'aesthetic'
+                fr: 'style',
+                en: 'style'
             },
             characters: {
                 fr: 'avec',
                 en: 'featuring',
                 character: { fr: 'personnage', en: 'character' },
-                characters: { fr: 'personnages', en: 'characters' }
+                characters: { fr: 'personnages', en: 'characters' },
+                interaction: { fr: 'interagissant:', en: 'interacting:' }
             },
             atmosphere: {
-                fr: 'atmosphère',
-                en: 'atmosphere'
+                fr: 'ambiance',
+                en: 'mood'
             },
             including: {
                 fr: 'incluant',
                 en: 'including'
             },
             title: {
-                fr: 'texte du titre',
-                en: 'title text'
+                fr: 'texte principal',
+                en: 'main text'
             },
             subtitle: {
                 fr: 'sous-titre',
@@ -871,24 +1787,24 @@ body {
                 en: 'in'
             },
             logo: {
-                fr: 'logo stylisé',
-                en: 'stylized logo'
+                fr: 'logo',
+                en: 'logo'
             },
             positioned: {
-                fr: 'positionné en',
-                en: 'positioned at'
+                fr: 'positionné',
+                en: 'positioned'
             },
             logoPosition: {
-                'top-left': { fr: 'haut à gauche', en: 'top left corner' },
-                'top-center': { fr: 'haut au centre', en: 'top center' },
-                'top-right': { fr: 'haut à droite', en: 'top right corner' },
-                'bottom-left': { fr: 'bas à gauche', en: 'bottom left corner' },
-                'bottom-center': { fr: 'bas au centre', en: 'bottom center' },
-                'bottom-right': { fr: 'bas à droite', en: 'bottom right corner' }
+                top: { fr: 'en haut', en: 'at the top' },
+                bottom: { fr: 'en bas', en: 'at the bottom' },
+                left: { fr: 'à gauche', en: 'on the left' },
+                right: { fr: 'à droite', en: 'on the right' },
+                center: { fr: 'au centre', en: 'in the center' },
+                corner: { fr: 'dans un coin', en: 'in a corner' }
             },
             quality: {
-                fr: 'qualité professionnelle, haute définition, mise au point nette, bien composé, mise en page équilibrée, visuellement frappant',
-                en: 'professional quality, high detail, sharp focus, well-composed, balanced layout, visually striking'
+                fr: 'haute qualité, ultra détaillé, rendu professionnel, composition équilibrée, couleurs vibrantes',
+                en: 'high quality, ultra detailed, professional rendering, balanced composition, vibrant colors'
             },
             contrast: {
                 fr: 'couleur à contraste élevé pour visibilité',
@@ -901,13 +1817,13 @@ body {
             en: 'poorly drawn hands, poorly drawn feet, poorly drawn face, bad anatomy, extra limbs, missing limbs, disfigured, deformed, blurry, bad proportions, extra fingers, fewer fingers, fused fingers, mutated hands, floating limbs, disconnected limbs, out of frame, cropped, low quality, worst quality, jpeg artifacts, watermark, signature, username, logo, duplicate, distorted, pixelated, low resolution, overexposed, underexposed, bad lighting, flat lighting, bad composition, bad framing, bad perspective, tilted, unbalanced, bad depth of field, clipping, intersecting geometry, floating objects, wrong shadows, missing shadows, inconsistent lighting, noise, grain, oversaturated, undersaturated, chromatic aberration, artefacts, glitches, anatomical errors, unnatural pose, stiff pose, asymmetric eyes, poorly rendered, lack of detail, oversmoothed, oversharpened, misspelled text, spelling errors, typos, grammatical errors, wrong letters, illegible text, gibberish text, nonsense text, garbled text, unreadable text, badly written text, incorrect spelling, malformed letters, distorted text, blurry text, pixelated text, broken text, fragmented text, backwards text, upside down text, wrong font, inconsistent font, mixed fonts'
         };
 
+        // Fonction de génération principale
         function generatePrompt() {
-            // Détection de la langue
-            const isEnglish = document.getElementById('languageToggle').checked;
-            const lang = isEnglish ? 'en' : 'fr';
+            const lang = appState.language;
 
             // Récupération des valeurs
             const productType = document.getElementById('productType').value;
+            const customProduct = document.getElementById('customProduct').value;
             const format = document.getElementById('format').value;
             const creationMode = document.getElementById('creationMode').value;
             const parodyRef = document.getElementById('parodyReference').value;
@@ -941,7 +1857,11 @@ body {
             let positivePrompt = '';
 
             // Type de produit
-            positivePrompt += translations.productType[productType][lang];
+            if (productType === 'custom' && customProduct) {
+                positivePrompt += translations.productType[productType][lang] + ' ' + customProduct;
+            } else {
+                positivePrompt += translations.productType[productType][lang];
+            }
 
             // Format
             if (format) {
@@ -971,6 +1891,12 @@ body {
                     if (charDesc) {
                         positivePrompt += `, ${translations.characters.character[lang]} ${i}: ${charDesc}`;
                     }
+                }
+                
+                // Ajouter l'interaction si elle existe
+                const characterInteraction = document.getElementById('characterInteraction').value;
+                if (characterInteraction && characterCount >= 2) {
+                    positivePrompt += `, ${translations.characters.interaction[lang]} ${characterInteraction}`;
                 }
             }
 
@@ -1033,15 +1959,72 @@ body {
             document.getElementById('positiveTitle').textContent = lang === 'fr' ? '✨ Prompt Positif' : '✨ Positive Prompt';
             document.getElementById('negativeTitle').textContent = lang === 'fr' ? '🚫 Prompt Négatif' : '🚫 Negative Prompt';
             
+            // Masquer les variations si affichées
+            document.getElementById('variationsSection').classList.add('hidden');
+            
             document.getElementById('outputSection').classList.add('active');
+
+            // Sauvegarder le prompt actuel
+            appState.currentPrompt = positivePrompt;
 
             // Scroll vers les résultats
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function copyPrompt(elementId) {
+        // Générer des variations
+        function generateVariations() {
+            // D'abord générer le prompt principal
+            generatePrompt();
+            
+            if (!appState.currentPrompt) return;
+
+            const lang = appState.language;
+            const basePrompt = appState.currentPrompt;
+            
+            // Créer 3 variations
+            const variations = [
+                { 
+                    label: lang === 'fr' ? 'Variation 1: Plus coloré' : 'Variation 1: More colorful',
+                    prompt: basePrompt + (lang === 'fr' ? ', couleurs plus vives et saturées' : ', more vivid and saturated colors')
+                },
+                {
+                    label: lang === 'fr' ? 'Variation 2: Plus sobre' : 'Variation 2: More subtle',
+                    prompt: basePrompt + (lang === 'fr' ? ', palette de couleurs douces et minimalistes' : ', soft and minimalist color palette')
+                },
+                {
+                    label: lang === 'fr' ? 'Variation 3: Style mixte' : 'Variation 3: Mixed style',
+                    prompt: basePrompt + (lang === 'fr' ? ', mélange de styles moderne et vintage' : ', blend of modern and vintage styles')
+                }
+            ];
+
+            // Afficher les variations
+            const container = document.getElementById('variationsContainer');
+            container.innerHTML = '';
+            
+            variations.forEach((variation, index) => {
+                const varBox = document.createElement('div');
+                varBox.className = 'variation-box';
+                varBox.innerHTML = `
+                    <div class="variation-label">${variation.label}</div>
+                    <div style="font-size: 0.85rem; line-height: 1.6;">${variation.prompt}</div>
+                `;
+                varBox.onclick = () => {
+                    // Sélectionner cette variation
+                    document.querySelectorAll('.variation-box').forEach(box => box.classList.remove('selected'));
+                    varBox.classList.add('selected');
+                    document.getElementById('positivePrompt').textContent = variation.prompt;
+                    appState.currentPrompt = variation.prompt;
+                };
+                container.appendChild(varBox);
+            });
+
+            document.getElementById('variationsSection').classList.remove('hidden');
+        }
+
+        // Copier le prompt
+        function copyPrompt(elementId, event) {
             const text = document.getElementById(elementId).textContent;
-            const lang = document.getElementById('languageToggle').checked ? 'en' : 'fr';
+            const lang = appState.language;
             
             navigator.clipboard.writeText(text).then(() => {
                 // Feedback visuel
