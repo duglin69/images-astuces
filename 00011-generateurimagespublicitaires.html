@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Générateur de Prompts Publicitaires Pro V3 - Avec Personnages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ec4899 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #94a3b8;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #ec4899;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #db2777;
+        }
+
+        .btn-secondary {
+            background: #475569;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .templates {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .template-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            background: #334155;
+            border-color: #ec4899;
+        }
+
+        .template-card h3 {
+            color: #ec4899;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .template-card p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .card h2 {
+            color: #ec4899;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .card h2.cyan {
+            color: #06b6d4;
+        }
+
+        .card h2.purple {
+            color: #a855f7;
+        }
+
+        .card h2.orange {
+            color: #f97316;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            color: #cbd5e1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ec4899;
+            background: #1e293b;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .dropdown-toggle {
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 10px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .dropdown-toggle:hover {
+            border-color: #ec4899;
+        }
+
+        .dropdown-content {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .dropdown-content label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            margin-top: 0;
+            font-weight: normal;
+        }
+
+        .characters-section {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .character-count-control {
+            margin-bottom: 16px;
+        }
+
+        .character-count-control label {
+            margin-bottom: 8px;
+        }
+
+        .character-count-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .character-count-btn {
+            padding: 8px 16px;
+            background: #334155;
+            border: 2px solid #334155;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .character-count-btn.active {
+            background: #ec4899;
+            border-color: #ec4899;
+        }
+
+        .character-count-btn:hover {
+            border-color: #ec4899;
+        }
+
+        .characters-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .character-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .character-card h3 {
+            color: #06b6d4;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .interactions-section {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .interactions-section.visible {
+            display: block;
+        }
+
+        .output {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .output h2 {
+            color: #ec4899;
+            margin-bottom: 16px;
+        }
+
+        .prompt-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.6;
+            color: #e2e8f0;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .prompt-box h3 {
+            color: #06b6d4;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .prompt-box h3.negative {
+            color: #ef4444;
+        }
+
+        .history-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item-info {
+            flex: 1;
+        }
+
+        .history-item-product {
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .history-item-date {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .history-item-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            padding: 24px;
+            border-top: 1px solid #334155;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .templates {
+                grid-template-columns: 1fr;
+            }
+
+            .character-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>✨ Générateur de Prompts Publicitaires Pro V3</h1>
+            <p>Créez des scènes narratives avec personnages pour vos publicités</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn-primary" onclick="changeLanguage('fr')">🇫🇷 Français</button>
+            <button class="btn-secondary" onclick="changeLanguage('en')">🇬🇧 English</button>
+            <button class="btn-secondary" onclick="toggleHistory()">📜 Historique (<span id="historyCount">0</span>)</button>
+        </div>
+
+        <!-- History Section -->
+        <div id="historySection" style="display: none; margin-bottom: 32px;">
+            <div class="card">
+                <h2>📜 Mes Derniers Prompts</h2>
+                <div id="historyList"></div>
+            </div>
+        </div>
+
+        <!-- Templates Section -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2>📋 Templates Pré-configurés</h2>
+            <div class="templates" id="templatesContainer"></div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Product Selection -->
+            <div class="card">
+                <h2>📦 Produit</h2>
+                <div class="form-group">
+                    <label for="category">Catégorie</label>
+                    <select id="category" onchange="updateProducts()">
+                        <option value="clothing">👕 Vêtements</option>
+                        <option value="shoes">👟 Chaussures</option>
+                        <option value="accessories">💍 Accessoires</option>
+                        <option value="beauty">💄 Beauté</option>
+                        <option value="electronics">📱 Électronique</option>
+                        <option value="home">🏠 Maison</option>
+                        <option value="kitchen">🍳 Cuisine</option>
+                        <option value="beverages">🥤 Boissons</option>
+                        <option value="food">🍕 Alimentation</option>
+                        <option value="vehicles">🚗 Véhicules</option>
+                        <option value="travel">✈️ Voyages</option>
+                        <option value="media">📚 Médias</option>
+                        <option value="sports">⚽ Sports</option>
+                        <option value="health">💊 Santé</option>
+                        <option value="kids">🧸 Enfants</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product">Produit spécifique</label>
+                    <select id="product"></select>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="card">
+                <h2 class="cyan">⚙️ Paramètres</h2>
+                <div class="form-group">
+                    <label for="decor">Décor</label>
+                    <select id="decor" onchange="updateDecors()">
+                        <option value="indoor">Intérieur</option>
+                        <option value="outdoor">Extérieur</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specificDecor">Décor spécifique</label>
+                    <select id="specificDecor"></select>
+                </div>
+                <div class="form-group">
+                    <label for="lighting">Éclairage</label>
+                    <select id="lighting"></select>
+                </div>
+                <div class="form-group">
+                    <label for="angle">Angle de vue</label>
+                    <select id="angle"></select>
+                </div>
+                <div class="form-group">
+                    <label for="scenario">Scénario</label>
+                    <select id="scenario"></select>
+                </div>
+                <div class="form-group">
+                    <label for="mood">Ambiance</label>
+                    <select id="mood"></select>
+                </div>
+                <div class="form-group">
+                    <label for="style">Style</label>
+                    <select id="style"></select>
+                </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="card">
+                <h2 class="purple">🎨 Avancé</h2>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="includeText" onchange="generatePrompt()">
+                        <label for="includeText" style="margin: 0;">Inclure du texte</label>
+                    </div>
+                    <input type="text" id="textContent" placeholder="Texte à afficher..." style="display: none;" onchange="generatePrompt()">
+                </div>
+
+                <!-- Camera Settings Multi-select -->
+                <div class="form-group">
+                    <button class="dropdown-toggle" onclick="toggleDropdown('cameraDropdown')">
+                        <span>Paramètres caméra (<span id="cameraCount">0</span>)</span>
+                        <span>▶</span>
+                    </button>
+                    <div id="cameraDropdown" class="dropdown-content" style="display: none;"></div>
+                </div>
+
+                <!-- Colors Multi-select -->
+                <div class="form-group">
+                    <button class="dropdown-toggle" onclick="toggleDropdown('colorsDropdown')">
+                        <span>Couleurs (<span id="colorsCount">0</span>)</span>
+                        <span>▶</span>
+                    </button>
+                    <div id="colorsDropdown" class="dropdown-content" style="display: none;"></div>
+                </div>
+
+                <!-- Quality Multi-select -->
+                <div class="form-group">
+                    <button class="dropdown-toggle" onclick="toggleDropdown('qualityDropdown')">
+                        <span>Qualité (<span id="qualityCount">0</span>)</span>
+                        <span>▶</span>
+                    </button>
+                    <div id="qualityDropdown" class="dropdown-content" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalDetails">Détails additionnels</label>
+                    <textarea id="additionalDetails" placeholder="Ajoutez des détails supplémentaires..." onchange="generatePrompt()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Characters Section -->
+        <div class="card" style="margin-bottom: 32px;">
+            <h2 class="orange">🎭 Personnages & Interactions</h2>
+            
+            <div class="characters-section">
+                <div class="character-count-control">
+                    <label>Nombre de personnages</label>
+                    <div class="character-count-buttons">
+                        <button class="character-count-btn active" onclick="setCharacterCount(0)">Aucun</button>
+                        <button class="character-count-btn" onclick="setCharacterCount(1)">1 personnage</button>
+                        <button class="character-count-btn" onclick="setCharacterCount(2)">2 personnages</button>
+                        <button class="character-count-btn" onclick="setCharacterCount(3)">3 personnages</button>
+                        <button class="character-count-btn" onclick="setCharacterCount(4)">4 personnages</button>
+                        <button class="character-count-btn" onclick="setCharacterCount(5)">5 personnages</button>
+                    </div>
+                </div>
+
+                <div class="characters-list" id="charactersList"></div>
+            </div>
+
+            <!-- Interactions Section (visible only if 2+ characters) -->
+            <div class="interactions-section" id="interactionsSection">
+                <h3 style="color: #06b6d4; margin-bottom: 12px;">🤝 Interactions entre personnages</h3>
+                <div class="form-group">
+                    <label for="interaction">Type d'interaction</label>
+                    <select id="interaction" onchange="generatePrompt()"></select>
+                </div>
+                <div class="form-group">
+                    <label for="positioning">Positionnement relatif</label>
+                    <select id="positioning" onchange="generatePrompt()"></select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output" id="outputSection" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+                <h2>✨ Prompt Généré</h2>
+                <div class="export-buttons">
+                    <button class="btn-success" onclick="copyPrompt()">📋 Copier</button>
+                    <button class="btn-secondary" onclick="exportJSON()">📥 JSON</button>
+                    <button class="btn-secondary" onclick="exportTSV()">📥 TSV</button>
+                    <button class="btn-secondary" onclick="exportHTML()">📥 HTML</button>
+                    <button class="btn-secondary" onclick="importJSON()">📤 Importer</button>
+                    <button class="btn-danger" onclick="resetForm()">🔄 Réinitialiser</button>
+                </div>
+            </div>
+
+            <div class="prompt-box">
+                <h3>✅ Prompt Positif</h3>
+                <div id="positivePrompt"></div>
+            </div>
+
+            <div class="prompt-box">
+                <h3 class="negative">🚫 Prompt Négatif</h3>
+                <div id="negativePrompt"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            💡 Version V3 : Système complet de personnages (1-5), interactions narratives, scènes cinématographiques pour publicités vidéo
+        </div>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImport(event)">
+
+    <script>
+        // Data
+        const PRODUCTS = {
+            clothing: ['t-shirt', 'chemise', 'robe', 'veste', 'manteau', 'pull', 'cardigan', 'pantalon', 'jean', 'short', 'jupe', 'legging', 'costume', 'blazer', 'hoodie', 'sweatshirt', 'gilet', 'parka', 'trench-coat', 'bomber', 'chemisier', 'débardeur', 'body', 'combinaison', 'salopette', 'kimono', 'poncho', 'cape', 'vêtement de sport', 'maillot de bain', 'lingerie'],
+            shoes: ['baskets', 'chaussures de sport', 'talons hauts', 'escarpins', 'ballerines', 'mocassins', 'sandales', 'tongs', 'bottes', 'bottines', 'chaussures de randonnée', 'chaussures de ville', 'sneakers', 'converse', 'chaussures de course', 'chaussures de marche', 'chaussures de luxe', 'chaussures vintage', 'chaussures de soirée', 'chaussures casual', 'chaussures plates', 'chaussures compensées', 'chaussures à lacets', 'chaussures slip-on'],
+            accessories: ['sac à main', 'sac à dos', 'portefeuille', 'ceinture', 'chapeau', 'bonnet', 'écharpe', 'foulard', 'gants', 'mitaines', 'cravate', 'nœud papillon', 'bijoux', 'bague', 'collier', 'bracelet', 'boucles d\'oreilles', 'montre', 'lunettes de soleil', 'lunettes de vue', 'casquette', 'béret', 'turban', 'bandeau', 'épingle à cheveux', 'barrette', 'chouchou', 'serre-tête', 'masque', 'cache-cœur'],
+            beauty: ['rouge à lèvres', 'gloss', 'mascara', 'eyeliner', 'fard à paupières', 'fond de teint', 'poudre', 'blush', 'bronzer', 'surligneur', 'correcteur', 'crayon à sourcils', 'sérum', 'crème hydratante', 'crème anti-âge', 'masque facial', 'gommage', 'nettoyant visage', 'tonique', 'lotion', 'parfum', 'eau de cologne', 'déodorant', 'shampooing', 'après-shampooing', 'soin des cheveux', 'gel coiffant', 'cire coiffante', 'spray coiffant', 'vernis à ongles', 'base coat', 'top coat', 'dissolvant'],
+            electronics: ['téléphone', 'smartphone', 'tablette', 'ordinateur portable', 'ordinateur de bureau', 'montre connectée', 'écouteurs', 'casque audio', 'enceinte', 'appareil photo', 'caméra vidéo', 'drone', 'console de jeu', 'manette de jeu', 'clavier', 'souris', 'écran', 'batterie externe', 'câble de charge', 'adaptateur', 'chargeur', 'hub USB', 'routeur WiFi', 'modem', 'imprimante', 'scanner', 'projecteur', 'lampe LED', 'ventilateur', 'climatiseur'],
+            home: ['canapé', 'fauteuil', 'chaise', 'table', 'bureau', 'lit', 'armoire', 'commode', 'étagère', 'bibliothèque', 'lampe', 'lustre', 'applique', 'rideau', 'store', 'tapis', 'coussin', 'plaid', 'tableau', 'miroir', 'vase', 'cadre photo', 'bougie', 'diffuseur', 'horloge', 'plante', 'pot de fleur', 'couvre-lit', 'housse de canapé', 'nappe', 'chemin de table'],
+            kitchen: ['casserole', 'poêle', 'marmite', 'cocotte', 'wok', 'planche à découper', 'couteau', 'fourchette', 'cuillère', 'spatule', 'louche', 'pince', 'tire-bouchon', 'ouvre-boîte', 'presse-agrumes', 'mixeur', 'robot culinaire', 'four grille-pain', 'cafetière', 'théière', 'verre', 'tasse', 'assiette', 'bol', 'saladier', 'plat de service', 'plateau', 'serviette de table'],
+            beverages: ['café', 'thé', 'jus de fruit', 'soda', 'eau minérale', 'vin', 'bière', 'champagne', 'cocktail', 'smoothie', 'milkshake', 'lait', 'yaourt', 'boisson énergétique', 'boisson sportive', 'kombucha', 'cidre', 'rhum', 'vodka', 'whisky', 'gin', 'tequila', 'liqueur', 'sirop', 'nectar'],
+            food: ['pizza', 'burger', 'sandwich', 'salade', 'pâtes', 'riz', 'fruits', 'légumes', 'viande', 'poisson', 'œufs', 'fromage', 'pain', 'gâteau', 'biscuits', 'chocolat', 'bonbons', 'glace', 'yaourt', 'céréales', 'noix', 'graines', 'miel', 'confiture', 'beurre', 'huile', 'sauce'],
+            vehicles: ['voiture de luxe', 'SUV', 'berline', 'coupé', 'cabriolet', 'monospace', 'break', 'citadine', 'voiture de sport', 'voiture électrique', 'hybride', 'moto', 'scooter', 'vélo', 'vélo électrique', 'trottinette', 'skateboard', 'quad', 'buggy', 'camping-car', 'caravane', 'bateau', 'jet-ski', 'yacht'],
+            travel: ['valise', 'sac de voyage', 'sac à dos de randonnée', 'sac de sport', 'chaussures de randonnée', 'tente', 'sac de couchage', 'matelas de camping', 'appareil photo de voyage', 'jumelles', 'carte', 'boussole', 'lampe frontale', 'gourde', 'thermos', 'glacière', 'hamac', 'chaise de camping', 'réchaud'],
+            media: ['livre', 'magazine', 'journal', 'bande dessinée', 'manga', 'roman', 'essai', 'biographie', 'dictionnaire', 'encyclopédie', 'atlas', 'partition musicale', 'DVD', 'Blu-ray', 'vinyle', 'cassette audio'],
+            sports: ['haltère', 'kettlebell', 'barre de musculation', 'tapis de yoga', 'ballon de fitness', 'corde à sauter', 'bande élastique', 'gants de boxe', 'raquette de tennis', 'ballon de football', 'ballon de basket', 'ballon de volley', 'planche de surf', 'skateboard', 'rollers', 'patins à glace', 'skis', 'snowboard', 'bâtons de ski', 'casque de ski', 'lunettes de ski'],
+            health: ['vitamines', 'suppléments', 'protéine en poudre', 'boisson protéinée', 'huile essentielle', 'savon', 'gel douche', 'shampoing', 'après-shampooing', 'déodorant', 'crème', 'lotion', 'masque facial', 'brosse à dents', 'dentifrice', 'bain de bouche', 'pansement', 'thermomètre', 'tensiomètre'],
+            kids: ['jouet', 'poupée', 'peluche', 'voiture miniature', 'lego', 'puzzle', 'jeu de société', 'livre pour enfants', 'dessin animé', 'vêtements enfant', 'chaussures enfant', 'couches', 'biberon', 'tétine', 'poussette', 'siège auto']
+        };
+
+        const DECORS = {
+            indoor: ['studio blanc minimaliste', 'studio noir professionnel', 'loft industriel', 'appartement moderne', 'maison de luxe', 'bureau contemporain', 'boutique chic', 'café artisanal', 'restaurant gastronomique', 'hôtel 5 étoiles', 'galerie d\'art', 'musée', 'bibliothèque', 'salle de gym', 'spa', 'salon de beauté', 'cuisine professionnelle', 'salle de bain luxe', 'chambre d\'hôtel', 'hall d\'entrée', 'escalier design', 'fenêtre panoramique', 'mur de briques', 'mur blanc', 'mur gris', 'mur de béton', 'mur texturé', 'papier peint', 'carrelage', 'parquet', 'moquette', 'sol en béton poli'],
+            outdoor: ['plage de sable blanc', 'plage rocheuse', 'océan', 'lac', 'rivière', 'montagne enneigée', 'forêt dense', 'prairie fleurie', 'champ de tournesols', 'vignoble', 'jardin botanique', 'parc urbain', 'rue pavée', 'allée arborée', 'pont', 'phare', 'château', 'ruines antiques', 'temple', 'pagode', 'désert de sable', 'canyon', 'falaise', 'cascade', 'grotte', 'caverne', 'route de montagne', 'route côtière', 'parking', 'terrasse', 'balcon', 'toit', 'cour intérieure', 'jardin secret', 'verger']
+        };
+
+        const LIGHTING = ['lumière naturelle douce', 'lumière dorée du coucher de soleil', 'lumière bleue de l\'aube', 'lumière dure et contrastée', 'lumière diffuse', 'lumière latérale', 'lumière contre-jour', 'lumière de studio professionnelle', 'lumière LED froide', 'lumière LED chaude', 'lumière de chandelle', 'lumière de néon', 'lumière fluorescente', 'lumière de projecteur', 'lumière dramatique', 'lumière cinématographique', 'lumière à faible clé', 'lumière à haut clé', 'lumière volumétrique', 'lumière avec ombres prononcées', 'lumière uniforme', 'lumière avec reflets', 'lumière avec halos', 'lumière de jour nuageux', 'lumière de jour ensoleillé', 'lumière d\'heure dorée', 'lumière d\'heure bleue'];
+
+        const ANGLES = ['vue de face', 'vue de profil', 'vue de trois quarts', 'vue de dos', 'plongée', 'contre-plongée', 'vue aérienne', 'vue au niveau du sol', 'macro', 'gros plan', 'plan moyen', 'plan large', 'plan d\'ensemble', 'angle 45 degrés', 'angle 90 degrés', 'angle dynamique', 'angle symétrique', 'angle asymétrique', 'vue isométrique', 'vue en perspective', 'vue frontale', 'vue latérale', 'vue diagonale', 'vue oblique', 'vue en contre-plongée extrême'];
+
+        const CAMERA_SETTINGS = ['profondeur de champ faible, flou d\'arrière-plan', 'profondeur de champ profonde', 'mise au point nette sur le sujet', 'flou de mouvement', 'bokeh circulaire', 'bokeh hexagonal', 'bokeh en forme de cœur', 'objectif grand angle', 'objectif téléobjectif', 'objectif macro', 'objectif fisheye', 'objectif 50mm', 'objectif 85mm', 'objectif 35mm', 'objectif 24mm', 'objectif 135mm', 'vitesse d\'obturation rapide', 'vitesse d\'obturation lente', 'ISO bas', 'ISO élevé', 'exposition correcte', 'surexposition légère', 'sous-exposition légère'];
+
+        const SCENARIOS = ['portrait en studio', 'portrait en extérieur', 'portrait lifestyle', 'portrait beauté', 'portrait de mode', 'portrait corporate', 'photo de produit simple', 'photo de produit en contexte', 'photo de produit lifestyle', 'photo de produit en main', 'photo de produit en détail', 'photo de produit packshot', 'photo d\'ambiance', 'photo d\'atmosphère', 'photo narrative', 'photo conceptuelle', 'photo artistique', 'photo commerciale', 'photo éditoriale', 'photo de catalogue', 'photo pour réseaux sociaux', 'photo pour publicité', 'photo pour affiche', 'photo pour emballage', 'photo pour site web', 'photo d\'événement', 'photo de groupe'];
+
+        const MOODS = ['luxe et élégance', 'minimaliste et épuré', 'dynamique et énergique', 'calme et serein', 'romantique et doux', 'dramatique et intense', 'joyeux et ludique', 'mystérieux et intrigant', 'professionnel et sérieux', 'créatif et artistique', 'naturel et authentique', 'sophistiqué et raffiné', 'urbain et moderne', 'vintage et rétro', 'futuriste et high-tech', 'chaleureux et accueillant', 'froid et minimaliste', 'vibrant et coloré', 'neutre et intemporel', 'tendance et contemporain', 'classique et intemporel', 'bohème et libre', 'épique et grandiose', 'intime et personnel'];
+
+        const COLORS = ['palette monochrome', 'palette pastel', 'palette saturée', 'palette désaturée', 'palette chaude', 'palette froide', 'palette neutre', 'palette complémentaire', 'palette analogique', 'palette triadic', 'teintes de bleu', 'teintes de rouge', 'teintes de vert', 'teintes d\'or', 'teintes d\'argent', 'teintes de rose', 'teintes de violet', 'teintes d\'orange', 'teintes de marron', 'teintes de gris', 'noir et blanc', 'couleurs vibrantes', 'couleurs pastel', 'couleurs terreuses', 'couleurs océan', 'couleurs forêt', 'couleurs coucher de soleil', 'couleurs aurore'];
+
+        const QUALITY_DESCRIPTORS = ['qualité photographique professionnelle', 'haute résolution 8K', 'résolution 4K', 'mise au point nette et précise', 'composition équilibrée', 'composition asymétrique', 'composition en règle des tiers', 'composition centrée', 'composition diagonale', 'détails crisp et nets', 'texture visible', 'surface lisse', 'surface rugueuse', 'bien exposé', 'contraste optimal', 'contraste élevé', 'contraste faible', 'couleurs vibrantes', 'couleurs naturelles', 'couleurs grading cinématographique', 'sans artefacts', 'sans bruit', 'sans grain', 'grain cinématographique subtil', 'rendu réaliste', 'rendu hyper-réaliste', 'rendu légèrement stylisé'];
+
+        const STYLES = ['photographie commerciale', 'photographie artistique', 'photographie de mode', 'photographie de beauté', 'photographie de produit', 'photographie de voyage', 'photographie de rue', 'photographie de nature', 'photographie de portrait', 'photographie d\'architecture', 'photographie de nourriture', 'photographie de mariage', 'photographie d\'événement', 'photographie de sport', 'photographie de paysage', 'photographie de faune', 'photographie de flore', 'photographie macro', 'photographie abstraite', 'photographie en noir et blanc', 'photographie couleur', 'photographie vintage', 'photographie rétro', 'photographie contemporaine', 'photographie minimaliste', 'photographie documentaire', 'photographie conceptuelle'];
+
+        const CHARACTER_TYPES = ['femme élégante', 'homme charismatique', 'jeune femme dynamique', 'jeune homme sportif', 'femme mature sophistiquée', 'homme mature confiant', 'enfant joyeux', 'adolescente cool', 'adolescent branché', 'couple heureux', 'groupe d\'amis', 'famille', 'professionnelle', 'artiste créatif', 'athlète', 'mannequin', 'businessman', 'businesswoman'];
+
+        const CHARACTER_AGES = ['enfant (6-12 ans)', 'adolescent (13-19 ans)', 'jeune adulte (20-30 ans)', 'adulte (30-45 ans)', 'adulte mature (45-60 ans)', 'senior (60+ ans)'];
+
+        const CHARACTER_CLOTHING = ['casual décontracté', 'élégant et formel', 'sportif et dynamique', 'bohème et artistique', 'urbain et tendance', 'vintage et rétro', 'luxe et haute couture', 'minimaliste et épuré', 'coloré et vibrant', 'monochrome et neutre', 'streetwear', 'business casual', 'soirée chic', 'plage et détente', 'montagne et outdoor', 'gym et sport', 'travail professionnel', 'festival et événement'];
+
+        const CHARACTER_POSES = ['debout naturellement', 'assis confortablement', 'en mouvement dynamique', 'tenant le produit', 'utilisant le produit', 'regardant le produit', 'regardant la caméra', 'regardant vers le bas', 'regardant vers le haut', 'souriant naturellement', 'riant joyeusement', 'pensif et sérieux', 'en action', 'posture décontractée', 'posture confiante', 'posture élégante', 'penché en avant', 'allongé', 'accroupi', 'en équilibre', 'bras croisés', 'mains dans les poches', 'gesticulant expressif'];
+
+        const CHARACTER_EXPRESSIONS = ['sourire naturel', 'rire joyeux', 'expression confiante', 'regard pensif', 'expression sérieuse', 'expression douce', 'expression intense', 'expression ludique', 'expression mystérieuse', 'expression surprise', 'expression admirative', 'expression contemplative', 'expression radieuse', 'expression calme', 'expression dynamique'];
+
+        const CHARACTER_INTERACTIONS = ['conversation animée', 'rire ensemble', 'interaction avec le produit', 'un personnage montre le produit à l\'autre', 'partage et complicité', 'moment intime', 'collaboration', 'compétition ludique', 'apprentissage', 'découverte ensemble', 'moment de détente', 'échange de regards', 'geste d\'amitié', 'célébration', 'moment de complicité'];
+
+        const CHARACTER_POSITIONING = ['côte à côte', 'l\'un derrière l\'autre', 'face à face', 'diagonale', 'un au premier plan, l\'autre en arrière-plan', 'entrelacés', 'éloignés', 'rapprochés', 'en triangle', 'en ligne', 'en cercle', 'asymétrique', 'symétrique', 'un assis, l\'autre debout', 'tous à la même hauteur'];
+
+        const NEGATIVE_PROMPTS = ['flou', 'mal focalisé', 'mauvaise mise au point', 'image pixelisée', 'basse résolution', 'compression JPEG', 'artefacts', 'bruit excessif', 'grain excessif', 'surexposé', 'sous-exposé', 'mauvaise exposition', 'mauvaise couleur', 'couleurs délavées', 'couleurs saturées excessivement', 'composition mauvaise', 'composition confuse', 'éléments mal placés', 'texte mal orthographié', 'texte illisible', 'texte flou', 'texte déformé', 'objets flottants', 'objets mal positionnés', 'objets coupés', 'mains mal dessinées', 'pieds mal dessinés', 'visage mal dessiné', 'anatomie incorrecte', 'proportions incorrectes', 'perspective incorrecte', 'ombres incorrectes', 'ombres manquantes', 'éclairage incohérent', 'reflets incorrects', 'reflets manquants', 'distorsion', 'aberration chromatique', 'watermark', 'signature', 'logo', 'filigrane', 'date', 'numéro de page'];
+
+        const TEMPLATES = {
+            fashion: { name: 'Mode & Luxe', product: 'robe', scenario: 'portrait de mode', characters: 1 },
+            beauty: { name: 'Beauté & Cosmétiques', product: 'rouge à lèvres', scenario: 'portrait beauté', characters: 1 },
+            lifestyle: { name: 'Produit Lifestyle', product: 'sac à main', scenario: 'photo de produit lifestyle', characters: 1 },
+            culinary: { name: '🍽️ Photographie Culinaire', product: 'pizza', scenario: 'photo de produit en contexte', characters: 2 },
+            realestate: { name: '🏠 Immobilier & Architecture', product: 'canapé', scenario: 'photo d\'ambiance', characters: 2 },
+            automotive: { name: '🚗 Automobile & Véhicules', product: 'voiture de luxe', scenario: 'photo commerciale', characters: 1 },
+            electronics: { name: '📱 Électronique & Tech', product: 'smartphone', scenario: 'photo de produit packshot', characters: 1 },
+            travel: { name: '✈️ Voyages & Aventure', product: 'valise', scenario: 'photo d\'atmosphère', characters: 2 }
+        };
+
+        let language = 'fr';
+        let history = [];
+        let selectedCamera = [];
+        let selectedColors = [];
+        let selectedQuality = [];
+        let characterCount = 0;
+        let characters = [];
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            loadHistory();
+            initializeSelects();
+            renderTemplates();
+            updateProducts();
+            updateDecors();
+        });
+
+        function initializeSelects() {
+            populateSelect('lighting', LIGHTING);
+            populateSelect('angle', ANGLES);
+            populateSelect('scenario', SCENARIOS);
+            populateSelect('mood', MOODS);
+            populateSelect('style', STYLES);
+            populateSelect('interaction', CHARACTER_INTERACTIONS);
+            populateSelect('positioning', CHARACTER_POSITIONING);
+            renderMultiSelect('cameraDropdown', CAMERA_SETTINGS, 'camera');
+            renderMultiSelect('colorsDropdown', COLORS, 'colors');
+            renderMultiSelect('qualityDropdown', QUALITY_DESCRIPTORS, 'quality');
+        }
+
+        function populateSelect(id, items) {
+            const select = document.getElementById(id);
+            select.innerHTML = '<option value="">-- Optionnel --</option>';
+            items.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                select.appendChild(option);
+            });
+        }
+
+        function renderMultiSelect(containerId, items, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            items.forEach(item => {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.onchange = () => {
+                    if (type === 'camera') {
+                        selectedCamera = selectedCamera.includes(item) ? selectedCamera.filter(i => i !== item) : [...selectedCamera, item];
+                        document.getElementById('cameraCount').textContent = selectedCamera.length;
+                    } else if (type === 'colors') {
+                        selectedColors = selectedColors.includes(item) ? selectedColors.filter(i => i !== item) : [...selectedColors, item];
+                        document.getElementById('colorsCount').textContent = selectedColors.length;
+                    } else if (type === 'quality') {
+                        selectedQuality = selectedQuality.includes(item) ? selectedQuality.filter(i => i !== item) : [...selectedQuality, item];
+                        document.getElementById('qualityCount').textContent = selectedQuality.length;
+                    }
+                    generatePrompt();
+                };
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(item));
+                container.appendChild(label);
+            });
+        }
+
+        function updateProducts() {
+            const category = document.getElementById('category').value;
+            populateSelect('product', PRODUCTS[category] || []);
+            generatePrompt();
+        }
+
+        function updateDecors() {
+            const decor = document.getElementById('decor').value;
+            populateSelect('specificDecor', DECORS[decor] || []);
+            generatePrompt();
+        }
+
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function renderTemplates() {
+            const container = document.getElementById('templatesContainer');
+            container.innerHTML = '';
+            Object.entries(TEMPLATES).forEach(([key, template]) => {
+                const card = document.createElement('div');
+                card.className = 'template-card';
+                card.innerHTML = `<h3>${template.name}</h3><p>${template.product} • ${template.scenario}</p>`;
+                card.onclick = () => loadTemplate(key);
+                container.appendChild(card);
+            });
+        }
+
+        function loadTemplate(key) {
+            const template = TEMPLATES[key];
+            document.getElementById('product').value = template.product;
+            setCharacterCount(template.characters);
+            generatePrompt();
+        }
+
+        function setCharacterCount(count) {
+            characterCount = count;
+            characters = [];
+            
+            // Update button styles
+            document.querySelectorAll('.character-count-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show/hide interactions section
+            const interactionsSection = document.getElementById('interactionsSection');
+            if (count >= 2) {
+                interactionsSection.classList.add('visible');
+            } else {
+                interactionsSection.classList.remove('visible');
+            }
+
+            // Render character cards
+            const list = document.getElementById('charactersList');
+            list.innerHTML = '';
+
+            if (count === 0) {
+                list.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">Aucun personnage sélectionné</p>';
+            } else {
+                for (let i = 0; i < count; i++) {
+                    characters.push({
+                        type: '',
+                        age: '',
+                        clothing: '',
+                        pose: '',
+                        expression: '',
+                        interaction: ''
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'character-card';
+                    card.innerHTML = `
+                        <h3>👤 Personnage ${i + 1}</h3>
+                        <div class="character-grid">
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select onchange="updateCharacter(${i}, 'type', this.value)">
+                                    <option value="">-- Sélectionner --</option>
+                                    ${CHARACTER_TYPES.map(t => `<option value="${t}">${t}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Âge</label>
+                                <select onchange="updateCharacter(${i}, 'age', this.value)">
+                                    <option value="">-- Optionnel --</option>
+                                    ${CHARACTER_AGES.map(a => `<option value="${a}">${a}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Vêtements</label>
+                                <select onchange="updateCharacter(${i}, 'clothing', this.value)">
+                                    <option value="">-- Optionnel --</option>
+                                    ${CHARACTER_CLOTHING.map(c => `<option value="${c}">${c}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Pose</label>
+                                <select onchange="updateCharacter(${i}, 'pose', this.value)">
+                                    <option value="">-- Optionnel --</option>
+                                    ${CHARACTER_POSES.map(p => `<option value="${p}">${p}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Expression</label>
+                                <select onchange="updateCharacter(${i}, 'expression', this.value)">
+                                    <option value="">-- Optionnel --</option>
+                                    ${CHARACTER_EXPRESSIONS.map(e => `<option value="${e}">${e}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Interaction avec produit</label>
+                                <select onchange="updateCharacter(${i}, 'interaction', this.value)">
+                                    <option value="">-- Optionnel --</option>
+                                    <option value="tenant le produit">tenant le produit</option>
+                                    <option value="utilisant le produit">utilisant le produit</option>
+                                    <option value="regardant le produit">regardant le produit</option>
+                                    <option value="montrant le produit">montrant le produit</option>
+                                    <option value="touchant le produit">touchant le produit</option>
+                                    <option value="présentant le produit">présentant le produit</option>
+                                    <option value="admirant le produit">admirant le produit</option>
+                                    <option value="sans interaction">sans interaction</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                }
+            }
+
+            generatePrompt();
+        }
+
+        function updateCharacter(index, field, value) {
+            if (characters[index]) {
+                characters[index][field] = value;
+                generatePrompt();
+            }
+        }
+
+        function generatePrompt() {
+            const product = document.getElementById('product').value;
+            if (!product) {
+                document.getElementById('outputSection').style.display = 'none';
+                return;
+            }
+
+            const decor = document.getElementById('decor').value;
+            const specificDecor = document.getElementById('specificDecor').value;
+            const lighting = document.getElementById('lighting').value;
+            const angle = document.getElementById('angle').value;
+            const scenario = document.getElementById('scenario').value;
+            const mood = document.getElementById('mood').value;
+            const style = document.getElementById('style').value;
+            const additionalDetails = document.getElementById('additionalDetails').value;
+            const includeText = document.getElementById('includeText').checked;
+            const textContent = document.getElementById('textContent').value;
+            const interaction = document.getElementById('interaction').value;
+            const positioning = document.getElementById('positioning').value;
+
+            let prompt = `Photo publicitaire professionnelle d'un ${product}`;
+            
+            // Add characters description
+            if (characterCount > 0) {
+                const characterDescriptions = characters
+                    .filter(c => c.type)
+                    .map(c => {
+                        let desc = c.type;
+                        if (c.age) desc += ` (${c.age})`;
+                        if (c.clothing) desc += `, ${c.clothing}`;
+                        if (c.pose) desc += `, ${c.pose}`;
+                        if (c.expression) desc += `, ${c.expression}`;
+                        if (c.interaction) desc += `, ${c.interaction}`;
+                        return desc;
+                    });
+
+                if (characterDescriptions.length > 0) {
+                    prompt += `, avec ${characterCount === 1 ? 'un personnage: ' : `${characterCount} personnages: `}${characterDescriptions.join(' | ')}`;
+                }
+
+                // Add interactions
+                if (characterCount >= 2 && interaction) {
+                    prompt += `, ${interaction}`;
+                }
+                if (characterCount >= 2 && positioning) {
+                    prompt += `, positionnement: ${positioning}`;
+                }
+            }
+
+            if (specificDecor || decor) {
+                prompt += `, en ${specificDecor || decor === 'indoor' ? 'intérieur' : 'extérieur'}`;
+            }
+
+            if (scenario) prompt += `, ${scenario}`;
+            if (lighting) prompt += `, ${lighting}`;
+            if (angle) prompt += `, ${angle}`;
+            if (selectedCamera.length > 0) prompt += `, ${selectedCamera.join(', ')}`;
+            if (mood) prompt += `, ambiance ${mood}`;
+            if (selectedColors.length > 0) prompt += `, ${selectedColors.join(', ')}`;
+            if (style) prompt += `, style ${style}`;
+            if (selectedQuality.length > 0) prompt += `, ${selectedQuality.join(', ')}`;
+            if (includeText && textContent) prompt += `, avec le texte "${textContent}" visible et lisible`;
+            if (additionalDetails) prompt += `, ${additionalDetails}`;
+
+            prompt += `. Qualité professionnelle, sans défauts, sans artefacts, sans watermark.`;
+
+            const negativePrompt = `Éviter: ${NEGATIVE_PROMPTS.join(', ')}.`;
+
+            document.getElementById('positivePrompt').textContent = prompt;
+            document.getElementById('negativePrompt').textContent = negativePrompt;
+            document.getElementById('outputSection').style.display = 'block';
+
+            // Update text visibility
+            document.getElementById('textContent').style.display = includeText ? 'block' : 'none';
+        }
+
+        function copyPrompt() {
+            const prompt = document.getElementById('positivePrompt').textContent;
+            navigator.clipboard.writeText(prompt).then(() => {
+                alert('Prompt copié !');
+                saveToHistory(document.getElementById('product').value, prompt, document.getElementById('negativePrompt').textContent);
+            });
+        }
+
+        function saveToHistory(product, prompt, negativePrompt) {
+            const item = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString('fr-FR'),
+                product,
+                prompt,
+                negativePrompt
+            };
+            history.unshift(item);
+            history = history.slice(0, 10);
+            localStorage.setItem('promptHistory', JSON.stringify(history));
+            document.getElementById('historyCount').textContent = history.length;
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div class="history-item-info">
+                        <div class="history-item-product">${item.product}</div>
+                        <div class="history-item-date">${item.timestamp}</div>
+                    </div>
+                    <div class="history-item-buttons">
+                        <button class="btn-success btn-small" onclick="navigator.clipboard.writeText('${item.prompt.replace(/'/g, "\\'")}')">Copier</button>
+                        <button class="btn-danger btn-small" onclick="deleteHistory(${item.id})">Supprimer</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function deleteHistory(id) {
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem('promptHistory', JSON.stringify(history));
+            document.getElementById('historyCount').textContent = history.length;
+            renderHistory();
+        }
+
+        function loadHistory() {
+            const saved = localStorage.getItem('promptHistory');
+            if (saved) {
+                try {
+                    history = JSON.parse(saved);
+                    document.getElementById('historyCount').textContent = history.length;
+                    renderHistory();
+                } catch (e) {
+                    console.error('Erreur lors du chargement de l\'historique', e);
+                }
+            }
+        }
+
+        function toggleHistory() {
+            const section = document.getElementById('historySection');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function exportJSON() {
+            const data = {
+                product: document.getElementById('product').value,
+                decor: document.getElementById('decor').value,
+                specificDecor: document.getElementById('specificDecor').value,
+                lighting: document.getElementById('lighting').value,
+                angle: document.getElementById('angle').value,
+                scenario: document.getElementById('scenario').value,
+                mood: document.getElementById('mood').value,
+                style: document.getElementById('style').value,
+                cameraSettings: selectedCamera,
+                colors: selectedColors,
+                quality: selectedQuality,
+                additionalDetails: document.getElementById('additionalDetails').value,
+                includeText: document.getElementById('includeText').checked,
+                textContent: document.getElementById('textContent').value,
+                characterCount: characterCount,
+                characters: characters,
+                interaction: document.getElementById('interaction').value,
+                positioning: document.getElementById('positioning').value
+            };
+            const dataStr = JSON.stringify(data, null, 2);
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr));
+            element.setAttribute('download', `prompt_config_${new Date().toISOString().split('T')[0]}.json`);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function exportTSV() {
+            let tsv = `Nom du champ\tValeur\nProduit\t${document.getElementById('product').value}\nDécor\t${document.getElementById('specificDecor').value || document.getElementById('decor').value}\nÉclairage\t${document.getElementById('lighting').value}\nAngle\t${document.getElementById('angle').value}\nScénario\t${document.getElementById('scenario').value}\nAmbiance\t${document.getElementById('mood').value}\nCouleurs\t${selectedColors.join('; ')}\nStyle\t${document.getElementById('style').value}\nQualité\t${selectedQuality.join('; ')}\nDétails additionnels\t${document.getElementById('additionalDetails').value}\nTexte\t${document.getElementById('includeText').checked ? document.getElementById('textContent').value : 'Non'}\nNombre de personnages\t${characterCount}\n`;
+            
+            characters.forEach((c, i) => {
+                tsv += `\nPersonnage ${i + 1}\t\nType\t${c.type}\nÂge\t${c.age}\nVêtements\t${c.clothing}\nPose\t${c.pose}\nExpression\t${c.expression}\nInteraction\t${c.interaction}\n`;
+            });
+
+            tsv += `\nPROMPT POSITIF\t\n${document.getElementById('positivePrompt').textContent}\n\nPROMPT NÉGATIF\t\n${document.getElementById('negativePrompt').textContent}`;
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(tsv));
+            element.setAttribute('download', `prompt_${new Date().toISOString().split('T')[0]}.tsv`);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function exportHTML() {
+            const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Publicitaire</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { color: #333; border-bottom: 3px solid #ff6b9d; padding-bottom: 10px; }
+    h2 { color: #666; margin-top: 25px; }
+    .config { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0; }
+    .config-item { display: grid; grid-template-columns: 150px 1fr; gap: 15px; margin: 8px 0; }
+    .label { font-weight: bold; color: #555; }
+    .prompt-box { background: #1a1a1a; color: #e8e8e8; padding: 20px; border-radius: 5px; margin: 15px 0; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
+    .positive { border-left: 4px solid #4caf50; }
+    .negative { border-left: 4px solid #f44336; }
+    .generated-date { color: #999; font-size: 0.9em; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Prompt Publicitaire Généré</h1>
+    <div class="config">
+      <div class="config-item"><div class="label">Produit:</div><div>${document.getElementById('product').value}</div></div>
+      <div class="config-item"><div class="label">Décor:</div><div>${document.getElementById('specificDecor').value || document.getElementById('decor').value}</div></div>
+      <div class="config-item"><div class="label">Éclairage:</div><div>${document.getElementById('lighting').value || '-'}</div></div>
+      <div class="config-item"><div class="label">Angle:</div><div>${document.getElementById('angle').value || '-'}</div></div>
+      <div class="config-item"><div class="label">Scénario:</div><div>${document.getElementById('scenario').value || '-'}</div></div>
+      <div class="config-item"><div class="label">Ambiance:</div><div>${document.getElementById('mood').value || '-'}</div></div>
+      <div class="config-item"><div class="label">Couleurs:</div><div>${selectedColors.join(', ') || '-'}</div></div>
+      <div class="config-item"><div class="label">Style:</div><div>${document.getElementById('style').value || '-'}</div></div>
+      <div class="config-item"><div class="label">Qualité:</div><div>${selectedQuality.join(', ') || '-'}</div></div>
+      <div class="config-item"><div class="label">Personnages:</div><div>${characterCount || 'Aucun'}</div></div>
+    </div>
+    <h2>Prompts Générés</h2>
+    <div class="prompt-box positive">
+      <strong>✅ PROMPT POSITIF</strong>
+      ${document.getElementById('positivePrompt').textContent}
+    </div>
+    <div class="prompt-box negative">
+      <strong>🚫 PROMPT NÉGATIF</strong>
+      ${document.getElementById('negativePrompt').textContent}
+    </div>
+    <div class="generated-date">Généré le: ${new Date().toLocaleString('fr-FR')}</div>
+  </div>
+</body>
+</html>`;
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(html));
+            element.setAttribute('download', `prompt_${new Date().toISOString().split('T')[0]}.html`);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function importJSON() {
+            document.getElementById('importFile').click();
+        }
+
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    document.getElementById('product').value = data.product || '';
+                    document.getElementById('decor').value = data.decor || 'indoor';
+                    document.getElementById('specificDecor').value = data.specificDecor || '';
+                    document.getElementById('lighting').value = data.lighting || '';
+                    document.getElementById('angle').value = data.angle || '';
+                    document.getElementById('scenario').value = data.scenario || '';
+                    document.getElementById('mood').value = data.mood || '';
+                    document.getElementById('style').value = data.style || '';
+                    document.getElementById('additionalDetails').value = data.additionalDetails || '';
+                    document.getElementById('includeText').checked = data.includeText || false;
+                    document.getElementById('textContent').value = data.textContent || '';
+                    document.getElementById('interaction').value = data.interaction || '';
+                    document.getElementById('positioning').value = data.positioning || '';
+                    selectedCamera = data.cameraSettings || [];
+                    selectedColors = data.colors || [];
+                    selectedQuality = data.quality || [];
+                    document.getElementById('cameraCount').textContent = selectedCamera.length;
+                    document.getElementById('colorsCount').textContent = selectedColors.length;
+                    document.getElementById('qualityCount').textContent = selectedQuality.length;
+                    
+                    // Restore characters
+                    if (data.characterCount) {
+                        setCharacterCount(data.characterCount);
+                        characters = data.characters || [];
+                    }
+                    
+                    generatePrompt();
+                    alert('Configuration importée avec succès !');
+                } catch (error) {
+                    alert('Erreur lors de l\'import du fichier JSON');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetForm() {
+            document.getElementById('product').value = '';
+            document.getElementById('decor').value = 'indoor';
+            document.getElementById('specificDecor').value = '';
+            document.getElementById('lighting').value = '';
+            document.getElementById('angle').value = '';
+            document.getElementById('scenario').value = '';
+            document.getElementById('mood').value = '';
+            document.getElementById('style').value = '';
+            document.getElementById('additionalDetails').value = '';
+            document.getElementById('includeText').checked = false;
+            document.getElementById('textContent').value = '';
+            document.getElementById('interaction').value = '';
+            document.getElementById('positioning').value = '';
+            selectedCamera = [];
+            selectedColors = [];
+            selectedQuality = [];
+            document.getElementById('cameraCount').textContent = '0';
+            document.getElementById('colorsCount').textContent = '0';
+            document.getElementById('qualityCount').textContent = '0';
+            setCharacterCount(0);
+            document.getElementById('outputSection').style.display = 'none';
+        }
+
+        function changeLanguage(lang) {
+            language = lang;
+            // Note: Full translation would require more extensive changes
+        }
+    </script>
+</body>
+</html>
