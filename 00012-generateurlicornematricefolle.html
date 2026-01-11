@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Images - Licorne Cybernétique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a0a1a;
+            --secondary: #121230;
+            --accent-cyan: #00eeff;
+            --accent-blue: #0066ff;
+            --accent-purple: #aa00ff;
+            --accent-pink: #ff00aa;
+            --text-light: #e0e0ff;
+            --text-dim: #a0a0cc;
+            --border: #30305a;
+            --success: #00cc88;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text-light);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 102, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(170, 0, 255, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 238, 255, 0.3);
+        }
+        
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .control-panel {
+            background-color: rgba(18, 18, 48, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .preview-panel {
+            background-color: rgba(18, 18, 48, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 1.2rem;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(48, 48, 90, 0.5);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .option-card {
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 110, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+        
+        .option-card.active {
+            background-color: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+        }
+        
+        .option-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--accent-cyan);
+        }
+        
+        .option-name {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .slider-container {
+            margin-top: 15px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .slider-value {
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(48, 48, 90, 0.8);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 238, 255, 0.8);
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 10px white;
+        }
+        
+        .preview-container {
+            flex-grow: 1;
+            background-color: rgba(10, 10, 26, 0.7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            border: 1px solid var(--border);
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 238, 255, 0.3));
+        }
+        
+        .prompt-output {
+            background-color: rgba(10, 10, 26, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-light);
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border);
+            flex-grow: 1;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: rgba(48, 48, 90, 0.8);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #00a86b, var(--success));
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(90deg, #ffaa00, #ff5500);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .history-section {
+            margin-top: 30px;
+            background-color: rgba(18, 18, 48, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+        }
+        
+        .history-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 15px 5px;
+        }
+        
+        .history-item {
+            min-width: 200px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .history-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+        
+        .history-title {
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .history-preview {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .template-card {
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-purple);
+        }
+        
+        .template-name {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .template-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active {
+            background-color: rgba(0, 102, 255, 0.3);
+            border-color: var(--accent-blue);
+            color: var(--accent-cyan);
+        }
+        
+        .variation-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .variation-btn {
+            flex: 1;
+            padding: 10px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .variation-btn:hover {
+            background-color: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+        
+        .empty-history {
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+            padding: 40px 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .export-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .option-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .template-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 238, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glow-1 {
+            top: -100px;
+            left: -100px;
+        }
+        
+        .glow-2 {
+            bottom: -100px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(170, 0, 255, 0.1) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> Générateur d'Images - Licorne Cybernétique</h1>
+            <p class="subtitle">Créez des prompts détaillés pour générer des images de licorne cybernétique avec des paramètres avancés</p>
+            <div class="glow-effect glow-1"></div>
+            <div class="glow-effect glow-2"></div>
+        </header>
+        
+        <div class="main-layout">
+            <div class="control-panel">
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-running"></i> Action</h3>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">Toutes</button>
+                        <button class="filter-btn" data-filter="combat">Combat</button>
+                        <button class="filter-btn" data-filter="magie">Magie</button>
+                        <button class="filter-btn" data-filter="repos">Repos</button>
+                        <button class="filter-btn" data-filter="social">Social</button>
+                    </div>
+                    <div class="option-grid" id="actions-container">
+                        <!-- Actions seront générées par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-map-marked-alt"></i> Lieu Touristique</h3>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">Tous</button>
+                        <button class="filter-btn" data-filter="europe">Europe</button>
+                        <button class="filter-btn" data-filter="asie">Asie</button>
+                        <button class="filter-btn" data-filter="amerique">Amérique</button>
+                        <button class="filter-btn" data-filter="naturel">Naturel</button>
+                        <button class="filter-btn" data-filter="fictif">Fictif</button>
+                    </div>
+                    <div class="option-grid" id="locations-container">
+                        <!-- Lieux seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-history"></i> Époque</h3>
+                    <div class="option-grid" id="eras-container">
+                        <!-- Époques seront générées par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-cloud-sun-rain"></i> Conditions Atmosphériques</h3>
+                    <div class="option-grid" id="conditions-container">
+                        <!-- Conditions seront générées par JS -->
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Intensité:</span>
+                            <span class="slider-value" id="intensity-value">Moyenne</span>
+                        </div>
+                        <input type="range" min="1" max="3" value="2" class="slider" id="intensity-slider">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-palette"></i> Style Artistique</h3>
+                    <div class="option-grid" id="styles-container">
+                        <!-- Styles seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-sliders-h"></i> Contrôles Avancés</h3>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Intensité Cybernétique:</span>
+                            <span class="slider-value" id="cyber-intensity-value">50%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="cyber-intensity-slider">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Angle de Caméra:</span>
+                            <span class="slider-value" id="camera-angle-value">Face</span>
+                        </div>
+                        <input type="range" min="1" max="4" value="1" class="slider" id="camera-angle-slider">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Heure de la Journée:</span>
+                            <span class="slider-value" id="time-of-day-value">Crépuscule</span>
+                        </div>
+                        <input type="range" min="1" max="4" value="3" class="slider" id="time-of-day-slider">
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div class="slider-label">
+                            <span>Palette de Couleurs:</span>
+                        </div>
+                        <div class="color-palette">
+                            <div class="color-option active" style="background: linear-gradient(135deg, #00eeff, #0066ff, #aa00ff);" data-colors="cyan,blue,purple"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #ff00aa, #aa00ff, #0066ff);" data-colors="pink,purple,blue"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #00ffaa, #00eeff, #0066ff);" data-colors="green,cyan,blue"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #ffaa00, #ff00aa, #aa00ff);" data-colors="orange,pink,purple"></div>
+                            <div class="color-option" style="background: linear-gradient(135deg, #ffffff, #a0a0cc, #6060a0);" data-colors="white,gray,bluegray"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-crown"></i> Templates Prédéfinis</h3>
+                    <div class="template-grid">
+                        <div class="template-card" data-template="cyberpunk">
+                            <div class="template-name">Cyberpunk Nocturne</div>
+                            <div class="template-desc">Nuit, néons, futur dystopique</div>
+                        </div>
+                        <div class="template-card" data-template="fantasy">
+                            <div class="template-name">Fantasy Épique</div>
+                            <div class="template-desc">Lumières douces, forêt enchantée</div>
+                        </div>
+                        <div class="template-card" data-template="steampunk">
+                            <div class="template-name">Steampunk Vintage</div>
+                            <div class="template-desc">Âge victorien, machines à vapeur</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <h3 class="section-title"><i class="fas fa-eye"></i> Aperçu & Prompt</h3>
+                
+                <div class="preview-container">
+                    <div id="preview-text">
+                        <i class="fas fa-unicorn" style="font-size: 4rem; color: var(--accent-cyan); margin-bottom: 15px;"></i>
+                        <p>Votre licorne cybernétique apparaîtra ici</p>
+                        <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">Ajustez les paramètres pour générer un prompt</p>
+                    </div>
+                    <img id="preview-image" class="preview-image" src="" alt="Aperçu de la licorne" style="display: none;">
+                </div>
+                
+                <div class="section-title" style="margin-top: 10px; margin-bottom: 10px;">
+                    <i class="fas fa-code"></i> Prompt Généré
+                </div>
+                
+                <div class="prompt-output" id="prompt-output">
+                    Sélectionnez des options pour générer un prompt...
+                </div>
+                
+                <div class="variation-controls">
+                    <div class="variation-btn" id="variation-1">Variation 1</div>
+                    <div class="variation-btn" id="variation-2">Variation 2</div>
+                    <div class="variation-btn" id="variation-3">Variation 3</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="generate-btn">
+                        <i class="fas fa-bolt"></i> Générer Prompt
+                    </button>
+                    <button class="btn btn-secondary" id="random-btn">
+                        <i class="fas fa-dice"></i> Surprise Me!
+                    </button>
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copier Prompt
+                    </button>
+                    <button class="btn btn-warning" id="export-btn">
+                        <i class="fas fa-download"></i> Exporter
+                    </button>
+                </div>
+                
+                <div class="export-options" id="export-options" style="display: none;">
+                    <button class="btn btn-secondary" id="export-txt">
+                        <i class="fas fa-file-alt"></i> .TXT
+                    </button>
+                    <button class="btn btn-secondary" id="export-json">
+                        <i class="fas fa-file-code"></i> .JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history-section">
+            <h3 class="section-title"><i class="fas fa-history"></i> Historique (Derniers 5 prompts)</h3>
+            <div class="history-container" id="history-container">
+                <div class="empty-history" id="empty-history">
+                    Aucun prompt dans l'historique. Génerez-en un pour commencer!
+                </div>
+                <!-- Historique sera généré par JS -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Prompt copié dans le presse-papiers!</span>
+    </div>
+    
+    <script>
+        // Données pour les options
+        const data = {
+            actions: [
+                { id: 1, name: "Galoper gracieusement", icon: "fas fa-horse", category: "repos" },
+                { id: 2, name: "Lever la tête fièrement", icon: "fas fa-crown", category: "social" },
+                { id: 3, name: "Interagir magiquement", icon: "fas fa-hat-wizard", category: "magie" },
+                { id: 4, name: "Bondir élégamment", icon: "fas fa-star", category: "repos" },
+                { id: 5, name: "Déclencher un arc-en-ciel", icon: "fas fa-rainbow", category: "magie" },
+                { id: 6, name: "Se cabrer majestueusement", icon: "fas fa-horse-head", category: "combat" },
+                { id: 7, name: "Courir à grande vitesse", icon: "fas fa-tachometer-alt", category: "repos" },
+                { id: 8, name: "Lancer un sort lumineux", icon: "fas fa-magic", category: "magie" },
+                { id: 9, name: "Défendre un territoire", icon: "fas fa-shield-alt", category: "combat" },
+                { id: 10, name: "Communiquer télépathiquement", icon: "fas fa-brain", category: "social" },
+                { id: 11, name: "Créer un vortex d'énergie", icon: "fas fa-wind", category: "magie" },
+                { id: 12, name: "Affronter un adversaire", icon: "fas fa-fist-raised", category: "combat" }
+            ],
+            locations: [
+                { id: 1, name: "Tour Eiffel", icon: "fas fa-landmark", continent: "europe" },
+                { id: 2, name: "Grand Canyon", icon: "fas fa-mountain", continent: "amerique", type: "naturel" },
+                { id: 3, name: "Mont Fuji", icon: "fas fa-mountain", continent: "asie", type: "naturel" },
+                { id: 4, name: "Colisée Romain", icon: "fas fa-monument", continent: "europe" },
+                { id: 5, name: "Grande Muraille", icon: "fas fa-archway", continent: "asie" },
+                { id: 6, name: "Chutes du Niagara", icon: "fas fa-water", continent: "amerique", type: "naturel" },
+                { id: 7, name: "Pyramides de Gizeh", icon: "fas fa-monument", continent: "afrique" },
+                { id: 8, name: "Opéra de Sydney", icon: "fas fa-theater-masks", continent: "oceanie" },
+                { id: 9, name: "Aurora Borealis", icon: "fas fa-cloud-meatball", type: "naturel" },
+                { id: 10, name: "Atlantide", icon: "fas fa-water", type: "fictif" },
+                { id: 11, name: "Station Spatiale", icon: "fas fa-satellite", type: "fictif" },
+                { id: 12, name: "Temple Flottant", icon: "fas fa-place-of-worship", type: "fictif" },
+                { id: 13, name: "Machu Picchu", icon: "fas fa-mountain", continent: "amerique" },
+                { id: 14, name: "Taj Mahal", icon: "fas fa-monument", continent: "asie" },
+                { id: 15, name: "Château de Neuschwanstein", icon: "fas fa-castle", continent: "europe" }
+            ],
+            eras: [
+                { id: 1, name: "Antiquité Romaine", icon: "fas fa-helmet-battle" },
+                { id: 2, name: "Moyen Âge", icon: "fas fa-fort" },
+                { id: 3, name: "Renaissance", icon: "fas fa-paint-brush" },
+                { id: 4, name: "Belle Époque", icon: "fas fa-theater-masks" },
+                { id: 5, name: "Années 1920", icon: "fas fa-glass-martini-alt" },
+                { id: 6, name: "Futur Dystopique", icon: "fas fa-city" },
+                { id: 7, name: "Ère Cyberpunk", icon: "fas fa-robot" },
+                { id: 8, name: "Ère Steampunk", icon: "fas fa-cogs" },
+                { id: 9, name: "Âge de pierre", icon: "fas fa-monument" },
+                { id: 10, name: "Ère Spatiale", icon: "fas fa-rocket" }
+            ],
+            conditions: [
+                { id: 1, name: "Pluie torrentielle", icon: "fas fa-cloud-rain" },
+                { id: 2, name: "Brouillard mystique", icon: "fas fa-smog" },
+                { id: 3, name: "Tempête de neige", icon: "fas fa-snowflake" },
+                { id: 4, name: "Nuit étoilée", icon: "fas fa-stars" },
+                { id: 5, name: "Crépuscule doré", icon: "fas fa-sun" },
+                { id: 6, name: "Aube naissante", icon: "fas fa-sunrise" },
+                { id: 7, name: "Orage électrique", icon: "fas fa-bolt" },
+                { id: 8, name: "Vent violent", icon: "fas fa-wind" },
+                { id: 9, name: "Brouillard luminescent", icon: "fas fa-cloud-moon" },
+                { id: 10, name: "Aurores boréales", icon: "fas fa-cloud-meatball" }
+            ],
+            styles: [
+                { id: 1, name: "Anime stylisé", icon: "fas fa-gamepad" },
+                { id: 2, name: "Réaliste cinématique", icon: "fas fa-film" },
+                { id: 3, name: "Peinture à l'huile", icon: "fas fa-palette" },
+                { id: 4, name: "Cyberpunk", icon: "fas fa-robot" },
+                { id: 5, name: "Fantasy épique", icon: "fas fa-dragon" },
+                { id: 6, name: "Steampunk", icon: "fas fa-cogs" },
+                { id: 7, name: "Art conceptuel", icon: "fas fa-pencil-alt" },
+                { id: 8, name: "Croquis au crayon", icon: "fas fa-pencil-ruler" }
+            ]
+        };
+
+        // État de l'application
+        const state = {
+            selectedAction: 1,
+            selectedLocation: 1,
+            selectedEra: 1,
+            selectedCondition: 1,
+            selectedStyle: 1,
+            cyberIntensity: 50,
+            cameraAngle: 1,
+            timeOfDay: 3,
+            colorPalette: "cyan,blue,purple",
+            conditionIntensity: 2,
+            history: [],
+            currentPrompt: ""
+        };
+
+        // Templates prédéfinis
+        const templates = {
+            cyberpunk: {
+                action: 7,
+                location: 11,
+                era: 6,
+                condition: 1,
+                style: 4,
+                cyberIntensity: 80,
+                cameraAngle: 2,
+                timeOfDay: 4,
+                colorPalette: "pink,purple,blue",
+                conditionIntensity: 3
+            },
+            fantasy: {
+                action: 5,
+                location: 10,
+                era: 2,
+                condition: 2,
+                style: 5,
+                cyberIntensity: 20,
+                cameraAngle: 1,
+                timeOfDay: 5,
+                colorPalette: "green,cyan,blue",
+                conditionIntensity: 1
+            },
+            steampunk: {
+                action: 2,
+                location: 15,
+                era: 8,
+                condition: 9,
+                style: 6,
+                cyberIntensity: 40,
+                cameraAngle: 3,
+                timeOfDay: 3,
+                colorPalette: "orange,pink,purple",
+                conditionIntensity: 2
+            }
+        };
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remplir les options
+            populateOptions('actions-container', data.actions, 'action');
+            populateOptions('locations-container', data.locations, 'location');
+            populateOptions('eras-container', data.eras, 'era');
+            populateOptions('conditions-container', data.conditions, 'condition');
+            populateOptions('styles-container', data.styles, 'style');
+            
+            // Sélectionner les premières options par défaut
+            selectOption('action-1', 'action');
+            selectOption('location-1', 'location');
+            selectOption('era-1', 'era');
+            selectOption('condition-1', 'condition');
+            selectOption('style-1', 'style');
+            
+            // Configurer les écouteurs d'événements
+            setupEventListeners();
+            
+            // Générer le premier prompt
+            generatePrompt();
+            
+            // Charger l'historique depuis le stockage local
+            loadHistory();
+        });
+
+        // Remplir les options dans le DOM
+        function populateOptions(containerId, options, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.id = `${type}-${option.id}`;
+                card.dataset.id = option.id;
+                card.dataset.category = option.category || '';
+                card.dataset.continent = option.continent || '';
+                card.dataset.type = option.type || '';
+                
+                card.innerHTML = `
+                    <div class="option-icon"><i class="${option.icon}"></i></div>
+                    <div class="option-name">${option.name}</div>
+                `;
+                
+                card.addEventListener('click', () => selectOption(`${type}-${option.id}`, type));
+                container.appendChild(card);
+            });
+        }
+
+        // Sélectionner une option
+        function selectOption(elementId, type) {
+            // Désélectionner toutes les options de ce type
+            document.querySelectorAll(`.option-card[data-id].${type}`).forEach(card => {
+                card.classList.remove('active');
+                card.classList.remove(type);
+            });
+            
+            // Sélectionner la nouvelle option
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.add('active');
+                element.classList.add(type);
+                
+                // Mettre à jour l'état
+                const id = parseInt(element.dataset.id);
+                switch(type) {
+                    case 'action':
+                        state.selectedAction = id;
+                        break;
+                    case 'location':
+                        state.selectedLocation = id;
+                        break;
+                    case 'era':
+                        state.selectedEra = id;
+                        break;
+                    case 'condition':
+                        state.selectedCondition = id;
+                        break;
+                    case 'style':
+                        state.selectedStyle = id;
+                        break;
+                }
+                
+                // Régénérer le prompt si nécessaire
+                generatePrompt();
+            }
+        }
+
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            // Sliders
+            document.getElementById('cyber-intensity-slider').addEventListener('input', function() {
+                state.cyberIntensity = this.value;
+                document.getElementById('cyber-intensity-value').textContent = `${this.value}%`;
+                generatePrompt();
+            });
+            
+            document.getElementById('camera-angle-slider').addEventListener('input', function() {
+                state.cameraAngle = parseInt(this.value);
+                const angles = ['Face', 'Profil', 'Plongée', 'Contre-plongée'];
+                document.getElementById('camera-angle-value').textContent = angles[this.value-1];
+                generatePrompt();
+            });
+            
+            document.getElementById('time-of-day-slider').addEventListener('input', function() {
+                state.timeOfDay = parseInt(this.value);
+                const times = ['Aube', 'Midi', 'Crépuscule', 'Nuit étoilée'];
+                document.getElementById('time-of-day-value').textContent = times[this.value-1];
+                generatePrompt();
+            });
+            
+            document.getElementById('intensity-slider').addEventListener('input', function() {
+                state.conditionIntensity = parseInt(this.value);
+                const intensities = ['Légère', 'Moyenne', 'Extrême'];
+                document.getElementById('intensity-value').textContent = intensities[this.value-1];
+                generatePrompt();
+            });
+            
+            // Palette de couleurs
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    state.colorPalette = this.dataset.colors;
+                    generatePrompt();
+                });
+            });
+            
+            // Boutons de filtres
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    const container = this.closest('.section').querySelector('.option-grid');
+                    const category = container.id.includes('actions') ? 'action' : 'location';
+                    
+                    // Mettre à jour les boutons actifs
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtrer les options
+                    Array.from(container.children).forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                        } else if (category === 'action') {
+                            card.style.display = card.dataset.category === filter ? 'block' : 'none';
+                        } else if (category === 'location') {
+                            if (filter === 'naturel' || filter === 'fictif') {
+                                card.style.display = card.dataset.type === filter ? 'block' : 'none';
+                            } else {
+                                card.style.display = card.dataset.continent === filter ? 'block' : 'none';
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Templates
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const templateName = this.dataset.template;
+                    applyTemplate(templateName);
+                });
+            });
+            
+            // Boutons d'action
+            document.getElementById('generate-btn').addEventListener('click', generatePrompt);
+            document.getElementById('random-btn').addEventListener('click', randomizeAll);
+            document.getElementById('copy-btn').addEventListener('click', copyPrompt);
+            document.getElementById('export-btn').addEventListener('click', toggleExportOptions);
+            document.getElementById('export-txt').addEventListener('click', () => exportPrompt('txt'));
+            document.getElementById('export-json').addEventListener('click', () => exportPrompt('json'));
+            
+            // Variations
+            document.getElementById('variation-1').addEventListener('click', () => generateVariation(1));
+            document.getElementById('variation-2').addEventListener('click', () => generateVariation(2));
+            document.getElementById('variation-3').addEventListener('click', () => generateVariation(3));
+        }
+
+        // Appliquer un template prédéfini
+        function applyTemplate(templateName) {
+            const template = templates[templateName];
+            if (!template) return;
+            
+            // Mettre à jour l'état
+            Object.keys(template).forEach(key => {
+                state[key] = template[key];
+            });
+            
+            // Mettre à jour les sélections visuelles
+            selectOption(`action-${template.action}`, 'action');
+            selectOption(`location-${template.location}`, 'location');
+            selectOption(`era-${template.era}`, 'era');
+            selectOption(`condition-${template.condition}`, 'condition');
+            selectOption(`style-${template.style}`, 'style');
+            
+            // Mettre à jour les sliders
+            document.getElementById('cyber-intensity-slider').value = template.cyberIntensity;
+            document.getElementById('cyber-intensity-value').textContent = `${template.cyberIntensity}%`;
+            
+            document.getElementById('camera-angle-slider').value = template.cameraAngle;
+            const angles = ['Face', 'Profil', 'Plongée', 'Contre-plongée'];
+            document.getElementById('camera-angle-value').textContent = angles[template.cameraAngle-1];
+            
+            document.getElementById('time-of-day-slider').value = template.timeOfDay;
+            const times = ['Aube', 'Midi', 'Crépuscule', 'Nuit étoilée'];
+            document.getElementById('time-of-day-value').textContent = times[template.timeOfDay-1];
+            
+            document.getElementById('intensity-slider').value = template.conditionIntensity;
+            const intensities = ['Légère', 'Moyenne', 'Extrême'];
+            document.getElementById('intensity-value').textContent = intensities[template.conditionIntensity-1];
+            
+            // Mettre à jour la palette de couleurs
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.colors === template.colorPalette) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Générer le prompt
+            generatePrompt();
+            
+            // Notification
+            showNotification(`Template "${templateName}" appliqué avec succès!`);
+        }
+
+        // Générer un prompt
+        function generatePrompt() {
+            // Récupérer les éléments sélectionnés
+            const action = data.actions.find(a => a.id === state.selectedAction);
+            const location = data.locations.find(l => l.id === state.selectedLocation);
+            const era = data.eras.find(e => e.id === state.selectedEra);
+            const condition = data.conditions.find(c => c.id === state.selectedCondition);
+            const style = data.styles.find(s => s.id === state.selectedStyle);
+            
+            // Déterminer les intensités
+            const intensityLevels = ['légère', 'modérée', 'extrême'];
+            const conditionIntensityText = intensityLevels[state.conditionIntensity-1];
+            
+            // Déterminer les couleurs basées sur la palette
+            let colors;
+            switch(state.colorPalette) {
+                case 'pink,purple,blue':
+                    colors = "rose, violet et bleu";
+                    break;
+                case 'green,cyan,blue':
+                    colors = "vert, cyan et bleu";
+                    break;
+                case 'orange,pink,purple':
+                    colors = "orange, rose et violet";
+                    break;
+                case 'white,gray,bluegray':
+                    colors = "blanc, gris et bleu-gris";
+                    break;
+                default:
+                    colors = "cyan, bleu et violet";
+            }
+            
+            // Déterminer l'angle de caméra
+            const cameraAngles = ['vue de face', 'vue de profil', 'plongée dramatique', 'contre-plongée épique'];
+            const cameraAngleText = cameraAngles[state.cameraAngle-1];
+            
+            // Déterminer l'heure
+            const times = ['l\'aube naissante', 'le midi éclatant', 'l\'heure dorée du crépuscule', 'la nuit étoilée'];
+            const timeText = times[state.timeOfDay-1];
+            
+            // Créer le prompt
+            const prompt = `Recréez fidèlement cette licorne en conservant exactement ses traits cybernétiques iridescents aux tons ${colors}, sa crinière flottante éthérée aux reflets stellaires, son corne spiralée brillante, son corps sculptural aux motifs matrixés luminescents et son glow holographique vibrant. Montrez-la en train de ${action.name.toLowerCase()}, positionnée majestueusement au premier plan devant ${location.name}, à l'époque de ${era.name.toLowerCase()}, sous ${conditionIntensityText} ${condition.name.toLowerCase()} à ${timeText}. Adoptez une esthétique ${style.name.toLowerCase()} avec lignes nettes et particules dynamiques. Composition large en 16:9, ${cameraAngleText}, éclairage dramatique adaptatif au décor et à l'action, atmosphère immersive fusionnant high-tech antique et fantastique. [Intensité cybernétique: ${state.cyberIntensity}%]`;
+            
+            // Mettre à jour l'état et l'affichage
+            state.currentPrompt = prompt;
+            document.getElementById('prompt-output').textContent = prompt;
+            
+            // Mettre à jour l'aperçu visuel
+            updatePreview(action, location, era, condition, style);
+            
+            return prompt;
+        }
+
+        // Mettre à jour l'aperçu visuel
+        function updatePreview(action, location, era, condition, style) {
+            const previewText = document.getElementById('preview-text');
+            const previewImage = document.getElementById('preview-image');
+            
+            // Créer une représentation textuelle (dans un cas réel, on utiliserait une image générée)
+            previewText.innerHTML = `
+                <i class="fas fa-unicorn" style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 10px;"></i>
+                <p style="font-weight: bold; color: var(--accent-cyan);">Licorne Cybernétique</p>
+                <p style="margin-top: 5px;"><i class="${action.icon}"></i> ${action.name}</p>
+                <p><i class="${location.icon}"></i> ${location.name}</p>
+                <p><i class="${era.icon}"></i> ${era.name}</p>
+                <p><i class="${condition.icon}"></i> ${condition.name}</p>
+                <p><i class="${style.icon}"></i> ${style.name}</p>
+                <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-dim);">
+                    <div>Intensité cybernétique: ${state.cyberIntensity}%</div>
+                    <div>Palette: ${state.colorPalette}</div>
+                </div>
+            `;
+        }
+
+        // Générer des variations
+        function generateVariation(variationNum) {
+            // Sauvegarder le prompt actuel
+            const currentPrompt = state.currentPrompt;
+            
+            // Créer une variation légèrement modifiée
+            let variationPrompt = currentPrompt;
+            
+            // Modifications basées sur le numéro de variation
+            if (variationNum === 1) {
+                // Variation 1: Changer l'angle de caméra
+                const cameraAngles = ['vue de face', 'vue de profil', 'plongée dramatique', 'contre-plongée épique'];
+                const newAngle = cameraAngles[(state.cameraAngle) % 4];
+                variationPrompt = variationPrompt.replace(/vue de [^,]+/, newAngle);
+            } else if (variationNum === 2) {
+                // Variation 2: Changer l'intensité
+                const intensityLevels = ['légère', 'modérée', 'extrême'];
+                const newIntensity = intensityLevels[(state.conditionIntensity) % 3];
+                variationPrompt = variationPrompt.replace(/légère|modérée|extrême/, newIntensity);
+            } else if (variationNum === 3) {
+                // Variation 3: Ajouter un effet supplémentaire
+                const effects = [' avec des reflets humides sur le sol', ' avec des flares lumineux et une profondeur de champ épique', ' avec des effets de particules énergétiques'];
+                const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+                variationPrompt = variationPrompt.replace('avec lignes nettes et particules dynamiques', 'avec lignes nettes et particules dynamiques' + randomEffect);
+            }
+            
+            // Afficher la variation
+            document.getElementById('prompt-output').textContent = variationPrompt;
+            
+            // Mettre à jour le bouton de variation
+            document.getElementById(`variation-${variationNum}`).textContent = `Variation ${variationNum} (appliquée)`;
+            setTimeout(() => {
+                document.getElementById(`variation-${variationNum}`).textContent = `Variation ${variationNum}`;
+            }, 2000);
+            
+            // Notification
+            showNotification(`Variation ${variationNum} générée!`);
+        }
+
+        // Randomiser toutes les options
+        function randomizeAll() {
+            // Sélectionner des options aléatoires
+            const randomAction = data.actions[Math.floor(Math.random() * data.actions.length)];
+            const randomLocation = data.locations[Math.floor(Math.random() * data.locations.length)];
+            const randomEra = data.eras[Math.floor(Math.random() * data.eras.length)];
+            const randomCondition = data.conditions[Math.floor(Math.random() * data.conditions.length)];
+            const randomStyle = data.styles[Math.floor(Math.random() * data.styles.length)];
+            
+            // Mettre à jour l'état
+            state.selectedAction = randomAction.id;
+            state.selectedLocation = randomLocation.id;
+            state.selectedEra = randomEra.id;
+            state.selectedCondition = randomCondition.id;
+            state.selectedStyle = randomStyle.id;
+            state.cyberIntensity = Math.floor(Math.random() * 100);
+            state.cameraAngle = Math.floor(Math.random() * 4) + 1;
+            state.timeOfDay = Math.floor(Math.random() * 4) + 1;
+            state.conditionIntensity = Math.floor(Math.random() * 3) + 1;
+            
+            // Choisir une palette aléatoire
+            const palettes = ['cyan,blue,purple', 'pink,purple,blue', 'green,cyan,blue', 'orange,pink,purple', 'white,gray,bluegray'];
+            state.colorPalette = palettes[Math.floor(Math.random() * palettes.length)];
+            
+            // Mettre à jour les sélections visuelles
+            selectOption(`action-${randomAction.id}`, 'action');
+            selectOption(`location-${randomLocation.id}`, 'location');
+            selectOption(`era-${randomEra.id}`, 'era');
+            selectOption(`condition-${randomCondition.id}`, 'condition');
+            selectOption(`style-${randomStyle.id}`, 'style');
+            
+            // Mettre à jour les sliders
+            document.getElementById('cyber-intensity-slider').value = state.cyberIntensity;
+            document.getElementById('cyber-intensity-value').textContent = `${state.cyberIntensity}%`;
+            
+            document.getElementById('camera-angle-slider').value = state.cameraAngle;
+            const angles = ['Face', 'Profil', 'Plongée', 'Contre-plongée'];
+            document.getElementById('camera-angle-value').textContent = angles[state.cameraAngle-1];
+            
+            document.getElementById('time-of-day-slider').value = state.timeOfDay;
+            const times = ['Aube', 'Midi', 'Crépuscule', 'Nuit étoilée'];
+            document.getElementById('time-of-day-value').textContent = times[state.timeOfDay-1];
+            
+            document.getElementById('intensity-slider').value = state.conditionIntensity;
+            const intensities = ['Légère', 'Moyenne', 'Extrême'];
+            document.getElementById('intensity-value').textContent = intensities[state.conditionIntensity-1];
+            
+            // Mettre à jour la palette de couleurs
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.colors === state.colorPalette) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Générer le prompt
+            generatePrompt();
+            
+            // Notification
+            showNotification('Combinaison aléatoire générée avec succès!');
+        }
+
+        // Copier le prompt dans le presse-papier
+        function copyPrompt() {
+            navigator.clipboard.writeText(state.currentPrompt)
+                .then(() => {
+                    showNotification('Prompt copié dans le presse-papiers!');
+                })
+                .catch(err => {
+                    console.error('Erreur lors de la copie: ', err);
+                    showNotification('Erreur lors de la copie', true);
+                });
+        }
+
+        // Afficher les options d'export
+        function toggleExportOptions() {
+            const exportOptions = document.getElementById('export-options');
+            exportOptions.style.display = exportOptions.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // Exporter le prompt
+        function exportPrompt(format) {
+            let content, filename, mimeType;
+            
+            if (format === 'txt') {
+                content = state.currentPrompt;
+                filename = `licorne_cybernetique_prompt_${Date.now()}.txt`;
+                mimeType = 'text/plain';
+            } else if (format === 'json') {
+                const exportData = {
+                    prompt: state.currentPrompt,
+                    parameters: {
+                        action: data.actions.find(a => a.id === state.selectedAction).name,
+                        location: data.locations.find(l => l.id === state.selectedLocation).name,
+                        era: data.eras.find(e => e.id === state.selectedEra).name,
+                        condition: data.conditions.find(c => c.id === state.selectedCondition).name,
+                        style: data.styles.find(s => s.id === state.selectedStyle).name,
+                        cyberIntensity: state.cyberIntensity,
+                        cameraAngle: ['Face', 'Profil', 'Plongée', 'Contre-plongée'][state.cameraAngle-1],
+                        timeOfDay: ['Aube', 'Midi', 'Crépuscule', 'Nuit étoilée'][state.timeOfDay-1],
+                        colorPalette: state.colorPalette,
+                        conditionIntensity: ['Légère', 'Moyenne', 'Extrême'][state.conditionIntensity-1]
+                    },
+                    generatedAt: new Date().toISOString()
+                };
+                content = JSON.stringify(exportData, null, 2);
+                filename = `licorne_cybernetique_config_${Date.now()}.json`;
+                mimeType = 'application/json';
+            }
+            
+            // Créer un blob et télécharger
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Notification
+            showNotification(`Fichier ${format.toUpperCase()} exporté avec succès!`);
+            
+            // Masquer les options d'export
+            toggleExportOptions();
+        }
+
+        // Ajouter un prompt à l'historique
+        function addToHistory(prompt) {
+            const historyItem = {
+                prompt: prompt,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+            
+            // Ajouter au début de l'historique
+            state.history.unshift(historyItem);
+            
+            // Garder seulement les 5 derniers
+            if (state.history.length > 5) {
+                state.history = state.history.slice(0, 5);
+            }
+            
+            // Mettre à jour l'affichage
+            updateHistoryDisplay();
+            
+            // Sauvegarder dans le stockage local
+            saveHistory();
+        }
+
+        // Mettre à jour l'affichage de l'historique
+        function updateHistoryDisplay() {
+            const container = document.getElementById('history-container');
+            const emptyHistory = document.getElementById('empty-history');
+            
+            if (state.history.length === 0) {
+                emptyHistory.style.display = 'block';
+                container.innerHTML = '';
+                container.appendChild(emptyHistory);
+                return;
+            }
+            
+            emptyHistory.style.display = 'none';
+            container.innerHTML = '';
+            
+            state.history.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <div class="history-title">Prompt #${new Date(item.timestamp).getHours()}:${new Date(item.timestamp).getMinutes()}</div>
+                    <div class="history-preview">${item.prompt.substring(0, 80)}...</div>
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    document.getElementById('prompt-output').textContent = item.prompt;
+                    state.currentPrompt = item.prompt;
+                    showNotification('Prompt chargé depuis l\'historique!');
+                });
+                
+                container.appendChild(historyItem);
+            });
+        }
+
+        // Charger l'historique depuis le stockage local
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('unicornGeneratorHistory');
+            if (savedHistory) {
+                try {
+                    state.history = JSON.parse(savedHistory);
+                    updateHistoryDisplay();
+                } catch (e) {
+                    console.error('Erreur lors du chargement de l\'historique:', e);
+                }
+            }
+        }
+
+        // Sauvegarder l'historique dans le stockage local
+        function saveHistory() {
+            try {
+                localStorage.setItem('unicornGeneratorHistory', JSON.stringify(state.history));
+            } catch (e) {
+                console.error('Erreur lors de la sauvegarde de l\'historique:', e);
+            }
+        }
+
+        // Afficher une notification
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            
+            if (isError) {
+                notification.style.backgroundColor = '#ff5555';
+            } else {
+                notification.style.backgroundColor = 'var(--success)';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Ajouter un prompt à l'historique lorsqu'on clique sur "Générer Prompt"
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            setTimeout(() => {
+                addToHistory(state.currentPrompt);
+            }, 100);
+        });
+    </script>
+</body>
+</html>
