@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Images Fantastiques - Multi-Personnages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a0a1a;
+            --secondary: #121230;
+            --accent-cyan: #00eeff;
+            --accent-blue: #0066ff;
+            --accent-purple: #aa00ff;
+            --accent-green: #00ffaa;
+            --accent-gold: #ffaa00;
+            --accent-pink: #ff00aa;
+            --text-light: #e0e0ff;
+            --text-dim: #a0a0cc;
+            --border: #30305a;
+            --success: #00cc88;
+            --elf: #00cc66;
+            --fairy: #ff66cc;
+            --mage: #9966ff;
+            --knight: #cccccc;
+            --dragon: #ff6600;
+            --robot: #66ccff;
+            --mermaid: #00ccff;
+            --demon: #cc3300;
+            --hunter: #996633;
+            --spirit: #66ffcc;
+            --alien: #cc66ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text-light);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 102, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(170, 0, 255, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 238, 255, 0.3);
+        }
+        
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .control-panel {
+            background-color: rgba(18, 18, 48, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .preview-panel {
+            background-color: rgba(18, 18, 48, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 1.1rem;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(48, 48, 90, 0.5);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .character-card {
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 110, 255, 0.2);
+        }
+        
+        .character-card.active {
+            box-shadow: 0 0 15px currentColor;
+        }
+        
+        .character-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .character-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .option-card {
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 110, 255, 0.2);
+        }
+        
+        .option-card.active {
+            background-color: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.4);
+        }
+        
+        .option-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--accent-cyan);
+        }
+        
+        .option-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        .slider-container {
+            margin-top: 15px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .slider-value {
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(48, 48, 90, 0.8);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 238, 255, 0.8);
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 8px white;
+        }
+        
+        .preview-container {
+            flex-grow: 1;
+            background-color: rgba(10, 10, 26, 0.8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            border: 1px solid var(--border);
+        }
+        
+        .preview-scene {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .character-preview {
+            position: absolute;
+            font-size: 3rem;
+            filter: drop-shadow(0 0 8px currentColor);
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-output {
+            background-color: rgba(10, 10, 26, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-light);
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border);
+            flex-grow: 1;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: rgba(48, 48, 90, 0.8);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #00a86b, var(--success));
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(90deg, #ffaa00, #ff5500);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .history-section {
+            margin-top: 30px;
+            background-color: rgba(18, 18, 48, 0.9);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+        }
+        
+        .history-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 15px 5px;
+        }
+        
+        .history-item {
+            min-width: 200px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .history-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+        
+        .history-title {
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .history-preview {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .template-card {
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-purple);
+        }
+        
+        .template-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .template-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 6px 12px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active {
+            background-color: rgba(0, 102, 255, 0.3);
+            border-color: var(--accent-blue);
+            color: var(--accent-cyan);
+        }
+        
+        .variation-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .variation-btn {
+            flex: 1;
+            padding: 8px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        
+        .variation-btn:hover {
+            background-color: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+        
+        .empty-history {
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+            padding: 40px 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .export-options {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .secondary-characters {
+            margin-top: 15px;
+        }
+        
+        .secondary-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .secondary-character {
+            padding: 6px 12px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .secondary-character.selected {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .relationship-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .relationship-option {
+            padding: 6px 12px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .relationship-option.active {
+            background-color: rgba(0, 102, 255, 0.3);
+            border-color: var(--accent-blue);
+            color: var(--accent-cyan);
+        }
+        
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .emotion-option {
+            padding: 8px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border: 1px solid transparent;
+        }
+        
+        .emotion-option.active {
+            border-color: var(--accent-gold);
+            background-color: rgba(255, 170, 0, 0.1);
+        }
+        
+        .accessory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .accessory-option {
+            padding: 8px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border: 1px solid transparent;
+        }
+        
+        .accessory-option.active {
+            border-color: var(--accent-pink);
+            background-color: rgba(255, 0, 170, 0.1);
+        }
+        
+        .scenario-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .scenario-option {
+            padding: 10px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        
+        .scenario-option.active {
+            border-color: var(--accent-purple);
+            background-color: rgba(170, 0, 255, 0.1);
+        }
+        
+        .scenario-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .scenario-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+        
+        @media (max-width: 1200px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-panel {
+                max-height: none;
+            }
+            
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .option-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .template-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .scenario-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 238, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glow-1 {
+            top: -100px;
+            left: -100px;
+        }
+        
+        .glow-2 {
+            bottom: -100px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(170, 0, 255, 0.1) 0%, transparent 70%);
+        }
+        
+        .character-unicorn { color: var(--accent-cyan); }
+        .character-elf { color: var(--elf); }
+        .character-fairy { color: var(--fairy); }
+        .character-mage { color: var(--mage); }
+        .character-knight { color: var(--knight); }
+        .character-dragon { color: var(--dragon); }
+        .character-robot { color: var(--robot); }
+        .character-mermaid { color: var(--mermaid); }
+        .character-demon { color: var(--demon); }
+        .character-hunter { color: var(--hunter); }
+        .character-spirit { color: var(--spirit); }
+        .character-alien { color: var(--alien); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-hat-wizard"></i> Générateur d'Images Fantastiques</h1>
+            <p class="subtitle">Créez des scènes détaillées avec des personnages fantastiques et leurs interactions</p>
+            <div class="glow-effect glow-1"></div>
+            <div class="glow-effect glow-2"></div>
+        </header>
+        
+        <div class="main-layout">
+            <div class="control-panel">
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-user"></i> Personnage Principal</h3>
+                    <div class="character-grid" id="main-character-container">
+                        <!-- Personnages seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section" id="secondary-section">
+                    <h3 class="section-title"><i class="fas fa-users"></i> Personnages Secondaires (max 2)</h3>
+                    <div class="secondary-selector" id="secondary-characters-container">
+                        <!-- Personnages secondaires seront générés par JS -->
+                    </div>
+                    
+                    <div class="relationship-selector" id="relationship-container" style="display: none;">
+                        <div class="relationship-option active" data-relationship="alliance">Alliance</div>
+                        <div class="relationship-option" data-relationship="rivalry">Rivalité</div>
+                        <div class="relationship-option" data-relationship="mentorship">Mentorat</div>
+                        <div class="relationship-option" data-relationship="romance">Romance</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-scroll"></i> Scénarios Prédéfinis</h3>
+                    <div class="scenario-selector" id="scenarios-container">
+                        <!-- Scénarios seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-running"></i> Action Principale</h3>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">Toutes</button>
+                        <button class="filter-btn" data-filter="combat">Combat</button>
+                        <button class="filter-btn" data-filter="magie">Magie</button>
+                        <button class="filter-btn" data-filter="repos">Repos</button>
+                        <button class="filter-btn" data-filter="social">Social</button>
+                    </div>
+                    <div class="option-grid" id="actions-container">
+                        <!-- Actions seront générées par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-map-marked-alt"></i> Lieu</h3>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">Tous</button>
+                        <button class="filter-btn" data-filter="europe">Europe</button>
+                        <button class="filter-btn" data-filter="asie">Asie</button>
+                        <button class="filter-btn" data-filter="naturel">Naturel</button>
+                        <button class="filter-btn" data-filter="fictif">Fictif</button>
+                    </div>
+                    <div class="option-grid" id="locations-container">
+                        <!-- Lieux seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-history"></i> Époque</h3>
+                    <div class="option-grid" id="eras-container">
+                        <!-- Époques seront générées par JS -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-cloud-sun-rain"></i> Conditions Atmosphériques</h3>
+                    <div class="option-grid" id="conditions-container">
+                        <!-- Conditions seront générées par JS -->
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Intensité:</span>
+                            <span class="slider-value" id="intensity-value">Moyenne</span>
+                        </div>
+                        <input type="range" min="1" max="3" value="2" class="slider" id="intensity-slider">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-palette"></i> Style Artistique</h3>
+                    <div class="option-grid" id="styles-container">
+                        <!-- Styles seront générés par JS -->
+                    </div>
+                </div>
+                
+                <div class="section" id="character-customization">
+                    <h3 class="section-title"><i class="fas fa-sliders-h"></i> Personnalisation du Personnage</h3>
+                    <!-- Contenu généré dynamiquement selon le personnage -->
+                </div>
+                
+                <div class="section" id="emotions-section">
+                    <h3 class="section-title"><i class="fas fa-smile"></i> Émotions & Posture</h3>
+                    <div class="emotion-grid" id="emotions-container">
+                        <div class="emotion-option active" data-emotion="neutre">Neutre</div>
+                        <div class="emotion-option" data-emotion="heureux">Heureux</div>
+                        <div class="emotion-option" data-emotion="colere">Colère</div>
+                        <div class="emotion-option" data-emotion="triste">Triste</div>
+                        <div class="emotion-option" data-emotion="determine">Déterminé</div>
+                        <div class="emotion-option" data-emotion="effraye">Effrayé</div>
+                        <div class="emotion-option" data-emotion="surpris">Surpris</div>
+                        <div class="emotion-option" data-emotion="serein">Serein</div>
+                    </div>
+                </div>
+                
+                <div class="section" id="accessories-section">
+                    <h3 class="section-title"><i class="fas fa-gem"></i> Accessoires & Artéfacts</h3>
+                    <div class="accessory-grid" id="accessories-container">
+                        <!-- Accessoires seront générés par JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <h3 class="section-title"><i class="fas fa-eye"></i> Aperçu de la Scène</h3>
+                
+                <div class="preview-container">
+                    <div class="preview-scene" id="preview-scene">
+                        <div id="preview-text">
+                            <i class="fas fa-hat-wizard" style="font-size: 4rem; color: var(--accent-purple); margin-bottom: 15px;"></i>
+                            <p>Sélectionnez un personnage pour voir l'aperçu</p>
+                            <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;">Les personnages secondaires apparaîtront ici</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-title" style="margin-top: 10px; margin-bottom: 10px;">
+                    <i class="fas fa-code"></i> Prompt Généré
+                </div>
+                
+                <div class="prompt-output" id="prompt-output">
+                    Sélectionnez des options pour générer un prompt...
+                </div>
+                
+                <div class="variation-controls">
+                    <div class="variation-btn" id="variation-1">Variation 1</div>
+                    <div class="variation-btn" id="variation-2">Variation 2</div>
+                    <div class="variation-btn" id="variation-3">Variation 3</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="generate-btn">
+                        <i class="fas fa-bolt"></i> Générer Prompt
+                    </button>
+                    <button class="btn btn-secondary" id="random-btn">
+                        <i class="fas fa-dice"></i> Surprise Me!
+                    </button>
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copier Prompt
+                    </button>
+                    <button class="btn btn-warning" id="export-btn">
+                        <i class="fas fa-download"></i> Exporter
+                    </button>
+                </div>
+                
+                <div class="export-options" id="export-options" style="display: none;">
+                    <button class="btn btn-secondary" id="export-txt">
+                        <i class="fas fa-file-alt"></i> .TXT
+                    </button>
+                    <button class="btn btn-secondary" id="export-json">
+                        <i class="fas fa-file-code"></i> .JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history-section">
+            <h3 class="section-title"><i class="fas fa-history"></i> Historique (Derniers 5 scénarios)</h3>
+            <div class="history-container" id="history-container">
+                <div class="empty-history" id="empty-history">
+                    Aucun scénario dans l'historique. Génerez-en un pour commencer!
+                </div>
+                <!-- Historique sera généré par JS -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Prompt copié dans le presse-papiers!</span>
+    </div>
+    
+    <script>
+        // Données complètes pour tous les personnages
+        const characters = [
+            {
+                id: 1,
+                name: "Licorne Cybernétique",
+                icon: "fas fa-unicorn",
+                colorClass: "character-unicorn",
+                description: "Créature mythique fusionnée avec la technologie",
+                characteristics: "Traits cybernétiques iridescents, crinière flottante éthérée, corne spiralée brillante, corps sculptural aux motifs matrixés lumineux, glow holographique vibrant",
+                customizable: ["Intensité cybernétique", "Couleur de la crinière", "Éclat de la corne", "Motifs matrixés"],
+                defaultColors: ["#00eeff", "#0066ff", "#aa00ff"]
+            },
+            {
+                id: 2,
+                name: "Elfe Sylvestre",
+                icon: "fas fa-leaf",
+                colorClass: "character-elf",
+                description: "Gardien des forêts anciennes",
+                characteristics: "Oreilles pointues ciselées, armure végétale vivante, tatouages luisants de sève magique, arc en bois vivant, cheveux animés par le vent",
+                customizable: ["Intensité magique", "Couleur des tatouages", "État de l'armure végétale", "Luminosité des cheveux"],
+                defaultColors: ["#00cc66", "#00ffaa", "#66ff99"]
+            },
+            {
+                id: 3,
+                name: "Petite Fée",
+                icon: "fas fa-feather-alt",
+                colorClass: "character-fairy",
+                description: "Esprit de la nature espiègle",
+                characteristics: "Ailes diaphanes aux motifs fractals, vêtements de pétales et rosée, chevelure de poussière d'étoiles, corps bioluminescent, couronne de fleurs lumineuses",
+                customizable: ["Taille des ailes", "Bioluminescence", "Couleur des pétales", "Éclat de la poussière d'étoiles"],
+                defaultColors: ["#ff66cc", "#ff99dd", "#ffccff"]
+            },
+            {
+                id: 4,
+                name: "Mage Archimage",
+                icon: "fas fa-hat-wizard",
+                colorClass: "character-mage",
+                description: "Maître des arcanes anciens",
+                characteristics: "Robe à capuche brodée de runes luminescentes, barbe cristalline scintillante, bâton de pouvoir aux cristaux énergétiques, aura de particules magiques, yeux cyan surnaturels",
+                customizable: ["Intensité magique", "Couleur des runes", "Éclat des cristaux", "Densité de l'aura"],
+                defaultColors: ["#9966ff", "#cc99ff", "#6600cc"]
+            },
+            {
+                id: 5,
+                name: "Chevalier Anachronique",
+                icon: "fas fa-helmet-battle",
+                colorClass: "character-knight",
+                description: "Guerrier fusionnant médiéval et futuriste",
+                characteristics: "Armure futuriste avec inserts cybernétiques, cape à fibres optiques changeantes, épée à lame d'énergie holographique, casque à visière affichant des données, jointures mécaniques",
+                customizable: ["Degré de cybernétisation", "Couleur de l'énergie", "Opacité de la visière", "Luminosité des fibres optiques"],
+                defaultColors: ["#cccccc", "#999999", "#666666"]
+            },
+            {
+                id: 6,
+                name: "Dragon Élémentaire",
+                icon: "fas fa-dragon",
+                colorClass: "character-dragon",
+                description: "Seigneur des éléments primordiaux",
+                characteristics: "Écailles changeantes selon l'élément, ailes membraneuses avec structures cristallines, yeux composés à facettes lumineuses, souffle énergétique visible, crêtes dorsales luminescentes",
+                customizable: ["Élément dominant", "Couleur des écailles", "Taille des ailes", "Intensité du souffle"],
+                defaultColors: ["#ff6600", "#ff9933", "#cc3300"]
+            },
+            {
+                id: 7,
+                name: "Robot Bio-Mécanique",
+                icon: "fas fa-robot",
+                colorClass: "character-robot",
+                description: "Synthèse de chair et de technologie",
+                characteristics: "Structure mi-chair mi-métal, circuits visibles sous peau translucide, membres articulés avec pistons hydrauliques, yeux caméra à lentilles multiples, câbles intégrés organiquement",
+                customizable: ["Ratio chair/métal", "Visibilité des circuits", "Couleur des lentilles", "Complexité des articulations"],
+                defaultColors: ["#66ccff", "#3399ff", "#0066cc"]
+            },
+            {
+                id: 8,
+                name: "Sirène Abyssale",
+                icon: "fas fa-fish",
+                colorClass: "character-mermaid",
+                description: "Déesse des profondeurs marines",
+                characteristics: "Queue aux écailles irisées et nacrées, cheveux flottant comme des algues bioluminescentes, bijoux de corail et perles lumineuses, branchies décoratives, peau aux reflets aquatiques",
+                customizable: ["Bioluminescence", "Couleur des écailles", "Éclat des perles", "Opacité de l'eau environnante"],
+                defaultColors: ["#00ccff", "#0066ff", "#00ffff"]
+            },
+            {
+                id: 9,
+                name: "Démon Céleste",
+                icon: "fas fa-fire",
+                colorClass: "character-demon",
+                description: "Être déchu ou purifié",
+                characteristics: "Cornes spiralées dorées ou fracturées, ailes déchirées de lumière ou d'ombre, marques tribales lumineuses, halo fracturé ou corrompu, vêtements élégants en lambeaux",
+                customizable: ["État de délabrement", "Couleur des marques", "Éclat du halo", "Type d'ailes"],
+                defaultColors: ["#cc3300", "#ff6600", "#993300"]
+            },
+            {
+                id: 10,
+                name: "Chasseur de Cryptides",
+                icon: "fas fa-search",
+                colorClass: "character-hunter",
+                description: "Traqueur de créatures mythiques",
+                characteristics: "Équipement hybride low-tech/high-tech, manteau patchwork de trophées, lunettes de vision multi-spectrale, armes modifiées avec artefacts, sac à dos débordant d'outils",
+                customizable: ["État de l'équipement", "Nombre de trophées", "Fonctionnalités des lunettes", "Puissance des artefacts"],
+                defaultColors: ["#996633", "#cc9933", "#663300"]
+            },
+            {
+                id: 11,
+                name: "Esprit Élémentaire",
+                icon: "fas fa-wind",
+                colorClass: "character-spirit",
+                description: "Manifestation pure d'un élément",
+                characteristics: "Forme semi-corporelle de matière élémentaire, fluctuations constantes de la silhouette, visage énigmatique changeant, aura de particules flottantes, interaction physique avec l'environnement",
+                customizable: ["Opacité corporelle", "Élément représenté", "Densité des particules", "Stabilité de la forme"],
+                defaultColors: ["#66ffcc", "#00ffaa", "#00cc99"]
+            },
+            {
+                id: 12,
+                name: "Alien Éthéré",
+                icon: "fas fa-user-astronaut",
+                colorClass: "character-alien",
+                description: "Être d'une autre dimension",
+                characteristics: "Silhouette longiligne et gracile, peau translucide aux motifs cosmiques, grands yeux noirs réfléchissant les étoiles, vêtements organiques intégrés, absence de bouche",
+                customizable: ["Opacité corporelle", "Complexité des motifs", "Réflectivité des yeux", "Intégration des vêtements"],
+                defaultColors: ["#cc66ff", "#9966cc", "#6600cc"]
+            }
+        ];
+
+        // Données pour les autres options
+        const data = {
+            actions: [
+                { id: 1, name: "Galoper gracieusement", icon: "fas fa-horse", category: "repos" },
+                { id: 2, name: "Lancer un sort", icon: "fas fa-magic", category: "magie" },
+                { id: 3, name: "Interagir magiquement", icon: "fas fa-hat-wizard", category: "magie" },
+                { id: 4, name: "Se battre", icon: "fas fa-fist-raised", category: "combat" },
+                { id: 5, name: "Déclencher un arc-en-ciel", icon: "fas fa-rainbow", category: "magie" },
+                { id: 6, name: "Se cabrer majestueusement", icon: "fas fa-horse-head", category: "combat" },
+                { id: 7, name: "Invoquer une créature", icon: "fas fa-dragon", category: "magie" },
+                { id: 8, name: "Protéger un allié", icon: "fas fa-shield-alt", category: "combat" },
+                { id: 9, name: "Communiquer télépathiquement", icon: "fas fa-brain", category: "social" },
+                { id: 10, name: "Créer un vortex", icon: "fas fa-wind", category: "magie" },
+                { id: 11, name: "Nager élégamment", icon: "fas fa-swimmer", category: "repos" },
+                { id: 12, name: "Voler gracieusement", icon: "fas fa-dove", category: "repos" }
+            ],
+            locations: [
+                { id: 1, name: "Tour Eiffel", icon: "fas fa-landmark", continent: "europe" },
+                { id: 2, name: "Grand Canyon", icon: "fas fa-mountain", continent: "amerique", type: "naturel" },
+                { id: 3, name: "Mont Fuji", icon: "fas fa-mountain", continent: "asie", type: "naturel" },
+                { id: 4, name: "Forêt Enchantée", icon: "fas fa-tree", type: "naturel" },
+                { id: 5, name: "Ruines Antiques", icon: "fas fa-monument", type: "fictif" },
+                { id: 6, name: "Cité Céleste", icon: "fas fa-cloud", type: "fictif" },
+                { id: 7, name: "Abysses Marins", icon: "fas fa-water", type: "naturel" },
+                { id: 8, name: "Volcan Actif", icon: "fas fa-fire", type: "naturel" },
+                { id: 9, name: "Bibliothèque Ancestrale", icon: "fas fa-book", type: "fictif" },
+                { id: 10, name: "Nébuleuse Cosmique", icon: "fas fa-star", type: "fictif" }
+            ],
+            eras: [
+                { id: 1, name: "Antiquité", icon: "fas fa-monument" },
+                { id: 2, name: "Moyen Âge", icon: "fas fa-fort" },
+                { id: 3, name: "Renaissance", icon: "fas fa-paint-brush" },
+                { id: 4, name: "Époque Moderne", icon: "fas fa-industry" },
+                { id: 5, name: "Futur Proche", icon: "fas fa-city" },
+                { id: 6, name: "Futur Lointain", icon: "fas fa-rocket" },
+                { id: 7, name: "Temps Mythique", icon: "fas fa-dragon" },
+                { id: 8, name: "Ère Post-Apocalyptique", icon: "fas fa-skull-crossbones" }
+            ],
+            conditions: [
+                { id: 1, name: "Pluie torrentielle", icon: "fas fa-cloud-rain" },
+                { id: 2, name: "Brouillard mystique", icon: "fas fa-smog" },
+                { id: 3, name: "Tempête de neige", icon: "fas fa-snowflake" },
+                { id: 4, name: "Nuit étoilée", icon: "fas fa-stars" },
+                { id: 5, name: "Crépuscule doré", icon: "fas fa-sun" },
+                { id: 6, name: "Orage électrique", icon: "fas fa-bolt" },
+                { id: 7, name: "Aurores boréales", icon: "fas fa-cloud-meatball" },
+                { id: 8, name: "Brouillard luminescent", icon: "fas fa-cloud-moon" },
+                { id: 9, name: "Pluie de météores", icon: "fas fa-meteor" },
+                { id: 10, name: "Tempête de sable", icon: "fas fa-sun" }
+            ],
+            styles: [
+                { id: 1, name: "Anime stylisé", icon: "fas fa-gamepad" },
+                { id: 2, name: "Réaliste cinématique", icon: "fas fa-film" },
+                { id: 3, name: "Peinture à l'huile", icon: "fas fa-palette" },
+                { id: 4, name: "Cyberpunk", icon: "fas fa-robot" },
+                { id: 5, name: "Fantasy épique", icon: "fas fa-dragon" },
+                { id: 6, name: "Steampunk", icon: "fas fa-cogs" },
+                { id: 7, name: "Art conceptuel", icon: "fas fa-pencil-alt" },
+                { id: 8, name: "Croquis au crayon", icon: "fas fa-pencil-ruler" },
+                { id: 9, name: "Aquarelle", icon: "fas fa-paint-brush" },
+                { id: 10, name: "Pixel Art", icon: "fas fa-th" }
+            ],
+            accessories: [
+                { id: 1, name: "Épée légendaire", icon: "fas fa-sword" },
+                { id: 2, name: "Bouclier magique", icon: "fas fa-shield-alt" },
+                { id: 3, name: "Amulette ancienne", icon: "fas fa-gem" },
+                { id: 4, name: "Couronne royale", icon: "fas fa-crown" },
+                { id: 5, name: "Livre des sorts", icon: "fas fa-book-spells" },
+                { id: 6, name: "Sceptre de pouvoir", icon: "fas fa-sitemap" },
+                { id: 7, name: "Parchemin mystique", icon: "fas fa-scroll" },
+                { id: 8, name: "Familiar", icon: "fas fa-crow" },
+                { id: 9, name: "Potion magique", icon: "fas fa-flask" },
+                { id: 10, name: "Cristal d'énergie", icon: "fas fa-gem" }
+            ],
+            scenarios: [
+                { 
+                    id: 1, 
+                    name: "Rencontre Magique", 
+                    description: "Deux personnages se rencontrent dans un lieu enchanté",
+                    characters: [1, 2],
+                    relationship: "alliance"
+                },
+                { 
+                    id: 2, 
+                    name: "Combat Épique", 
+                    description: "Affrontement entre un héros et une créature",
+                    characters: [5, 6],
+                    relationship: "rivalry"
+                },
+                { 
+                    id: 3, 
+                    name: "Invocation Mystique", 
+                    description: "Un mage invoque une créature d'un autre plan",
+                    characters: [4, 6],
+                    relationship: "mentorship"
+                },
+                { 
+                    id: 4, 
+                    name: "Alliance Inattendue", 
+                    description: "Deux ennemis s'allient face à une menace commune",
+                    characters: [2, 9],
+                    relationship: "alliance"
+                },
+                { 
+                    id: 5, 
+                    name: "Chasse au Trésor", 
+                    description: "Un groupe explore des ruines anciennes",
+                    characters: [10, 4, 2],
+                    relationship: "alliance"
+                },
+                { 
+                    id: 6, 
+                    name: "Conseil des Sages", 
+                    description: "Plusieurs personnages se réunissent pour discuter",
+                    characters: [4, 2, 11],
+                    relationship: "mentorship"
+                }
+            ]
+        };
+
+        // État de l'application
+        const state = {
+            mainCharacter: 1,
+            secondaryCharacters: [],
+            relationship: "alliance",
+            scenario: null,
+            selectedAction: 1,
+            selectedLocation: 1,
+            selectedEra: 1,
+            selectedCondition: 1,
+            selectedStyle: 1,
+            characterCustomizations: {},
+            emotion: "neutre",
+            accessories: [],
+            conditionIntensity: 2,
+            history: [],
+            currentPrompt: ""
+        };
+
+        // Templates prédéfinis
+        const templates = {
+            cyberpunk: {
+                mainCharacter: 1,
+                secondaryCharacters: [7],
+                relationship: "alliance",
+                action: 7,
+                location: 5,
+                era: 5,
+                condition: 1,
+                style: 4,
+                conditionIntensity: 3
+            },
+            fantasy: {
+                mainCharacter: 2,
+                secondaryCharacters: [3],
+                relationship: "alliance",
+                action: 5,
+                location: 4,
+                era: 7,
+                condition: 2,
+                style: 5,
+                conditionIntensity: 1
+            },
+            steampunk: {
+                mainCharacter: 5,
+                secondaryCharacters: [10],
+                relationship: "mentorship",
+                action: 2,
+                location: 9,
+                era: 4,
+                condition: 9,
+                style: 6,
+                conditionIntensity: 2
+            }
+        };
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remplir les personnages
+            populateCharacters();
+            
+            // Remplir les autres options
+            populateOptions('actions-container', data.actions, 'action');
+            populateOptions('locations-container', data.locations, 'location');
+            populateOptions('eras-container', data.eras, 'era');
+            populateOptions('conditions-container', data.conditions, 'condition');
+            populateOptions('styles-container', data.styles, 'style');
+            populateOptions('accessories-container', data.accessories, 'accessory');
+            populateScenarios();
+            
+            // Initialiser les personnalisations par défaut
+            initializeCharacterCustomizations();
+            
+            // Sélectionner les premières options par défaut
+            selectCharacter(1, 'main');
+            selectOption('action-1', 'action');
+            selectOption('location-1', 'location');
+            selectOption('era-1', 'era');
+            selectOption('condition-1', 'condition');
+            selectOption('style-1', 'style');
+            selectEmotion('neutre');
+            
+            // Configurer les écouteurs d'événements
+            setupEventListeners();
+            
+            // Générer le premier prompt
+            generatePrompt();
+            
+            // Charger l'historique
+            loadHistory();
+        });
+
+        // Remplir les personnages dans le DOM
+        function populateCharacters() {
+            const mainContainer = document.getElementById('main-character-container');
+            const secondaryContainer = document.getElementById('secondary-characters-container');
+            
+            mainContainer.innerHTML = '';
+            secondaryContainer.innerHTML = '';
+            
+            characters.forEach(character => {
+                // Carte pour personnage principal
+                const mainCard = document.createElement('div');
+                mainCard.className = `character-card ${character.colorClass}`;
+                mainCard.id = `character-main-${character.id}`;
+                mainCard.dataset.id = character.id;
+                
+                mainCard.innerHTML = `
+                    <div class="character-icon"><i class="${character.icon}"></i></div>
+                    <div class="character-name">${character.name}</div>
+                `;
+                
+                mainCard.addEventListener('click', () => selectCharacter(character.id, 'main'));
+                mainContainer.appendChild(mainCard);
+                
+                // Bouton pour personnage secondaire
+                const secondaryBtn = document.createElement('div');
+                secondaryBtn.className = 'secondary-character';
+                secondaryBtn.id = `character-secondary-${character.id}`;
+                secondaryBtn.dataset.id = character.id;
+                secondaryBtn.innerHTML = `<i class="${character.icon}"></i> ${character.name}`;
+                
+                secondaryBtn.addEventListener('click', () => toggleSecondaryCharacter(character.id));
+                secondaryContainer.appendChild(secondaryBtn);
+            });
+        }
+
+        // Remplir les scénarios
+        function populateScenarios() {
+            const container = document.getElementById('scenarios-container');
+            container.innerHTML = '';
+            
+            data.scenarios.forEach(scenario => {
+                const scenarioOption = document.createElement('div');
+                scenarioOption.className = 'scenario-option';
+                scenarioOption.id = `scenario-${scenario.id}`;
+                scenarioOption.dataset.id = scenario.id;
+                
+                scenarioOption.innerHTML = `
+                    <div class="scenario-name">${scenario.name}</div>
+                    <div class="scenario-desc">${scenario.description}</div>
+                `;
+                
+                scenarioOption.addEventListener('click', () => selectScenario(scenario.id));
+                container.appendChild(scenarioOption);
+            });
+        }
+
+        // Initialiser les personnalisations par défaut
+        function initializeCharacterCustomizations() {
+            characters.forEach(character => {
+                state.characterCustomizations[character.id] = {
+                    intensity: 50,
+                    color1: character.defaultColors[0],
+                    color2: character.defaultColors[1],
+                    color3: character.defaultColors[2],
+                    special1: 50,
+                    special2: 50
+                };
+            });
+        }
+
+        // Remplir les options dans le DOM
+        function populateOptions(containerId, options, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.id = `${type}-${option.id}`;
+                card.dataset.id = option.id;
+                card.dataset.category = option.category || '';
+                card.dataset.continent = option.continent || '';
+                card.dataset.type = option.type || '';
+                
+                card.innerHTML = `
+                    <div class="option-icon"><i class="${option.icon}"></i></div>
+                    <div class="option-name">${option.name}</div>
+                `;
+                
+                card.addEventListener('click', () => selectOption(`${type}-${option.id}`, type));
+                container.appendChild(card);
+            });
+        }
+
+        // Sélectionner un personnage
+        function selectCharacter(characterId, type) {
+            if (type === 'main') {
+                // Désélectionner tous les personnages principaux
+                document.querySelectorAll('#main-character-container .character-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+                
+                // Sélectionner le nouveau
+                const characterCard = document.getElementById(`character-main-${characterId}`);
+                if (characterCard) {
+                    characterCard.classList.add('active');
+                    state.mainCharacter = characterId;
+                    
+                    // Mettre à jour la personnalisation
+                    updateCharacterCustomizationUI();
+                    
+                    // Mettre à jour l'aperçu
+                    updatePreview();
+                    
+                    // Régénérer le prompt
+                    generatePrompt();
+                }
+            }
+        }
+
+        // Basculer un personnage secondaire
+        function toggleSecondaryCharacter(characterId) {
+            const index = state.secondaryCharacters.indexOf(characterId);
+            const btn = document.getElementById(`character-secondary-${characterId}`);
+            
+            if (index === -1) {
+                // Vérifier la limite
+                if (state.secondaryCharacters.length >= 2) {
+                    showNotification('Maximum 2 personnages secondaires', true);
+                    return;
+                }
+                
+                // Ajouter
+                state.secondaryCharacters.push(characterId);
+                btn.classList.add('selected');
+            } else {
+                // Retirer
+                state.secondaryCharacters.splice(index, 1);
+                btn.classList.remove('selected');
+            }
+            
+            // Afficher/masquer les relations si nécessaire
+            const relationshipContainer = document.getElementById('relationship-container');
+            if (state.secondaryCharacters.length > 0) {
+                relationshipContainer.style.display = 'flex';
+            } else {
+                relationshipContainer.style.display = 'none';
+            }
+            
+            // Mettre à jour l'aperçu
+            updatePreview();
+            
+            // Régénérer le prompt
+            generatePrompt();
+        }
+
+        // Sélectionner un scénario
+        function selectScenario(scenarioId) {
+            // Désélectionner tous les scénarios
+            document.querySelectorAll('.scenario-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Sélectionner le nouveau
+            const scenarioOption = document.getElementById(`scenario-${scenarioId}`);
+            if (scenarioOption) {
+                scenarioOption.classList.add('active');
+                state.scenario = scenarioId;
+                
+                // Appliquer le scénario
+                applyScenario(scenarioId);
+            }
+        }
+
+        // Appliquer un scénario
+        function applyScenario(scenarioId) {
+            const scenario = data.scenarios.find(s => s.id === scenarioId);
+            if (!scenario) return;
+            
+            // Mettre à jour les personnages
+            selectCharacter(scenario.characters[0], 'main');
+            
+            // Réinitialiser les personnages secondaires
+            state.secondaryCharacters.forEach(id => {
+                const btn = document.getElementById(`character-secondary-${id}`);
+                if (btn) btn.classList.remove('selected');
+            });
+            
+            // Ajouter les nouveaux personnages secondaires
+            state.secondaryCharacters = [];
+            for (let i = 1; i < scenario.characters.length; i++) {
+                if (i <= 2) { // Maximum 2
+                    toggleSecondaryCharacter(scenario.characters[i]);
+                }
+            }
+            
+            // Mettre à jour la relation
+            selectRelationship(scenario.relationship);
+            
+            // Notification
+            showNotification(`Scénario "${scenario.name}" appliqué!`);
+        }
+
+        // Sélectionner une relation
+        function selectRelationship(relationship) {
+            // Désélectionner toutes les relations
+            document.querySelectorAll('.relationship-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Sélectionner la nouvelle
+            document.querySelector(`.relationship-option[data-relationship="${relationship}"]`).classList.add('active');
+            state.relationship = relationship;
+        }
+
+        // Sélectionner une option
+        function selectOption(elementId, type) {
+            // Désélectionner toutes les options de ce type
+            document.querySelectorAll(`.option-card[data-id].${type}`).forEach(card => {
+                card.classList.remove('active');
+                card.classList.remove(type);
+            });
+            
+            // Sélectionner la nouvelle option
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.add('active');
+                element.classList.add(type);
+                
+                // Mettre à jour l'état
+                const id = parseInt(element.dataset.id);
+                switch(type) {
+                    case 'action':
+                        state.selectedAction = id;
+                        break;
+                    case 'location':
+                        state.selectedLocation = id;
+                        break;
+                    case 'era':
+                        state.selectedEra = id;
+                        break;
+                    case 'condition':
+                        state.selectedCondition = id;
+                        break;
+                    case 'style':
+                        state.selectedStyle = id;
+                        break;
+                    case 'accessory':
+                        // Gérer les accessoires (multiple)
+                        const index = state.accessories.indexOf(id);
+                        if (index === -1) {
+                            state.accessories.push(id);
+                            element.classList.add('active');
+                        } else {
+                            state.accessories.splice(index, 1);
+                            element.classList.remove('active');
+                        }
+                        break;
+                }
+                
+                // Régénérer le prompt si nécessaire
+                if (type !== 'accessory') {
+                    generatePrompt();
+                }
+            }
+        }
+
+        // Sélectionner une émotion
+        function selectEmotion(emotion) {
+            // Désélectionner toutes les émotions
+            document.querySelectorAll('.emotion-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Sélectionner la nouvelle
+            document.querySelector(`.emotion-option[data-emotion="${emotion}"]`).classList.add('active');
+            state.emotion = emotion;
+        }
+
+        // Mettre à jour l'UI de personnalisation du personnage
+        function updateCharacterCustomizationUI() {
+            const character = characters.find(c => c.id === state.mainCharacter);
+            if (!character) return;
+            
+            const container = document.getElementById('character-customization');
+            container.innerHTML = `
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>${character.customizable[0]}:</span>
+                        <span class="slider-value" id="custom-intensity-value">${state.characterCustomizations[character.id].intensity}%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="${state.characterCustomizations[character.id].intensity}" class="slider" id="custom-intensity-slider">
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="slider-label">
+                        <span>${character.customizable[1]}:</span>
+                    </div>
+                    <div class="color-palette" id="color1-palette">
+                        ${generateColorOptions(1, character.id, 0)}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="slider-label">
+                        <span>${character.customizable[2]}:</span>
+                    </div>
+                    <div class="color-palette" id="color2-palette">
+                        ${generateColorOptions(2, character.id, 1)}
+                    </div>
+                </div>
+            `;
+            
+            // Ajouter les écouteurs d'événements
+            document.getElementById('custom-intensity-slider').addEventListener('input', function() {
+                state.characterCustomizations[character.id].intensity = this.value;
+                document.getElementById('custom-intensity-value').textContent = `${this.value}%`;
+                generatePrompt();
+            });
+            
+            // Écouteurs pour les couleurs
+            document.querySelectorAll('#color1-palette .color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    state.characterCustomizations[character.id].color1 = this.dataset.color;
+                    generatePrompt();
+                    updatePreview();
+                });
+            });
+            
+            document.querySelectorAll('#color2-palette .color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    state.characterCustomizations[character.id].color2 = this.dataset.color;
+                    generatePrompt();
+                    updatePreview();
+                });
+            });
+        }
+
+        // Générer les options de couleur
+        function generateColorOptions(colorNum, characterId, colorIndex) {
+            const character = characters.find(c => c.id === characterId);
+            const currentColor = colorIndex === 0 
+                ? state.characterCustomizations[characterId].color1 
+                : state.characterCustomizations[characterId].color2;
+            
+            const colors = [
+                character.defaultColors[0],
+                character.defaultColors[1],
+                character.defaultColors[2],
+                '#ffffff',
+                '#ff0000',
+                '#00ff00',
+                '#0000ff',
+                '#ffff00',
+                '#ff00ff',
+                '#00ffff'
+            ];
+            
+            return colors.map(color => `
+                <div class="color-option ${color === currentColor ? 'active' : ''}" 
+                     style="background-color: ${color};"
+                     data-color="${color}"></div>
+            `).join('');
+        }
+
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            // Sliders
+            document.getElementById('intensity-slider').addEventListener('input', function() {
+                state.conditionIntensity = parseInt(this.value);
+                const intensities = ['Légère', 'Moyenne', 'Extrême'];
+                document.getElementById('intensity-value').textContent = intensities[this.value-1];
+                generatePrompt();
+            });
+            
+            // Émotions
+            document.querySelectorAll('.emotion-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectEmotion(this.dataset.emotion);
+                    generatePrompt();
+                });
+            });
+            
+            // Relations
+            document.querySelectorAll('.relationship-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectRelationship(this.dataset.relationship);
+                    generatePrompt();
+                });
+            });
+            
+            // Boutons de filtres
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    const container = this.closest('.section').querySelector('.option-grid');
+                    const category = container.id.includes('actions') ? 'action' : 'location';
+                    
+                    // Mettre à jour les boutons actifs
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtrer les options
+                    Array.from(container.children).forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                        } else if (category === 'action') {
+                            card.style.display = card.dataset.category === filter ? 'block' : 'none';
+                        } else if (category === 'location') {
+                            if (filter === 'naturel' || filter === 'fictif') {
+                                card.style.display = card.dataset.type === filter ? 'block' : 'none';
+                            } else {
+                                card.style.display = card.dataset.continent === filter ? 'block' : 'none';
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Boutons d'action
+            document.getElementById('generate-btn').addEventListener('click', generatePrompt);
+            document.getElementById('random-btn').addEventListener('click', randomizeAll);
+            document.getElementById('copy-btn').addEventListener('click', copyPrompt);
+            document.getElementById('export-btn').addEventListener('click', toggleExportOptions);
+            document.getElementById('export-txt').addEventListener('click', () => exportPrompt('txt'));
+            document.getElementById('export-json').addEventListener('click', () => exportPrompt('json'));
+            
+            // Variations
+            document.getElementById('variation-1').addEventListener('click', () => generateVariation(1));
+            document.getElementById('variation-2').addEventListener('click', () => generateVariation(2));
+            document.getElementById('variation-3').addEventListener('click', () => generateVariation(3));
+        }
+
+        // Générer un prompt
+        function generatePrompt() {
+            // Récupérer les éléments sélectionnés
+            const mainChar = characters.find(c => c.id === state.mainCharacter);
+            const action = data.actions.find(a => a.id === state.selectedAction);
+            const location = data.locations.find(l => l.id === state.selectedLocation);
+            const era = data.eras.find(e => e.id === state.selectedEra);
+            const condition = data.conditions.find(c => c.id === state.selectedCondition);
+            const style = data.styles.find(s => s.id === state.selectedStyle);
+            
+            // Récupérer les personnages secondaires
+            const secondaryChars = state.secondaryCharacters.map(id => characters.find(c => c.id === id));
+            
+            // Déterminer les intensités
+            const intensityLevels = ['légère', 'modérée', 'extrême'];
+            const conditionIntensityText = intensityLevels[state.conditionIntensity-1];
+            
+            // Obtenir les couleurs personnalisées
+            const charCustom = state.characterCustomizations[mainChar.id];
+            const colors = `${charCustom.color1}, ${charCustom.color2}, ${charCustom.color3}`;
+            
+            // Construire la description des personnages secondaires
+            let secondaryDescription = '';
+            if (secondaryChars.length > 0) {
+                secondaryDescription = ` En arrière-plan, ${secondaryChars.map(char => {
+                    const custom = state.characterCustomizations[char.id];
+                    return `un(e) ${char.name.toLowerCase()} avec ${char.characteristics.toLowerCase()} aux tons ${custom.color1}, ${custom.color2}`;
+                }).join(' et ')}.`;
+                
+                // Ajouter la relation
+                const relationText = {
+                    'alliance': 'Ils semblent être alliés',
+                    'rivalry': 'Une tension palpable existe entre eux',
+                    'mentorship': 'Une relation de mentorat est visible',
+                    'romance': 'Une connexion romantique subtile les unit'
+                }[state.relationship];
+                
+                secondaryDescription += ` ${relationText}.`;
+            }
+            
+            // Construire la description des accessoires
+            let accessoryDescription = '';
+            if (state.accessories.length > 0) {
+                const selectedAccessories = data.accessories.filter(a => state.accessories.includes(a.id));
+                accessoryDescription = ` Le personnage principal porte ${selectedAccessories.map(a => a.name.toLowerCase()).join(', ')}.`;
+            }
+            
+            // Construire le prompt
+            const prompt = `Recréez fidèlement ce personnage [input_ids: "Mod-${mainChar.name.replace(/\s/g, '')}.png"] en conservant exactement ${mainChar.characteristics} aux tons ${colors}. Montrez-le/la en train de ${action.name.toLowerCase()}, avec une expression ${state.emotion}, positionné(e) majestueusement au premier plan devant ${location.name}, à l'époque ${era.name.toLowerCase()}, sous ${conditionIntensityText} ${condition.name.toLowerCase()}.${secondaryDescription}${accessoryDescription} Adoptez une esthétique ${style.name.toLowerCase()} avec lignes nettes et particules dynamiques. Composition large en 16:9, éclairage dramatique adaptatif, atmosphère immersive fusionnant éléments fantastiques et ${era.name.toLowerCase()}. [Intensité des caractéristiques: ${charCustom.intensity}%]`;
+            
+            // Mettre à jour l'état et l'affichage
+            state.currentPrompt = prompt;
+            document.getElementById('prompt-output').textContent = prompt;
+            
+            // Mettre à jour l'aperçu visuel
+            updatePreview();
+            
+            // Ajouter à l'historique
+            addToHistory(prompt);
+            
+            return prompt;
+        }
+
+        // Mettre à jour l'aperçu visuel
+        function updatePreview() {
+            const scene = document.getElementById('preview-scene');
+            const previewText = document.getElementById('preview-text');
+            
+            // Nettoyer la scène
+            scene.innerHTML = '';
+            
+            // Obtenir le personnage principal
+            const mainChar = characters.find(c => c.id === state.mainCharacter);
+            
+            // Ajouter le personnage principal
+            const mainPreview = document.createElement('div');
+            mainPreview.className = `character-preview ${mainChar.colorClass}`;
+            mainPreview.innerHTML = `<i class="${mainChar.icon}"></i>`;
+            mainPreview.style.left = '50%';
+            mainPreview.style.top = '50%';
+            mainPreview.style.transform = 'translate(-50%, -50%)';
+            mainPreview.style.zIndex = '10';
+            scene.appendChild(mainPreview);
+            
+            // Ajouter les personnages secondaires
+            state.secondaryCharacters.forEach((charId, index) => {
+                const char = characters.find(c => c.id === charId);
+                const secondaryPreview = document.createElement('div');
+                secondaryPreview.className = `character-preview ${char.colorClass}`;
+                secondaryPreview.innerHTML = `<i class="${char.icon}"></i>`;
+                
+                // Positionner autour du personnage principal
+                const angle = (index / state.secondaryCharacters.length) * Math.PI * 2;
+                const radius = 100;
+                const left = 50 + Math.cos(angle) * radius;
+                const top = 50 + Math.sin(angle) * radius;
+                
+                secondaryPreview.style.left = `${left}%`;
+                secondaryPreview.style.top = `${top}%`;
+                secondaryPreview.style.transform = 'translate(-50%, -50%)';
+                secondaryPreview.style.fontSize = '2rem';
+                secondaryPreview.style.zIndex = '5';
+                scene.appendChild(secondaryPreview);
+            });
+            
+            // Masquer le texte d'instructions
+            previewText.style.display = 'none';
+        }
+
+        // Générer des variations
+        function generateVariation(variationNum) {
+            const currentPrompt = state.currentPrompt;
+            let variationPrompt = currentPrompt;
+            
+            // Modifications basées sur le numéro de variation
+            if (variationNum === 1) {
+                // Variation 1: Changer l'émotion
+                const emotions = ['neutre', 'heureux', 'colere', 'triste', 'determine', 'effraye', 'surpris', 'serein'];
+                const newEmotion = emotions[(emotions.indexOf(state.emotion) + 1) % emotions.length];
+                variationPrompt = variationPrompt.replace(/expression [^,]+,/, `expression ${newEmotion},`);
+                selectEmotion(newEmotion);
+            } else if (variationNum === 2) {
+                // Variation 2: Changer l'intensité des conditions
+                const intensityLevels = ['légère', 'modérée', 'extrême'];
+                const newIntensity = intensityLevels[(state.conditionIntensity) % 3];
+                variationPrompt = variationPrompt.replace(/légère|modérée|extrême/, newIntensity);
+                state.conditionIntensity = (state.conditionIntensity % 3) + 1;
+                document.getElementById('intensity-slider').value = state.conditionIntensity;
+                document.getElementById('intensity-value').textContent = newIntensity;
+            } else if (variationNum === 3) {
+                // Variation 3: Ajouter un effet supplémentaire
+                const effects = [' avec des reflets humides', ' avec des flares lumineux', ' avec des effets de particules énergétiques', ' avec une profondeur de champ épique'];
+                const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+                if (!variationPrompt.includes(randomEffect)) {
+                    variationPrompt = variationPrompt.replace('avec lignes nettes et particules dynamiques', 'avec lignes nettes et particules dynamiques' + randomEffect);
+                }
+            }
+            
+            // Afficher la variation
+            document.getElementById('prompt-output').textContent = variationPrompt;
+            state.currentPrompt = variationPrompt;
+            
+            // Mettre à jour le bouton de variation
+            document.getElementById(`variation-${variationNum}`).textContent = `Variation ${variationNum} ✓`;
+            setTimeout(() => {
+                document.getElementById(`variation-${variationNum}`).textContent = `Variation ${variationNum}`;
+            }, 2000);
+            
+            // Notification
+            showNotification(`Variation ${variationNum} générée!`);
+        }
+
+        // Randomiser toutes les options
+        function randomizeAll() {
+            // Personnage principal aléatoire
+            const randomMain = characters[Math.floor(Math.random() * characters.length)];
+            selectCharacter(randomMain.id, 'main');
+            
+            // Personnages secondaires aléatoires (0-2)
+            const numSecondary = Math.floor(Math.random() * 3);
+            state.secondaryCharacters.forEach(id => {
+                const btn = document.getElementById(`character-secondary-${id}`);
+                if (btn) btn.classList.remove('selected');
+            });
+            state.secondaryCharacters = [];
+            
+            for (let i = 0; i < numSecondary; i++) {
+                let randomChar;
+                do {
+                    randomChar = characters[Math.floor(Math.random() * characters.length)];
+                } while (randomChar.id === state.mainCharacter || state.secondaryCharacters.includes(randomChar.id));
+                
+                toggleSecondaryCharacter(randomChar.id);
+            }
+            
+            // Relation aléatoire
+            const relationships = ['alliance', 'rivalry', 'mentorship', 'romance'];
+            const randomRelation = relationships[Math.floor(Math.random() * relationships.length)];
+            selectRelationship(randomRelation);
+            
+            // Scénario aléatoire (ou aucun)
+            if (Math.random() > 0.5) {
+                const randomScenario = data.scenarios[Math.floor(Math.random() * data.scenarios.length)];
+                selectScenario(randomScenario.id);
+            } else {
+                document.querySelectorAll('.scenario-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                state.scenario = null;
+            }
+            
+            // Autres options aléatoires
+            const randomAction = data.actions[Math.floor(Math.random() * data.actions.length)];
+            const randomLocation = data.locations[Math.floor(Math.random() * data.locations.length)];
+            const randomEra = data.eras[Math.floor(Math.random() * data.eras.length)];
+            const randomCondition = data.conditions[Math.floor(Math.random() * data.conditions.length)];
+            const randomStyle = data.styles[Math.floor(Math.random() * data.styles.length)];
+            
+            selectOption(`action-${randomAction.id}`, 'action');
+            selectOption(`location-${randomLocation.id}`, 'location');
+            selectOption(`era-${randomEra.id}`, 'era');
+            selectOption(`condition-${randomCondition.id}`, 'condition');
+            selectOption(`style-${randomStyle.id}`, 'style');
+            
+            // Émotion aléatoire
+            const emotions = ['neutre', 'heureux', 'colere', 'triste', 'determine', 'effraye', 'surpris', 'serein'];
+            const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+            selectEmotion(randomEmotion);
+            
+            // Accessoires aléatoires (0-3)
+            state.accessories = [];
+            document.querySelectorAll('.accessory-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            const numAccessories = Math.floor(Math.random() * 4);
+            for (let i = 0; i < numAccessories; i++) {
+                const randomAccessory = data.accessories[Math.floor(Math.random() * data.accessories.length)];
+                if (!state.accessories.includes(randomAccessory.id)) {
+                    state.accessories.push(randomAccessory.id);
+                    document.getElementById(`accessory-${randomAccessory.id}`).classList.add('active');
+                }
+            }
+            
+            // Intensité aléatoire
+            state.conditionIntensity = Math.floor(Math.random() * 3) + 1;
+            document.getElementById('intensity-slider').value = state.conditionIntensity;
+            const intensities = ['Légère', 'Moyenne', 'Extrême'];
+            document.getElementById('intensity-value').textContent = intensities[state.conditionIntensity-1];
+            
+            // Personnalisation aléatoire
+            const charCustom = state.characterCustomizations[state.mainCharacter];
+            charCustom.intensity = Math.floor(Math.random() * 101);
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#000000'];
+            charCustom.color1 = colors[Math.floor(Math.random() * colors.length)];
+            charCustom.color2 = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Mettre à jour l'UI de personnalisation
+            updateCharacterCustomizationUI();
+            
+            // Générer le prompt
+            generatePrompt();
+            
+            // Notification
+            showNotification('Configuration aléatoire générée!');
+        }
+
+        // Copier le prompt dans le presse-papier
+        function copyPrompt() {
+            navigator.clipboard.writeText(state.currentPrompt)
+                .then(() => {
+                    showNotification('Prompt copié dans le presse-papiers!');
+                })
+                .catch(err => {
+                    console.error('Erreur lors de la copie: ', err);
+                    showNotification('Erreur lors de la copie', true);
+                });
+        }
+
+        // Afficher les options d'export
+        function toggleExportOptions() {
+            const exportOptions = document.getElementById('export-options');
+            exportOptions.style.display = exportOptions.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // Exporter le prompt
+        function exportPrompt(format) {
+            const mainChar = characters.find(c => c.id === state.mainCharacter);
+            const secondaryChars = state.secondaryCharacters.map(id => characters.find(c => c.id === id));
+            const charCustom = state.characterCustomizations[state.mainCharacter];
+            
+            let content, filename, mimeType;
+            
+            if (format === 'txt') {
+                content = state.currentPrompt;
+                filename = `scene_${mainChar.name.replace(/\s/g, '_')}_${Date.now()}.txt`;
+                mimeType = 'text/plain';
+            } else if (format === 'json') {
+                const exportData = {
+                    prompt: state.currentPrompt,
+                    parameters: {
+                        mainCharacter: {
+                            name: mainChar.name,
+                            description: mainChar.description,
+                            characteristics: mainChar.characteristics,
+                            customization: charCustom
+                        },
+                        secondaryCharacters: secondaryChars.map(char => ({
+                            name: char.name,
+                            description: char.description
+                        })),
+                        relationship: state.relationship,
+                        action: data.actions.find(a => a.id === state.selectedAction).name,
+                        location: data.locations.find(l => l.id === state.selectedLocation).name,
+                        era: data.eras.find(e => e.id === state.selectedEra).name,
+                        condition: data.conditions.find(c => c.id === state.selectedCondition).name,
+                        style: data.styles.find(s => s.id === state.selectedStyle).name,
+                        emotion: state.emotion,
+                        accessories: state.accessories.map(id => data.accessories.find(a => a.id === id).name),
+                        conditionIntensity: ['Légère', 'Moyenne', 'Extrême'][state.conditionIntensity-1]
+                    },
+                    generatedAt: new Date().toISOString()
+                };
+                content = JSON.stringify(exportData, null, 2);
+                filename = `scene_config_${Date.now()}.json`;
+                mimeType = 'application/json';
+            }
+            
+            // Créer un blob et télécharger
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Notification
+            showNotification(`Fichier ${format.toUpperCase()} exporté!`);
+            toggleExportOptions();
+        }
+
+        // Ajouter un prompt à l'historique
+        function addToHistory(prompt) {
+            const historyItem = {
+                prompt: prompt,
+                mainCharacter: state.mainCharacter,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+            
+            // Ajouter au début de l'historique
+            state.history.unshift(historyItem);
+            
+            // Garder seulement les 5 derniers
+            if (state.history.length > 5) {
+                state.history = state.history.slice(0, 5);
+            }
+            
+            // Mettre à jour l'affichage
+            updateHistoryDisplay();
+            
+            // Sauvegarder dans le stockage local
+            saveHistory();
+        }
+
+        // Mettre à jour l'affichage de l'historique
+        function updateHistoryDisplay() {
+            const container = document.getElementById('history-container');
+            const emptyHistory = document.getElementById('empty-history');
+            
+            if (state.history.length === 0) {
+                emptyHistory.style.display = 'block';
+                container.innerHTML = '';
+                container.appendChild(emptyHistory);
+                return;
+            }
+            
+            emptyHistory.style.display = 'none';
+            container.innerHTML = '';
+            
+            state.history.forEach(item => {
+                const character = characters.find(c => c.id === item.mainCharacter);
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <div class="history-title">${character.name} - ${new Date(item.timestamp).getHours()}:${new Date(item.timestamp).getMinutes().toString().padStart(2, '0')}</div>
+                    <div class="history-preview">${item.prompt.substring(0, 80)}...</div>
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    document.getElementById('prompt-output').textContent = item.prompt;
+                    state.currentPrompt = item.prompt;
+                    showNotification('Prompt chargé depuis l\'historique!');
+                });
+                
+                container.appendChild(historyItem);
+            });
+        }
+
+        // Charger l'historique depuis le stockage local
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('fantasyGeneratorHistory');
+            if (savedHistory) {
+                try {
+                    state.history = JSON.parse(savedHistory);
+                    updateHistoryDisplay();
+                } catch (e) {
+                    console.error('Erreur lors du chargement de l\'historique:', e);
+                }
+            }
+        }
+
+        // Sauvegarder l'historique dans le stockage local
+        function saveHistory() {
+            try {
+                localStorage.setItem('fantasyGeneratorHistory', JSON.stringify(state.history));
+            } catch (e) {
+                console.error('Erreur lors de la sauvegarde de l\'historique:', e);
+            }
+        }
+
+        // Afficher une notification
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            
+            if (isError) {
+                notification.style.backgroundColor = '#ff5555';
+            } else {
+                notification.style.backgroundColor = 'var(--success)';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
