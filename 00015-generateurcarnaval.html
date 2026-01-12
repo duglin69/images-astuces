@@ -195,9 +195,35 @@
                 grid-template-columns: 1fr;
             }
         }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+    
     </style>
 </head>
 <body>
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
     <div class="container">
         <header>
             <h1>🎭 Générateur Carnaval & Festivités</h1>
@@ -1418,3 +1444,4 @@
     </script>
 </body>
 </html>
+
