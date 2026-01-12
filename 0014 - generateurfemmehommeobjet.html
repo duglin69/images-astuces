@@ -1,0 +1,3231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Images Fantastiques</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        :root {
+            --primary: #0a0a1a;
+            --secondary: #121230;
+            --accent: #00eeff;
+            --text: #e0e0ff;
+            --border: #30305a;
+            --success: #00cc88;
+            --warning: #ffaa00;
+            --danger: #ff5555;
+            --emotion-neutre: #cccccc;
+            --emotion-heureux: #ffcc00;
+            --emotion-colere: #ff4444;
+            --emotion-triste: #4488ff;
+            --emotion-surpris: #ff66cc;
+            --intensity-low: #66ff66;
+            --intensity-medium: #ffcc00;
+            --intensity-high: #ff6666;
+            --custom-color: #ff9900;
+            --location-color: #00cc66;
+            --accessory-color: #ff66cc;
+            --effect-color: #9966ff;
+            --style-color: #ffcc00;
+            --lighting-color: #ffaa00;
+            --composition-color: #aa66ff;
+            --secondary-color: #ff6666;
+            --physical-color: #66ccff;
+            --indoor-color: #aa66ff;
+            --outdoor-color: #00cc66;
+            --time-color: #ff9966;
+            --season-color: #66ff99;
+            --detail-color: #ff66aa;
+            --camera-color: #6699ff;
+        }
+        
+        body {
+            background: var(--primary);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00eeff, #aa00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: rgba(18, 18, 48, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .control-panel {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(48, 48, 90, 0.5);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-title {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Grille améliorée */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .card {
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+        
+        .card.active {
+            border-color: var(--accent);
+            background: rgba(0, 238, 255, 0.1);
+        }
+        
+        .icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        
+        /* Personnalisation */
+        .custom-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .custom-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .custom-label {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .custom-input {
+            padding: 12px;
+            background: rgba(30, 30, 60, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--custom-color);
+            box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+        }
+        
+        textarea.custom-input {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        /* Toggle entre prédéfini et personnalisé */
+        .mode-toggle {
+            display: flex;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(48, 48, 90, 0.6);
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .mode-btn.active {
+            color: var(--primary);
+        }
+        
+        .mode-btn:not(.active):hover {
+            opacity: 0.8;
+        }
+        
+        /* Couleurs spécifiques pour chaque section */
+        .hero-section .mode-btn.active {
+            background: var(--custom-color);
+        }
+        
+        .hero-section .custom-label {
+            color: var(--custom-color);
+        }
+        
+        .physical-section .mode-btn.active {
+            background: var(--physical-color);
+        }
+        
+        .physical-section .custom-label {
+            color: var(--physical-color);
+        }
+        
+        .location-section .mode-btn.active {
+            background: var(--location-color);
+        }
+        
+        .location-section .custom-label {
+            color: var(--location-color);
+        }
+        
+        .accessory-section .mode-btn.active {
+            background: var(--accessory-color);
+        }
+        
+        .accessory-section .custom-label {
+            color: var(--accessory-color);
+        }
+        
+        .effect-section .mode-btn.active {
+            background: var(--effect-color);
+        }
+        
+        .effect-section .custom-label {
+            color: var(--effect-color);
+        }
+        
+        .style-section .mode-btn.active {
+            background: var(--style-color);
+        }
+        
+        .style-section .custom-label {
+            color: var(--style-color);
+        }
+        
+        .lighting-section .mode-btn.active {
+            background: var(--lighting-color);
+        }
+        
+        .lighting-section .custom-label {
+            color: var(--lighting-color);
+        }
+        
+        .composition-section .card.active {
+            border-color: var(--composition-color);
+            background: rgba(170, 102, 255, 0.1);
+        }
+        
+        .composition-section .icon {
+            color: var(--composition-color);
+        }
+        
+        .secondary-section .mode-btn.active {
+            background: var(--secondary-color);
+        }
+        
+        .secondary-section .custom-label {
+            color: var(--secondary-color);
+        }
+        
+        /* NOUVELLES SECTIONS */
+        .time-section .mode-btn.active {
+            background: var(--time-color);
+        }
+        
+        .time-section .custom-label {
+            color: var(--time-color);
+        }
+        
+        .season-section .mode-btn.active {
+            background: var(--season-color);
+        }
+        
+        .season-section .custom-label {
+            color: var(--season-color);
+        }
+        
+        .detail-section .mode-btn.active {
+            background: var(--detail-color);
+        }
+        
+        .detail-section .custom-label {
+            color: var(--detail-color);
+        }
+        
+        .camera-section .mode-btn.active {
+            background: var(--camera-color);
+        }
+        
+        .camera-section .custom-label {
+            color: var(--camera-color);
+        }
+        
+        /* Grille pour les caractéristiques physiques */
+        .physical-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+        }
+        
+        .physical-card {
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            font-size: 0.9rem;
+        }
+        
+        .physical-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--physical-color);
+        }
+        
+        .physical-card.active {
+            border-color: var(--physical-color);
+            background: rgba(102, 204, 255, 0.1);
+        }
+        
+        /* Prompt box améliorée */
+        .prompt-box {
+            background: rgba(10, 10, 26, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 300px;
+            max-height: 400px;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        
+        /* Boutons améliorés */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #0066ff, #aa00ff);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(48, 48, 90, 0.8);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #00a86b, var(--success));
+            color: white;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(90deg, #ff9900, #ff6600);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Variations */
+        .variations {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .variation-btn {
+            padding: 10px;
+            background: rgba(48, 48, 90, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .variation-btn:hover {
+            background: rgba(0, 102, 255, 0.2);
+            border-color: var(--accent);
+        }
+        
+        /* Historique */
+        .history-section {
+            margin-top: 30px;
+        }
+        
+        .history-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 15px 0;
+        }
+        
+        .history-item {
+            min-width: 200px;
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .history-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        /* Nouveau: Boutons d'intensité */
+        .intensity-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .intensity-btn {
+            padding: 10px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            background: rgba(48, 48, 90, 0.6);
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .intensity-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .intensity-btn.active {
+            font-weight: bold;
+        }
+        
+        .intensity-btn[data-intensity="1"] {
+            border-color: var(--intensity-low);
+            color: var(--intensity-low);
+        }
+        
+        .intensity-btn[data-intensity="1"].active {
+            background: rgba(102, 255, 102, 0.15);
+        }
+        
+        .intensity-btn[data-intensity="2"] {
+            border-color: var(--intensity-medium);
+            color: var(--intensity-medium);
+        }
+        
+        .intensity-btn[data-intensity="2"].active {
+            background: rgba(255, 204, 0, 0.15);
+        }
+        
+        .intensity-btn[data-intensity="3"] {
+            border-color: var(--intensity-high);
+            color: var(--intensity-high);
+        }
+        
+        .intensity-btn[data-intensity="3"].active {
+            background: rgba(255, 102, 102, 0.15);
+        }
+        
+        /* Émotions */
+        .emotion-card {
+            border-color: var(--emotion-neutre) !important;
+        }
+        
+        .emotion-card.active {
+            background: rgba(204, 204, 204, 0.1);
+        }
+        
+        .emotion-card[data-emotion="heureux"] {
+            border-color: var(--emotion-heureux) !important;
+        }
+        
+        .emotion-card[data-emotion="heureux"].active {
+            background: rgba(255, 204, 0, 0.1);
+        }
+        
+        .emotion-card[data-emotion="colere"] {
+            border-color: var(--emotion-colere) !important;
+        }
+        
+        .emotion-card[data-emotion="colere"].active {
+            background: rgba(255, 68, 68, 0.1);
+        }
+        
+        .emotion-card[data-emotion="triste"] {
+            border-color: var(--emotion-triste) !important;
+        }
+        
+        .emotion-card[data-emotion="triste"].active {
+            background: rgba(68, 136, 255, 0.1);
+        }
+        
+        .emotion-card[data-emotion="surpris"] {
+            border-color: var(--emotion-surpris) !important;
+        }
+        
+        .emotion-card[data-emotion="surpris"].active {
+            background: rgba(255, 102, 204, 0.1);
+        }
+        
+        /* Type de lieu - Intérieur/Extérieur */
+        .location-type-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .location-type-btn {
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background: rgba(48, 48, 90, 0.6);
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .location-type-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .location-type-btn.active {
+            color: white;
+        }
+        
+        .location-type-btn[data-type="exterieur"] {
+            border-color: var(--outdoor-color);
+        }
+        
+        .location-type-btn[data-type="exterieur"].active {
+            background: var(--outdoor-color);
+        }
+        
+        .location-type-btn[data-type="interieur"] {
+            border-color: var(--indoor-color);
+        }
+        
+        .location-type-btn[data-type="interieur"].active {
+            background: var(--indoor-color);
+        }
+        
+        /* Information sur les conditions filtrées */
+        .condition-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(10, 10, 26, 0.5);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        
+        @media (max-width: 1100px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-panel {
+                max-height: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .physical-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .intensity-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .location-type-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .variations {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+        /* Masquer toute signature ou watermark */
+        body::after,
+        body::before,
+        .container::after,
+        .container::before,
+        div[style*="position: fixed"],
+        div[style*="position:fixed"],
+        div[style*="bottom"],
+        div[style*="z-index: 999"],
+        div[style*="z-index:999"],
+        [class*="signature"],
+        [class*="watermark"],
+        [class*="credit"],
+        [id*="signature"],
+        [id*="watermark"],
+        [id*="credit"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-hat-wizard"></i> Générateur d'Images Fantastiques</h1>
+            <p>Créez des prompts détaillés pour l'IA en personnalisant tous les éléments</p>
+        </header>
+        
+        <div class="main-layout">
+            <!-- Panneau de contrôle principal -->
+            <div class="panel control-panel">
+                <!-- Personnage Principal - Mode Toggle -->
+                <div class="section hero-section">
+                    <h3 class="section-title"><i class="fas fa-user"></i> Personnage Principal</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="hero-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="hero-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="hero-predefined-section">
+                        <div class="grid" id="characters">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="hero-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Nom du Héros
+                                </label>
+                                <input type="text" 
+                                       id="custom-hero-name" 
+                                       class="custom-input" 
+                                       placeholder="Ex: Guerrier des Glaces, Sorcière du Temps..." 
+                                       maxlength="50">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="hero-name-count">0</span>/50
+                                </div>
+                            </div>
+                            
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-palette"></i> Description détaillée (facultatif)
+                                </label>
+                                <textarea id="custom-hero-description" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Un guerrier vêtu d'armure cristalline avec des reflets bleutés, portant une cape qui flotte comme de la fumée..."
+                                          maxlength="200"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="hero-description-count">0</span>/200
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Caractéristiques Physiques - Uniquement pour hommes/femmes -->
+                <div class="section physical-section" id="physical-section" style="display: none;">
+                    <h3 class="section-title"><i class="fas fa-user-circle"></i> Caractéristiques Physiques</h3>
+                    
+                    <!-- Âge -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-birthday-cake"></i> Âge
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="age-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="age-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="age-predefined-section">
+                            <div class="physical-grid" id="ages">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="age-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-age-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: environ 25 ans, début de la trentaine..."
+                                   maxlength="30">
+                        </div>
+                    </div>
+                    
+                    <!-- Couleur des cheveux -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-palette"></i> Couleur des cheveux
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="haircolor-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="haircolor-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="haircolor-predefined-section">
+                            <div class="physical-grid" id="haircolors">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="haircolor-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-haircolor-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: châtain clair avec reflets roux..."
+                                   maxlength="40">
+                        </div>
+                    </div>
+                    
+                    <!-- Longueur des cheveux -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-cut"></i> Longueur des cheveux
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="hairlength-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="hairlength-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="hairlength-predefined-section">
+                            <div class="physical-grid" id="hairlengths">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="hairlength-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-hairlength-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: cheveux mi-longs avec une frange..."
+                                   maxlength="40">
+                        </div>
+                    </div>
+                    
+                    <!-- Couleur des yeux -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-eye"></i> Couleur des yeux
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="eyecolor-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="eyecolor-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="eyecolor-predefined-section">
+                            <div class="physical-grid" id="eyecolors">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="eyecolor-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-eyecolor-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: vert émeraude avec des reflets dorés..."
+                                   maxlength="40">
+                        </div>
+                    </div>
+                    
+                    <!-- Corpulence -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-weight"></i> Corpulence
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="build-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="build-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="build-predefined-section">
+                            <div class="physical-grid" id="builds">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="build-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-build-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: corps athlétique et bien proportionné..."
+                                   maxlength="40">
+                        </div>
+                    </div>
+                    
+                    <!-- Taille -->
+                    <div class="custom-input-group">
+                        <label class="custom-label">
+                            <i class="fas fa-arrows-alt-v"></i> Taille
+                        </label>
+                        <div class="mode-toggle">
+                            <button class="mode-btn active" id="height-mode-predefined">Prédéfini</button>
+                            <button class="mode-btn" id="height-mode-custom">Personnalisé</button>
+                        </div>
+                        
+                        <div id="height-predefined-section">
+                            <div class="physical-grid" id="heights">
+                                <!-- Rempli par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div id="height-custom-section" style="display: none; margin-top: 10px;">
+                            <input type="text" 
+                                   id="custom-height-text" 
+                                   class="custom-input" 
+                                   placeholder="Ex: environ 1m85, grande taille..."
+                                   maxlength="30">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Principale - Mode Toggle -->
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-running"></i> Action Principale</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="action-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="action-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="action-predefined-section">
+                        <div class="grid" id="actions">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="action-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description de l'Action
+                                </label>
+                                <input type="text" 
+                                       id="custom-action-text" 
+                                       class="custom-input" 
+                                       placeholder="Ex: méditer sur une montagne flottante, forger une épée stellaire..." 
+                                       maxlength="80">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="action-text-count">0</span>/80
+                                </div>
+                            </div>
+                            
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-bolt"></i> Niveau d'énergie de l'action
+                                </label>
+                                <div class="intensity-buttons" id="custom-action-intensity">
+                                    <button class="intensity-btn active" data-intensity="1">
+                                        <i class="fas fa-circle"></i> Calme
+                                    </button>
+                                    <button class="intensity-btn" data-intensity="2">
+                                        <i class="fas fa-circle"></i> Dynamique
+                                    </button>
+                                    <button class="intensity-btn" data-intensity="3">
+                                        <i class="fas fa-circle"></i> Épique
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Émotions -->
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-smile"></i> Émotion & Expression</h3>
+                    <div class="grid" id="emotions">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="margin-bottom: 8px; color: var(--accent); font-weight: bold;">
+                            Force de l'émotion:
+                        </div>
+                        <div class="intensity-buttons" id="emotion-intensity-buttons">
+                            <button class="intensity-btn active" data-intensity="1">
+                                <i class="fas fa-circle"></i> Subtile
+                            </button>
+                            <button class="intensity-btn" data-intensity="2">
+                                <i class="fas fa-circle"></i> Modérée
+                            </button>
+                            <button class="intensity-btn" data-intensity="3">
+                                <i class="fas fa-circle"></i> Intense
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lieu - Mode Toggle -->
+                <div class="section location-section">
+                    <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> Lieu</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="location-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="location-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="location-predefined-section">
+                        <div class="grid" id="locations">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="location-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description du Lieu
+                                </label>
+                                <textarea id="custom-location-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Une citadelle flottante au-dessus des nuages, avec des ponts de cristal reliant des tours élancées..."
+                                          maxlength="150"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="location-text-count">0</span>/150
+                                </div>
+                            </div>
+                            
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-mountain"></i> Type d'environnement (facultatif)
+                                </label>
+                                <input type="text" 
+                                       id="custom-location-type" 
+                                       class="custom-input" 
+                                       placeholder="Ex: urbain, naturel, fantastique, futuriste, ruiné..."
+                                       maxlength="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Type de Lieu - Intérieur/Extérieur -->
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-building"></i> Type de Lieu</h3>
+                    
+                    <div class="location-type-buttons">
+                        <button class="location-type-btn active" data-type="exterieur" id="location-type-outdoor">
+                            <i class="fas fa-tree"></i> Extérieur
+                        </button>
+                        <button class="location-type-btn" data-type="interieur" id="location-type-indoor">
+                            <i class="fas fa-home"></i> Intérieur
+                        </button>
+                    </div>
+                    
+                    <div class="condition-info" id="condition-info">
+                        <i class="fas fa-info-circle"></i> En extérieur, toutes les conditions atmosphériques sont disponibles.
+                    </div>
+                </div>
+                
+                <!-- Heure de la journée -->
+                <div class="section time-section">
+                    <h3 class="section-title"><i class="fas fa-clock"></i> Heure de la journée</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="time-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="time-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="time-predefined-section">
+                        <div class="grid" id="times">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="time-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description de l'heure
+                                </label>
+                                <input type="text" 
+                                       id="custom-time-text" 
+                                       class="custom-input" 
+                                       placeholder="Ex: heure bleue, fin d'après-midi, nuit étoilée..." 
+                                       maxlength="60">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="time-text-count">0</span>/60
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saison -->
+                <div class="section season-section">
+                    <h3 class="section-title"><i class="fas fa-leaf"></i> Saison</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="season-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="season-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="season-predefined-section">
+                        <div class="grid" id="seasons">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="season-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description de la saison
+                                </label>
+                                <input type="text" 
+                                       id="custom-season-text" 
+                                       class="custom-input" 
+                                       placeholder="Ex: début d'automne, fin d'hiver, été indien..." 
+                                       maxlength="60">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="season-text-count">0</span>/60
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Accessoires - Mode Toggle -->
+                <div class="section accessory-section">
+                    <h3 class="section-title"><i class="fas fa-gem"></i> Accessoires & Équipement</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="accessory-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="accessory-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="accessory-predefined-section">
+                        <div class="grid" id="accessories">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text);">
+                            <i class="fas fa-info-circle" style="color: var(--accent);"></i>
+                            Sélectionnez jusqu'à 3 accessoires
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="accessory-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description des Accessoires
+                                </label>
+                                <textarea id="custom-accessory-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Une épée forgée dans de la glace éternelle qui émet une lueur bleutée, un bouclier gravé de runes anciennes, une amulette contenant une étoile miniature..."
+                                          maxlength="200"
+                                          rows="4"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="accessory-text-count">0</span>/200
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Effets Spéciaux - Mode Toggle -->
+                <div class="section effect-section">
+                    <h3 class="section-title"><i class="fas fa-magic"></i> Effets Spéciaux</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="effect-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="effect-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="effect-predefined-section">
+                        <div class="grid" id="effects">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text);">
+                            <i class="fas fa-info-circle" style="color: var(--accent);"></i>
+                            Sélectionnez jusqu'à 2 effets
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="effect-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description des Effets
+                                </label>
+                                <textarea id="custom-effect-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Une aura de particules lumineuses tourbillonnant autour du personnage, des éclairs d'énergie qui crépitent dans l'air, des ombres qui dansent de manière étrange..."
+                                          maxlength="150"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="effect-text-count">0</span>/150
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Époque -->
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-history"></i> Époque</h3>
+                    <div class="grid" id="eras">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Conditions atmosphériques -->
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-cloud-sun-rain"></i> Conditions</h3>
+                    <div class="grid" id="conditions">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="margin-bottom: 8px; color: var(--accent); font-weight: bold;">
+                            Niveau des conditions:
+                        </div>
+                        <div class="intensity-buttons" id="condition-intensity-buttons">
+                            <button class="intensity-btn active" data-intensity="1">
+                                <i class="fas fa-circle"></i> Léger
+                            </button>
+                            <button class="intensity-btn" data-intensity="2">
+                                <i class="fas fa-circle"></i> Modéré
+                            </button>
+                            <button class="intensity-btn" data-intensity="3">
+                                <i class="fas fa-circle"></i> Fort
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Niveau de détail -->
+                <div class="section detail-section">
+                    <h3 class="section-title"><i class="fas fa-search"></i> Niveau de détail</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="detail-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="detail-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="detail-predefined-section">
+                        <div class="grid" id="details">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="detail-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description du niveau de détail
+                                </label>
+                                <input type="text" 
+                                       id="custom-detail-text" 
+                                       class="custom-input" 
+                                       placeholder="Ex: rendu hyperréaliste, esquisse au crayon, peinture impressionniste..." 
+                                       maxlength="80">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="detail-text-count">0</span>/80
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Point de vue/Camera -->
+                <div class="section camera-section">
+                    <h3 class="section-title"><i class="fas fa-video"></i> Point de vue / Camera</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="camera-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="camera-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="camera-predefined-section">
+                        <div class="grid" id="cameras">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="camera-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description du point de vue
+                                </label>
+                                <input type="text" 
+                                       id="custom-camera-text" 
+                                       class="custom-input" 
+                                       placeholder="Ex: vue en plongée extrême, contre-plongée héroïque, plan serré sur le visage..." 
+                                       maxlength="80">
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="camera-text-count">0</span>/80
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Style Artistique - Mode Toggle -->
+                <div class="section style-section">
+                    <h3 class="section-title"><i class="fas fa-palette"></i> Style Artistique</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="style-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="style-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="style-predefined-section">
+                        <div class="grid" id="styles">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="style-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description du Style
+                                </label>
+                                <textarea id="custom-style-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Style concept art avec des couleurs saturées, un éclairage dramatique de type Caravaggio, des textures de peinture à l'huile visibles..."
+                                          maxlength="150"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="style-text-count">0</span>/150
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Éclairage et Ambiance - Mode Toggle -->
+                <div class="section lighting-section">
+                    <h3 class="section-title"><i class="fas fa-sun"></i> Éclairage & Ambiance</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="lighting-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="lighting-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="lighting-predefined-section">
+                        <div class="grid" id="lightings">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="lighting-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description de l'Éclairage
+                                </label>
+                                <textarea id="custom-lighting-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Éclairage dramatique en contre-jour avec des ombres marquées, reflets dorés du crépuscule, ambiance mystique et brumeuse..."
+                                          maxlength="150"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="lighting-text-count">0</span>/150
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Composition -->
+                <div class="section composition-section">
+                    <h3 class="section-title"><i class="fas fa-crop-alt"></i> Composition</h3>
+                    <div class="grid" id="compositions">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Personnages Secondaires - Mode Toggle -->
+                <div class="section secondary-section">
+                    <h3 class="section-title"><i class="fas fa-users"></i> Personnages Secondaires</h3>
+                    
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="secondary-mode-predefined">Prédéfini</button>
+                        <button class="mode-btn" id="secondary-mode-custom">Personnalisé</button>
+                    </div>
+                    
+                    <!-- Mode Prédéfini -->
+                    <div id="secondary-predefined-section">
+                        <div class="grid" id="secondary-characters">
+                            <!-- Rempli par JavaScript -->
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text);">
+                            <i class="fas fa-info-circle" style="color: var(--accent);"></i>
+                            Sélectionnez jusqu'à 2 personnages secondaires
+                        </div>
+                    </div>
+                    
+                    <!-- Mode Personnalisé -->
+                    <div id="secondary-custom-section" style="display: none;">
+                        <div class="custom-input-container">
+                            <div class="custom-input-group">
+                                <label class="custom-label">
+                                    <i class="fas fa-edit"></i> Description des Personnages Secondaires
+                                </label>
+                                <textarea id="custom-secondary-text" 
+                                          class="custom-input" 
+                                          placeholder="Ex: Un groupe de moines observant la scène, deux gardes en armure, des créatures curieuses cachées dans l'ombre..."
+                                          maxlength="150"
+                                          rows="3"></textarea>
+                                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                                    Caractères: <span id="secondary-text-count">0</span>/150
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panneau du prompt -->
+            <div class="panel">
+                <div class="section">
+                    <h3 class="section-title"><i class="fas fa-code"></i> Prompt Généré</h3>
+                    <div class="prompt-box" id="prompt">
+                        Sélectionnez des options pour générer un prompt...
+                    </div>
+                    
+                    <div class="variations">
+                        <div class="variation-btn" id="variation-1">Variation 1</div>
+                        <div class="variation-btn" id="variation-2">Variation 2</div>
+                        <div class="variation-btn" id="variation-3">Variation 3</div>
+                    </div>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="generate">
+                            <i class="fas fa-sync-alt"></i> Régénérer
+                        </button>
+                        <button class="btn btn-secondary" id="random">
+                            <i class="fas fa-dice"></i> Surprise!
+                        </button>
+                        <button class="btn btn-custom" id="random-custom">
+                            <i class="fas fa-wand-magic-sparkles"></i> Custom Aléatoire
+                        </button>
+                        <button class="btn btn-success" id="copy">
+                            <i class="fas fa-copy"></i> Copier
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(10, 10, 26, 0.8); border-radius: 8px; border: 1px solid var(--border);">
+                        <h4 style="color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-lightbulb"></i> À propos du bouton "Régénérer"
+                        </h4>
+                        <p style="font-size: 0.9rem; color: var(--text); line-height: 1.5;">
+                            Le prompt se met à jour automatiquement à chaque modification. Le bouton "Régénérer" peut être utilisé pour :
+                        </p>
+                        <ul style="font-size: 0.9rem; color: var(--text); padding-left: 20px; line-height: 1.5; margin-top: 5px;">
+                            <li>Forcer une nouvelle génération si vous avez modifié manuellement le texte</li>
+                            <li>Réinitialiser après avoir utilisé les variations</li>
+                            <li>Vérifier que toutes les options sont bien prises en compte</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Historique -->
+        <div class="history-section">
+            <h3 class="section-title"><i class="fas fa-history"></i> Historique (5 derniers)</h3>
+            <div class="history-container" id="history">
+                <!-- Historique généré dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DONNÉES COMPLÈTES
+        const data = {
+            characters: [
+                { id: 1, name: "Un homme", icon: "fas fa-male", color: "#3498db", isHuman: true },
+                { id: 2, name: "Une femme", icon: "fas fa-female", color: "#e91e63", isHuman: true },
+                { id: 3, name: "Un objet", icon: "fas fa-gift", color: "#ff9900", isHuman: false }
+            ],
+            
+            // Caractéristiques physiques
+            ages: [
+                { id: 1, name: "Bébé (0-2 ans)" },
+                { id: 2, name: "Jeune enfant (3-6 ans)" },
+                { id: 3, name: "Enfant (7-12 ans)" },
+                { id: 4, name: "Adolescent (13-17 ans)" },
+                { id: 5, name: "Jeune adulte (18-25 ans)" },
+                { id: 6, name: "Adulte (26-40 ans)" },
+                { id: 7, name: "Adulte mûr (41-60 ans)" },
+                { id: 8, name: "Senior (61+ ans)" }
+            ],
+            
+            haircolors: [
+                { id: 1, name: "Noir" },
+                { id: 2, name: "Brun foncé" },
+                { id: 3, name: "Brun clair" },
+                { id: 4, name: "Blond" },
+                { id: 5, name: "Blond platine" },
+                { id: 6, name: "Roux" },
+                { id: 7, name: "Auburn" },
+                { id: 8, name: "Gris/Argent" },
+                { id: 9, name: "Blanc" },
+                { id: 10, name: "Multicolore" }
+            ],
+            
+            hairlengths: [
+                { id: 1, name: "Rasé" },
+                { id: 2, name: "Très court" },
+                { id: 3, name: "Court" },
+                { id: 4, name: "Mi-long" },
+                { id: 5, name: "Long" },
+                { id: 6, name: "Très long" },
+                { id: 7, name: "Épaule" },
+                { id: 8, name: "Dos" },
+                { id: 9, name: "Tresse" },
+                { id: 10, name: "Chignon" }
+            ],
+            
+            eyecolors: [
+                { id: 1, name: "Brun" },
+                { id: 2, name: "Noisette" },
+                { id: 3, name: "Vert" },
+                { id: 4, name: "Bleu" },
+                { id: 5, name: "Gris" },
+                { id: 6, name: "Ambre" },
+                { id: 7, name: "Violet" },
+                { id: 8, name: "Rouge" },
+                { id: 9, name: "Hétérochromie" },
+                { id: 10, name: "Or" }
+            ],
+            
+            builds: [
+                { id: 1, name: "Très mince" },
+                { id: 2, name: "Mince" },
+                { id: 3, name: "Athlétique" },
+                { id: 4, name: "Moyen" },
+                { id: 5, name: "Robuste" },
+                { id: 6, name: "Corpulent" },
+                { id: 7, name: "Musclé" },
+                { id: 8, name: "Trapu" },
+                { id: 9, name: "Élancé" },
+                { id: 10, name: "Fin" }
+            ],
+            
+            heights: [
+                { id: 1, name: "Très petit" },
+                { id: 2, name: "Petit" },
+                { id: 3, name: "Moyen" },
+                { id: 4, name: "Grand" },
+                { id: 5, name: "Très grand" },
+                { id: 6, name: "Gigantesque" }
+            ],
+            
+            actions: [
+                { id: 1, name: "Galoper gracieusement", icon: "fas fa-horse", category: "mouvement" },
+                { id: 2, name: "Lancer un sort", icon: "fas fa-magic", category: "magie" },
+                { id: 3, name: "Se battre", icon: "fas fa-fist-raised", category: "combat" },
+                { id: 4, name: "Voler élégamment", icon: "fas fa-dove", category: "mouvement" },
+                { id: 5, name: "Invoquer une créature", icon: "fas fa-dragon", category: "magie" },
+                { id: 6, name: "Protéger un allié", icon: "fas fa-shield-alt", category: "combat" },
+                { id: 7, name: "Nager gracieusement", icon: "fas fa-swimmer", category: "mouvement" },
+                { id: 8, name: "Communiquer télépathiquement", icon: "fas fa-brain", category: "social" }
+            ],
+            
+            emotions: [
+                { id: 1, name: "Neutre", icon: "fas fa-meh", color: "var(--emotion-neutre)", intensity: 2 },
+                { id: 2, name: "Heureux", icon: "fas fa-smile", color: "var(--emotion-heureux)", intensity: 2 },
+                { id: 3, name: "Colérique", icon: "fas fa-angry", color: "var(--emotion-colere)", intensity: 2 },
+                { id: 4, name: "Triste", icon: "fas fa-sad-tear", color: "var(--emotion-triste)", intensity: 2 },
+                { id: 5, name: "Surpris", icon: "fas fa-surprise", color: "var(--emotion-surpris)", intensity: 2 }
+            ],
+            
+            locations: [
+                { id: 1, name: "Tour Eiffel", icon: "fas fa-landmark", type: "monument", isIndoor: false },
+                { id: 2, name: "Forêt Enchantée", icon: "fas fa-tree", type: "nature", isIndoor: false },
+                { id: 3, name: "Ruines Antiques", icon: "fas fa-monument", type: "historique", isIndoor: false },
+                { id: 4, name: "Cité Futuriste", icon: "fas fa-city", type: "futuriste", isIndoor: false },
+                { id: 5, name: "Volcan Actif", icon: "fas fa-fire", type: "nature", isIndoor: false },
+                { id: 6, name: "Bibliothèque Ancestrale", icon: "fas fa-book", type: "historique", isIndoor: true },
+                { id: 7, name: "Station Spatiale", icon: "fas fa-satellite", type: "futuriste", isIndoor: true },
+                { id: 8, name: "Océan Abyssal", icon: "fas fa-water", type: "nature", isIndoor: false },
+                { id: 9, name: "Grande Salle du Trône", icon: "fas fa-crown", type: "intérieur", isIndoor: true },
+                { id: 10, name: "Laboratoire Alchimique", icon: "fas fa-flask", type: "intérieur", isIndoor: true },
+                { id: 11, name: "Grotte Cristalline", icon: "fas fa-gem", type: "nature", isIndoor: true },
+                { id: 12, name: "Taverne Médiévale", icon: "fas fa-beer", type: "historique", isIndoor: true }
+            ],
+            
+            accessories: [
+                { id: 1, name: "Épée de Lumière", icon: "fas fa-sun", color: "#ffcc00", position: "main" },
+                { id: 2, name: "Bouclier Runique", icon: "fas fa-shield-alt", color: "#996633", position: "main" },
+                { id: 3, name: "Livre des Sorts", icon: "fas fa-book-open", color: "#6600cc", position: "main" },
+                { id: 4, name: "Couronne Royale", icon: "fas fa-crown", color: "#ffcc00", position: "tête" },
+                { id: 5, name: "Arc Ancestral", icon: "fas fa-bullseye", color: "#663300", position: "main" },
+                { id: 6, name: "Bâton de Mage", icon: "fas fa-magic", color: "#cc9900", position: "main" },
+                { id: 7, name: "Potion Magique", icon: "fas fa-flask", color: "#00cc66", position: "main" },
+                { id: 8, name: "Clé Mystique", icon: "fas fa-key", color: "#00ccff", position: "main" },
+                { id: 9, name: "Orbe de Vision", icon: "fas fa-eye", color: "#ff66cc", position: "flottant" },
+                { id: 10, name: "Ailes Angéliques", icon: "fas fa-dove", color: "#ffffff", position: "dos" }
+            ],
+            
+            effects: [
+                { id: 1, name: "Aura Magique", icon: "fas fa-star", color: "#9966ff" },
+                { id: 2, name: "Étincelles", icon: "fas fa-bolt", color: "#ffcc00" },
+                { id: 3, name: "Brume Mystique", icon: "fas fa-smog", color: "#cccccc" },
+                { id: 4, name: "Rayons Lumineux", icon: "fas fa-sun", color: "#ffff00" },
+                { id: 5, name: "Éclairs Énergétiques", icon: "fas fa-bolt", color: "#00eeff" },
+                { id: 6, name: "Poussières d'Étoiles", icon: "fas fa-star", color: "#ff66cc" },
+                { id: 7, name: "Flammes Spectrales", icon: "fas fa-fire", color: "#ff6600" },
+                { id: 8, name: "Bulles d'Énergie", icon: "fas fa-circle", color: "#00ccff" },
+                { id: 9, name: "Ombres Dansantes", icon: "fas fa-ghost", color: "#333333" },
+                { id: 10, name: "Miroirs Illusoires", icon: "fas fa-clone", color: "#aaaaaa" }
+            ],
+            
+            eras: [
+                { id: 1, name: "Antiquité", icon: "fas fa-monument" },
+                { id: 2, name: "Moyen Âge", icon: "fas fa-fort", color: "#996633" },
+                { id: 3, name: "Renaissance", icon: "fas fa-paint-brush" },
+                { id: 4, name: "Époque Moderne", icon: "fas fa-industry" },
+                { id: 5, name: "Futur Proche", icon: "fas fa-city" },
+                { id: 6, name: "Futur Lointain", icon: "fas fa-rocket" },
+                { id: 7, name: "Temps Mythique", icon: "fas fa-dragon" },
+                { id: 8, name: "Ère Post-Apocalyptique", icon: "fas fa-skull-crossbones" }
+            ],
+            
+            conditions: [
+                { id: 1, name: "Pluie torrentielle", icon: "fas fa-cloud-rain", availableIndoor: false },
+                { id: 2, name: "Brouillard mystique", icon: "fas fa-smog", availableIndoor: true },
+                { id: 3, name: "Tempête de neige", icon: "fas fa-snowflake", availableIndoor: false },
+                { id: 4, name: "Nuit étoilée", icon: "fas fa-star", color: "#ffff00", availableIndoor: false },
+                { id: 5, name: "Crépuscule doré", icon: "fas fa-sun", availableIndoor: false },
+                { id: 6, name: "Orage électrique", icon: "fas fa-bolt", availableIndoor: false },
+                { id: 7, name: "Aurores boréales", icon: "fas fa-cloud-meatball", availableIndoor: false },
+                { id: 8, name: "Brouillard luminescent", icon: "fas fa-cloud-moon", availableIndoor: true },
+                { id: 9, name: "Rayons de soleil filtrés", icon: "fas fa-sun", availableIndoor: true },
+                { id: 10, name: "Lumière de bougies", icon: "fas fa-fire", availableIndoor: true },
+                { id: 11, name: "Pénombre mystérieuse", icon: "fas fa-moon", availableIndoor: true },
+                { id: 12, name: "Fumée d'encens", icon: "fas fa-smoke", availableIndoor: true }
+            ],
+            
+            // NOUVELLES SECTIONS
+            times: [
+                { id: 1, name: "Nuit profonde", icon: "fas fa-moon" },
+                { id: 2, name: "Crépuscule", icon: "fas fa-sunset" },
+                { id: 3, name: "Aube", icon: "fas fa-sunrise" },
+                { id: 4, name: "Midi", icon: "fas fa-sun" },
+                { id: 5, name: "Après-midi", icon: "fas fa-clock" }
+            ],
+            
+            seasons: [
+                { id: 1, name: "Printemps", icon: "fas fa-seedling", color: "#66ff99" },
+                { id: 2, name: "Été", icon: "fas fa-sun", color: "#ffcc00" },
+                { id: 3, name: "Automne", icon: "fas fa-leaf", color: "#ff9966" },
+                { id: 4, name: "Hiver", icon: "fas fa-snowflake", color: "#66ccff" }
+            ],
+            
+            details: [
+                { id: 1, name: "Illustration détaillée", icon: "fas fa-search-plus" },
+                { id: 2, name: "Hyperréaliste", icon: "fas fa-eye" },
+                { id: 3, name: "Esquisse", icon: "fas fa-pencil-alt" },
+                { id: 4, name: "Rendu artistique", icon: "fas fa-paint-brush" },
+                { id: 5, name: "Minimaliste", icon: "fas fa-minus-circle" }
+            ],
+            
+            cameras: [
+                { id: 1, name: "Vue d'ensemble", icon: "fas fa-expand-alt" },
+                { id: 2, name: "Plan rapproché", icon: "fas fa-user" },
+                { id: 3, name: "Gros plan", icon: "fas fa-search" },
+                { id: 4, name: "Plongée", icon: "fas fa-arrow-down" },
+                { id: 5, name: "Contre-plongée", icon: "fas fa-arrow-up" },
+                { id: 6, name: "Angle hollandais", icon: "fas fa-tint" }
+            ],
+            
+            styles: [
+                { id: 1, name: "Anime stylisé", icon: "fas fa-gamepad" },
+                { id: 2, name: "Réaliste cinématique", icon: "fas fa-film" },
+                { id: 3, name: "Peinture à l'huile", icon: "fas fa-palette" },
+                { id: 4, name: "Cyberpunk", icon: "fas fa-robot" },
+                { id: 5, name: "Fantasy épique", icon: "fas fa-dragon" },
+                { id: 6, name: "Steampunk", icon: "fas fa-cogs" },
+                { id: 7, name: "Art conceptuel", icon: "fas fa-pencil-alt" },
+                { id: 8, name: "Aquarelle", icon: "fas fa-paint-brush" }
+            ],
+            
+            lightings: [
+                { id: 1, name: "Dramatique (clair-obscur)", icon: "fas fa-theater-masks" },
+                { id: 2, name: "Lueur de forge", icon: "fas fa-fire" },
+                { id: 3, name: "Clair de lune", icon: "fas fa-moon" },
+                { id: 4, name: "Néon cyberpunk", icon: "fas fa-lightbulb" },
+                { id: 5, name: "Rayons divins", icon: "fas fa-sun" },
+                { id: 6, name: "Ambiance brumeuse", icon: "fas fa-smog" },
+                { id: 7, name: "Lumière chaleureuse", icon: "fas fa-fire" },
+                { id: 8, name: "Éclairage froid", icon: "fas fa-snowflake" }
+            ],
+            
+            compositions: [
+                { id: 1, name: "Carré 1:1", icon: "fas fa-square" },
+                { id: 2, name: "Portrait 3:4", icon: "fas fa-portrait" },
+                { id: 3, name: "Paysage 4:3", icon: "fas fa-landscape" },
+                { id: 4, name: "Mobile 9:16", icon: "fas fa-mobile-alt" },
+                { id: 5, name: "Cinéma 16:9", icon: "fas fa-film" },
+                { id: 6, name: "Ultrawide 21:9", icon: "fas fa-desktop" },
+                { id: 7, name: "Panoramique 2:1", icon: "fas fa-arrows-alt-h" }
+            ]
+        };
+
+        // ÉTAT
+        const state = {
+            // Héros
+            heroMode: 'predefined',
+            character: 1,
+            customHero: {
+                name: "",
+                description: ""
+            },
+            
+            // Caractéristiques physiques
+            physicalSectionVisible: false,
+            ageMode: 'predefined',
+            age: 5,
+            customAge: "",
+            
+            haircolorMode: 'predefined',
+            haircolor: 1,
+            customHaircolor: "",
+            
+            hairlengthMode: 'predefined',
+            hairlength: 4,
+            customHairlength: "",
+            
+            eyecolorMode: 'predefined',
+            eyecolor: 1,
+            customEyecolor: "",
+            
+            buildMode: 'predefined',
+            build: 3,
+            customBuild: "",
+            
+            heightMode: 'predefined',
+            height: 3,
+            customHeight: "",
+            
+            // Action
+            actionMode: 'predefined',
+            action: 1,
+            customAction: {
+                text: "",
+                intensity: 2
+            },
+            
+            // Lieu
+            locationMode: 'predefined',
+            location: 1,
+            customLocation: {
+                text: "",
+                type: ""
+            },
+            
+            // Type de lieu (intérieur/extérieur)
+            locationType: 'exterieur', // 'exterieur' ou 'interieur'
+            
+            // Heure de la journée
+            timeMode: 'predefined',
+            time: 2,
+            customTime: {
+                text: ""
+            },
+            
+            // Saison
+            seasonMode: 'predefined',
+            season: 1,
+            customSeason: {
+                text: ""
+            },
+            
+            // Accessoires
+            accessoryMode: 'predefined',
+            accessories: [],
+            customAccessory: {
+                text: ""
+            },
+            
+            // Effets
+            effectMode: 'predefined',
+            effects: [],
+            customEffect: {
+                text: ""
+            },
+            
+            // Niveau de détail
+            detailMode: 'predefined',
+            detail: 1,
+            customDetail: {
+                text: ""
+            },
+            
+            // Point de vue/Camera
+            cameraMode: 'predefined',
+            camera: 1,
+            customCamera: {
+                text: ""
+            },
+            
+            // Style
+            styleMode: 'predefined',
+            style: 1,
+            customStyle: {
+                text: ""
+            },
+            
+            // Éclairage
+            lightingMode: 'predefined',
+            lighting: 1,
+            customLighting: {
+                text: ""
+            },
+            
+            // Composition
+            composition: 5,
+            
+            // Personnages secondaires
+            secondaryMode: 'predefined',
+            secondaryCharacters: [],
+            customSecondary: {
+                text: ""
+            },
+            
+            // Autres
+            emotion: 1,
+            emotionIntensity: 2,
+            era: 1,
+            condition: 1,
+            conditionIntensity: 2,
+            history: []
+        };
+
+        // FONCTIONS DE BASE
+        function createCard(containerId, items, isMultiSelect = false, isEmotion = false, filterCondition = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Filtrer les conditions si nécessaire
+            let filteredItems = items;
+            if (filterCondition && containerId === 'conditions') {
+                if (state.locationType === 'interieur') {
+                    filteredItems = items.filter(item => item.availableIndoor === true);
+                } else {
+                    filteredItems = items; // Toutes les conditions en extérieur
+                }
+            }
+            
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = isEmotion ? 'card emotion-card' : 'card';
+                card.dataset.id = item.id;
+                if (isEmotion) {
+                    card.dataset.emotion = item.name.toLowerCase();
+                }
+                
+                card.innerHTML = `
+                    <div class="icon"><i class="${item.icon}"></i></div>
+                    <div>${item.name}</div>
+                `;
+                
+                // Vérifier si l'élément est sélectionné
+                let isSelected = false;
+                if (containerId === 'characters' && item.id === state.character) {
+                    isSelected = true;
+                } else if (containerId === 'actions' && item.id === state.action) {
+                    isSelected = true;
+                } else if (containerId === 'emotions' && item.id === state.emotion) {
+                    isSelected = true;
+                } else if (containerId === 'locations' && item.id === state.location) {
+                    isSelected = true;
+                } else if (containerId === 'eras' && item.id === state.era) {
+                    isSelected = true;
+                } else if (containerId === 'conditions' && item.id === state.condition) {
+                    // Vérifier si la condition est toujours disponible
+                    if (state.locationType === 'interieur' && !item.availableIndoor) {
+                        // La condition n'est plus disponible, ne pas la marquer comme sélectionnée
+                        isSelected = false;
+                    } else {
+                        isSelected = item.id === state.condition;
+                    }
+                } else if (containerId === 'styles' && item.id === state.style) {
+                    isSelected = true;
+                } else if (containerId === 'lightings' && item.id === state.lighting) {
+                    isSelected = true;
+                } else if (containerId === 'compositions' && item.id === state.composition) {
+                    isSelected = true;
+                } else if (containerId === 'secondary-characters' && state.secondaryCharacters.includes(item.id)) {
+                    isSelected = true;
+                } else if (containerId === 'accessories' && state.accessories.includes(item.id)) {
+                    isSelected = true;
+                } else if (containerId === 'effects' && state.effects.includes(item.id)) {
+                    isSelected = true;
+                } else if (containerId === 'ages' && item.id === state.age) {
+                    isSelected = true;
+                } else if (containerId === 'haircolors' && item.id === state.haircolor) {
+                    isSelected = true;
+                } else if (containerId === 'hairlengths' && item.id === state.hairlength) {
+                    isSelected = true;
+                } else if (containerId === 'eyecolors' && item.id === state.eyecolor) {
+                    isSelected = true;
+                } else if (containerId === 'builds' && item.id === state.build) {
+                    isSelected = true;
+                } else if (containerId === 'heights' && item.id === state.height) {
+                    isSelected = true;
+                } else if (containerId === 'times' && item.id === state.time) {
+                    isSelected = true;
+                } else if (containerId === 'seasons' && item.id === state.season) {
+                    isSelected = true;
+                } else if (containerId === 'details' && item.id === state.detail) {
+                    isSelected = true;
+                } else if (containerId === 'cameras' && item.id === state.camera) {
+                    isSelected = true;
+                }
+                
+                if (isSelected) {
+                    card.classList.add('active');
+                }
+                
+                card.addEventListener('click', () => {
+                    handleCardClick(containerId, item.id, isMultiSelect);
+                });
+                
+                container.appendChild(card);
+            });
+            
+            // Mettre à jour l'info sur les conditions
+            if (containerId === 'conditions') {
+                updateConditionInfo();
+            }
+        }
+
+        function createPhysicalCard(containerId, items) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'physical-card';
+                card.dataset.id = item.id;
+                card.textContent = item.name;
+                
+                // Vérifier si l'élément est sélectionné
+                let isSelected = false;
+                if (containerId === 'ages' && item.id === state.age) {
+                    isSelected = true;
+                } else if (containerId === 'haircolors' && item.id === state.haircolor) {
+                    isSelected = true;
+                } else if (containerId === 'hairlengths' && item.id === state.hairlength) {
+                    isSelected = true;
+                } else if (containerId === 'eyecolors' && item.id === state.eyecolor) {
+                    isSelected = true;
+                } else if (containerId === 'builds' && item.id === state.build) {
+                    isSelected = true;
+                } else if (containerId === 'heights' && item.id === state.height) {
+                    isSelected = true;
+                }
+                
+                if (isSelected) {
+                    card.classList.add('active');
+                }
+                
+                card.addEventListener('click', () => {
+                    handlePhysicalCardClick(containerId, item.id);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function handleCardClick(containerId, itemId, isMultiSelect) {
+            if (isMultiSelect) {
+                // Pour les sélections multiples (accessoires, effets, personnages secondaires)
+                let array, maxLimit;
+                
+                switch(containerId) {
+                    case 'secondary-characters':
+                        array = state.secondaryCharacters;
+                        maxLimit = 2;
+                        break;
+                    case 'accessories':
+                        array = state.accessories;
+                        maxLimit = 3;
+                        break;
+                    case 'effects':
+                        array = state.effects;
+                        maxLimit = 2;
+                        break;
+                    default:
+                        return;
+                }
+                
+                const index = array.indexOf(itemId);
+                const card = document.querySelector(`#${containerId} .card[data-id="${itemId}"]`);
+                
+                if (index === -1) {
+                    // Vérifier la limite
+                    if (array.length >= maxLimit) {
+                        alert(`Maximum ${maxLimit} ${containerId === 'accessories' ? 'accessoires' : containerId === 'effects' ? 'effets' : 'personnages secondaires'} !`);
+                        return;
+                    }
+                    
+                    array.push(itemId);
+                    card.classList.add('active');
+                } else {
+                    array.splice(index, 1);
+                    card.classList.remove('active');
+                }
+            } else {
+                // Pour les sélections uniques
+                const cards = document.querySelectorAll(`#${containerId} .card`);
+                cards.forEach(card => card.classList.remove('active'));
+                
+                const selectedCard = document.querySelector(`#${containerId} .card[data-id="${itemId}"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('active');
+                }
+                
+                // Mettre à jour l'état
+                switch(containerId) {
+                    case 'characters': 
+                        state.character = itemId;
+                        updatePhysicalSectionVisibility();
+                        break;
+                    case 'actions': state.action = itemId; break;
+                    case 'emotions': state.emotion = itemId; break;
+                    case 'locations': state.location = itemId; break;
+                    case 'eras': state.era = itemId; break;
+                    case 'conditions': 
+                        state.condition = itemId; 
+                        // Vérifier si la condition est compatible avec le type de lieu
+                        const condition = data.conditions.find(c => c.id === itemId);
+                        if (state.locationType === 'interieur' && !condition.availableIndoor) {
+                            // Ajuster automatiquement le type de lieu si nécessaire
+                            state.locationType = 'exterieur';
+                            updateLocationTypeUI();
+                            createCard('conditions', data.conditions, false, false, true);
+                        }
+                        break;
+                    case 'styles': state.style = itemId; break;
+                    case 'lightings': state.lighting = itemId; break;
+                    case 'compositions': state.composition = itemId; break;
+                    case 'times': state.time = itemId; break;
+                    case 'seasons': state.season = itemId; break;
+                    case 'details': state.detail = itemId; break;
+                    case 'cameras': state.camera = itemId; break;
+                }
+            }
+            
+            generatePrompt();
+        }
+
+        function handlePhysicalCardClick(containerId, itemId) {
+            // Pour les caractéristiques physiques
+            const cards = document.querySelectorAll(`#${containerId} .physical-card`);
+            cards.forEach(card => card.classList.remove('active'));
+            
+            const selectedCard = document.querySelector(`#${containerId} .physical-card[data-id="${itemId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('active');
+            }
+            
+            // Mettre à jour l'état
+            switch(containerId) {
+                case 'ages': state.age = itemId; break;
+                case 'haircolors': state.haircolor = itemId; break;
+                case 'hairlengths': state.hairlength = itemId; break;
+                case 'eyecolors': state.eyecolor = itemId; break;
+                case 'builds': state.build = itemId; break;
+                case 'heights': state.height = itemId; break;
+            }
+            
+            generatePrompt();
+        }
+
+        function updatePhysicalSectionVisibility() {
+            const character = data.characters.find(c => c.id === state.character);
+            const physicalSection = document.getElementById('physical-section');
+            
+            if (character && character.isHuman) {
+                physicalSection.style.display = 'block';
+                state.physicalSectionVisible = true;
+            } else {
+                physicalSection.style.display = 'none';
+                state.physicalSectionVisible = false;
+            }
+        }
+
+        function generatePrompt() {
+            // Héros
+            let heroText;
+            if (state.heroMode === 'predefined') {
+                const mainChar = data.characters.find(c => c.id === state.character);
+                heroText = mainChar.name;
+                
+                // Ajouter les caractéristiques physiques si c'est un humain
+                if (mainChar.isHuman && state.physicalSectionVisible) {
+                    let physicalDescription = "";
+                    
+                    // Âge
+                    if (state.ageMode === 'predefined') {
+                        const age = data.ages.find(a => a.id === state.age);
+                        physicalDescription += `${age.name}, `;
+                    } else if (state.customAge) {
+                        physicalDescription += `${state.customAge}, `;
+                    }
+                    
+                    // Cheveux
+                    let hairDescription = "";
+                    if (state.haircolorMode === 'predefined' && state.hairlengthMode === 'predefined') {
+                        const haircolor = data.haircolors.find(h => h.id === state.haircolor);
+                        const hairlength = data.hairlengths.find(h => h.id === state.hairlength);
+                        hairDescription = `cheveux ${hairlength.name.toLowerCase()} ${haircolor.name.toLowerCase()}`;
+                    } else if (state.customHaircolor && state.customHairlength) {
+                        hairDescription = `${state.customHairlength} ${state.customHaircolor}`;
+                    } else if (state.customHaircolor) {
+                        hairDescription = `cheveux ${state.customHaircolor}`;
+                    } else if (state.customHairlength) {
+                        hairDescription = `cheveux ${state.customHairlength}`;
+                    }
+                    
+                    if (hairDescription) {
+                        physicalDescription += `${hairDescription}, `;
+                    }
+                    
+                    // Yeux
+                    if (state.eyecolorMode === 'predefined') {
+                        const eyecolor = data.eyecolors.find(e => e.id === state.eyecolor);
+                        physicalDescription += `yeux ${eyecolor.name.toLowerCase()}, `;
+                    } else if (state.customEyecolor) {
+                        physicalDescription += `yeux ${state.customEyecolor}, `;
+                    }
+                    
+                    // Corpulence
+                    if (state.buildMode === 'predefined') {
+                        const build = data.builds.find(b => b.id === state.build);
+                        physicalDescription += `${build.name.toLowerCase()}, `;
+                    } else if (state.customBuild) {
+                        physicalDescription += `${state.customBuild}, `;
+                    }
+                    
+                    // Taille
+                    if (state.heightMode === 'predefined') {
+                        const height = data.heights.find(h => h.id === state.height);
+                        physicalDescription += `${height.name.toLowerCase()}`;
+                    } else if (state.customHeight) {
+                        physicalDescription += state.customHeight;
+                    }
+                    
+                    // Nettoyer la description
+                    physicalDescription = physicalDescription.trim();
+                    if (physicalDescription.endsWith(',')) {
+                        physicalDescription = physicalDescription.slice(0, -1);
+                    }
+                    
+                    if (physicalDescription) {
+                        heroText += ` (${physicalDescription})`;
+                    }
+                }
+            } else {
+                heroText = state.customHero.name || "un héros personnalisé";
+                if (state.customHero.description) {
+                    heroText += `, ${state.customHero.description}`;
+                }
+            }
+            
+            // Action
+            let actionText;
+            if (state.actionMode === 'predefined') {
+                const action = data.actions.find(a => a.id === state.action);
+                actionText = action.name.toLowerCase();
+            } else {
+                actionText = state.customAction.text.toLowerCase() || "effectuer une action";
+            }
+            
+            // Niveau d'énergie de l'action (personnalisé seulement)
+            let actionEnergyText = '';
+            if (state.actionMode === 'custom') {
+                const actionEnergies = ['calme', 'dynamique', 'épique'];
+                actionEnergyText = ` avec un niveau d'énergie ${actionEnergies[state.customAction.intensity - 1]}`;
+            }
+            
+            // Émotion
+            const emotion = data.emotions.find(e => e.id === state.emotion);
+            const emotionStrengths = ['subtile', 'modérée', 'intense'];
+            const emotionStrengthText = emotionStrengths[state.emotionIntensity - 1];
+            
+            // Lieu
+            let locationText;
+            if (state.locationMode === 'predefined') {
+                const location = data.locations.find(l => l.id === state.location);
+                locationText = location.name;
+            } else {
+                locationText = state.customLocation.text || "un lieu personnalisé";
+                if (state.customLocation.type) {
+                    locationText = `${state.customLocation.type} : ${locationText}`;
+                }
+            }
+            
+            // Type de lieu
+            const locationTypeText = state.locationType === 'interieur' ? 'à l\'intérieur' : 'à l\'extérieur';
+            
+            // Heure de la journée
+            let timeText;
+            if (state.timeMode === 'predefined') {
+                const time = data.times.find(t => t.id === state.time);
+                timeText = time.name.toLowerCase();
+            } else {
+                timeText = state.customTime.text || "moment de la journée";
+            }
+            
+            // Saison
+            let seasonText;
+            if (state.seasonMode === 'predefined') {
+                const season = data.seasons.find(s => s.id === state.season);
+                seasonText = season.name.toLowerCase();
+            } else {
+                seasonText = state.customSeason.text || "saison";
+            }
+            
+            // Accessoires
+            let accessoryText = '';
+            if (state.accessoryMode === 'predefined' && state.accessories.length > 0) {
+                const accessories = state.accessories.map(id => {
+                    const accessory = data.accessories.find(a => a.id === id);
+                    return accessory.name.toLowerCase();
+                });
+                accessoryText = ` Équipé de: ${accessories.join(', ')}.`;
+            } else if (state.accessoryMode === 'custom' && state.customAccessory.text) {
+                accessoryText = ` Équipement: ${state.customAccessory.text}.`;
+            }
+            
+            // Effets spéciaux
+            let effectText = '';
+            if (state.effectMode === 'predefined' && state.effects.length > 0) {
+                const effects = state.effects.map(id => {
+                    const effect = data.effects.find(e => e.id === id);
+                    return effect.name.toLowerCase();
+                });
+                effectText = ` Effets visuels: ${effects.join(', ')}.`;
+            } else if (state.effectMode === 'custom' && state.customEffect.text) {
+                effectText = ` Effets spéciaux: ${state.customEffect.text}.`;
+            }
+            
+            // Époque
+            const era = data.eras.find(e => e.id === state.era);
+            
+            // Conditions
+            const condition = data.conditions.find(c => c.id === state.condition);
+            const conditionLevels = ['léger', 'modéré', 'fort'];
+            const conditionLevelText = conditionLevels[state.conditionIntensity - 1];
+            
+            // Niveau de détail
+            let detailText;
+            if (state.detailMode === 'predefined') {
+                const detail = data.details.find(d => d.id === state.detail);
+                detailText = detail.name.toLowerCase();
+            } else {
+                detailText = state.customDetail.text || "niveau de détail personnalisé";
+            }
+            
+            // Point de vue/Camera
+            let cameraText;
+            if (state.cameraMode === 'predefined') {
+                const camera = data.cameras.find(c => c.id === state.camera);
+                cameraText = camera.name.toLowerCase();
+            } else {
+                cameraText = state.customCamera.text || "point de vue personnalisé";
+            }
+            
+            // Style artistique
+            let styleText;
+            if (state.styleMode === 'predefined') {
+                const style = data.styles.find(s => s.id === state.style);
+                styleText = style.name.toLowerCase();
+            } else {
+                styleText = state.customStyle.text || "style artistique personnalisé";
+            }
+            
+            // Éclairage
+            let lightingText;
+            if (state.lightingMode === 'predefined') {
+                const lighting = data.lightings.find(l => l.id === state.lighting);
+                lightingText = lighting.name.toLowerCase();
+            } else {
+                lightingText = state.customLighting.text || "éclairage personnalisé";
+            }
+            
+            // Composition
+            const composition = data.compositions.find(c => c.id === state.composition);
+            
+            // Personnages secondaires
+            let secondaryText = '';
+            if (state.secondaryMode === 'predefined' && state.secondaryCharacters.length > 0) {
+                const secondaryChars = state.secondaryCharacters.map(id => {
+                    const char = data.characters.find(c => c.id === id);
+                    return char.name.toLowerCase();
+                });
+                secondaryText = ` En arrière-plan, ${secondaryChars.join(' et ')} observe(nt) la scène.`;
+            } else if (state.secondaryMode === 'custom' && state.customSecondary.text) {
+                secondaryText = ` En arrière-plan: ${state.customSecondary.text}.`;
+            }
+            
+            // Construire le prompt (avec les nouvelles sections)
+            const prompt = `Générer ${heroText} en train de ${actionText}${actionEnergyText}, avec une expression ${emotion.name.toLowerCase()} ${emotionStrengthText}.${accessoryText}${effectText} Position: ${locationText} (${locationTypeText}) pendant ${timeText} en ${seasonText}, à l'époque ${era.name.toLowerCase()}, avec des conditions ${conditionLevelText} de ${condition.name.toLowerCase()}.${secondaryText} Niveau de détail: ${detailText}. Point de vue: ${cameraText}. Style: ${styleText}. Éclairage: ${lightingText}. Composition: ${composition.name}. Détails haute qualité, atmosphère immersive.`;
+            
+            document.getElementById('prompt').textContent = prompt;
+            
+            // Ajouter à l'historique
+            addToHistory(prompt);
+            
+            return prompt;
+        }
+
+        function addToHistory(prompt) {
+            const historyItem = {
+                prompt: prompt,
+                timestamp: new Date().toLocaleTimeString(),
+                id: Date.now()
+            };
+            
+            state.history.unshift(historyItem);
+            
+            // Garder seulement les 5 derniers
+            if (state.history.length > 5) {
+                state.history = state.history.slice(0, 5);
+            }
+            
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyContainer = document.getElementById('history');
+            historyContainer.innerHTML = '';
+            
+            state.history.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <div style="color: var(--accent); font-size: 0.9rem; margin-bottom: 5px;">
+                        ${item.timestamp}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text);">
+                        ${item.prompt.substring(0, 80)}...
+                    </div>
+                `;
+                
+                historyItem.addEventListener('click', () => {
+                    document.getElementById('prompt').textContent = item.prompt;
+                });
+                
+                historyContainer.appendChild(historyItem);
+            });
+        }
+
+        function setupIntensityButtons() {
+            // Configuration des boutons de force d'émotion
+            const emotionButtons = document.querySelectorAll('#emotion-intensity-buttons .intensity-btn');
+            emotionButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    emotionButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    state.emotionIntensity = parseInt(this.dataset.intensity);
+                    generatePrompt();
+                });
+            });
+
+            // Configuration des boutons de niveau des conditions
+            const conditionButtons = document.querySelectorAll('#condition-intensity-buttons .intensity-btn');
+            conditionButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    conditionButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    state.conditionIntensity = parseInt(this.dataset.intensity);
+                    generatePrompt();
+                });
+            });
+
+            // Configuration des boutons de niveau d'énergie de l'action (personnalisé)
+            const actionIntensityButtons = document.querySelectorAll('#custom-action-intensity .intensity-btn');
+            actionIntensityButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    actionIntensityButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    state.customAction.intensity = parseInt(this.dataset.intensity);
+                    generatePrompt();
+                });
+            });
+        }
+
+        function setupModeToggles() {
+            // Configuration pour tous les toggles
+            const modeConfigs = [
+                { mode: 'hero', sections: ['predefined', 'custom'] },
+                { mode: 'action', sections: ['predefined', 'custom'] },
+                { mode: 'location', sections: ['predefined', 'custom'] },
+                { mode: 'accessory', sections: ['predefined', 'custom'] },
+                { mode: 'effect', sections: ['predefined', 'custom'] },
+                { mode: 'style', sections: ['predefined', 'custom'] },
+                { mode: 'lighting', sections: ['predefined', 'custom'] },
+                { mode: 'secondary', sections: ['predefined', 'custom'] },
+                { mode: 'time', sections: ['predefined', 'custom'] },
+                { mode: 'season', sections: ['predefined', 'custom'] },
+                { mode: 'detail', sections: ['predefined', 'custom'] },
+                { mode: 'camera', sections: ['predefined', 'custom'] }
+            ];
+            
+            modeConfigs.forEach(config => {
+                const mode = config.mode;
+                
+                // Bouton prédéfini
+                document.getElementById(`${mode}-mode-predefined`).addEventListener('click', function() {
+                    if (state[`${mode}Mode`] !== 'predefined') {
+                        state[`${mode}Mode`] = 'predefined';
+                        updateModeUI(mode);
+                        generatePrompt();
+                    }
+                });
+                
+                // Bouton personnalisé
+                document.getElementById(`${mode}-mode-custom`).addEventListener('click', function() {
+                    if (state[`${mode}Mode`] !== 'custom') {
+                        state[`${mode}Mode`] = 'custom';
+                        updateModeUI(mode);
+                        generatePrompt();
+                    }
+                });
+            });
+            
+            // Configuration pour les toggles des caractéristiques physiques
+            const physicalConfigs = [
+                { mode: 'age', sections: ['predefined', 'custom'] },
+                { mode: 'haircolor', sections: ['predefined', 'custom'] },
+                { mode: 'hairlength', sections: ['predefined', 'custom'] },
+                { mode: 'eyecolor', sections: ['predefined', 'custom'] },
+                { mode: 'build', sections: ['predefined', 'custom'] },
+                { mode: 'height', sections: ['predefined', 'custom'] }
+            ];
+            
+            physicalConfigs.forEach(config => {
+                const mode = config.mode;
+                
+                // Bouton prédéfini
+                document.getElementById(`${mode}-mode-predefined`).addEventListener('click', function() {
+                    if (state[`${mode}Mode`] !== 'predefined') {
+                        state[`${mode}Mode`] = 'predefined';
+                        updatePhysicalModeUI(mode);
+                        generatePrompt();
+                    }
+                });
+                
+                // Bouton personnalisé
+                document.getElementById(`${mode}-mode-custom`).addEventListener('click', function() {
+                    if (state[`${mode}Mode`] !== 'custom') {
+                        state[`${mode}Mode`] = 'custom';
+                        updatePhysicalModeUI(mode);
+                        generatePrompt();
+                    }
+                });
+            });
+        }
+
+        function updateModeUI(mode) {
+            // Mettre à jour les boutons
+            document.getElementById(`${mode}-mode-predefined`).classList.toggle('active', state[`${mode}Mode`] === 'predefined');
+            document.getElementById(`${mode}-mode-custom`).classList.toggle('active', state[`${mode}Mode`] === 'custom');
+            
+            // Afficher/masquer les sections
+            document.getElementById(`${mode}-predefined-section`).style.display = state[`${mode}Mode`] === 'predefined' ? 'block' : 'none';
+            document.getElementById(`${mode}-custom-section`).style.display = state[`${mode}Mode`] === 'custom' ? 'block' : 'none';
+            
+            // Pour les accessoires, effets et personnages secondaires, recréer les cartes si nécessaire
+            if (mode === 'accessory' || mode === 'effect' || mode === 'secondary') {
+                const containerId = mode === 'accessory' ? 'accessories' : mode === 'effect' ? 'effects' : 'secondary-characters';
+                const dataArray = mode === 'accessory' ? data.accessories : mode === 'effect' ? data.effects : data.characters;
+                const isMultiSelect = true;
+                createCard(containerId, dataArray, isMultiSelect);
+            } else if (mode === 'time') {
+                createCard('times', data.times);
+            } else if (mode === 'season') {
+                createCard('seasons', data.seasons);
+            } else if (mode === 'detail') {
+                createCard('details', data.details);
+            } else if (mode === 'camera') {
+                createCard('cameras', data.cameras);
+            }
+        }
+
+        function updatePhysicalModeUI(mode) {
+            // Mettre à jour les boutons
+            document.getElementById(`${mode}-mode-predefined`).classList.toggle('active', state[`${mode}Mode`] === 'predefined');
+            document.getElementById(`${mode}-mode-custom`).classList.toggle('active', state[`${mode}Mode`] === 'custom');
+            
+            // Afficher/masquer les sections
+            document.getElementById(`${mode}-predefined-section`).style.display = state[`${mode}Mode`] === 'predefined' ? 'block' : 'none';
+            document.getElementById(`${mode}-custom-section`).style.display = state[`${mode}Mode`] === 'custom' ? 'block' : 'none';
+            
+            // Recréer les cartes si nécessaire
+            if (state[`${mode}Mode`] === 'predefined') {
+                switch(mode) {
+                    case 'age':
+                        createPhysicalCard('ages', data.ages);
+                        break;
+                    case 'haircolor':
+                        createPhysicalCard('haircolors', data.haircolors);
+                        break;
+                    case 'hairlength':
+                        createPhysicalCard('hairlengths', data.hairlengths);
+                        break;
+                    case 'eyecolor':
+                        createPhysicalCard('eyecolors', data.eyecolors);
+                        break;
+                    case 'build':
+                        createPhysicalCard('builds', data.builds);
+                        break;
+                    case 'height':
+                        createPhysicalCard('heights', data.heights);
+                        break;
+                }
+            }
+        }
+
+        function updateLocationTypeUI() {
+            // Mettre à jour les boutons de type de lieu
+            const outdoorBtn = document.getElementById('location-type-outdoor');
+            const indoorBtn = document.getElementById('location-type-indoor');
+            
+            outdoorBtn.classList.toggle('active', state.locationType === 'exterieur');
+            indoorBtn.classList.toggle('active', state.locationType === 'interieur');
+            
+            // Mettre à jour les conditions disponibles
+            createCard('conditions', data.conditions, false, false, true);
+            
+            // Mettre à jour l'info sur les conditions
+            updateConditionInfo();
+        }
+
+        function updateConditionInfo() {
+            const infoElement = document.getElementById('condition-info');
+            if (state.locationType === 'interieur') {
+                infoElement.innerHTML = '<i class="fas fa-info-circle"></i> En intérieur, seules les conditions adaptées aux espaces fermés sont disponibles.';
+            } else {
+                infoElement.innerHTML = '<i class="fas fa-info-circle"></i> En extérieur, toutes les conditions atmosphériques sont disponibles.';
+            }
+        }
+
+        function setupCustomInputs() {
+            // Héros personnalisé
+            const heroNameInput = document.getElementById('custom-hero-name');
+            const heroDescriptionInput = document.getElementById('custom-hero-description');
+            
+            heroNameInput.addEventListener('input', function() {
+                state.customHero.name = this.value;
+                document.getElementById('hero-name-count').textContent = this.value.length;
+                if (state.heroMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            heroDescriptionInput.addEventListener('input', function() {
+                state.customHero.description = this.value;
+                document.getElementById('hero-description-count').textContent = this.value.length;
+                if (state.heroMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Action personnalisée
+            const actionTextInput = document.getElementById('custom-action-text');
+            
+            actionTextInput.addEventListener('input', function() {
+                state.customAction.text = this.value;
+                document.getElementById('action-text-count').textContent = this.value.length;
+                if (state.actionMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Lieu personnalisé
+            const locationTextInput = document.getElementById('custom-location-text');
+            const locationTypeInput = document.getElementById('custom-location-type');
+            
+            locationTextInput.addEventListener('input', function() {
+                state.customLocation.text = this.value;
+                document.getElementById('location-text-count').textContent = this.value.length;
+                if (state.locationMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            locationTypeInput.addEventListener('input', function() {
+                state.customLocation.type = this.value;
+                if (state.locationMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Heure de la journée personnalisée
+            const timeTextInput = document.getElementById('custom-time-text');
+            
+            timeTextInput.addEventListener('input', function() {
+                state.customTime.text = this.value;
+                document.getElementById('time-text-count').textContent = this.value.length;
+                if (state.timeMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Saison personnalisée
+            const seasonTextInput = document.getElementById('custom-season-text');
+            
+            seasonTextInput.addEventListener('input', function() {
+                state.customSeason.text = this.value;
+                document.getElementById('season-text-count').textContent = this.value.length;
+                if (state.seasonMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Accessoires personnalisés
+            const accessoryTextInput = document.getElementById('custom-accessory-text');
+            
+            accessoryTextInput.addEventListener('input', function() {
+                state.customAccessory.text = this.value;
+                document.getElementById('accessory-text-count').textContent = this.value.length;
+                if (state.accessoryMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Effets personnalisés
+            const effectTextInput = document.getElementById('custom-effect-text');
+            
+            effectTextInput.addEventListener('input', function() {
+                state.customEffect.text = this.value;
+                document.getElementById('effect-text-count').textContent = this.value.length;
+                if (state.effectMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Niveau de détail personnalisé
+            const detailTextInput = document.getElementById('custom-detail-text');
+            
+            detailTextInput.addEventListener('input', function() {
+                state.customDetail.text = this.value;
+                document.getElementById('detail-text-count').textContent = this.value.length;
+                if (state.detailMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Point de vue/Camera personnalisé
+            const cameraTextInput = document.getElementById('custom-camera-text');
+            
+            cameraTextInput.addEventListener('input', function() {
+                state.customCamera.text = this.value;
+                document.getElementById('camera-text-count').textContent = this.value.length;
+                if (state.cameraMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Style personnalisé
+            const styleTextInput = document.getElementById('custom-style-text');
+            
+            styleTextInput.addEventListener('input', function() {
+                state.customStyle.text = this.value;
+                document.getElementById('style-text-count').textContent = this.value.length;
+                if (state.styleMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Éclairage personnalisé
+            const lightingTextInput = document.getElementById('custom-lighting-text');
+            
+            lightingTextInput.addEventListener('input', function() {
+                state.customLighting.text = this.value;
+                document.getElementById('lighting-text-count').textContent = this.value.length;
+                if (state.lightingMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Personnages secondaires personnalisés
+            const secondaryTextInput = document.getElementById('custom-secondary-text');
+            
+            secondaryTextInput.addEventListener('input', function() {
+                state.customSecondary.text = this.value;
+                document.getElementById('secondary-text-count').textContent = this.value.length;
+                if (state.secondaryMode === 'custom') {
+                    generatePrompt();
+                }
+            });
+            
+            // Caractéristiques physiques personnalisées
+            const ageTextInput = document.getElementById('custom-age-text');
+            const haircolorTextInput = document.getElementById('custom-haircolor-text');
+            const hairlengthTextInput = document.getElementById('custom-hairlength-text');
+            const eyecolorTextInput = document.getElementById('custom-eyecolor-text');
+            const buildTextInput = document.getElementById('custom-build-text');
+            const heightTextInput = document.getElementById('custom-height-text');
+            
+            ageTextInput.addEventListener('input', function() {
+                state.customAge = this.value;
+                if (state.ageMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+            
+            haircolorTextInput.addEventListener('input', function() {
+                state.customHaircolor = this.value;
+                if (state.haircolorMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+            
+            hairlengthTextInput.addEventListener('input', function() {
+                state.customHairlength = this.value;
+                if (state.hairlengthMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+            
+            eyecolorTextInput.addEventListener('input', function() {
+                state.customEyecolor = this.value;
+                if (state.eyecolorMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+            
+            buildTextInput.addEventListener('input', function() {
+                state.customBuild = this.value;
+                if (state.buildMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+            
+            heightTextInput.addEventListener('input', function() {
+                state.customHeight = this.value;
+                if (state.heightMode === 'custom' && state.physicalSectionVisible) {
+                    generatePrompt();
+                }
+            });
+        }
+
+        function randomizeAll() {
+            // Fonction utilitaire pour choisir un élément aléatoire
+            const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            
+            // Toujours utiliser le mode prédéfini pour randomizeAll
+            state.heroMode = 'predefined';
+            state.actionMode = 'predefined';
+            state.locationMode = 'predefined';
+            state.accessoryMode = 'predefined';
+            state.effectMode = 'predefined';
+            state.styleMode = 'predefined';
+            state.lightingMode = 'predefined';
+            state.secondaryMode = 'predefined';
+            state.timeMode = 'predefined';
+            state.seasonMode = 'predefined';
+            state.detailMode = 'predefined';
+            state.cameraMode = 'predefined';
+            
+            // Personnage principal
+            state.character = randomItem(data.characters).id;
+            
+            // Caractéristiques physiques (si humain)
+            const character = data.characters.find(c => c.id === state.character);
+            if (character.isHuman) {
+                state.ageMode = 'predefined';
+                state.age = randomItem(data.ages).id;
+                state.haircolorMode = 'predefined';
+                state.haircolor = randomItem(data.haircolors).id;
+                state.hairlengthMode = 'predefined';
+                state.hairlength = randomItem(data.hairlengths).id;
+                state.eyecolorMode = 'predefined';
+                state.eyecolor = randomItem(data.eyecolors).id;
+                state.buildMode = 'predefined';
+                state.build = randomItem(data.builds).id;
+                state.heightMode = 'predefined';
+                state.height = randomItem(data.heights).id;
+            }
+            
+            // Type de lieu aléatoire
+            state.locationType = Math.random() > 0.5 ? 'interieur' : 'exterieur';
+            
+            // Lieu (filtrer par type si nécessaire)
+            let availableLocations = data.locations;
+            if (state.locationType === 'interieur') {
+                availableLocations = data.locations.filter(l => l.isIndoor === true);
+            } else {
+                availableLocations = data.locations; // Tous les lieux en extérieur
+            }
+            if (availableLocations.length > 0) {
+                state.location = randomItem(availableLocations).id;
+            }
+            
+            // Heure de la journée
+            state.time = randomItem(data.times).id;
+            
+            // Saison
+            state.season = randomItem(data.seasons).id;
+            
+            // Autres sélections
+            state.action = randomItem(data.actions).id;
+            state.emotion = randomItem(data.emotions).id;
+            state.era = randomItem(data.eras).id;
+            
+            // Conditions (filtrer par type de lieu)
+            let availableConditions = data.conditions;
+            if (state.locationType === 'interieur') {
+                availableConditions = data.conditions.filter(c => c.availableIndoor === true);
+            }
+            if (availableConditions.length > 0) {
+                state.condition = randomItem(availableConditions).id;
+            }
+            
+            // Niveau de détail
+            state.detail = randomItem(data.details).id;
+            
+            // Point de vue/Camera
+            state.camera = randomItem(data.cameras).id;
+            
+            state.style = randomItem(data.styles).id;
+            state.lighting = randomItem(data.lightings).id;
+            state.composition = randomItem(data.compositions).id;
+            
+            // Accessoires (0-3)
+            state.accessories = [];
+            const numAccessories = Math.floor(Math.random() * 4);
+            for (let i = 0; i < numAccessories; i++) {
+                const randomAccessory = randomItem(data.accessories);
+                if (!state.accessories.includes(randomAccessory.id)) {
+                    state.accessories.push(randomAccessory.id);
+                }
+            }
+            
+            // Effets (0-2)
+            state.effects = [];
+            const numEffects = Math.floor(Math.random() * 3);
+            for (let i = 0; i < numEffects; i++) {
+                const randomEffect = randomItem(data.effects);
+                if (!state.effects.includes(randomEffect.id)) {
+                    state.effects.push(randomEffect.id);
+                }
+            }
+            
+            // Personnages secondaires (0-2)
+            state.secondaryCharacters = [];
+            const numSecondary = Math.floor(Math.random() * 3);
+            const availableChars = data.characters.filter(c => c.id !== state.character);
+            
+            for (let i = 0; i < numSecondary; i++) {
+                if (availableChars.length > 0) {
+                    const randomSecondary = randomItem(availableChars);
+                    state.secondaryCharacters.push(randomSecondary.id);
+                    // Retirer pour éviter les doublons
+                    const index = availableChars.indexOf(randomSecondary);
+                    availableChars.splice(index, 1);
+                }
+            }
+            
+            // Intensités aléatoires
+            state.conditionIntensity = Math.floor(Math.random() * 3) + 1;
+            state.emotionIntensity = Math.floor(Math.random() * 3) + 1;
+            
+            // Mettre à jour l'interface
+            updateAllUI();
+            generatePrompt();
+            
+            alert('Configuration aléatoire appliquée !');
+        }
+
+        function randomizeCustom() {
+            // Fonction utilitaire pour choisir un élément aléatoire
+            const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            
+            // Générer des descriptions aléatoires pour chaque section personnalisée
+            const heroAdjectives = ["Mystérieux", "Épique", "Légendaire", "Céleste", "Abyssal", "Élémentaire", "Cybernétic", "Ancestral", "Spectral", "Divin"];
+            const heroNouns = ["Guerrier", "Mage", "Voyageur", "Gardien", "Explorateur", "Prophète", "Artisan", "Nomade", "Sentinelle", "Pionnier"];
+            const heroDescriptions = [
+                "vêtu d'une armure ornée de motifs complexes qui semblent vivre",
+                "avec des yeux qui brillent d'une lumière intérieure surnaturelle",
+                "dont la peau présente des reflets métalliques changeant avec la lumière",
+                "entouré d'une aura subtile qui déforme légèrement l'espace autour de lui",
+                "portant des vêtements qui flottent comme s'ils étaient immergés dans l'eau"
+            ];
+            
+            // Mettre toutes les sections en mode personnalisé
+            state.heroMode = 'custom';
+            state.actionMode = 'custom';
+            state.locationMode = 'custom';
+            state.accessoryMode = 'custom';
+            state.effectMode = 'custom';
+            state.styleMode = 'custom';
+            state.lightingMode = 'custom';
+            state.secondaryMode = 'custom';
+            state.timeMode = 'custom';
+            state.seasonMode = 'custom';
+            state.detailMode = 'custom';
+            state.cameraMode = 'custom';
+            
+            // Type de lieu aléatoire
+            state.locationType = Math.random() > 0.5 ? 'interieur' : 'exterieur';
+            
+            // Héros personnalisé
+            state.customHero.name = `${randomItem(heroAdjectives)} ${randomItem(heroNouns)}`;
+            state.customHero.description = randomItem(heroDescriptions);
+            
+            // Action personnalisée
+            const actionVerbs = ["contempler", "forger", "invoquer", "déchiffrer", "sculpter", "canaliser", "harmoniser", "transmuter"];
+            const actionObjects = ["les étoiles", "une relique ancienne", "une énergie primordiale", "le flux du temps", "les frontières de la réalité"];
+            state.customAction.text = `${randomItem(actionVerbs)} ${randomItem(actionObjects)}`;
+            state.customAction.intensity = Math.floor(Math.random() * 3) + 1;
+            
+            // Lieu personnalisé
+            const locationTypes = ["citadelle", "sanctuaire", "jungle", "désert", "océan", "dimension", "royaume"];
+            const locationAdjectives = ["flottante", "cristalline", "bioluminescente", "temporelle", "onirique", "fractale"];
+            state.customLocation.text = `Une ${randomItem(locationTypes)} ${randomItem(locationAdjectives)} aux structures impossibles`;
+            state.customLocation.type = randomItem(["fantastique", "extradimensionnel", "mythologique", "surréaliste"]);
+            
+            // Heure de la journée personnalisée
+            const timeAdjectives = ["heure bleue", "crépuscule doré", "nuit étoilée", "aube naissante", "midi éclatant", "fin d'après-midi"];
+            state.customTime.text = randomItem(timeAdjectives);
+            
+            // Saison personnalisée
+            const seasonAdjectives = ["début de printemps", "plein été", "automne coloré", "hiver rigoureux", "été indien", "printemps précoce"];
+            state.customSeason.text = randomItem(seasonAdjectives);
+            
+            // Accessoires personnalisés
+            const accessoryTypes = ["épée", "bouclier", "amulette", "bâton", "couronne", "griffe", "masque"];
+            const accessoryAdjectives = ["lumineuse", "runique", "vivante", "temporale", "élémentaire", "sacrée"];
+            state.customAccessory.text = `Une ${randomItem(accessoryTypes)} ${randomItem(accessoryAdjectives)} qui émet une lueur surnaturelle`;
+            
+            // Effets personnalisés
+            const effectTypes = ["aura", "vortex", "pluie", "brume", "rayonnement", "résonance"];
+            const effectAdjectives = ["chromatique", "énergétique", "psychédélique", "holographique", "spectrale"];
+            state.customEffect.text = `Une ${randomItem(effectTypes)} ${randomItem(effectAdjectives)} qui interagit avec l'environnement`;
+            
+            // Niveau de détail personnalisé
+            const detailAdjectives = ["hyperréaliste", "esquisse rapide", "rendu détaillé", "style concept art", "illustration épurée"];
+            state.customDetail.text = randomItem(detailAdjectives);
+            
+            // Point de vue/Camera personnalisé
+            const cameraAdjectives = ["vue en plongée extrême", "contre-plongée héroïque", "plan serré sur le visage", "vue d'ensemble épique", "angle hollandais dramatique"];
+            state.customCamera.text = randomItem(cameraAdjectives);
+            
+            // Style personnalisé
+            const styleAdjectives = ["dramatique", "onirique", "baroque", "minimaliste", "expressionniste", "surréaliste"];
+            const styleTechniques = ["peinture à l'huile", "aquarelle", "art numérique", "concept art", "illustration", "gravure"];
+            state.customStyle.text = `${randomItem(styleAdjectives)} en ${randomItem(styleTechniques)} avec des contrastes marqués`;
+            
+            // Éclairage personnalisé
+            const lightingTypes = ["dramatique", "mystique", "théâtral", "naturel", "artificiel", "surnaturel"];
+            const lightingAdjectives = ["en contre-jour", "latéral", "frontal", "zénithal", "rasant", "diffus"];
+            state.customLighting.text = `Éclairage ${randomItem(lightingTypes)} ${randomItem(lightingAdjectives)} avec des ombres marquées`;
+            
+            // Personnages secondaires personnalisés
+            const secondaryTypes = ["groupe", "paire", "assemblée", "foule", "collection"];
+            const secondaryDescriptors = ["observant silencieusement", "conversant à voix basse", "encerclant la scène", "dissimulés dans l'ombre"];
+            state.customSecondary.text = `Un ${randomItem(secondaryTypes)} de personnages mystérieux ${randomItem(secondaryDescriptors)}`;
+            
+            // Autres sélections aléatoires
+            state.emotion = randomItem(data.emotions).id;
+            state.era = randomItem(data.eras).id;
+            
+            // Conditions (filtrer par type de lieu)
+            let availableConditions = data.conditions;
+            if (state.locationType === 'interieur') {
+                availableConditions = data.conditions.filter(c => c.availableIndoor === true);
+            }
+            if (availableConditions.length > 0) {
+                state.condition = randomItem(availableConditions).id;
+            }
+            
+            state.composition = randomItem(data.compositions).id;
+            
+            // Intensités aléatoires
+            state.conditionIntensity = Math.floor(Math.random() * 3) + 1;
+            state.emotionIntensity = Math.floor(Math.random() * 3) + 1;
+            
+            // Mettre à jour l'interface
+            updateAllUI();
+            generatePrompt();
+            
+            alert('Configuration personnalisée aléatoire appliquée !');
+        }
+
+        function updateAllUI() {
+            // Mettre à jour tous les modes UI
+            updateModeUI('hero');
+            updateModeUI('action');
+            updateModeUI('location');
+            updateModeUI('accessory');
+            updateModeUI('effect');
+            updateModeUI('style');
+            updateModeUI('lighting');
+            updateModeUI('secondary');
+            updateModeUI('time');
+            updateModeUI('season');
+            updateModeUI('detail');
+            updateModeUI('camera');
+            
+            // Mettre à jour les modes des caractéristiques physiques
+            updatePhysicalModeUI('age');
+            updatePhysicalModeUI('haircolor');
+            updatePhysicalModeUI('hairlength');
+            updatePhysicalModeUI('eyecolor');
+            updatePhysicalModeUI('build');
+            updatePhysicalModeUI('height');
+            
+            // Mettre à jour le type de lieu
+            updateLocationTypeUI();
+            
+            // Mettre à jour les champs personnalisés
+            document.getElementById('custom-hero-name').value = state.customHero.name;
+            document.getElementById('hero-name-count').textContent = state.customHero.name.length;
+            document.getElementById('custom-hero-description').value = state.customHero.description;
+            document.getElementById('hero-description-count').textContent = state.customHero.description.length;
+            
+            document.getElementById('custom-action-text').value = state.customAction.text;
+            document.getElementById('action-text-count').textContent = state.customAction.text.length;
+            
+            document.getElementById('custom-location-text').value = state.customLocation.text;
+            document.getElementById('location-text-count').textContent = state.customLocation.text.length;
+            document.getElementById('custom-location-type').value = state.customLocation.type;
+            
+            document.getElementById('custom-time-text').value = state.customTime.text;
+            document.getElementById('time-text-count').textContent = state.customTime.text.length;
+            
+            document.getElementById('custom-season-text').value = state.customSeason.text;
+            document.getElementById('season-text-count').textContent = state.customSeason.text.length;
+            
+            document.getElementById('custom-accessory-text').value = state.customAccessory.text;
+            document.getElementById('accessory-text-count').textContent = state.customAccessory.text.length;
+            
+            document.getElementById('custom-effect-text').value = state.customEffect.text;
+            document.getElementById('effect-text-count').textContent = state.customEffect.text.length;
+            
+            document.getElementById('custom-detail-text').value = state.customDetail.text;
+            document.getElementById('detail-text-count').textContent = state.customDetail.text.length;
+            
+            document.getElementById('custom-camera-text').value = state.customCamera.text;
+            document.getElementById('camera-text-count').textContent = state.customCamera.text.length;
+            
+            document.getElementById('custom-style-text').value = state.customStyle.text;
+            document.getElementById('style-text-count').textContent = state.customStyle.text.length;
+            
+            document.getElementById('custom-lighting-text').value = state.customLighting.text;
+            document.getElementById('lighting-text-count').textContent = state.customLighting.text.length;
+            
+            document.getElementById('custom-secondary-text').value = state.customSecondary.text;
+            document.getElementById('secondary-text-count').textContent = state.customSecondary.text.length;
+            
+            // Caractéristiques physiques
+            document.getElementById('custom-age-text').value = state.customAge;
+            document.getElementById('custom-haircolor-text').value = state.customHaircolor;
+            document.getElementById('custom-hairlength-text').value = state.customHairlength;
+            document.getElementById('custom-eyecolor-text').value = state.customEyecolor;
+            document.getElementById('custom-build-text').value = state.customBuild;
+            document.getElementById('custom-height-text').value = state.customHeight;
+            
+            // Mettre à jour les cartes
+            updateAllCards();
+            updatePhysicalCards();
+            
+            // Mettre à jour la visibilité de la section physique
+            updatePhysicalSectionVisibility();
+            
+            // Mettre à jour les boutons d'intensité
+            updateIntensityButtons();
+        }
+
+        function updatePhysicalCards() {
+            createPhysicalCard('ages', data.ages);
+            createPhysicalCard('haircolors', data.haircolors);
+            createPhysicalCard('hairlengths', data.hairlengths);
+            createPhysicalCard('eyecolors', data.eyecolors);
+            createPhysicalCard('builds', data.builds);
+            createPhysicalCard('heights', data.heights);
+        }
+
+        function updateIntensityButtons() {
+            // Mettre à jour les boutons de force d'émotion
+            const emotionButtons = document.querySelectorAll('#emotion-intensity-buttons .intensity-btn');
+            emotionButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.intensity) === state.emotionIntensity) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Mettre à jour les boutons de niveau des conditions
+            const conditionButtons = document.querySelectorAll('#condition-intensity-buttons .intensity-btn');
+            conditionButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.intensity) === state.conditionIntensity) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Mettre à jour les boutons de niveau d'énergie de l'action (personnalisé)
+            const actionIntensityButtons = document.querySelectorAll('#custom-action-intensity .intensity-btn');
+            actionIntensityButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.intensity) === state.customAction.intensity) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function updateAllCards() {
+            createCard('characters', data.characters);
+            createCard('actions', data.actions);
+            createCard('emotions', data.emotions, false, true);
+            createCard('locations', data.locations);
+            createCard('times', data.times);
+            createCard('seasons', data.seasons);
+            createCard('accessories', data.accessories, true);
+            createCard('effects', data.effects, true);
+            createCard('eras', data.eras);
+            createCard('conditions', data.conditions, false, false, true);
+            createCard('details', data.details);
+            createCard('cameras', data.cameras);
+            createCard('styles', data.styles);
+            createCard('lightings', data.lightings);
+            createCard('compositions', data.compositions);
+            createCard('secondary-characters', data.characters, true);
+        }
+
+        function generateVariation(num) {
+            const variations = [
+                " avec des reflets humides sur le sol et une atmosphère brumeuse",
+                " avec des flares lumineux, une profondeur de champ épique et des rayons de lumière perçant les nuages",
+                " avec des effets de particules énergétiques flottantes et des distorsions spatiales subtiles"
+            ];
+            
+            let prompt = document.getElementById('prompt').textContent;
+            
+            // Ajouter la variation
+            if (!prompt.includes(variations[num - 1])) {
+                prompt = prompt.replace('.', variations[num - 1] + '.');
+                document.getElementById('prompt').textContent = prompt;
+                addToHistory(prompt);
+                
+                // Feedback visuel
+                const btn = document.getElementById(`variation-${num}`);
+                const originalText = btn.textContent;
+                btn.textContent = `Variation ${num} ✓`;
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 1500);
+            }
+        }
+
+        // INITIALISATION
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remplir toutes les options
+            updateAllCards();
+            updatePhysicalCards();
+            
+            // Configurer les boutons d'intensité
+            setupIntensityButtons();
+            
+            // Configurer les toggles de mode
+            setupModeToggles();
+            
+            // Configurer les champs personnalisés
+            setupCustomInputs();
+            
+            // Configurer les boutons de type de lieu
+            document.getElementById('location-type-outdoor').addEventListener('click', function() {
+                if (state.locationType !== 'exterieur') {
+                    state.locationType = 'exterieur';
+                    updateLocationTypeUI();
+                    generatePrompt();
+                }
+            });
+            
+            document.getElementById('location-type-indoor').addEventListener('click', function() {
+                if (state.locationType !== 'interieur') {
+                    state.locationType = 'interieur';
+                    updateLocationTypeUI();
+                    generatePrompt();
+                }
+            });
+            
+            // Configurer les boutons principaux
+            document.getElementById('generate').addEventListener('click', generatePrompt);
+            document.getElementById('random').addEventListener('click', randomizeAll);
+            document.getElementById('random-custom').addEventListener('click', randomizeCustom);
+            document.getElementById('copy').addEventListener('click', () => {
+                navigator.clipboard.writeText(document.getElementById('prompt').textContent)
+                    .then(() => alert('Prompt copié dans le presse-papiers !'))
+                    .catch(err => console.error('Erreur:', err));
+            });
+            
+            // Configurer les boutons de variation
+            document.getElementById('variation-1').addEventListener('click', () => generateVariation(1));
+            document.getElementById('variation-2').addEventListener('click', () => generateVariation(2));
+            document.getElementById('variation-3').addEventListener('click', () => generateVariation(3));
+            
+            // Générer le premier prompt
+            updateAllUI();
+            generatePrompt();
+            
+            // Explication du bouton "Générer"
+            console.log("Le bouton 'Générer' sert à :");
+            console.log("1. Forcer une régénération complète du prompt");
+            console.log("2. Réinitialiser après modifications manuelles");
+            console.log("3. S'assurer que toutes les options sont bien prises en compte");
+            console.log("Le prompt se met normalement à jour automatiquement à chaque modification.");
+        });
+    </script>
+</body>
+</html>
