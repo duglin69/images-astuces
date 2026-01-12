@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur Carnaval & Festivités</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #764ba2;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            font-size: 0.9rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card.active {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .prompt-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            min-height: 200px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            position: sticky;
+            top: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .toggle-btn {
+            background: #e9ecef;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .custom-section {
+            display: none;
+        }
+
+        .custom-section.active {
+            display: block;
+        }
+
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 Générateur Carnaval & Festivités</h1>
+            <p class="subtitle">Créez des scènes festives vibrantes et colorées</p>
+        </header>
+
+        <div class="content">
+            <!-- CONTRÔLES -->
+            <div class="controls">
+                
+                <!-- PERSONNAGE PRINCIPAL -->
+                <div class="section">
+                    <h3 class="section-title">👤 Personnage Principal</h3>
+                    <div class="grid" id="character1-grid"></div>
+                </div>
+
+                <!-- NATIONALITÉ -->
+                <div class="section">
+                    <h3 class="section-title">🌍 Nationalité</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('nationality')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('nationality')">Personnalisé</button>
+                    
+                    <div id="nationality-predefined" class="custom-section active">
+                        <div class="grid" id="nationality-grid"></div>
+                    </div>
+                    
+                    <div id="nationality-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-nationality" 
+                               placeholder="Ex: Colombienne, Japonaise, Espagnole..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- TENUE -->
+                <div class="section">
+                    <h3 class="section-title">👗 Tenue</h3>
+                    <div class="grid" id="outfit-grid"></div>
+                </div>
+
+                <!-- VILLE -->
+                <div class="section">
+                    <h3 class="section-title">🏙️ Ville</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('city')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('city')">Personnalisé</button>
+                    
+                    <div id="city-predefined" class="custom-section active">
+                        <div class="grid" id="city-grid"></div>
+                    </div>
+                    
+                    <div id="city-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-city" 
+                               placeholder="Ex: Paris, Tokyo, Barcelone..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- ÉVÉNEMENT -->
+                <div class="section">
+                    <h3 class="section-title">🎉 Événement</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('event')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('event')">Personnalisé</button>
+                    
+                    <div id="event-predefined" class="custom-section active">
+                        <div class="grid" id="event-grid"></div>
+                    </div>
+                    
+                    <div id="event-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-event" 
+                               placeholder="Ex: Festival de musique, Défilé de mode..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- PERSONNAGE SECONDAIRE -->
+                <div class="section">
+                    <h3 class="section-title">👥 Personnage Secondaire (optionnel)</h3>
+                    <div class="grid" id="character2-grid"></div>
+                </div>
+
+                <!-- OPTIONS PERSONNAGE SECONDAIRE -->
+                <div id="secondary-options" style="display: none;">
+                    
+                    <!-- NATIONALITÉ SECONDAIRE -->
+                    <div class="section">
+                        <h3 class="section-title">🌍 Nationalité (Personnage 2)</h3>
+                        <button class="toggle-btn active" onclick="toggleMode('nationality2')">Prédéfini</button>
+                        <button class="toggle-btn" onclick="toggleMode('nationality2')">Personnalisé</button>
+                        
+                        <div id="nationality2-predefined" class="custom-section active">
+                            <div class="grid" id="nationality2-grid"></div>
+                        </div>
+                        
+                        <div id="nationality2-custom" class="custom-section">
+                            <input type="text" class="custom-input" id="custom-nationality2" 
+                                   placeholder="Ex: Colombienne, Japonaise, Espagnole..." 
+                                   oninput="generatePrompt()">
+                        </div>
+                    </div>
+
+                    <!-- TENUE SECONDAIRE -->
+                    <div class="section">
+                        <h3 class="section-title">👗 Tenue (Personnage 2)</h3>
+                        <div class="grid" id="outfit2-grid"></div>
+                    </div>
+
+                    <!-- COIFFURE SECONDAIRE -->
+                    <div class="section">
+                        <h3 class="section-title">💇 Coiffure (Personnage 2)</h3>
+                        <button class="toggle-btn active" onclick="toggleMode('hairstyle2')">Prédéfini</button>
+                        <button class="toggle-btn" onclick="toggleMode('hairstyle2')">Personnalisé</button>
+                        
+                        <div id="hairstyle2-predefined" class="custom-section active">
+                            <div class="grid" id="hairstyle2-grid"></div>
+                        </div>
+                        
+                        <div id="hairstyle2-custom" class="custom-section">
+                            <input type="text" class="custom-input" id="custom-hairstyle2" 
+                                   placeholder="Ex: cheveux longs ondulés, mohawk..." 
+                                   oninput="generatePrompt()">
+                        </div>
+                    </div>
+
+                    <!-- MAQUILLAGE & ACCESSOIRES SECONDAIRE -->
+                    <div class="section">
+                        <h3 class="section-title">💎 Maquillage & Accessoires (Personnage 2)</h3>
+                        <button class="toggle-btn active" onclick="toggleMode('makeup2')">Prédéfini</button>
+                        <button class="toggle-btn" onclick="toggleMode('makeup2')">Personnalisé</button>
+                        
+                        <div id="makeup2-predefined" class="custom-section active">
+                            <div class="grid" id="makeup2-grid"></div>
+                        </div>
+                        
+                        <div id="makeup2-custom" class="custom-section">
+                            <input type="text" class="custom-input" id="custom-makeup2" 
+                                   placeholder="Ex: tatouages temporaires, bijoux dorés..." 
+                                   oninput="generatePrompt()">
+                        </div>
+                    </div>
+
+                    <!-- EXPRESSION SECONDAIRE -->
+                    <div class="section">
+                        <h3 class="section-title">😊 Expression (Personnage 2)</h3>
+                        <div class="grid" id="expression2-grid"></div>
+                    </div>
+
+                </div>
+
+                <!-- ACTION -->
+                <div class="section">
+                    <h3 class="section-title">🎬 Action</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('action')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('action')">Personnalisé</button>
+                    
+                    <div id="action-predefined" class="custom-section active">
+                        <div class="grid" id="action-grid"></div>
+                    </div>
+                    
+                    <div id="action-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-action" 
+                               placeholder="Ex: danse sensuellement, pose pour la caméra..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- INTERACTION -->
+                <div class="section" id="interaction-section" style="display: none;">
+                    <h3 class="section-title">💕 Interaction</h3>
+                    <div class="grid" id="interaction-grid"></div>
+                </div>
+
+                <!-- MAQUILLAGE & ACCESSOIRES -->
+                <div class="section">
+                    <h3 class="section-title">💎 Maquillage & Accessoires</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('makeup')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('makeup')">Personnalisé</button>
+                    
+                    <div id="makeup-predefined" class="custom-section active">
+                        <div class="grid" id="makeup-grid"></div>
+                    </div>
+                    
+                    <div id="makeup-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-makeup" 
+                               placeholder="Ex: tatouages temporaires, bijoux dorés..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- COIFFURE -->
+                <div class="section">
+                    <h3 class="section-title">💇 Coiffure</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('hairstyle')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('hairstyle')">Personnalisé</button>
+                    
+                    <div id="hairstyle-predefined" class="custom-section active">
+                        <div class="grid" id="hairstyle-grid"></div>
+                    </div>
+                    
+                    <div id="hairstyle-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-hairstyle" 
+                               placeholder="Ex: undercut stylisé, mohawk coloré..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- MOMENT -->
+                <div class="section">
+                    <h3 class="section-title">⏰ Moment de la journée</h3>
+                    <div class="grid" id="moment-grid"></div>
+                </div>
+
+                <!-- MÉTÉO -->
+                <div class="section">
+                    <h3 class="section-title">🌤️ Météo</h3>
+                    <div class="grid" id="weather-grid"></div>
+                </div>
+
+                <!-- EXPRESSION -->
+                <div class="section">
+                    <h3 class="section-title">😊 Expression</h3>
+                    <div class="grid" id="expression-grid"></div>
+                </div>
+
+                <!-- ARRIÈRE-PLAN -->
+                <div class="section">
+                    <h3 class="section-title">🎪 Arrière-plan</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('background')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('background')">Personnalisé</button>
+                    
+                    <div id="background-predefined" class="custom-section active">
+                        <div class="grid" id="background-grid"></div>
+                    </div>
+                    
+                    <div id="background-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-background" 
+                               placeholder="Ex: graffitis colorés, fontaine illuminée..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- EFFETS SPÉCIAUX -->
+                <div class="section">
+                    <h3 class="section-title">✨ Effets spéciaux</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('effects')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('effects')">Personnalisé</button>
+                    
+                    <div id="effects-predefined" class="custom-section active">
+                        <div class="grid" id="effects-grid"></div>
+                    </div>
+                    
+                    <div id="effects-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-effects" 
+                               placeholder="Ex: étincelles dorées, néons réfléchis..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- ESTHÉTIQUE -->
+                <div class="section">
+                    <h3 class="section-title">🎨 Esthétique</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('aesthetic')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('aesthetic')">Personnalisé</button>
+                    
+                    <div id="aesthetic-predefined" class="custom-section active">
+                        <div class="grid" id="aesthetic-grid"></div>
+                    </div>
+                    
+                    <div id="aesthetic-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-aesthetic" 
+                               placeholder="Ex: tons pastels, palette néon, vintage warm..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- CADRAGE -->
+                <div class="section">
+                    <h3 class="section-title">📷 Cadrage</h3>
+                    <button class="toggle-btn active" onclick="toggleMode('framing')">Prédéfini</button>
+                    <button class="toggle-btn" onclick="toggleMode('framing')">Personnalisé</button>
+                    
+                    <div id="framing-predefined" class="custom-section active">
+                        <div class="grid" id="framing-grid"></div>
+                    </div>
+                    
+                    <div id="framing-custom" class="custom-section">
+                        <input type="text" class="custom-input" id="custom-framing" 
+                               placeholder="Ex: plan rapproché dynamique, vue en contre-plongée..." 
+                               oninput="generatePrompt()">
+                    </div>
+                </div>
+
+                <!-- AMBIANCE -->
+                <div class="section">
+                    <h3 class="section-title">✨ Ambiance</h3>
+                    <div class="grid" id="ambiance-grid"></div>
+                </div>
+
+                <!-- STYLE -->
+                <div class="section">
+                    <h3 class="section-title">🎨 Style Photo</h3>
+                    <div class="grid" id="style-grid"></div>
+                </div>
+
+            </div>
+
+            <!-- RÉSULTAT -->
+            <div class="result">
+                <div class="section">
+                    <h3 class="section-title">📝 Prompt Généré</h3>
+                    <div class="prompt-box" id="prompt">
+                        Sélectionnez des options pour générer votre prompt...
+                    </div>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-primary" onclick="generatePrompt()">
+                            🔄 Régénérer
+                        </button>
+                        <button class="btn btn-secondary" onclick="randomize()">
+                            🎲 Aléatoire
+                        </button>
+                        <button class="btn btn-success" onclick="copyPrompt()">
+                            📋 Copier
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            character1: [
+                { id: 'woman', name: 'Femme', icon: '👩' },
+                { id: 'man', name: 'Homme', icon: '👨' }
+            ],
+            nationalities: [
+                { id: 'brazilian', name: 'Brésilienne' },
+                { id: 'colombian', name: 'Colombienne' },
+                { id: 'venezuelan', name: 'Vénézuélienne' },
+                { id: 'argentinian', name: 'Argentine' },
+                { id: 'mexican', name: 'Mexicaine' },
+                { id: 'chilean', name: 'Chilienne' },
+                { id: 'peruvian', name: 'Péruvienne' },
+                { id: 'canadian', name: 'Canadienne' },
+                { id: 'japanese', name: 'Japonaise' },
+                { id: 'korean', name: 'Coréenne' },
+                { id: 'chinese', name: 'Chinoise' },
+                { id: 'thai', name: 'Thaïlandaise' },
+                { id: 'vietnamese', name: 'Vietnamienne' },
+                { id: 'filipino', name: 'Philippienne' },
+                { id: 'indonesian', name: 'Indonésienne' },
+                { id: 'indian', name: 'Indienne' },
+                { id: 'malaysian', name: 'Malaisienne' },
+                { id: 'singaporean', name: 'Singapourienne' },
+                { id: 'moroccan', name: 'Marocaine' },
+                { id: 'algerian', name: 'Algérienne' },
+                { id: 'tunisian', name: 'Tunisienne' },
+                { id: 'egyptian', name: 'Égyptienne' },
+                { id: 'nigerian', name: 'Nigériane' },
+                { id: 'ghanaian', name: 'Ghanéenne' },
+                { id: 'senegalese', name: 'Sénégalaise' },
+                { id: 'ivorian', name: 'Ivoirienne' },
+                { id: 'south-african', name: 'Sud-africaine' },
+                { id: 'ethiopian', name: 'Éthiopienne' },
+                { id: 'kenyan', name: 'Kényane' },
+                { id: 'malagasy', name: 'Malgache' },
+                { id: 'russian', name: 'Russe' },
+                { id: 'ukrainian', name: 'Ukrainienne' },
+                { id: 'german', name: 'Allemande' },
+                { id: 'austrian', name: 'Autrichienne' },
+                { id: 'swiss', name: 'Suisse' },
+                { id: 'dutch', name: 'Néerlandaise' },
+                { id: 'belgian', name: 'Belge' },
+                { id: 'british', name: 'Britannique' },
+                { id: 'scottish', name: 'Écossaise' },
+                { id: 'irish', name: 'Irlandaise' },
+                { id: 'swedish', name: 'Suédoise' },
+                { id: 'norwegian', name: 'Norvégienne' },
+                { id: 'danish', name: 'Danoise' },
+                { id: 'finnish', name: 'Finlandaise' },
+                { id: 'icelandic', name: 'Islandaise' },
+                { id: 'portuguese', name: 'Portugaise' },
+                { id: 'greek', name: 'Grecque' },
+                { id: 'croatian', name: 'Croate' },
+                { id: 'polish', name: 'Polonaise' },
+                { id: 'czech', name: 'Tchèque' },
+                { id: 'hungarian', name: 'Hongroise' },
+                { id: 'romanian', name: 'Roumaine' },
+                { id: 'turkish', name: 'Turque' },
+                { id: 'israeli', name: 'Israélienne' },
+                { id: 'lebanese', name: 'Libanaise' },
+                { id: 'australian', name: 'Australienne' },
+                { id: 'new-zealander', name: 'Néo-zélandaise' },
+                { id: 'polynesian', name: 'Polynésienne' },
+                { id: 'fijian', name: 'Fidjienne' },
+                { id: 'samoan', name: 'Samoane' },
+                { id: 'tahitian', name: 'Tahitienne' },
+                { id: 'antarctic', name: 'Chercheur en Antarctique' },
+                { id: 'italian', name: 'Italienne' },
+                { id: 'spanish', name: 'Espagnole' },
+                { id: 'french', name: 'Française' },
+                { id: 'american', name: 'Américaine' },
+                { id: 'caribbean', name: 'Caraïbéenne' }
+            ],
+            outfits: [
+                { id: 'bikini', name: 'Bikini' },
+                { id: 'bikini-string', name: 'Bikini string' },
+                { id: 'bikini-brésilien', name: 'Bikini brésilien' },
+                { id: 'fio-dental', name: 'Fio dental (brésilien minimal)' },
+                { id: 'maillot-une-piece', name: 'Maillot une pièce' },
+                { id: 'tankini', name: 'Tankini' },
+                { id: 'lingerie-dentelle', name: 'Lingerie dentelle' },
+                { id: 'ensemble-satin', name: 'Ensemble satin' },
+                { id: 'body', name: 'Body' },
+                { id: 'body-transparent', name: 'Body transparent' },
+                { id: 'nuisette', name: 'Nuisette' },
+                { id: 'costume-carnaval', name: 'Costume de carnaval' },
+                { id: 'plumes-paillettes', name: 'Costume plumes & paillettes' },
+                { id: 'samba-minimal', name: 'Tenue samba minimale (Brésil)' },
+                { id: 'caftan', name: 'Caftan coloré' },
+                { id: 'caftan-ouvert', name: 'Caftan ouvert sexy' },
+                { id: 'djellaba', name: 'Djellaba brodée' },
+                { id: 'takchita', name: 'Takchita festive' },
+                { id: 'takchita-décolletée', name: 'Takchita décolletée moderne' },
+                { id: 'ankara', name: 'Tenue Ankara (wax africain)' },
+                { id: 'ankara-crop', name: 'Crop top & jupe Ankara fendue' },
+                { id: 'dashiki', name: 'Dashiki coloré' },
+                { id: 'boubou', name: 'Boubou brodé' },
+                { id: 'kente', name: 'Kente (tissage ghanéen)' },
+                { id: 'kente-moderne', name: 'Kente moderne court & ajusté' },
+                { id: 'shweshwe', name: 'Shweshwe (tissu sud-africain)' },
+                { id: 'lamba', name: 'Lamba malgache' },
+                { id: 'lamba-noué', name: 'Lamba noué sensuel' },
+                { id: 'kimono', name: 'Kimono coloré' },
+                { id: 'kimono-court', name: 'Kimono court sexy' },
+                { id: 'yukata', name: 'Yukata d\'été' },
+                { id: 'yukata-ouvert', name: 'Yukata entrouvert' },
+                { id: 'hanbok', name: 'Hanbok moderne' },
+                { id: 'hanbok-crop', name: 'Hanbok moderne crop top' },
+                { id: 'cheongsam', name: 'Cheongsam (Qipao)' },
+                { id: 'cheongsam-fendu', name: 'Cheongsam fendu haut' },
+                { id: 'ao-dai', name: 'Áo dài vietnamien' },
+                { id: 'ao-dai-transparent', name: 'Áo dài transparent' },
+                { id: 'sari', name: 'Sari coloré' },
+                { id: 'sari-ventre', name: 'Sari dévoilant le ventre' },
+                { id: 'lehenga-choli', name: 'Lehenga choli court (Inde)' },
+                { id: 'kebaya', name: 'Kebaya (Indonésie/Malaisie)' },
+                { id: 'kebaya-dentelle', name: 'Kebaya dentelle ajusté' },
+                { id: 'sarafan', name: 'Sarafan (robe russe)' },
+                { id: 'kokoshnik', name: 'Tenue avec kokoshnik' },
+                { id: 'dirndl', name: 'Dirndl (tenue bavaroise)' },
+                { id: 'dirndl-décolleté', name: 'Dirndl décolleté plongeant' },
+                { id: 'lederhosen', name: 'Lederhosen (short bavarois)' },
+                { id: 'bunadsbunad', name: 'Bunad (costume norvégien)' },
+                { id: 'folkdräkt', name: 'Folkdräkt (costume suédois)' },
+                { id: 'flamenco', name: 'Robe flamenco' },
+                { id: 'flamenco-fendue', name: 'Robe flamenco fendue' },
+                { id: 'sevillana-corset', name: 'Sevillana avec corset (Espagne)' },
+                { id: 'pareo', name: 'Paréo polynésien' },
+                { id: 'pareo-noué', name: 'Paréo noué bas' },
+                { id: 'tapa', name: 'Tapa (tissu océanien)' },
+                { id: 'grass-skirt', name: 'Jupe en fibres naturelles' },
+                { id: 'coconut-bra', name: 'Soutien-gorge coquillage/noix de coco' },
+                { id: 'belly-dance', name: 'Tenue danse orientale (Moyen-Orient)' },
+                { id: 'greek-toga', name: 'Toge grecque drapée sexy' },
+                { id: 'kilt', name: 'Kilt écossais' },
+                { id: 'corset-baviere', name: 'Corset bavarois traditionnel' }
+            ],
+            cities: [
+                { id: 'rio', name: 'Rio de Janeiro' },
+                { id: 'salvador', name: 'Salvador de Bahia' },
+                { id: 'buenos-aires', name: 'Buenos Aires' },
+                { id: 'santiago', name: 'Santiago' },
+                { id: 'lima', name: 'Lima' },
+                { id: 'montreal', name: 'Montréal' },
+                { id: 'toronto', name: 'Toronto' },
+                { id: 'new-orleans', name: 'La Nouvelle-Orléans' },
+                { id: 'venice', name: 'Venise' },
+                { id: 'nice', name: 'Nice' },
+                { id: 'cologne', name: 'Cologne' },
+                { id: 'trinidad', name: 'Port-of-Spain (Trinidad)' },
+                { id: 'barranquilla', name: 'Barranquilla' },
+                { id: 'barcelona', name: 'Barcelone' },
+                { id: 'miami', name: 'Miami' },
+                { id: 'tokyo', name: 'Tokyo' },
+                { id: 'osaka', name: 'Osaka' },
+                { id: 'seoul', name: 'Séoul' },
+                { id: 'bangkok', name: 'Bangkok' },
+                { id: 'hong-kong', name: 'Hong Kong' },
+                { id: 'singapore', name: 'Singapour' },
+                { id: 'manila', name: 'Manila' },
+                { id: 'kuala-lumpur', name: 'Kuala Lumpur' },
+                { id: 'bali', name: 'Bali' },
+                { id: 'marrakech', name: 'Marrakech' },
+                { id: 'casablanca', name: 'Casablanca' },
+                { id: 'tunis', name: 'Tunis' },
+                { id: 'cairo', name: 'Le Caire' },
+                { id: 'lagos', name: 'Lagos' },
+                { id: 'accra', name: 'Accra' },
+                { id: 'dakar', name: 'Dakar' },
+                { id: 'abidjan', name: 'Abidjan' },
+                { id: 'cape-town', name: 'Le Cap' },
+                { id: 'johannesburg', name: 'Johannesburg' },
+                { id: 'addis-ababa', name: 'Addis-Abeba' },
+                { id: 'nairobi', name: 'Nairobi' },
+                { id: 'antananarivo', name: 'Antananarivo' },
+                { id: 'moscow', name: 'Moscou' },
+                { id: 'st-petersburg', name: 'Saint-Pétersbourg' },
+                { id: 'kyiv', name: 'Kiev' },
+                { id: 'sochi', name: 'Sotchi' },
+                { id: 'vladivostok', name: 'Vladivostok' },
+                { id: 'munich', name: 'Munich' },
+                { id: 'berlin', name: 'Berlin' },
+                { id: 'vienna', name: 'Vienne' },
+                { id: 'zurich', name: 'Zurich' },
+                { id: 'geneva', name: 'Genève' },
+                { id: 'amsterdam', name: 'Amsterdam' },
+                { id: 'brussels', name: 'Bruxelles' },
+                { id: 'london', name: 'Londres' },
+                { id: 'edinburgh', name: 'Édimbourg' },
+                { id: 'dublin', name: 'Dublin' },
+                { id: 'stockholm', name: 'Stockholm' },
+                { id: 'oslo', name: 'Oslo' },
+                { id: 'copenhagen', name: 'Copenhague' },
+                { id: 'helsinki', name: 'Helsinki' },
+                { id: 'reykjavik', name: 'Reykjavik' },
+                { id: 'lisbon', name: 'Lisbonne' },
+                { id: 'athens', name: 'Athènes' },
+                { id: 'dubrovnik', name: 'Dubrovnik' },
+                { id: 'warsaw', name: 'Varsovie' },
+                { id: 'prague', name: 'Prague' },
+                { id: 'budapest', name: 'Budapest' },
+                { id: 'bucharest', name: 'Bucarest' },
+                { id: 'istanbul', name: 'Istanbul' },
+                { id: 'tel-aviv', name: 'Tel-Aviv' },
+                { id: 'beirut', name: 'Beyrouth' },
+                { id: 'sydney', name: 'Sydney' },
+                { id: 'melbourne', name: 'Melbourne' },
+                { id: 'auckland', name: 'Auckland' },
+                { id: 'wellington', name: 'Wellington' },
+                { id: 'suva', name: 'Suva (Fidji)' },
+                { id: 'apia', name: 'Apia (Samoa)' },
+                { id: 'papeete', name: 'Papeete (Tahiti)' },
+                { id: 'mcmurdo', name: 'Station McMurdo (Antarctique)' }
+            ],
+            events: [
+                { id: 'carnaval', name: 'Carnaval' },
+                { id: 'street-party', name: 'Street party' },
+                { id: 'music-festival', name: 'Festival de musique' },
+                { id: 'parade', name: 'Défilé festif' },
+                { id: 'beach-party', name: 'Beach party' },
+                { id: 'samba', name: 'Défilé de samba' },
+                { id: 'nye', name: 'Réveillon' },
+                { id: 'pride', name: 'Pride' },
+                { id: 'summer-fest', name: 'Fête d\'été' },
+                { id: 'cultural-fest', name: 'Festival culturel' },
+                { id: 'tango-festival', name: 'Festival de Tango (Buenos Aires)' },
+                { id: 'inti-raymi', name: 'Inti Raymi (Pérou)' },
+                { id: 'montreal-jazz', name: 'Festival de Jazz de Montréal' },
+                { id: 'just-for-laughs', name: 'Juste pour rire (Montréal)' },
+                { id: 'cherry-blossom', name: 'Festival des cerisiers en fleurs' },
+                { id: 'lantern-festival', name: 'Festival des lanternes' },
+                { id: 'water-festival', name: 'Festival de l\'eau (Songkran)' },
+                { id: 'new-year', name: 'Nouvel an asiatique' },
+                { id: 'night-market', name: 'Marché de nuit' },
+                { id: 'summer-matsuri', name: 'Festival d\'été (Matsuri)' },
+                { id: 'holi', name: 'Festival Holi' },
+                { id: 'diwali', name: 'Diwali (Fête des lumières)' },
+                { id: 'thaipusam', name: 'Thaipusam' },
+                { id: 'gnaoua', name: 'Festival Gnaoua (Maroc)' },
+                { id: 'fes-sacred', name: 'Festival de Fès (Musique sacrée)' },
+                { id: 'timitar', name: 'Festival Timitar (Maroc)' },
+                { id: 'carthage', name: 'Festival de Carthage' },
+                { id: 'afropunk', name: 'Afropunk' },
+                { id: 'lagos-carnival', name: 'Carnaval de Lagos' },
+                { id: 'calabar', name: 'Carnaval de Calabar' },
+                { id: 'durbar', name: 'Festival Durbar' },
+                { id: 'chale-wote', name: 'Festival Chale Wote (Ghana)' },
+                { id: 'panafest', name: 'Panafest' },
+                { id: 'saint-louis-jazz', name: 'Festival Jazz de Saint-Louis' },
+                { id: 'cape-town-carnival', name: 'Carnaval du Cap' },
+                { id: 'kaapse-klopse', name: 'Kaapse Klopse (Cape Minstrels)' },
+                { id: 'timkat', name: 'Timkat (Épiphanie éthiopienne)' },
+                { id: 'meskel', name: 'Meskel (Fête de la Croix)' },
+                { id: 'lamu-festival', name: 'Festival culturel de Lamu' },
+                { id: 'donia', name: 'Donia (Festival de Nosy Be)' },
+                { id: 'famadihana', name: 'Famadihana (Retournement des morts)' },
+                { id: 'maslenitsa', name: 'Maslenitsa (Semaine des crêpes)' },
+                { id: 'scarlet-sails', name: 'Nuit des Voiles Écarlates' },
+                { id: 'ivan-kupala', name: 'Ivan Kupala (Nuit de la Saint-Jean)' },
+                { id: 'white-nights', name: 'Nuits Blanches de Saint-Pétersbourg' },
+                { id: 'oktoberfest', name: 'Oktoberfest (Munich)' },
+                { id: 'carnival-of-cultures', name: 'Carnaval des Cultures (Berlin)' },
+                { id: 'love-parade', name: 'Love Parade' },
+                { id: 'donauinselfest', name: 'Donauinselfest (Vienne)' },
+                { id: 'street-parade', name: 'Street Parade (Zurich)' },
+                { id: 'kingsday', name: 'Jour du Roi (King\'s Day)' },
+                { id: 'tomorrowland', name: 'Tomorrowland' },
+                { id: 'notting-hill', name: 'Carnaval de Notting Hill' },
+                { id: 'edinburgh-fringe', name: 'Edinburgh Fringe Festival' },
+                { id: 'glastonbury', name: 'Glastonbury Festival' },
+                { id: 'st-patricks', name: 'Saint-Patrick' },
+                { id: 'midsummer', name: 'Fête de la Saint-Jean (Midsommar)' },
+                { id: 'copenhagen-pride', name: 'Pride de Copenhague' },
+                { id: 'vappu', name: 'Vappu (1er mai finlandais)' },
+                { id: 'secret-solstice', name: 'Secret Solstice (Islande)' },
+                { id: 'santos-populares', name: 'Santos Populares (Lisbonne)' },
+                { id: 'festa-de-sao-joao', name: 'São João (Porto)' },
+                { id: 'athens-carnival', name: 'Carnaval d\'Athènes' },
+                { id: 'rijeka-carnival', name: 'Carnaval de Rijeka' },
+                { id: 'festival-opener', name: 'Opener Festival (Pologne)' },
+                { id: 'signal-festival', name: 'Signal Festival (Prague)' },
+                { id: 'sziget', name: 'Festival Sziget (Budapest)' },
+                { id: 'untold', name: 'Festival Untold (Roumanie)' },
+                { id: 'istanbul-biennial', name: 'Biennale d\'Istanbul' },
+                { id: 'purim', name: 'Pourim (Fête juive)' },
+                { id: 'mardi-gras-sydney', name: 'Mardi Gras de Sydney' },
+                { id: 'pasifika', name: 'Festival Pasifika (Auckland)' },
+                { id: 'heiva', name: 'Heiva i Tahiti' },
+                { id: 'hibiscus', name: 'Festival Hibiscus (Fidji)' },
+                { id: 'teuila', name: 'Festival Teuila (Samoa)' },
+                { id: 'midwinter', name: 'Fête du Solstice d\'hiver (Antarctique)' }
+            ],
+            character2: [
+                { id: 'none', name: 'Aucun', icon: '∅' },
+                { id: 'woman', name: 'Femme', icon: '👩' },
+                { id: 'man', name: 'Homme', icon: '👨' }
+            ],
+            actions: [
+                { id: 'dancing', name: 'Danse' },
+                { id: 'posing', name: 'Pose pour la caméra' },
+                { id: 'smiling', name: 'Sourit joyeusement' },
+                { id: 'laughing', name: 'Rit aux éclats' },
+                { id: 'celebrating', name: 'Célèbre' },
+                { id: 'jumping', name: 'Saute de joie' },
+                { id: 'throwing-confetti', name: 'Lance des confettis' },
+                { id: 'waving', name: 'Fait signe de la main' },
+                { id: 'blowing-kiss', name: 'Envoie un baiser' },
+                { id: 'arms-up', name: 'Lève les bras' },
+                { id: 'spinning', name: 'Tourne sur elle-même' },
+                { id: 'walking', name: 'Marche avec confiance' }
+            ],
+            interactions: [
+                { id: 'holding-hands', name: 'Se tiennent la main' },
+                { id: 'kissing', name: 'S\'embrassent' },
+                { id: 'hugging', name: 'S\'enlacent' },
+                { id: 'dancing', name: 'Dansent ensemble' },
+                { id: 'laughing', name: 'Rient ensemble' },
+                { id: 'cheering', name: 'Font la fête ensemble' },
+                { id: 'taking-selfie', name: 'Prennent un selfie' },
+                { id: 'arm-around', name: 'Bras autour des épaules' }
+            ],
+            makeup: [
+                { id: 'none', name: 'Aucun' },
+                { id: 'festival-glitter', name: 'Paillettes festival appliquées naturellement' },
+                { id: 'body-paint', name: 'Body painting avec ombres et textures' },
+                { id: 'face-paint', name: 'Peinture faciale avec détails fins' },
+                { id: 'flowers-hair', name: 'Fleurs fraîches dans les cheveux' },
+                { id: 'ethnic-jewelry', name: 'Bijoux ethniques authentiques' },
+                { id: 'sunglasses', name: 'Lunettes de soleil avec reflets' },
+                { id: 'headband', name: 'Bandeau ajusté naturellement' },
+                { id: 'flower-crown', name: 'Couronne de fleurs fraîches' },
+                { id: 'temporary-tattoo', name: 'Tatouages temporaires réalistes' },
+                { id: 'necklaces', name: 'Colliers superposés naturellement' },
+                { id: 'face-jewels', name: 'Bijoux de visage appliqués avec précision' }
+            ],
+            hairstyles: [
+                { id: 'natural-flowing', name: 'Naturels flottants' },
+                { id: 'ponytail', name: 'Queue de cheval' },
+                { id: 'braids', name: 'Tresses' },
+                { id: 'messy-bun', name: 'Chignon décoiffé' },
+                { id: 'wet-look', name: 'Effet mouillé' },
+                { id: 'dreadlocks', name: 'Dreadlocks' },
+                { id: 'space-buns', name: 'Space buns' },
+                { id: 'windblown', name: 'Au vent' },
+                { id: 'slicked-back', name: 'Plaqués en arrière' },
+                { id: 'undercut', name: 'Undercut' },
+                { id: 'mohawk', name: 'Mohawk/crête' },
+                { id: 'man-bun', name: 'Chignon haut' }
+            ],
+            moments: [
+                { id: 'dawn', name: 'Aurore' },
+                { id: 'morning', name: 'Matinée' },
+                { id: 'midday', name: 'Plein midi' },
+                { id: 'afternoon', name: 'Après-midi ensoleillé' },
+                { id: 'golden-hour', name: 'Golden hour' },
+                { id: 'sunset', name: 'Coucher de soleil' },
+                { id: 'dusk', name: 'Crépuscule' },
+                { id: 'night', name: 'Nuit étoilée' },
+                { id: 'midnight', name: 'Minuit' }
+            ],
+            weather: [
+                { id: 'sunny', name: 'Ensoleillé éclatant' },
+                { id: 'hot', name: 'Chaleur intense' },
+                { id: 'light-rain', name: 'Légère pluie festive' },
+                { id: 'clear-sky', name: 'Ciel dégagé' },
+                { id: 'colorful-clouds', name: 'Nuages colorés' },
+                { id: 'rainbow', name: 'Arc-en-ciel' },
+                { id: 'humid', name: 'Atmosphère humide tropicale' }
+            ],
+            expressions: [
+                { id: 'joyful', name: 'Joyeux & souriant' },
+                { id: 'sensual', name: 'Sensuel' },
+                { id: 'confident', name: 'Confiant' },
+                { id: 'playful', name: 'Espiègle' },
+                { id: 'euphoric', name: 'Euphorique' },
+                { id: 'relaxed', name: 'Détendu' },
+                { id: 'seductive', name: 'Séducteur' },
+                { id: 'laughing', name: 'Riant aux éclats' },
+                { id: 'energetic', name: 'Énergique' },
+                { id: 'wild', name: 'Sauvage & libre' }
+            ],
+            backgrounds: [
+                { id: 'none', name: 'Standard' },
+                { id: 'dense-crowd', name: 'Foule dense réaliste légèrement floue' },
+                { id: 'beach-blurred', name: 'Plage en arrière-plan avec bokeh' },
+                { id: 'decorations', name: 'Décorations colorées accrochées naturellement' },
+                { id: 'confetti-ground', name: 'Confettis au sol et volant naturellement' },
+                { id: 'balloons-realistic', name: 'Ballons colorés avec reflets réalistes' },
+                { id: 'flags-wind', name: 'Drapeaux flottant au vent' },
+                { id: 'stage-lights', name: 'Scène musicale avec éclairages professionnels' },
+                { id: 'street-art', name: 'Murs avec street art authentique' },
+                { id: 'neon-signs', name: 'Enseignes néon avec halo lumineux' },
+                { id: 'architecture', name: 'Architecture locale caractéristique floue' }
+            ],
+            effects: [
+                { id: 'none', name: 'Aucun' },
+                { id: 'bokeh', name: 'Bokeh lumineux naturel' },
+                { id: 'lens-flare', name: 'Lens flare soleil réaliste' },
+                { id: 'motion-blur', name: 'Motion blur dynamique naturel' },
+                { id: 'confetti-falling', name: 'Confettis tombant naturellement en flou de mouvement' },
+                { id: 'confetti-ground', name: 'Confettis au sol et dans l\'air, perspective réaliste' },
+                { id: 'smoke-natural', name: 'Fumée colorée naturelle dispersée' },
+                { id: 'soap-bubbles', name: 'Bulles de savon translucides réalistes' },
+                { id: 'dust-particles', name: 'Particules de poussière dans la lumière' },
+                { id: 'glitter-realistic', name: 'Paillettes scintillantes réalistes floues' },
+                { id: 'fireworks-sky', name: 'Feux d\'artifice explosant dans le ciel' },
+                { id: 'light-trails', name: 'Traînées lumineuses longue exposition' },
+                { id: 'rain-drops', name: 'Gouttes de pluie en mouvement naturel' },
+                { id: 'petals-flying', name: 'Pétales de fleurs volant au vent' }
+            ],
+            aesthetics: [
+                { id: 'hygge', name: 'Hygge (tons chauds & cosy)' },
+                { id: 'icy-blue', name: 'Icy Blue (bleus glacés)' },
+                { id: 'afrohemian', name: 'Afrohemian (couleurs vives africaines)' },
+                { id: 'sunset-warm', name: 'Sunset Warm (oranges & roses)' },
+                { id: 'tropical-bright', name: 'Tropical Bright (couleurs éclatantes)' },
+                { id: 'neon-cyberpunk', name: 'Neon Cyberpunk (néons électriques)' },
+                { id: 'pastel-dreamy', name: 'Pastel Dreamy (pastels doux)' },
+                { id: 'golden-hour', name: 'Golden Hour (dorés chauds)' },
+                { id: 'mint-coral', name: 'Mint & Coral (frais & chaud)' },
+                { id: 'jewel-tones', name: 'Jewel Tones (couleurs joyaux)' }
+            ],
+            framings: [
+                { id: 'full-body-169', name: 'Plan large full body (16:9)' },
+                { id: 'full-body-11', name: 'Plan large full body (1:1 carré)' },
+                { id: 'full-body-916', name: 'Plan large full body (9:16 vertical)' },
+                { id: 'three-quarter-169', name: 'Vue de trois quarts (16:9)' },
+                { id: 'three-quarter-11', name: 'Vue de trois quarts (1:1 carré)' },
+                { id: 'medium-shot-169', name: 'Plan américain (16:9)' },
+                { id: 'medium-shot-916', name: 'Plan américain (9:16 vertical)' },
+                { id: 'close-up-11', name: 'Gros plan (1:1 carré)' },
+                { id: 'close-up-916', name: 'Gros plan (9:16 vertical)' },
+                { id: 'wide-angle-169', name: 'Grand angle panoramique (16:9)' },
+                { id: 'wide-angle-219', name: 'Grand angle cinéma (21:9)' },
+                { id: 'portrait-916', name: 'Portrait rapproché (9:16 vertical)' },
+                { id: 'portrait-11', name: 'Portrait rapproché (1:1 carré)' },
+                { id: 'low-angle-169', name: 'Contre-plongée dramatique (16:9)' },
+                { id: 'low-angle-916', name: 'Contre-plongée (9:16 vertical)' },
+                { id: 'high-angle-169', name: 'Plongée (16:9)' },
+                { id: 'over-shoulder-169', name: 'Par-dessus l\'épaule (16:9)' },
+                { id: 'dutch-angle-169', name: 'Angle hollandais incliné 45° (16:9)' },
+                { id: 'dutch-angle-11', name: 'Angle hollandais incliné 45° (1:1 carré)' },
+                { id: 'zoom-dynamic-169', name: 'Zoom dynamique (16:9)' },
+                { id: 'aerial-169', name: 'Vue aérienne plongeante (16:9)' },
+                { id: 'aerial-11', name: 'Vue aérienne plongeante (1:1 carré)' }
+            ],
+            ambiances: [
+                { id: 'vibrant', name: 'Vibrante & colorée' },
+                { id: 'festive', name: 'Festive & joyeuse' },
+                { id: 'energetic', name: 'Énergique' },
+                { id: 'party', name: 'Ambiance de fête' },
+                { id: 'sunny', name: 'Ensoleillée' },
+                { id: 'tropical', name: 'Tropicale' },
+                { id: 'crowded', name: 'Foule en fête' },
+                { id: 'romantic', name: 'Romantique' },
+                { id: 'euphoric', name: 'Euphorique' }
+            ],
+            styles: [
+                { id: 'photorealistic', name: 'Photoréaliste' },
+                { id: 'fashion', name: 'Photo de mode' },
+                { id: 'lifestyle', name: 'Lifestyle' },
+                { id: 'street', name: 'Street photography' },
+                { id: 'magazine', name: 'Magazine' },
+                { id: 'vibrant-colors', name: 'Couleurs vibrantes' },
+                { id: 'professional', name: 'Professionnel' },
+                { id: 'candid', name: 'Spontané' }
+            ]
+        };
+
+        const state = {
+            character1: 'woman',
+            nationality: 'brazilian',
+            nationalityMode: 'predefined',
+            outfit: 'bikini',
+            action: 'dancing',
+            actionMode: 'predefined',
+            city: 'rio',
+            cityMode: 'predefined',
+            event: 'carnaval',
+            eventMode: 'predefined',
+            character2: 'none',
+            nationality2: 'brazilian',
+            nationality2Mode: 'predefined',
+            outfit2: 'bikini',
+            hairstyle2: 'natural-flowing',
+            hairstyle2Mode: 'predefined',
+            makeup2: 'none',
+            makeup2Mode: 'predefined',
+            expression2: 'joyful',
+            interaction: 'holding-hands',
+            makeup: 'none',
+            makeupMode: 'predefined',
+            hairstyle: 'natural-flowing',
+            hairstyleMode: 'predefined',
+            moment: 'afternoon',
+            weather: 'sunny',
+            expression: 'joyful',
+            background: 'none',
+            backgroundMode: 'predefined',
+            effects: 'none',
+            effectsMode: 'predefined',
+            aesthetic: 'tropical-bright',
+            aestheticMode: 'predefined',
+            framing: 'full-body-169',
+            framingMode: 'predefined',
+            ambiance: 'vibrant',
+            style: 'photorealistic'
+        };
+
+        function createCards(containerId, dataKey, stateKey) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            data[dataKey].forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                if (state[stateKey] === item.id) {
+                    card.classList.add('active');
+                }
+                
+                card.innerHTML = `
+                    ${item.icon ? `<div class="icon">${item.icon}</div>` : ''}
+                    <div>${item.name}</div>
+                `;
+                
+                card.onclick = () => {
+                    state[stateKey] = item.id;
+                    createCards(containerId, dataKey, stateKey);
+                    
+                    if (stateKey === 'character2') {
+                        const hasSecondary = item.id !== 'none';
+                        document.getElementById('interaction-section').style.display = hasSecondary ? 'block' : 'none';
+                        document.getElementById('secondary-options').style.display = hasSecondary ? 'block' : 'none';
+                    }
+                    
+                    generatePrompt();
+                };
+                
+                container.appendChild(card);
+            });
+        }
+
+        function toggleMode(section) {
+            const buttons = event.target.parentElement.querySelectorAll('.toggle-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const isPredefined = event.target.textContent === 'Prédéfini';
+            document.getElementById(`${section}-predefined`).classList.toggle('active', isPredefined);
+            document.getElementById(`${section}-custom`).classList.toggle('active', !isPredefined);
+            
+            state[`${section}Mode`] = isPredefined ? 'predefined' : 'custom';
+            generatePrompt();
+        }
+
+        function getNationality() {
+            if (state.nationalityMode === 'custom') {
+                const custom = document.getElementById('custom-nationality').value;
+                return custom || 'brésilienne';
+            }
+            const nat = data.nationalities.find(n => n.id === state.nationality);
+            return nat ? nat.name.toLowerCase() : 'brésilienne';
+        }
+
+        function getNationality2() {
+            if (state.nationality2Mode === 'custom') {
+                const custom = document.getElementById('custom-nationality2').value;
+                return custom || 'brésilienne';
+            }
+            const nat = data.nationalities.find(n => n.id === state.nationality2);
+            return nat ? nat.name.toLowerCase() : 'brésilienne';
+        }
+
+        function getHairstyle2() {
+            if (state.hairstyle2Mode === 'custom') {
+                const custom = document.getElementById('custom-hairstyle2').value;
+                return custom || '';
+            }
+            const hairstyle = data.hairstyles.find(h => h.id === state.hairstyle2);
+            return hairstyle ? hairstyle.name.toLowerCase() : '';
+        }
+
+        function getMakeup2() {
+            if (state.makeup2Mode === 'custom') {
+                const custom = document.getElementById('custom-makeup2').value;
+                return custom || '';
+            }
+            if (state.makeup2 === 'none') return '';
+            const makeup = data.makeup.find(m => m.id === state.makeup2);
+            return makeup ? makeup.name.toLowerCase() : '';
+        }
+
+        function getCity() {
+            if (state.cityMode === 'custom') {
+                const custom = document.getElementById('custom-city').value;
+                return custom || 'Rio de Janeiro';
+            }
+            const city = data.cities.find(c => c.id === state.city);
+            return city ? city.name : 'Rio de Janeiro';
+        }
+
+        function getEvent() {
+            if (state.eventMode === 'custom') {
+                const custom = document.getElementById('custom-event').value;
+                return custom || 'carnaval';
+            }
+            const evt = data.events.find(e => e.id === state.event);
+            return evt ? evt.name.toLowerCase() : 'carnaval';
+        }
+
+        function getAction() {
+            if (state.actionMode === 'custom') {
+                const custom = document.getElementById('custom-action').value;
+                return custom || 'danse';
+            }
+            const action = data.actions.find(a => a.id === state.action);
+            return action ? action.name.toLowerCase() : 'danse';
+        }
+
+        function getMakeup() {
+            if (state.makeupMode === 'custom') {
+                const custom = document.getElementById('custom-makeup').value;
+                return custom || '';
+            }
+            if (state.makeup === 'none') return '';
+            const makeup = data.makeup.find(m => m.id === state.makeup);
+            return makeup ? makeup.name.toLowerCase() : '';
+        }
+
+        function getHairstyle() {
+            if (state.hairstyleMode === 'custom') {
+                const custom = document.getElementById('custom-hairstyle').value;
+                return custom || '';
+            }
+            const hairstyle = data.hairstyles.find(h => h.id === state.hairstyle);
+            return hairstyle ? hairstyle.name.toLowerCase() : '';
+        }
+
+        function getBackground() {
+            if (state.backgroundMode === 'custom') {
+                const custom = document.getElementById('custom-background').value;
+                return custom || '';
+            }
+            if (state.background === 'none') return '';
+            const bg = data.backgrounds.find(b => b.id === state.background);
+            return bg ? bg.name.toLowerCase() : '';
+        }
+
+        function getEffects() {
+            if (state.effectsMode === 'custom') {
+                const custom = document.getElementById('custom-effects').value;
+                return custom || '';
+            }
+            if (state.effects === 'none') return '';
+            const effect = data.effects.find(e => e.id === state.effects);
+            return effect ? effect.name.toLowerCase() : '';
+        }
+
+        function getAesthetic() {
+            if (state.aestheticMode === 'custom') {
+                const custom = document.getElementById('custom-aesthetic').value;
+                return custom || '';
+            }
+            const aesthetic = data.aesthetics.find(a => a.id === state.aesthetic);
+            return aesthetic ? aesthetic.name.toLowerCase() : '';
+        }
+
+        function getFraming() {
+            if (state.framingMode === 'custom') {
+                const custom = document.getElementById('custom-framing').value;
+                return custom || '';
+            }
+            const framing = data.framings.find(f => f.id === state.framing);
+            return framing ? framing.name.toLowerCase() : '';
+        }
+
+        function generatePrompt() {
+            const parts = [];
+            
+            // Personnage principal
+            const char1 = state.character1 === 'woman' ? 'Une femme' : 'Un homme';
+            const nationality = getNationality();
+            parts.push(`${char1} ${nationality}`);
+            
+            // Tenue
+            const outfit = data.outfits.find(o => o.id === state.outfit);
+            if (outfit) {
+                parts.push(`en ${outfit.name.toLowerCase()}`);
+            }
+            
+            // Coiffure
+            const hairstyle = getHairstyle();
+            if (hairstyle) {
+                parts.push(`cheveux ${hairstyle}`);
+            }
+            
+            // Maquillage & accessoires
+            const makeup = getMakeup();
+            if (makeup) {
+                parts.push(`avec ${makeup}`);
+            }
+            
+            // Expression
+            const expression = data.expressions.find(e => e.id === state.expression);
+            if (expression) {
+                parts.push(`expression ${expression.name.toLowerCase()}`);
+            }
+            
+            // Action
+            const action = getAction();
+            parts.push(action);
+            
+            // Personnage secondaire et interaction
+            if (state.character2 !== 'none') {
+                const char2 = state.character2 === 'woman' ? 'une femme' : 'un homme';
+                const nationality2 = getNationality2();
+                
+                // Construction détails personnage 2
+                const char2Details = [];
+                char2Details.push(`${char2} ${nationality2}`);
+                
+                // Tenue personnage 2
+                const outfit2 = data.outfits.find(o => o.id === state.outfit2);
+                if (outfit2) {
+                    char2Details.push(`en ${outfit2.name.toLowerCase()}`);
+                }
+                
+                // Coiffure personnage 2
+                const hairstyle2 = getHairstyle2();
+                if (hairstyle2) {
+                    char2Details.push(`cheveux ${hairstyle2}`);
+                }
+                
+                // Maquillage personnage 2
+                const makeup2 = getMakeup2();
+                if (makeup2) {
+                    char2Details.push(`avec ${makeup2}`);
+                }
+                
+                // Expression personnage 2
+                const expression2 = data.expressions.find(e => e.id === state.expression2);
+                if (expression2) {
+                    char2Details.push(`expression ${expression2.name.toLowerCase()}`);
+                }
+                
+                parts.push(`avec ${char2Details.join(', ')}`);
+                
+                // Interaction
+                const interaction = data.interactions.find(i => i.id === state.interaction);
+                if (interaction) {
+                    parts.push(`ils ${interaction.name.toLowerCase()}`);
+                }
+            }
+            
+            // Lieu et événement
+            const city = getCity();
+            const event = getEvent();
+            parts.push(`dans les rues de ${city} pendant ${event}`);
+            
+            // Arrière-plan
+            const background = getBackground();
+            if (background) {
+                parts.push(`arrière-plan: ${background}`);
+            }
+            
+            // Moment de la journée
+            const moment = data.moments.find(m => m.id === state.moment);
+            if (moment) {
+                parts.push(moment.name.toLowerCase());
+            }
+            
+            // Météo
+            const weather = data.weather.find(w => w.id === state.weather);
+            if (weather) {
+                parts.push(weather.name.toLowerCase());
+            }
+            
+            // Effets spéciaux
+            const effects = getEffects();
+            if (effects) {
+                parts.push(`effets: ${effects}`);
+            }
+            
+            // Esthétique
+            const aesthetic = getAesthetic();
+            if (aesthetic) {
+                parts.push(`esthétique ${aesthetic}`);
+            }
+            
+            // Cadrage
+            const framing = getFraming();
+            if (framing) {
+                parts.push(framing);
+            }
+            
+            // Ambiance
+            const ambiance = data.ambiances.find(a => a.id === state.ambiance);
+            if (ambiance) {
+                parts.push(`ambiance ${ambiance.name.toLowerCase()}`);
+            }
+            
+            // Style
+            const style = data.styles.find(s => s.id === state.style);
+            if (style) {
+                parts.push(`style ${style.name.toLowerCase()}`);
+            }
+            
+            parts.push('haute qualité, 8K, détails nets');
+            
+            const prompt = parts.join(', ') + '.';
+            document.getElementById('prompt').textContent = prompt;
+        }
+
+        function randomize() {
+            state.character1 = data.character1[Math.floor(Math.random() * data.character1.length)].id;
+            state.nationality = data.nationalities[Math.floor(Math.random() * data.nationalities.length)].id;
+            state.outfit = data.outfits[Math.floor(Math.random() * data.outfits.length)].id;
+            state.action = data.actions[Math.floor(Math.random() * data.actions.length)].id;
+            state.city = data.cities[Math.floor(Math.random() * data.cities.length)].id;
+            state.event = data.events[Math.floor(Math.random() * data.events.length)].id;
+            state.character2 = Math.random() > 0.5 ? 'none' : data.character2[Math.floor(Math.random() * 2) + 1].id;
+            state.nationality2 = data.nationalities[Math.floor(Math.random() * data.nationalities.length)].id;
+            state.outfit2 = data.outfits[Math.floor(Math.random() * data.outfits.length)].id;
+            state.hairstyle2 = data.hairstyles[Math.floor(Math.random() * data.hairstyles.length)].id;
+            state.makeup2 = data.makeup[Math.floor(Math.random() * data.makeup.length)].id;
+            state.expression2 = data.expressions[Math.floor(Math.random() * data.expressions.length)].id;
+            state.interaction = data.interactions[Math.floor(Math.random() * data.interactions.length)].id;
+            state.makeup = data.makeup[Math.floor(Math.random() * data.makeup.length)].id;
+            state.hairstyle = data.hairstyles[Math.floor(Math.random() * data.hairstyles.length)].id;
+            state.moment = data.moments[Math.floor(Math.random() * data.moments.length)].id;
+            state.weather = data.weather[Math.floor(Math.random() * data.weather.length)].id;
+            state.expression = data.expressions[Math.floor(Math.random() * data.expressions.length)].id;
+            state.background = data.backgrounds[Math.floor(Math.random() * data.backgrounds.length)].id;
+            state.effects = data.effects[Math.floor(Math.random() * data.effects.length)].id;
+            state.aesthetic = data.aesthetics[Math.floor(Math.random() * data.aesthetics.length)].id;
+            state.framing = data.framings[Math.floor(Math.random() * data.framings.length)].id;
+            state.ambiance = data.ambiances[Math.floor(Math.random() * data.ambiances.length)].id;
+            state.style = data.styles[Math.floor(Math.random() * data.styles.length)].id;
+            
+            initializeCards();
+            const hasSecondary = state.character2 !== 'none';
+            document.getElementById('interaction-section').style.display = hasSecondary ? 'block' : 'none';
+            document.getElementById('secondary-options').style.display = hasSecondary ? 'block' : 'none';
+            generatePrompt();
+        }
+
+        function copyPrompt() {
+            const prompt = document.getElementById('prompt').textContent;
+            navigator.clipboard.writeText(prompt)
+                .then(() => alert('✅ Prompt copié dans le presse-papiers !'))
+                .catch(err => alert('❌ Erreur lors de la copie'));
+        }
+
+        function initializeCards() {
+            createCards('character1-grid', 'character1', 'character1');
+            createCards('nationality-grid', 'nationalities', 'nationality');
+            createCards('outfit-grid', 'outfits', 'outfit');
+            createCards('action-grid', 'actions', 'action');
+            createCards('city-grid', 'cities', 'city');
+            createCards('event-grid', 'events', 'event');
+            createCards('character2-grid', 'character2', 'character2');
+            createCards('nationality2-grid', 'nationalities', 'nationality2');
+            createCards('outfit2-grid', 'outfits', 'outfit2');
+            createCards('hairstyle2-grid', 'hairstyles', 'hairstyle2');
+            createCards('makeup2-grid', 'makeup', 'makeup2');
+            createCards('expression2-grid', 'expressions', 'expression2');
+            createCards('interaction-grid', 'interactions', 'interaction');
+            createCards('makeup-grid', 'makeup', 'makeup');
+            createCards('hairstyle-grid', 'hairstyles', 'hairstyle');
+            createCards('moment-grid', 'moments', 'moment');
+            createCards('weather-grid', 'weather', 'weather');
+            createCards('expression-grid', 'expressions', 'expression');
+            createCards('background-grid', 'backgrounds', 'background');
+            createCards('effects-grid', 'effects', 'effects');
+            createCards('aesthetic-grid', 'aesthetics', 'aesthetic');
+            createCards('framing-grid', 'framings', 'framing');
+            createCards('ambiance-grid', 'ambiances', 'ambiance');
+            createCards('style-grid', 'styles', 'style');
+        }
+
+        // Initialisation
+        window.onload = () => {
+            initializeCards();
+            generatePrompt();
+        };
+    </script>
+</body>
+</html>
