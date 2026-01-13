@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 Générateur Onirique Ultime</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #0f0f23, #1a0033, #0a0a1a, #001122);
+            background-size: 400% 400%;
+            animation: nebulaShift 20s ease infinite;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        @keyframes nebulaShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { 
+            font-size: 2.5em; 
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+        
+        .main-content { 
+            backdrop-filter: blur(20px); 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 20px; 
+            padding: 30px; 
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+        
+        .control-group { margin-bottom: 30px; }
+        
+        .section-header {
+            background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(69,183,209,0.2));
+            border-left: 4px solid #4ecdc4;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-header:hover {
+            background: linear-gradient(135deg, rgba(78,205,196,0.3), rgba(69,183,209,0.3));
+            transform: translateX(5px);
+        }
+        
+        .section-header h3 { 
+            color: #ffd700; 
+            text-shadow: 0 0 20px rgba(255,215,0,0.5); 
+            font-size: 1.4em;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .section-header .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+        
+        .section-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        
+        .section-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s;
+            opacity: 1;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+            color: #e0e0e0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px; 
+            background: rgba(255,255,255,0.1); 
+            border: 2px solid rgba(255,255,255,0.3); 
+            border-radius: 12px; 
+            color: white; 
+            font-size: 16px; 
+            backdrop-filter: blur(10px); 
+            transition: all 0.3s; 
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.6); }
+        input:focus, select:focus, textarea:focus { 
+            outline: none; 
+            border-color: #4ecdc4; 
+            box-shadow: 0 0 20px rgba(78,205,196,0.4);
+            background: rgba(255,255,255,0.15);
+        }
+        select option { background: #1a0033; color: white; }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .grid-btn {
+            padding: 15px 10px; 
+            background: rgba(255,255,255,0.1); 
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            text-align: center; 
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .grid-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(78,205,196,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        
+        .grid-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+        
+        .grid-btn.active {
+            background: linear-gradient(135deg, #4ecdc4, #45b7d1); 
+            border-color: #fff; 
+            box-shadow: 0 0 25px rgba(78,205,196,0.6); 
+            transform: scale(1.08);
+        }
+        
+        .grid-btn:hover {
+            border-color: #4ecdc4; 
+            box-shadow: 0 0 15px rgba(78,205,196,0.4);
+            transform: translateY(-3px);
+        }
+        
+        .emoji-large { font-size: 2em; display: block; margin-bottom: 5px; position: relative; z-index: 1; }
+        
+        .selection-info {
+            background: rgba(255,255,255,0.15); 
+            border: 2px solid rgba(255,255,255,0.4); 
+            padding: 15px; 
+            border-radius: 15px; 
+            margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .selection-info p { 
+            color: #ff69b4; 
+            font-size: 1em; 
+            margin: 5px 0;
+            font-weight: 600;
+        }
+        
+        .prompt-display {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(78,205,196,0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1200px;
+            min-height: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+        }
+        
+        .prompt-display h3 {
+            color: #4ecdc4;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(78,205,196,0.5);
+        }
+        
+        .prompt-text {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 300px;
+        }
+        
+        .controls { 
+            display: flex; 
+            gap: 15px; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            margin: 30px 0; 
+        }
+        
+        .btn { 
+            padding: 15px 30px; 
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e); 
+            border: none; 
+            border-radius: 30px; 
+            color: white; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            font-size: 16px;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.3);
+        }
+        
+        .btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 40px rgba(255,107,107,0.5);
+            background: linear-gradient(45deg, #ff5252, #ff6b6b);
+        }
+        
+        .btn:active { transform: translateY(-1px); }
+        
+        .status { 
+            text-align: center; 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: rgba(0,255,127,0.2); 
+            border-radius: 15px; 
+            border-left: 5px solid #00ff80;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 5px 20px rgba(0,255,127,0.2);
+        }
+        
+        .particles { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            z-index: -1; 
+        }
+        
+        @media (max-width: 768px) { 
+            .grid { 
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
+            }
+            .header h1 { font-size: 1.8em; }
+            .btn { padding: 12px 20px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="particles" id="particles"></canvas>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🌙 Générateur Onirique Ultime</h1>
+            <p style="font-size: 1.1em; opacity: 0.9;">Configuration Complète du Personnage</p>
+        </div>
+        
+        <div class="main-content">
+            
+            <!-- 1. TYPE DE PERSONNAGE -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>👤 Type de Personnage</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="characterTypeGrid"></div>
+                    <div class="selection-info" id="characterTypeInfo" style="display: none;">
+                        <p>Sélectionné : <strong id="characterTypeDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2. VÊTEMENTS -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>👗 Vêtements & Tenue</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="clothingGrid"></div>
+                    <div class="selection-info" id="clothingInfo" style="display: none;">
+                        <p>Tenue : <strong id="clothingDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3. TRAITS FANTASTIQUES -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>🦄 Traits Fantastiques</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <p style="text-align: center; opacity: 0.8; margin-bottom: 15px;">Sélectionnez jusqu'à 6 traits</p>
+                    <div class="grid" id="traitsGrid"></div>
+                    <div class="selection-info" id="traitsInfo" style="display: none;">
+                        <p>Traits actifs : <strong id="traitsDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 4. MONTURE -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>🚀 Monture & Véhicule</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="mountGrid"></div>
+                    <div class="selection-info" id="mountInfo" style="display: none;">
+                        <p>Monture : <strong id="mountDesc">--</strong></p>
+                    </div>
+                    <label style="margin-top: 20px;">Style de déplacement</label>
+                    <select id="travelStyle">
+                        <option value="">Naturel et gracieux</option>
+                        <option value="flying through glowing aurora borealis, rainbow lights">✨ Traversant aurores boréales</option>
+                        <option value="diving underwater through vibrant coral reef, tropical fish">🌊 Plongée dans récif corallien</option>
+                        <option value="racing through neon city streets at night, speed blur">🏙️ Course dans ville néon</option>
+                        <option value="soaring high above clouds at sunset, golden hour lighting">☁️ Planant au-dessus des nuages</option>
+                        <option value="traveling through deep space, stars and galaxies">🚀 Voyageant dans l'espace</option>
+                        <option value="surfing on lightning bolts, electrical energy trails">⚡ Surfant sur éclairs</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 5. ENVIRONNEMENT -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>🌍 Environnement & Décor</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="environmentGrid"></div>
+                    <div class="selection-info" id="environmentInfo" style="display: none;">
+                        <p>Environnement : <strong id="environmentDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 6. STYLE ARTISTIQUE -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>🎨 Style Artistique</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="styleGrid"></div>
+                    <div class="selection-info" id="styleInfo" style="display: none;">
+                        <p>Style : <strong id="styleDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 7. ESTHÉTIQUE -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>✨ Esthétique Visuelle</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="grid" id="aestheticGrid"></div>
+                    <div class="selection-info" id="aestheticInfo" style="display: none;">
+                        <p>Esthétique : <strong id="aestheticDesc">--</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 8. PERSONNALISATION LIBRE -->
+            <div class="control-group">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>✍️ Personnalisation Libre</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <label>Détails supplémentaires</label>
+                    <textarea id="customDetails" rows="3" 
+                              placeholder="Ajoutez des détails spécifiques : couleur des cheveux, accessoires, pose, émotions, expression..."></textarea>
+                    
+                    <label style="margin-top: 20px;">💫 Niveau de détails</label>
+                    <input type="range" id="detailLevel" min="1" max="10" value="7" 
+                           style="accent-color: #4ecdc4;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9em; opacity: 0.8;">
+                        <span>Minimaliste</span>
+                        <span id="detailValue">7</span>
+                        <span>Ultra-détaillé</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="prompt-display">
+            <h3>✨ Prompt Généré</h3>
+            <div class="prompt-text" id="promptOutput">Configurez votre personnage en sélectionnant les options ci-dessus, puis cliquez sur "Générer Prompt"...</div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="generatePrompt()">✨ Générer Prompt</button>
+            <button class="btn" onclick="randomize()" style="background: linear-gradient(45deg, #4ecdc4, #45b7d1);">🎲 Aléatoire Complet</button>
+            <button class="btn" onclick="copyPrompt()" style="background: linear-gradient(45deg, #f9ca24, #f0932b);">📋 Copier Prompt</button>
+            <button class="btn" onclick="clearAll()" style="background: linear-gradient(45deg, #6c5ce7, #a29bfe);">🗑️ Réinitialiser</button>
+        </div>
+        
+        <div id="status" class="status" style="display:none;"></div>
+    </div>
+
+    <script>
+        // 👤 TYPES DE PERSONNAGES (Femme, Homme, Créatures prédéfinies)
+        const characterTypes = [
+            {name: "Femme", prompt: "beautiful woman, elegant feminine features", emoji: "👩", category: "base"},
+            {name: "Homme", prompt: "handsome man, strong masculine features", emoji: "👨", category: "base"},
+            
+            // Créatures prédéfinies
+            {name: "Dragon Nébuleux", prompt: "cosmic dragon entity with nebula scales, ethereal dragon form", emoji: "🐉", category: "creature"},
+            {name: "Fée Glace", prompt: "ice fairy with crystalline wings, frost-covered fairy", emoji: "❄️", category: "creature"},
+            {name: "Sirène Abyssale", prompt: "bioluminescent deep sea mermaid, glowing aquatic being", emoji: "🧜‍♀️", category: "creature"},
+            {name: "Phénix Stellaire", prompt: "stellar phoenix of cosmic fire, celestial bird entity", emoji: "🔥", category: "creature"},
+            {name: "Elfe Nocturne", prompt: "night elf archer, mystical forest guardian", emoji: "🏹", category: "creature"},
+            {name: "Cyborg Néon", prompt: "cybernetic being with neon circuits, tech-enhanced humanoid", emoji: "🤖", category: "creature"},
+            {name: "Déesse Céleste", prompt: "celestial goddess with divine aura, heavenly deity", emoji: "👸", category: "creature"},
+            {name: "Vampire Gothique", prompt: "gothic vampire lord, elegant undead nobility", emoji: "🧛", category: "creature"},
+            {name: "Ange Déchu", prompt: "fallen angel with dark wings, corrupted celestial", emoji: "😇", category: "creature"},
+            {name: "Sorcière Cosmique", prompt: "cosmic witch wielding galaxy magic, arcane spellcaster", emoji: "🧙‍♀️", category: "creature"},
+            {name: "Guerrier Foudre", prompt: "lightning warrior crackling with electricity, storm champion", emoji: "⚔️", category: "creature"},
+            {name: "Ninja Spectral", prompt: "ethereal shadow ninja, ghostly assassin", emoji: "🥷", category: "creature"}
+        ];
+        
+        // 👗 VÊTEMENTS (Femmes + Hommes + Créatures + Adultes)
+        const clothing = {
+            woman: [
+                {name: "Robe Élégante", prompt: "elegant flowing dress, graceful gown", emoji: "👗"},
+                {name: "Armure Guerrière", prompt: "ornate warrior armor, battle-ready outfit", emoji: "⚔️"},
+                {name: "Robe Mage", prompt: "mystical mage robes, flowing magical attire", emoji: "🔮"},
+                {name: "Tenue Elfe", prompt: "elven forest dress, nature-inspired clothing", emoji: "🍃"},
+                {name: "Cyber Suit", prompt: "cyberpunk bodysuit, tech outfit with neon", emoji: "💻"},
+                {name: "Robe Princesse", prompt: "royal princess gown, luxurious dress", emoji: "👑"},
+                {name: "Tenue Ninja", prompt: "sleek ninja outfit, stealth clothing", emoji: "🥷"},
+                {name: "Costume Pirate", prompt: "pirate captain outfit, maritime adventure clothes", emoji: "🏴‍☠️"},
+                {name: "Robe Ange", prompt: "angelic white robes, heavenly dress", emoji: "😇"},
+                {name: "Tenue Sorcière", prompt: "witch outfit with hat, mystical attire", emoji: "🧙‍♀️"},
+                {name: "Steampunk Corset", prompt: "steampunk corset with gears, Victorian industrial", emoji: "⚙️"},
+                {name: "Kimono Traditionnel", prompt: "traditional ornate kimono, Japanese elegance", emoji: "🎌"},
+                
+                // Adultes sophistiqués
+                {name: "Robe Soirée Fendue", prompt: "elegant evening gown with high slit, sophisticated glamour", emoji: "✨"},
+                {name: "Body Dentelle Noir", prompt: "black lace bodysuit, elegant intimate wear", emoji: "🖤"},
+                {name: "Robe Transparente Brodée", prompt: "sheer embroidered dress, see-through elegant fashion", emoji: "👗"},
+                {name: "Lingerie Fine", prompt: "delicate lingerie set, refined intimate apparel", emoji: "💕"},
+                {name: "Bikini Designer", prompt: "designer bikini, luxury swimwear", emoji: "👙"},
+                {name: "Combinaison Moulante", prompt: "form-fitting jumpsuit, sleek bodycon outfit", emoji: "🔥"},
+                {name: "Corset Cuir", prompt: "leather corset with details, edgy elegant piece", emoji: "🎀"},
+                {name: "Kimono Ouvert Soie", prompt: "open silk kimono, flowing revealing robe", emoji: "🌸"}
+            ],
+            man: [
+                {name: "Costume Élégant", prompt: "elegant formal suit, refined gentleman attire", emoji: "🤵"},
+                {name: "Armure Chevalier", prompt: "knight's heavy armor, medieval warrior gear", emoji: "🛡️"},
+                {name: "Robe Samouraï", prompt: "samurai armor, traditional warrior outfit", emoji: "⚔️"},
+                {name: "Cyber Combinaison", prompt: "cyberpunk tech suit, futuristic outfit", emoji: "💻"},
+                {name: "Tenue Mage", prompt: "archmage robes, mystical wizard attire", emoji: "🧙"},
+                {name: "Costume Pirate", prompt: "pirate captain coat, adventure outfit", emoji: "🏴‍☠️"},
+                {name: "Fourrure Viking", prompt: "viking furs and armor, norse warrior clothes", emoji: "⚡"},
+                {name: "Tenue Assassin", prompt: "hooded assassin outfit, stealth gear", emoji: "🗡️"},
+                {name: "Vêtements Roi", prompt: "royal king attire, regal clothing", emoji: "👑"},
+                {name: "Steampunk Gentleman", prompt: "steampunk Victorian suit, industrial elegance", emoji: "🎩"},
+                {name: "Peinture Tribale", prompt: "tribal war paint and minimal clothing, primal warrior", emoji: "🪶"},
+                {name: "Armure Paladin", prompt: "holy paladin armor, divine warrior gear", emoji: "✨"},
+                
+                // Adultes sophistiqués
+                {name: "Torse Nu Sculpté", prompt: "shirtless athletic physique, sculpted torso", emoji: "💪"},
+                {name: "Pantalon Cuir Ajusté", prompt: "tight leather pants, edgy masculine fashion", emoji: "🧥"},
+                {name: "Short Sport Moulant", prompt: "tight athletic shorts, sporty revealing outfit", emoji: "🏋️"},
+                {name: "Kimono Ouvert", prompt: "open kimono showing chest, artistic masculine style", emoji: "🎌"},
+                {name: "Jean Taille Basse", prompt: "low-rise jeans, casual confident style", emoji: "👖"},
+                {name: "Boxer Élégant", prompt: "designer underwear, fashionable intimate wear", emoji: "🩲"},
+                {name: "Tenue Gladiateur", prompt: "minimal gladiator outfit, leather straps and belts", emoji: "🏛️"},
+                {name: "Look Streetwear", prompt: "stylish streetwear showing physique, urban fashion", emoji: "🎨"}
+            ],
+            creature: [
+                {name: "Forme Naturelle", prompt: "natural creature form, organic appearance", emoji: "🌿"},
+                {name: "Écailles Dragon", prompt: "dragon scale covering, reptilian natural armor", emoji: "🐉"},
+                {name: "Plumage Oiseau", prompt: "bird feather covering, avian plumage", emoji: "🪶"},
+                {name: "Cristaux Vivants", prompt: "living crystal formations, gem-like body", emoji: "💎"},
+                {name: "Vapeur Éthérée", prompt: "ethereal smoke form, gaseous being", emoji: "💨"},
+                {name: "Végétation", prompt: "plant-covered body, living flora", emoji: "🌱"},
+                {name: "Aquatique", prompt: "aquatic features, water-dwelling form", emoji: "🌊"},
+                {name: "Énergie Pure", prompt: "pure energy manifestation, incorporeal form", emoji: "⚡"},
+                {name: "Métal Robot", prompt: "metallic robotic body, mechanical form", emoji: "🤖"},
+                {name: "Spectre Fantôme", prompt: "ghostly translucent form, spirit body", emoji: "👻"}
+            ]
+        };
+        
+        // 🦄 TRAITS FANTASTIQUES
+        const traits = [
+            {name: "Ailes Ange", prompt: "large white angelic wings", emoji: "🪽"},
+            {name: "Cornes Dragon", prompt: "curved dragon horns", emoji: "🐉"},
+            {name: "Queue Féline", prompt: "long swishing cat tail", emoji: "🐱"},
+            {name: "Oreilles Elfe", prompt: "pointed elf ears", emoji: "👂"},
+            {name: "Yeux Lumineux", prompt: "glowing radiant eyes", emoji: "👁️"},
+            {name: "Cheveux Flamme", prompt: "hair made of living fire", emoji: "🔥"},
+            {name: "Peau Écailles", prompt: "iridescent scale-covered skin", emoji: "🐍"},
+            {name: "Halo Divin", prompt: "golden glowing halo", emoji: "😇"},
+            {name: "Tentacules", prompt: "elegant flowing tentacles", emoji: "🐙"},
+            {name: "Aura Magique", prompt: "visible magical aura", emoji: "✨"},
+            {name: "Troisième Œil", prompt: "mystical third eye on forehead", emoji: "🔮"},
+            {name: "Griffes", prompt: "sharp extended claws", emoji: "🦅"},
+            {name: "Tatouages Magiques", prompt: "glowing mystical tattoos", emoji: "🎨"},
+            {name: "Ailes Papillon", prompt: "colorful butterfly wings", emoji: "🦋"},
+            {name: "Crocs Vampire", prompt: "sharp vampire fangs", emoji: "🧛"},
+            {name: "Bois de Cerf", prompt: "majestic antlers", emoji: "🦌"},
+            {name: "Électricité", prompt: "crackling electrical energy", emoji: "⚡"},
+            {name: "Branchies", prompt: "visible aquatic gills", emoji: "🐠"},
+            {name: "Fourrure", prompt: "soft magical fur", emoji: "🐺"},
+            {name: "Ailes Libellule", prompt: "transparent dragonfly wings", emoji: "🪰"},
+            {name: "Corne Licorne", prompt: "spiral unicorn horn", emoji: "🦄"},
+            {name: "Bioluminescence", prompt: "glowing bioluminescent patterns", emoji: "🌟"},
+            {name: "Yeux Multiples", prompt: "multiple eyes", emoji: "🕷️"},
+            {name: "Serpents Cheveux", prompt: "living snake hair", emoji: "🐍"}
+        ];
+        
+        // 🚀 MONTURES
+        const mounts = [
+            {name: "Dragon", prompt: "riding majestic dragon", emoji: "🐉"},
+            {name: "Pégase", prompt: "riding white pegasus", emoji: "🦄"},
+            {name: "Moto Cyber", prompt: "riding neon motorcycle", emoji: "🏍️"},
+            {name: "Baleine Volante", prompt: "riding giant flying whale", emoji: "🐋"},
+            {name: "Vaisseau Spatial", prompt: "piloting sleek spaceship", emoji: "🚀"},
+            {name: "Phénix", prompt: "riding phoenix of fire", emoji: "🔥"},
+            {name: "Loup Astral", prompt: "riding cosmic wolf", emoji: "🐺"},
+            {name: "Raie Manta", prompt: "riding giant manta ray", emoji: "🦈"},
+            {name: "Nuage Magique", prompt: "floating on magical cloud", emoji: "☁️"},
+            {name: "Griffon", prompt: "riding griffin creature", emoji: "🦅"},
+            {name: "Papillon Géant", prompt: "riding giant butterfly", emoji: "🦋"},
+            {name: "Licorne", prompt: "riding elegant unicorn", emoji: "🦄"}
+        ];
+        
+        // 🌍 ENVIRONNEMENTS
+        const environments = [
+            {name: "Nébuleuse Cosmique", prompt: "floating in cosmic nebula with stars", emoji: "🌌"},
+            {name: "Forêt Enchantée", prompt: "enchanted forest with glowing mushrooms", emoji: "🌲"},
+            {name: "Grotte Cristal", prompt: "crystal cave with bioluminescent gems", emoji: "💎"},
+            {name: "Ville Cyberpunk", prompt: "cyberpunk city with neon rain", emoji: "🏙️"},
+            {name: "Palais Corallien", prompt: "underwater coral palace", emoji: "🌊"},
+            {name: "Sommet Aurore", prompt: "mountain peak with aurora borealis", emoji: "⛰️"},
+            {name: "Oasis Désert", prompt: "mystical desert oasis", emoji: "🏜️"},
+            {name: "Îles Flottantes", prompt: "floating sky islands in clouds", emoji: "☁️"},
+            {name: "Volcan Actif", prompt: "active volcano with lava", emoji: "🌋"},
+            {name: "Temple Ancien", prompt: "ancient mystical temple ruins", emoji: "🏛️"},
+            {name: "Jardin Zen", prompt: "peaceful zen garden", emoji: "🎋"},
+            {name: "Cathédrale Gothique", prompt: "gothic cathedral interior", emoji: "⛪"}
+        ];
+        
+        // 🎨 STYLES ARTISTIQUES
+        const artStyles = [
+            {name: "Photoréaliste", prompt: "photorealistic, 8k, ultra detailed, cinematic lighting", emoji: "📸"},
+            {name: "Anime", prompt: "anime style, studio ghibli aesthetic, soft colors", emoji: "🎌"},
+            {name: "Peinture Huile", prompt: "oil painting, classical art, rich textures", emoji: "🖼️"},
+            {name: "Cyberpunk", prompt: "cyberpunk aesthetic, neon lights, dystopian", emoji: "🌃"},
+            {name: "Fantasy Art", prompt: "fantasy concept art, epic scene, dramatic", emoji: "🏰"},
+            {name: "Aquarelle", prompt: "watercolor painting, soft edges, dreamy", emoji: "🎨"},
+            {name: "Digital Art", prompt: "digital art, modern illustration, vibrant", emoji: "💻"},
+            {name: "Sketch", prompt: "pencil sketch, detailed shading", emoji: "✏️"},
+            {name: "Art Nouveau", prompt: "art nouveau style, flowing curves, ornate", emoji: "🎭"},
+            {name: "Pop Art", prompt: "pop art style, bold colors, comic book", emoji: "🎪"},
+            {name: "Surréaliste", prompt: "surrealist art, dreamlike, Salvador Dali style", emoji: "🌀"},
+            {name: "Minimaliste", prompt: "minimalist design, clean lines, simple", emoji: "⚪"}
+        ];
+        
+        // ✨ ESTHÉTIQUES
+        const aesthetics = [
+            {name: "Vaporwave", prompt: "vaporwave aesthetic, pink purple cyan", emoji: "🌸"},
+            {name: "Synthwave", prompt: "synthwave retro sunset, grid lines", emoji: "🌅"},
+            {name: "Steampunk", prompt: "steampunk brass gears, Victorian", emoji: "⚙️"},
+            {name: "Gothic", prompt: "dark gothic, dramatic shadows", emoji: "🏰"},
+            {name: "Bioluminescent", prompt: "bioluminescent glowing", emoji: "🌊"},
+            {name: "Cristallin", prompt: "crystalline structures, prisms", emoji: "💎"},
+            {name: "Cosmique", prompt: "cosmic nebula colors, galaxy", emoji: "🌌"},
+            {name: "Pastel Kawaii", prompt: "soft pastel colors, cute", emoji: "🍭"},
+            {name: "Film Noir", prompt: "black and white, high contrast", emoji: "🎬"},
+            {name: "Holographique", prompt: "holographic rainbow shimmer", emoji: "🔮"},
+            {name: "Néon Acid", prompt: "neon acid colors, electric", emoji: "⚡"},
+            {name: "Nature Éthérée", prompt: "ethereal nature, magical", emoji: "🌿"}
+        ];
+        
+        // ÉTAT GLOBAL
+        let selections = {
+            characterType: null,
+            clothing: null,
+            traits: [],
+            mount: null,
+            environment: null,
+            artStyle: null,
+            aesthetic: null
+        };
+        
+        let generatedPrompt = '';
+        
+        // INITIALISATION
+        function initAll() {
+            initCharacterTypes();
+            initTraits();
+            initMounts();
+            initEnvironments();
+            initArtStyles();
+            initAesthetics();
+            particlesEffect();
+            
+            document.getElementById('detailLevel').addEventListener('input', (e) => {
+                document.getElementById('detailValue').textContent = e.target.value;
+            });
+        }
+        
+        function initCharacterTypes() {
+            const grid = document.getElementById('characterTypeGrid');
+            characterTypes.forEach((type, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${type.emoji}</span><small>${type.name}</small>`;
+                btn.title = type.prompt;
+                btn.onclick = () => selectCharacterType(index, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectCharacterType(index, btn) {
+            document.querySelectorAll('#characterTypeGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            selections.characterType = characterTypes[index];
+            document.getElementById('characterTypeInfo').style.display = 'block';
+            document.getElementById('characterTypeDesc').textContent = selections.characterType.name;
+            
+            // Mise à jour des vêtements selon le type
+            updateClothing();
+        }
+        
+        function updateClothing() {
+            const grid = document.getElementById('clothingGrid');
+            grid.innerHTML = '';
+            
+            let clothingList = [];
+            
+            if (selections.characterType) {
+                if (selections.characterType.name === "Femme") {
+                    clothingList = clothing.woman;
+                } else if (selections.characterType.name === "Homme") {
+                    clothingList = clothing.man;
+                } else {
+                    clothingList = clothing.creature;
+                }
+            } else {
+                clothingList = [...clothing.woman, ...clothing.man, ...clothing.creature];
+            }
+            
+            clothingList.forEach((item, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${item.emoji}</span><small>${item.name}</small>`;
+                btn.title = item.prompt;
+                btn.onclick = () => selectClothing(item, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectClothing(item, btn) {
+            document.querySelectorAll('#clothingGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            selections.clothing = item;
+            document.getElementById('clothingInfo').style.display = 'block';
+            document.getElementById('clothingDesc').textContent = item.name;
+        }
+        
+        function initTraits() {
+            const grid = document.getElementById('traitsGrid');
+            traits.forEach((trait) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${trait.emoji}</span><small>${trait.name}</small>`;
+                btn.title = trait.prompt;
+                btn.onclick = () => toggleTrait(trait, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function toggleTrait(trait, btn) {
+            const index = selections.traits.findIndex(t => t.name === trait.name);
+            
+            if (index > -1) {
+                selections.traits.splice(index, 1);
+                btn.classList.remove('active');
+            } else {
+                if (selections.traits.length < 6) {
+                    selections.traits.push(trait);
+                    btn.classList.add('active');
+                } else {
+                    showStatus('⚠️ Maximum 6 traits sélectionnables', 'warning');
+                    return;
+                }
+            }
+            
+            updateTraitsInfo();
+        }
+        
+        function updateTraitsInfo() {
+            if (selections.traits.length > 0) {
+                document.getElementById('traitsInfo').style.display = 'block';
+                document.getElementById('traitsDesc').textContent = 
+                    selections.traits.map(t => t.name).join(', ');
+            } else {
+                document.getElementById('traitsInfo').style.display = 'none';
+            }
+        }
+        
+        function initMounts() {
+            const grid = document.getElementById('mountGrid');
+            mounts.forEach((mount) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${mount.emoji}</span><small>${mount.name}</small>`;
+                btn.title = mount.prompt;
+                btn.onclick = () => selectMount(mount, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectMount(mount, btn) {
+            document.querySelectorAll('#mountGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            
+            if (selections.mount && selections.mount.name === mount.name) {
+                selections.mount = null;
+                document.getElementById('mountInfo').style.display = 'none';
+            } else {
+                btn.classList.add('active');
+                selections.mount = mount;
+                document.getElementById('mountInfo').style.display = 'block';
+                document.getElementById('mountDesc').textContent = mount.name;
+            }
+        }
+        
+        function initEnvironments() {
+            const grid = document.getElementById('environmentGrid');
+            environments.forEach((env) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${env.emoji}</span><small>${env.name}</small>`;
+                btn.title = env.prompt;
+                btn.onclick = () => selectEnvironment(env, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectEnvironment(env, btn) {
+            document.querySelectorAll('#environmentGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            
+            if (selections.environment && selections.environment.name === env.name) {
+                selections.environment = null;
+                document.getElementById('environmentInfo').style.display = 'none';
+            } else {
+                btn.classList.add('active');
+                selections.environment = env;
+                document.getElementById('environmentInfo').style.display = 'block';
+                document.getElementById('environmentDesc').textContent = env.name;
+            }
+        }
+        
+        function initArtStyles() {
+            const grid = document.getElementById('styleGrid');
+            artStyles.forEach((style) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${style.emoji}</span><small>${style.name}</small>`;
+                btn.title = style.prompt;
+                btn.onclick = () => selectArtStyle(style, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectArtStyle(style, btn) {
+            document.querySelectorAll('#styleGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            
+            if (selections.artStyle && selections.artStyle.name === style.name) {
+                selections.artStyle = null;
+                document.getElementById('styleInfo').style.display = 'none';
+            } else {
+                btn.classList.add('active');
+                selections.artStyle = style;
+                document.getElementById('styleInfo').style.display = 'block';
+                document.getElementById('styleDesc').textContent = style.name;
+            }
+        }
+        
+        function initAesthetics() {
+            const grid = document.getElementById('aestheticGrid');
+            aesthetics.forEach((aesthetic) => {
+                const btn = document.createElement('div');
+                btn.className = 'grid-btn';
+                btn.innerHTML = `<span class="emoji-large">${aesthetic.emoji}</span><small>${aesthetic.name}</small>`;
+                btn.title = aesthetic.prompt;
+                btn.onclick = () => selectAesthetic(aesthetic, btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function selectAesthetic(aesthetic, btn) {
+            document.querySelectorAll('#aestheticGrid .grid-btn').forEach(b => b.classList.remove('active'));
+            
+            if (selections.aesthetic && selections.aesthetic.name === aesthetic.name) {
+                selections.aesthetic = null;
+                document.getElementById('aestheticInfo').style.display = 'none';
+            } else {
+                btn.classList.add('active');
+                selections.aesthetic = aesthetic;
+                document.getElementById('aestheticInfo').style.display = 'block';
+                document.getElementById('aestheticDesc').textContent = aesthetic.name;
+            }
+        }
+        
+        // GÉNÉRATION DU PROMPT
+        function generatePrompt() {
+            let prompt = '';
+            
+            // Style artistique en premier
+            if (selections.artStyle) {
+                prompt += selections.artStyle.prompt;
+            } else {
+                prompt += 'masterpiece, highly detailed, 8k quality';
+            }
+            
+            // Type de personnage
+            if (selections.characterType) {
+                prompt += `, ${selections.characterType.prompt}`;
+            }
+            
+            // Vêtements
+            if (selections.clothing) {
+                prompt += `, ${selections.clothing.prompt}`;
+            }
+            
+            // Traits
+            if (selections.traits.length > 0) {
+                prompt += `, with ${selections.traits.map(t => t.prompt).join(', ')}`;
+            }
+            
+            // Monture
+            if (selections.mount) {
+                prompt += `, ${selections.mount.prompt}`;
+                const travelStyle = document.getElementById('travelStyle').value;
+                if (travelStyle) {
+                    prompt += `, ${travelStyle}`;
+                }
+            }
+            
+            // Environnement
+            if (selections.environment) {
+                prompt += `, ${selections.environment.prompt}`;
+            }
+            
+            // Esthétique
+            if (selections.aesthetic) {
+                prompt += `, ${selections.aesthetic.prompt}`;
+            }
+            
+            // Détails personnalisés
+            const customDetails = document.getElementById('customDetails').value.trim();
+            if (customDetails) {
+                prompt += `, ${customDetails}`;
+            }
+            
+            // Niveau de détails
+            const detailLevel = document.getElementById('detailLevel').value;
+            prompt += `, detail enhancement level ${detailLevel}/10`;
+            
+            generatedPrompt = prompt;
+            document.getElementById('promptOutput').textContent = prompt;
+            showStatus('✨ Prompt généré avec succès !', 'success');
+        }
+        
+        function copyPrompt() {
+            if (!generatedPrompt) {
+                showStatus('⚠️ Générez d\'abord un prompt !', 'warning');
+                return;
+            }
+            
+            navigator.clipboard.writeText(generatedPrompt).then(() => {
+                showStatus('📋 Prompt copié dans le presse-papier !', 'success');
+            }).catch(() => {
+                showStatus('❌ Erreur lors de la copie', 'error');
+            });
+        }
+        
+        function clearAll() {
+            document.querySelectorAll('.grid-btn.active').forEach(btn => btn.classList.remove('active'));
+            
+            selections = {
+                characterType: null,
+                clothing: null,
+                traits: [],
+                mount: null,
+                environment: null,
+                artStyle: null,
+                aesthetic: null
+            };
+            
+            generatedPrompt = '';
+            
+            document.querySelectorAll('.selection-info').forEach(info => info.style.display = 'none');
+            document.getElementById('customDetails').value = '';
+            document.getElementById('promptOutput').textContent = 'Configurez votre personnage en sélectionnant les options ci-dessus, puis cliquez sur "Générer Prompt"...';
+            
+            showStatus('🗑️ Tout a été réinitialisé', 'success');
+        }
+        
+        function randomize() {
+            clearAll();
+            
+            setTimeout(() => {
+                // Random character type
+                const charBtns = document.querySelectorAll('#characterTypeGrid .grid-btn');
+                charBtns[Math.floor(Math.random() * charBtns.length)].click();
+                
+                setTimeout(() => {
+                    // Random clothing
+                    const clothBtns = document.querySelectorAll('#clothingGrid .grid-btn');
+                    if (clothBtns.length > 0) {
+                        clothBtns[Math.floor(Math.random() * clothBtns.length)].click();
+                    }
+                    
+                    // Random traits (2-4)
+                    const traitCount = Math.floor(Math.random() * 3) + 2;
+                    const traitBtns = document.querySelectorAll('#traitsGrid .grid-btn');
+                    const usedIndices = [];
+                    
+                    for (let i = 0; i < traitCount; i++) {
+                        let idx;
+                        do {
+                            idx = Math.floor(Math.random() * traitBtns.length);
+                        } while (usedIndices.includes(idx));
+                        usedIndices.push(idx);
+                        traitBtns[idx].click();
+                    }
+                    
+                    // Random mount (50%)
+                    if (Math.random() > 0.5) {
+                        const mountBtns = document.querySelectorAll('#mountGrid .grid-btn');
+                        mountBtns[Math.floor(Math.random() * mountBtns.length)].click();
+                    }
+                    
+                    // Random environment (80%)
+                    if (Math.random() > 0.2) {
+                        const envBtns = document.querySelectorAll('#environmentGrid .grid-btn');
+                        envBtns[Math.floor(Math.random() * envBtns.length)].click();
+                    }
+                    
+                    // Random art style (90%)
+                    if (Math.random() > 0.1) {
+                        const styleBtns = document.querySelectorAll('#styleGrid .grid-btn');
+                        styleBtns[Math.floor(Math.random() * styleBtns.length)].click();
+                    }
+                    
+                    // Random aesthetic (70%)
+                    if (Math.random() > 0.3) {
+                        const aesButtons = document.querySelectorAll('#aestheticGrid .grid-btn');
+                        aesButtons[Math.floor(Math.random() * aesButtons.length)].click();
+                    }
+                    
+                    document.getElementById('detailLevel').value = Math.floor(Math.random() * 10) + 1;
+                    document.getElementById('detailValue').textContent = document.getElementById('detailLevel').value;
+                    
+                    setTimeout(() => {
+                        generatePrompt();
+                        showStatus('🎲 Configuration aléatoire complète générée !', 'success');
+                    }, 100);
+                }, 200);
+            }, 100);
+        }
+        
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            const content = header.nextElementSibling;
+            content.classList.toggle('collapsed');
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                status.style.background = 'rgba(0,255,127,0.3)';
+                status.style.borderColor = '#00ff80';
+            } else if (type === 'warning') {
+                status.style.background = 'rgba(255,193,7,0.3)';
+                status.style.borderColor = '#ffc107';
+            } else if (type === 'error') {
+                status.style.background = 'rgba(244,67,54,0.3)';
+                status.style.borderColor = '#f44336';
+            }
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+        
+        function particlesEffect() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    size: Math.random() * 2.5 + 0.5,
+                    hue: Math.random() * 360
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    
+                    ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, 0.4)`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+        
+        // Initialisation
+        initAll();
+    </script>
+</body>
+</html>
