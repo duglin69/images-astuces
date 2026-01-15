@@ -89,7 +89,7 @@
         <div class="negative-prompt">
             <label style="color: #ff4757;">Prompt Négatif (À copier) :</label>
             <div id="negPrompt">
-    photo visible on the phone screen, (celebrity holding phone:1.5), phone back camera visible, phone facing away, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.
+    viewer showing teeth, viewer open mouth, phone visible, camera visible, (celebrity holding phone:1.5), celebrity's extended arm, phone screen, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.
 </div>
         </div>
     </div>
@@ -102,31 +102,36 @@
     }
 
     function buildPrompt() {
-        const name = document.getElementById('iconName').value || "[Nom de l'Icône]";
-        const place = document.getElementById('contextPlace').value || "[Lieu mythique]";
-        const isSelfie = document.getElementById('selfieOption').checked;
-        
-        const style = document.getElementById('styleChoice').value === 'custom' ? document.getElementById('customStyle').value : document.getElementById('styleChoice').value;
-        const framing = document.getElementById('framing').value === 'custom' ? document.getElementById('customFraming').value : document.getElementById('framing').value;
-        const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+    // 1. On récupère ce que l'utilisateur a tapé ou choisi
+    const name = document.getElementById('iconName').value || "[Nom de l'Icône]";
+    const place = document.getElementById('contextPlace').value || "[Lieu mythique]";
+    const isSelfie = document.getElementById('selfieOption').checked;
+    const style = document.getElementById('styleChoice').value === 'custom' ? document.getElementById('customStyle').value : document.getElementById('styleChoice').value;
+    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+    const framing = document.getElementById('framing').value === 'custom' ? document.getElementById('customFraming').value : document.getElementById('framing').value;
 
-        // Ajout automatique du flash de remplissage pour la netteté en mode selfie
-        let flashEffect = isSelfie ? "subtle fill-in flash for face clarity, " : "";
-        let technical = `${framing}, ${lighting}, ${flashEffect}high-shutter speed, sharp focus, extremely detailed textures.`;
-        
-        let scenario = "";
-        if (isSelfie) {
-    scenario = `A crystal-clear POV selfie taken by the viewer's own arm visible in frame. The smartphone is correctly oriented for a selfie. **${name}** is standing next to the viewer, perfectly in focus. Background: ${place}. Atmosphere is ${lighting}.`;
-} else {
-            scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
-        }
+    // 2. On fixe la règle de la NETTETÉ pour toutes les photos
+    let technical = `high-shutter speed, sharp focus, 8k resolution, extremely detailed skin textures, no motion blur, ${framing}.`;
+    
+    let scenario = "";
 
-        const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
-        document.getElementById('posPrompt').innerText = finalPos;
-        document.getElementById('output').style.display = 'block';
+    // 3. SI LE MODE SELFIE EST COCHÉ
+    if (isSelfie) {
+        scenario = `A sharp first-person POV selfie. The viewer's own arm is partially visible from the bottom corner. The viewer has a natural, subtle closed-mouth smile (lips together). **${name}** is standing next to the viewer, leaning into the frame with a joyful, friendly smile. Background: ${place}. Atmosphere is ${lighting}.`;
+    } 
+    // 4. SI LE MODE SELFIE N'EST PAS COCHÉ
+    else {
+        scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
     }
+
+    // 5. On assemble le tout pour l'afficher
+    const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
+    document.getElementById('posPrompt').innerText = finalPos;
+    document.getElementById('output').style.display = 'block';
+}
 </script>
 
 </body>
 </html>
+
 
