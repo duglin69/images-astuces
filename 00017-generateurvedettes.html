@@ -235,7 +235,7 @@ body {
         const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
         const style = document.getElementById('styleChoice').value;
         
-        const autograph = `Subtle handwritten autograph "${name}" in the corner.`;
+        const autograph = !isSelfie ? `Subtle handwritten autograph "${name}" in the bottom right corner.` : "";
         
         let scenario = "";
         if (isSelfie) {
@@ -253,5 +253,6 @@ body {
 </script>
 </body>
 </html>
+
 
 
