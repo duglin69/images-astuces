@@ -61,23 +61,12 @@
         </div>
 
         <div class="section full">
-            <label>Style Artistique (20+ options)</label>
+            <label>Style Artistique</label>
             <select id="styleChoice" onchange="toggleCustom(this, 'customStyle')">
                 <option value="Hyper-realistic photography (Kodak Portra 400 grain)">Photo Réaliste (Kodak Portra)</option>
-                <option value="3D Ukiyo-e woodblock relief">3D Ukiyo-e Relief</option>
-                <option value="Ethereal Watercolor (Aquarelle)">Aquarelle Éthérée</option>
                 <option value="Noir Cinema 1950s (High contrast B&W)">Film Noir 1950</option>
-                <option value="Vaporwave Synthwave Aesthetic">Vaporwave / Néon</option>
-                <option value="Steampunk Brass & Copper Gears">Steampunk Cuivre</option>
-                <option value="Cyberpunk Glitch Art">Cyberpunk Glitch</option>
                 <option value="Renaissance Oil Painting">Peinture à l'huile Renaissance</option>
                 <option value="Pop Art Silkscreen (Warhol style)">Pop Art Warhol</option>
-                <option value="Minimalist Line Art">Line Art Minimaliste</option>
-                <option value="Double Exposure Surrealism">Double Exposition</option>
-                <option value="Stained Glass Mosaic">Mosaïque Vitrail</option>
-                <option value="Pencil Sketch & Charcoal">Crayon & Fusain</option>
-                <option value="Gothic Pastel">Gothique Pastel</option>
-                <option value="Synthwave Retro-futurism">Retro-futurisme</option>
                 <option value="custom">-- Personnalisé --</option>
             </select>
             <input type="text" id="customStyle" class="custom-input" placeholder="Décrivez votre style...">
@@ -86,7 +75,7 @@
         <div class="section full">
             <div class="checkbox-group">
                 <input type="checkbox" id="selfieOption" style="width: auto;">
-                <span>📸 **MODE SELFIE ACTIVÉ** (Ajuste automatiquement l'angle et l'objectif)</span>
+                <span>📸 **MODE SELFIE NET ACTIVÉ**</span>
             </div>
         </div>
     </div>
@@ -99,7 +88,9 @@
         
         <div class="negative-prompt">
             <label style="color: #ff4757;">Prompt Négatif (À copier) :</label>
-            <div id="negPrompt">low quality, blurry, deformed hands, extra fingers, distorted face, phone screen facing away, floating phone, bad anatomy, text, watermark, split screen.</div>
+            <div id="negPrompt">
+                (celebrity holding phone:1.5), phone back camera visible, phone facing away, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.
+            </div>
         </div>
     </div>
 </div>
@@ -119,17 +110,18 @@
         const framing = document.getElementById('framing').value === 'custom' ? document.getElementById('customFraming').value : document.getElementById('framing').value;
         const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
 
-        let technical = `${framing}, ${lighting}, high-end camera lens, extremely detailed textures.`;
+        // Ajout automatique du flash de remplissage pour la netteté en mode selfie
+        let flashEffect = isSelfie ? "subtle fill-in flash for face clarity, " : "";
+        let technical = `${framing}, ${lighting}, ${flashEffect}high-shutter speed, sharp focus, extremely detailed textures.`;
         
         let scenario = "";
         if (isSelfie) {
-            scenario = `A realistic wide-angle POV selfie taken by an anonymous person (arm visible in frame) standing next to **${name}**. The smartphone is correctly oriented facing them. They are both smiling naturally at the camera lens. Background: ${place}. 24mm lens distortion, natural lighting.`;
+            scenario = `A crystal-clear POV selfie taken by the viewer's own arm visible in frame. The smartphone is correctly oriented with the front camera facing the subjects. **${name}** is standing next to the viewer, perfectly in focus. Background: ${place}. Atmosphere is ${lighting}.`;
         } else {
             scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
         }
 
         const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
-        
         document.getElementById('posPrompt').innerText = finalPos;
         document.getElementById('output').style.display = 'block';
     }
