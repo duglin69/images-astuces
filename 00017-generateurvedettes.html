@@ -132,6 +132,16 @@
         </div>
     </div>
 
+    <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <button type="button" onclick="surpriseMe()" style="flex: 1; padding: 10px; background: #9b59b6; border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold;">🎲 SURPRENDS-MOI</button>
+</div>
+
+<div class="output-box" id="output" style="display:none;">
+    <button id="copyBtn" onclick="copyPrompt()" style="float: right; padding: 5px 10px; background: var(--gold); border: none; border-radius: 5px; cursor: pointer; font-size: 0.8em; font-weight: bold;">📋 COPIER LE PROMPT</button>
+    <label>Prompt Positif :</label>
+    <div id="posPrompt" style="color: #2ed573; font-family: monospace; font-size: 0.9em; margin-top: 10px;">...</div>
+</div>
+    
     <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER LE PROMPT</button>
 
     <div class="output-box" id="output" style="display:none;">
@@ -155,40 +165,63 @@
         }
     }
 
-    function buildPrompt() {
-        const name = document.getElementById('iconName').value || "[Nom de l'Icône]";
-        const isSelfie = document.getElementById('selfieOption').checked;
-        
-        const place = document.getElementById('contextPlace').value === 'custom' ? 
-                      document.getElementById('customPlace').value : 
-                      document.getElementById('contextPlace').value;
+   // --- NOUVELLE FONCTION DE COPIE ---
+function copyPrompt() {
+    const text = document.getElementById('posPrompt').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerText = "✅ COPIÉ !";
+        setTimeout(() => btn.innerText = "📋 COPIER LE PROMPT", 2000);
+    });
+}
 
-        const lighting = document.getElementById('lighting').value === 'custom' ? 
-                         document.getElementById('customLighting').value : 
-                         document.getElementById('lighting').value;
+// --- FONCTION SURPRENDS-MOI ---
+function surpriseMe() {
+    const lightOptions = document.querySelectorAll('#lighting option:not([value="custom"])');
+    const placeOptions = document.querySelectorAll('#contextPlace option:not([value="custom"])');
+    
+    document.getElementById('lighting').value = lightOptions[Math.floor(Math.random() * lightOptions.length)].value;
+    document.getElementById('contextPlace').value = placeOptions[Math.floor(Math.random() * placeOptions.length)].value;
+    
+    buildPrompt();
+}
 
-        const style = document.getElementById('styleChoice').value === 'custom' ? 
-                      document.getElementById('customStyle').value : 
-                      document.getElementById('styleChoice').value;
+// --- LOGIQUE GÉNÉRALE MISE À JOUR ---
+function buildPrompt() {
+    let name = document.getElementById('iconName').value || "Famous Star";
+    const isSelfie = document.getElementById('selfieOption').checked;
+    
+    // Détection Duo (si "et" ou "and" est présent)
+    const isDuo = name.toLowerCase().includes(" et ") || name.toLowerCase().includes(" and ");
+    const verb = isDuo ? "are" : "is"; // Correction grammaticale auto
 
-        const framing = document.getElementById('framing').value === 'custom' ? 
-                        document.getElementById('customFraming').value : 
-                        document.getElementById('framing').value;
+    const place = document.getElementById('contextPlace').value === 'custom' ? 
+                  document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
 
-        let technical = `high-shutter speed, sharp focus, 8k resolution, detailed skin textures, no motion blur, ${framing}.`;
-        
-        let scenario = "";
-        if (isSelfie) {
-            scenario = `A sharp first-person POV selfie. The viewer's own arm is partially visible from the bottom corner. The viewer has a natural, subtle closed-mouth smile (lips together). **${name}** is standing next to the viewer, leaning into the frame with a joyful smile. Background: ${place}. Atmosphere: ${lighting}.`;
-        } else {
-            scenario = `An iconic masterwork of **${name}** ${place}. Atmosphere: ${lighting}. Cinematic composition.`;
-        }
+    const lighting = document.getElementById('lighting').value === 'custom' ? 
+                     document.getElementById('customLighting').value : document.getElementById('lighting').value;
 
-        const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
-        document.getElementById('posPrompt').innerText = finalPos;
-        document.getElementById('output').style.display = 'block';
+    const style = document.getElementById('styleChoice').value;
+    const framing = document.getElementById('framing').value;
+
+    let technical = `high-shutter speed, sharp focus, 8k, detailed skin, ${framing}.`;
+    
+    // Ajout de la signature (Autographe)
+    const signature = `with a handwritten signature "${name}" in the bottom right corner.`;
+
+    let scenario = "";
+    if (isSelfie) {
+        scenario = `A sharp POV selfie. The viewer's arm is partially visible. The viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${signature}`;
+    } else {
+        scenario = `An iconic masterwork of **${name}** ${place}. Atmosphere: ${lighting}. ${signature}`;
     }
+
+    const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
+    document.getElementById('posPrompt').innerText = finalPos;
+    document.getElementById('output').style.display = 'block';
+}
 </script>
 
 </body>
 </html>
+
