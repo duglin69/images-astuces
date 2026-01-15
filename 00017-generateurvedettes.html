@@ -192,10 +192,13 @@
             ? `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame with a joyful expression. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`
             : `An iconic professional photograph of **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
 
-        const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
+        // Dans la fonction buildPrompt, remplacez la ligne finalPos par celle-ci :
+const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
+const finalPos = `[${subjectLabel}: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
         document.getElementById('posPrompt').innerText = finalPos;
         document.getElementById('output').style.display = 'block';
     }
 </script>
 </body>
 </html>
+
