@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Icon Experience Generator - Nano Edition Full</title>
+    <title>Icon Experience Generator - Nano Director Edition</title>
     <style>
         :root { --gold: #ffa502; --action: #2ed573; --bg: #1e2124; --panel: #2f3542; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 20px; line-height: 1.4; }
@@ -17,7 +17,7 @@
         button { cursor: pointer; border: none; border-radius: 10px; font-weight: bold; color: white; transition: 0.2s; }
         #generateBtn { flex: 2; padding: 15px; background: var(--action); font-size: 1.1em; }
         #surpriseBtn { flex: 1; padding: 15px; background: #9b59b6; font-size: 1.1em; }
-        .output-box { margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; }
+        .output-box { margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; position: relative; }
         .copy-controls { display: flex; gap: 10px; margin-bottom: 10px; }
         .btn-copy { padding: 8px 12px; font-size: 0.8em; background: var(--gold); }
         .btn-copy-neg { padding: 8px 12px; font-size: 0.8em; background: #ff4757; }
@@ -28,7 +28,7 @@
 <body>
 
 <div class="app-container">
-    <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Nano Edition</h1>
+    <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Nano Director</h1>
 
     <div class="grid">
         <div class="section full">
@@ -58,55 +58,22 @@
             <label>Atmosphère & Lumière</label>
             <select id="lighting" onchange="toggleCustom(this, 'customLighting')">
                 <option value="Morning glow (soft light, light mist)">Glow matinal</option>
-                <option value="Harsh zenith sun (blazing sun, deep shadows)">Zénith écrasant</option>
                 <option value="Golden Hour (warm amber hues)">Golden Hour</option>
-                <option value="Blue Hour (deep twilight, electric atmosphere)">Heure Bleue</option>
                 <option value="Night neon (pink and blue reflections)">Néon nocturne</option>
-                <option value="Cinematic rim lighting (light outline)">Contre-jour cinématique</option>
-                <option value="Studio haze (illuminated particles)">Brumes de studio</option>
-                <option value="Dramatic chiaroscuro (high contrast)">Clair-obscur dramatique</option>
-                <option value="Dimmed light (candlelight style)">Lumière tamisée</option>
                 <option value="Direct flash (paparazzi look, harsh shadows)">Flash direct</option>
+                <option value="Dramatic chiaroscuro (high contrast)">Clair-obscur dramatique</option>
                 <option value="Rain reflections (shimmering city lights)">Reflets de pluie</option>
-                <option value="Nostalgic sepia (old film vibe)">Sépia nostalgique</option>
-                <option value="High Key (bright and light-filled)">High Key</option>
-                <option value="Low Key (dark and mysterious)">Low Key</option>
-                <option value="Vaporwave (purple and cyan tones)">Vaporwave</option>
-                <option value="Ice and Steel (cold blue metallic)">Glace et Acier</option>
-                <option value="Wood fire (orange flickering glow)">Feu de bois</option>
-                <option value="Gold dust (sunbeams and particles)">Poussière d'or</option>
-                <option value="Prismatic rainbow (refracted light)">Arc-en-ciel prismatique</option>
-                <option value="Film Noir B&W (heavy grain, 1950s)">Noir et Blanc argentique</option>
-                <option value="Cyberpunk Glitch (unstable lights)">Cyberpunk Glitch</option>
-                <option value="Soft Focus (dreamy and glowing)">Soft Focus</option>
-                <option value="Aquarium light (turquoise reflections)">Lumière d'aquarium</option>
-                <option value="Impending storm (leaden sky, electric)">Orage imminent</option>
-                <option value="Purple sunset (intense violet tones)">Coucher de soleil pourpre</option>
-                <option value="Underground light (cold industrial neon)">Lumière de souterrain</option>
-                <option value="Sun-drenched (artistic overexposure)">Sun-drenched</option>
-                <option value="Moonlight (silvery cold light)">Moonlight</option>
-                <option value="Technicolor vibe (saturated 1960s look)">Ambiance Technicolor</option>
-                <option value="Stained glass light (colored spots)">Lumière de vitrail</option>
-                <option value="Thick fog (mysterious diffused lights)">Brouillard épais</option>
                 <option value="Disco Fever (rotating light spots)">Disco Fever</option>
-                <option value="Winter dawn (pure cold white light)">Aube hivernale</option>
-                <option value="Forest zenith light (sunbeams through foliage)">Lumière de forêt</option>
-                <option value="Fireworks (multicolored light bursts)">Feu d'artifice</option>
-                <option value="Eclipse (surreal copper-colored light)">Éclipse</option>
-                <option value="Polaroid vibe (faded vintage tones)">Ambiance Polaroid</option>
-                <option value="Spotlight (single focused white beam)">Projecteur de poursuite</option>
-                <option value="Doomsday light (apocalyptic ochre)">Lumière de fin du monde</option>
-                <option value="Pastel Goth (soft but dark atmosphere)">Pastel Goth</option>
                 <option value="Hygge atmosphere (warm, cozy, candlelit glow)">Hygge</option>
                 <option value="Afrohemian aesthetic (warm earth tones)">Afrohemian</option>
-                <option value="Icy blue lighting (cold, crisp atmosphere)">Icy Blue</option>
-                <option value="custom">-- Personnalisé --</option>
+                <option value="Icy blue lighting (cold atmosphere)">Icy Blue</option>
+                <option value="custom">-- Personnalisée --</option>
             </select>
             <input type="text" id="customLighting" class="custom-input" placeholder="Ambiance en anglais...">
         </div>
 
         <div class="section">
-            <label>Style & Époque</label>
+            <label>Style & Époque (Grain & Texture)</label>
             <select id="styleChoice">
                 <option value="Modern 2020s digital photography, ultra-sharp 8k">Digital 2020s</option>
                 <option value="Early 2010s digital camera, clean look">Numérique 2010s</option>
@@ -116,6 +83,18 @@
                 <option value="1970s Kodachrome vintage slide film texture">Vintage 70s</option>
                 <option value="1960s film grain, warm nostalgic tones">Nostalgie 60s</option>
                 <option value="1950s Technicolor cinematic style">Cinéma 50s</option>
+                <option value="Classic Black and White Film Noir style, heavy contrast">N&B Argentique (Film Noir)</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <label>Format de l'image (Aspect Ratio)</label>
+            <select id="aspectRatio">
+                <option value="--ar 1:1">Carré (1:1)</option>
+                <option value="--ar 16:9">Large / Cinéma (16:9)</option>
+                <option value="--ar 4:5">Portrait (4:5)</option>
+                <option value="--ar 3:2">Photo Classique (3:2)</option>
+                <option value="--ar 21:9">Ultra-Large (21:9)</option>
             </select>
         </div>
 
@@ -125,15 +104,15 @@
                 <span>📸 MODE SELFIE</span>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="duoOption">
-                <span>👥 MODE DUO (16:9)</span>
+                <input type="checkbox" id="duoOption" onchange="suggestFormat(this)">
+                <span>👥 MODE DUO</span>
             </div>
         </div>
     </div>
 
     <div class="btn-group">
         <button id="surpriseBtn" onclick="surpriseMe()">🎲 SURPRENDS-MOI</button>
-        <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER</button>
+        <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER LE PROMPT</button>
     </div>
 
     <div id="output" class="output-box" style="display:none;">
@@ -143,7 +122,7 @@
         </div>
         
         <label>Prompt Positif :</label>
-        <div id="posPrompt" style="color: #2ed573; font-family: monospace; font-size: 0.9em;"></div>
+        <div id="posPrompt" style="color: # action; color: #2ed573; font-family: monospace; font-size: 0.9em;"></div>
         
         <div class="negative-prompt-area">
             <label>Prompt Négatif :</label>
@@ -158,6 +137,13 @@
         input.style.display = (select.value === 'custom') ? 'block' : 'none';
     }
 
+    // Suggère le 16:9 si on coche Duo, mais laisse le choix
+    function suggestFormat(checkbox) {
+        if (checkbox.checked) {
+            document.getElementById('aspectRatio').value = "--ar 16:9";
+        }
+    }
+
     function copyText(elementId, btnId) {
         const text = document.getElementById(elementId).innerText;
         const btn = document.getElementById(btnId);
@@ -169,7 +155,8 @@
     }
 
     function surpriseMe() {
-        ['contextPlace', 'lighting', 'styleChoice'].forEach(id => {
+        const selects = ['contextPlace', 'lighting', 'styleChoice', 'aspectRatio'];
+        selects.forEach(id => {
             const options = document.querySelectorAll(`#${id} option:not([value="custom"])`);
             document.getElementById(id).value = options[Math.floor(Math.random() * options.length)].value;
         });
@@ -177,32 +164,34 @@
     }
 
     function buildPrompt() {
-    const name = document.getElementById('iconName').value || "Celebrity";
-    const isSelfie = document.getElementById('selfieOption').checked;
-    const isDuo = document.getElementById('duoOption').checked;
-    
-    // Logique d'accord grammatical
-    const verb = isDuo ? "are" : "is";
-    const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
-    const personLabel = isDuo ? "celebrities" : "celebrity"; // La correction est ici !
-    const aspect = isDuo ? "--ar 16:9" : "--ar 1:1";
+        const name = document.getElementById('iconName').value || "Celebrity";
+        const isSelfie = document.getElementById('selfieOption').checked;
+        const isDuo = document.getElementById('duoOption').checked;
+        
+        // Eléments dynamiques
+        const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
+        const personLabel = isDuo ? "celebrities" : "celebrity";
+        const verb = isDuo ? "are" : "is";
+        const aspect = document.getElementById('aspectRatio').value;
 
-    const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
-    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
-    const style = document.getElementById('styleChoice').value;
-    
-    const autograph = `Subtle handwritten autograph "${name}" in the corner.`;
-    
-    let scenario = isSelfie 
-        ? `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`
-        : `An iconic professional photograph of the ${personLabel} **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
+        const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+        const style = document.getElementById('styleChoice').value;
+        
+        const autograph = `Subtle handwritten autograph "${name}" in the corner.`;
+        
+        let scenario = "";
+        if (isSelfie) {
+            scenario = `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        } else {
+            scenario = `An iconic professional photograph of the ${personLabel} **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        }
 
-    const finalPos = `[${subjectLabel}: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
-    document.getElementById('posPrompt').innerText = finalPos;
-    document.getElementById('output').style.display = 'block';
-}
+        const finalPos = `[${subjectLabel}: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
+        
+        document.getElementById('posPrompt').innerText = finalPos;
+        document.getElementById('output').style.display = 'block';
+    }
 </script>
 </body>
 </html>
-
-
