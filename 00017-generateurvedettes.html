@@ -89,8 +89,8 @@
         <div class="negative-prompt">
             <label style="color: #ff4757;">Prompt Négatif (À copier) :</label>
             <div id="negPrompt">
-                (celebrity holding phone:1.5), phone back camera visible, phone facing away, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.
-            </div>
+    photo visible on the phone screen, (celebrity holding phone:1.5), phone back camera visible, phone facing away, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.
+</div>
         </div>
     </div>
 </div>
@@ -116,8 +116,8 @@
         
         let scenario = "";
         if (isSelfie) {
-            scenario = `A crystal-clear POV selfie taken by the viewer's own arm visible in frame. The smartphone is correctly oriented with the front camera facing the subjects. **${name}** is standing next to the viewer, perfectly in focus. Background: ${place}. Atmosphere is ${lighting}.`;
-        } else {
+    scenario = `A crystal-clear POV selfie taken by the viewer's own arm visible in frame. The smartphone is correctly oriented for a selfie. **${name}** is standing next to the viewer, perfectly in focus. Background: ${place}. Atmosphere is ${lighting}.`;
+} else {
             scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
         }
 
@@ -129,3 +129,4 @@
 
 </body>
 </html>
+
