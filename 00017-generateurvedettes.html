@@ -58,29 +58,58 @@ body {
 <div class="app-container">
     <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Nano Director</h1>
 
-    <div class="grid">
-        <div class="section full">
-            <label>L'Icône ou le Duo (ex: Prince and Michael Jackson)</label>
-            <input type="text" id="iconName" placeholder="Entrez les noms...">
-        </div>
+    <div class="section full">
+    <label>L'Icône ou le Duo (Choisis dans la liste ou tape un nom)</label>
+    <input type="text" id="iconName" list="vedettesSuggestions" placeholder="Tape un nom ou clique pour choisir...">
+    
+    <datalist id="vedettesSuggestions">
+        <option value="Farrah Fawcett">
+        <option value="Brooke Shields">
+        <option value="Tatum O'Neal">
+
+        <option value="Steve McQueen">
+        <option value="Robert Redford">
+        <option value="Clint Eastwood">
+        <option value="Al Pacino">
+        <option value="Robert De Niro">
+        <option value="Harrison Ford">
+        <option value="Jack Nicholson">
+        <option value="Johnny Depp">
+        <option value="Bruce Willis">
+        <option value="Sylvester Stallone">
+        <option value="Keanu Reeves">
+        <option value="Nicolas Cage">
+
+        <option value="Marilyn Monroe">
+        <option value="Julia Roberts">
+        <option value="Michelle Pfeiffer">
+        <option value="Sharon Stone">
+        <option value="Uma Thurman">
+        <option value="Sigourney Weaver">
+        <option value="Winona Ryder">
+        <option value="Demi Moore">
+    </datalist>
+</div>
 
         <div class="section">
-            <label>Lieu (Background)</label>
-            <select id="contextPlace" onchange="toggleCustom(this, 'customPlace')">
-                <option value="in a legendary music studio">Studio d'enregistrement</option>
-                <option value="on a sun-drenched beach">Plage ensoleillée</option>
-                <option value="in a crowded stadium">Stade bondé</option>
-                <option value="on a luxury rooftop at sunset">Rooftop luxueux</option>
-                <option value="backstage at a concert">Coulisses</option>
-                <option value="on a red carpet with flashes">Tapis rouge</option>
-                <option value="in a vintage American diner">Diner rétro</option>
-                <option value="on a busy New York street">Rue de New York</option>
-                <option value="in a private jet cabin">Jet privé</option>
-                <option value="in a neon-lit nightclub">Night-club</option>
-                <option value="custom">-- Personnalisé --</option>
-            </select>
-            <input type="text" id="customPlace" class="custom-input" placeholder="Lieu en anglais...">
-        </div>
+    <label>Lieu (Background)</label>
+    <select id="contextPlace" onchange="toggleCustom(this, 'customPlace')">
+        <option value="on a desert island with palm trees">Île déserte (Lagon Bleu)</option>
+        <option value="on a vintage baseball field dugout">Banc de touche baseball (Tatum)</option>
+        <option value="in a legendary music studio">Studio d'enregistrement</option>
+        <option value="on a sun-drenched beach">Plage ensoleillée</option>
+        <option value="in a crowded stadium">Stade bondé</option>
+        <option value="on a luxury rooftop at sunset">Rooftop luxueux</option>
+        <option value="backstage at a concert">Coulisses</option>
+        <option value="on a red carpet with flashes">Tapis rouge</option>
+        <option value="in a vintage American diner">Diner rétro</option>
+        <option value="on a busy New York street">Rue de New York</option>
+        <option value="in a private jet cabin">Jet privé</option>
+        <option value="in a neon-lit nightclub">Night-club</option>
+        <option value="custom">-- Personnalisé --</option>
+    </select>
+    <input type="text" id="customPlace" class="custom-input" placeholder="Lieu en anglais...">
+</div>
 
         <div class="section">
             <label>Atmosphère & Lumière</label>
@@ -210,7 +239,8 @@ body {
         
         let scenario = "";
         if (isSelfie) {
-            scenario = `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
+            // On remet ta consigne de sécurité "closed-mouth smile"
+            scenario = `A sharp POV selfie at 24mm wide-angle lens. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** is leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
         } else {
             scenario = `An iconic professional photograph of the ${personLabel} **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
         }
@@ -223,4 +253,5 @@ body {
 </script>
 </body>
 </html>
+
 
