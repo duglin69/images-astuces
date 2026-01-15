@@ -30,9 +30,22 @@
             <input type="text" id="iconName" placeholder="Steve McQueen, Platini, Prince...">
         </div>
         <div class="section">
-            <label>Contexte / Lieu (Film, Stade, Scène)</label>
-            <input type="text" id="contextPlace" placeholder="Le Mans, Stade de France, etc.">
-        </div>
+    <label>Contexte / Lieu (Background)</label>
+    <select id="contextPlace" onchange="toggleCustom(this, 'customPlace')">
+        <option value="in a legendary music studio">Studio d'enregistrement mythique</option>
+        <option value="on a sun-drenched beach">Plage ensoleillée</option>
+        <option value="in the middle of a crowded stadium">Stade bondé</option>
+        <option value="on a luxury rooftop at sunset">Rooftop luxueux au coucher du soleil</option>
+        <option value="backstage at a concert">Coulisses d'un concert</option>
+        <option value="on a red carpet with camera flashes">Tapis rouge et flashs</option>
+        <option value="in a vintage American diner">Diner américain rétro</option>
+        <option value="on a busy New York street">Rue animée de New York</option>
+        <option value="in a private jet cabin">Cabine de jet privé</option>
+        <option value="in a neon-lit nightclub">Night-club aux néons</option>
+        <option value="custom">-- Personnalisé (Tapez le vôtre) --</option>
+    </select>
+    <input type="text" id="customPlace" class="custom-input" placeholder="Ex: in a space station, in a jazz club...">
+</div>
 
         <div class="section">
             <label>Cadrage & Composition</label>
@@ -47,18 +60,56 @@
             <input type="text" id="customFraming" class="custom-input" placeholder="Décrivez votre cadrage...">
         </div>
 
-        <div class="section">
-            <label>Lumière & Éclairage</label>
-            <select id="lighting" onchange="toggleCustom(this, 'customLighting')">
-                <option value="Cinematic rim lighting (Contre-jour)">Cinématique (Contre-jour)</option>
-                <option value="Golden hour (Lumière chaude)">Golden Hour</option>
-                <option value="Dramatic chiaroscuro (Contrasté)">Chiaroscuro (Contrasté)</option>
-                <option value="Soft studio light (Douce)">Soft Studio</option>
-                <option value="Neon night glow (Néon)">Néon Nocturne</option>
-                <option value="custom">-- Personnalisé --</option>
-            </select>
-            <input type="text" id="customLighting" class="custom-input" placeholder="Décrivez l'éclairage...">
-        </div>
+       <div class="section">
+    <label>Atmosphère & Lumière (40+ options)</label>
+    <select id="lighting" onchange="toggleCustom(this, 'customLighting')">
+        <option value="Morning glow (soft light, light mist)">Glow matinal</option>
+        <option value="Harsh zenith sun (blazing sun, deep shadows)">Zénith écrasant</option>
+        <option value="Golden Hour (warm amber hues)">Golden Hour</option>
+        <option value="Blue Hour (deep twilight, electric atmosphere)">Heure Bleue</option>
+        <option value="Night neon (pink and blue reflections)">Néon nocturne</option>
+        <option value="Cinematic rim lighting (light outline)">Contre-jour cinématique</option>
+        <option value="Studio haze (illuminated particles)">Brumes de studio</option>
+        <option value="Dramatic chiaroscuro (high contrast)">Clair-obscur dramatique</option>
+        <option value="Dimmed light (candlelight style)">Lumière tamisée</option>
+        <option value="Direct flash (paparazzi look, harsh shadows)">Flash direct (Look Paparazzi)</option>
+        <option value="Rain reflections (shimmering city lights)">Reflets de pluie</option>
+        <option value="Nostalgic sepia (old film vibe)">Sépia nostalgique</option>
+        <option value="High Key (bright and light-filled)">High Key</option>
+        <option value="Low Key (dark and mysterious)">Low Key</option>
+        <option value="Vaporwave (purple and cyan tones)">Vaporwave</option>
+        <option value="Ice and Steel (cold blue metallic)">Glace et Acier</option>
+        <option value="Wood fire (orange flickering glow)">Feu de bois</option>
+        <option value="Gold dust (sunbeams and particles)">Poussière d'or</option>
+        <option value="Prismatic rainbow (refracted light)">Arc-en-ciel prismatique</option>
+        <option value="Film Noir B&W (heavy grain, 1950s)">Noir et Blanc argentique</option>
+        <option value="Cyberpunk Glitch (unstable lights)">Cyberpunk Glitch</option>
+        <option value="Soft Focus (dreamy and glowing)">Soft Focus</option>
+        <option value="Aquarium light (turquoise reflections)">Lumière d'aquarium</option>
+        <option value="Impending storm (leaden sky, electric)">Orage imminent</option>
+        <option value="Purple sunset (intense violet tones)">Coucher de soleil pourpre</option>
+        <option value="Underground light (cold industrial neon)">Lumière de souterrain</option>
+        <option value="Sun-drenched (artistic overexposure)">Sun-drenched</option>
+        <option value="Moonlight (silvery cold light)">Moonlight</option>
+        <option value="Technicolor vibe (saturated 1960s look)">Ambiance Technicolor</option>
+        <option value="Stained glass light (colored spots)">Lumière de vitrail</option>
+        <option value="Thick fog (mysterious diffused lights)">Brouillard épais</option>
+        <option value="Disco Fever (rotating light spots)">Disco Fever</option>
+        <option value="Winter dawn (pure cold white light)">Aube hivernale</option>
+        <option value="Forest zenith light (sunbeams through foliage)">Lumière de forêt</option>
+        <option value="Fireworks (multicolored light bursts)">Feu d'artifice</option>
+        <option value="Eclipse (surreal copper-colored light)">Éclipse</option>
+        <option value="Polaroid vibe (faded vintage tones)">Ambiance Polaroid</option>
+        <option value="Spotlight (single focused white beam)">Projecteur de poursuite</option>
+        <option value="Doomsday light (apocalyptic ochre)">Lumière de fin du monde</option>
+        <option value="Pastel Goth (soft but dark atmosphere)">Pastel Goth</option>
+        <option value="Hygge atmosphere (warm, cozy, candlelit glow)">Hygge</option>
+        <option value="Afrohemian aesthetic (warm earth tones, artistic patterns)">Afrohemian</option>
+        <option value="Icy blue lighting (cold, crisp, frozen atmosphere)">Icy Blue</option>
+        <option value="custom">-- Personnalisé --</option>
+    </select>
+    <input type="text" id="customLighting" class="custom-input" placeholder="Décrivez l'ambiance en anglais...">
+</div>
 
         <div class="section full">
             <label>Style Artistique</label>
@@ -97,34 +148,45 @@
 
 <script>
     function toggleCustom(select, inputId) {
-        const input = document.getElementById(inputId);
+    const input = document.getElementById(inputId);
+    if (input) {
         input.style.display = (select.value === 'custom') ? 'block' : 'none';
     }
+}
 
-    function buildPrompt() {
-    // 1. On récupère ce que l'utilisateur a tapé ou choisi
+function buildPrompt() {
     const name = document.getElementById('iconName').value || "[Nom de l'Icône]";
-    const place = document.getElementById('contextPlace').value || "[Lieu mythique]";
     const isSelfie = document.getElementById('selfieOption').checked;
-    const style = document.getElementById('styleChoice').value === 'custom' ? document.getElementById('customStyle').value : document.getElementById('styleChoice').value;
-    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
-    const framing = document.getElementById('framing').value === 'custom' ? document.getElementById('customFraming').value : document.getElementById('framing').value;
+    
+    // Récupération du Lieu (Menu ou Champ Perso)
+    const place = document.getElementById('contextPlace').value === 'custom' ? 
+                  document.getElementById('customPlace').value : 
+                  document.getElementById('contextPlace').value;
 
-    // 2. On fixe la règle de la NETTETÉ pour toutes les photos
-    let technical = `high-shutter speed, sharp focus, 8k resolution, extremely detailed skin textures, no motion blur, ${framing}.`;
+    // Récupération de l'Atmosphère (Menu ou Champ Perso)
+    const lighting = document.getElementById('lighting').value === 'custom' ? 
+                     document.getElementById('customLighting').value : 
+                     document.getElementById('lighting').value;
+
+    const style = document.getElementById('styleChoice').value === 'custom' ? 
+                  document.getElementById('customStyle').value : 
+                  document.getElementById('styleChoice').value;
+
+    const framing = document.getElementById('framing').value === 'custom' ? 
+                    document.getElementById('customFraming').value : 
+                    document.getElementById('framing').value;
+
+    // Bloc technique pour la netteté et la qualité
+    let technical = `high-shutter speed, sharp focus, 8k resolution, detailed skin textures, no motion blur, ${framing}.`;
     
     let scenario = "";
-
-    // 3. SI LE MODE SELFIE EST COCHÉ
     if (isSelfie) {
-        scenario = `A sharp first-person POV selfie. The viewer's own arm is partially visible from the bottom corner. The viewer has a natural, subtle closed-mouth smile (lips together). **${name}** is standing next to the viewer, leaning into the frame with a joyful, friendly smile. Background: ${place}. Atmosphere is ${lighting}.`;
-    } 
-    // 4. SI LE MODE SELFIE N'EST PAS COCHÉ
-    else {
-        scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
+        // Application du "Grand Remède" et du sourire lèvres fermées
+        scenario = `A sharp first-person POV selfie. The viewer's own arm is partially visible from the bottom corner. The viewer has a natural, subtle closed-mouth smile (lips together). **${name}** is standing next to the viewer, leaning into the frame with a joyful smile. Background: ${place}. Atmosphere: ${lighting}.`;
+    } else {
+        scenario = `An iconic masterwork of **${name}** ${place}. Atmosphere: ${lighting}. Cinematic composition.`;
     }
 
-    // 5. On assemble le tout pour l'afficher
     const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
     document.getElementById('posPrompt').innerText = finalPos;
     document.getElementById('output').style.display = 'block';
@@ -133,5 +195,6 @@
 
 </body>
 </html>
+
 
 
