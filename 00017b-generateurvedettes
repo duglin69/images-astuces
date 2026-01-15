@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur de Prompts : Stars & Séries</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a1a; color: #eee; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: #2a2a2a; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #ff3e3e; text-transform: uppercase; letter-spacing: 2px; }
+        .section { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .section.full { width: 100%; }
+        label { font-weight: bold; margin-bottom: 8px; color: #bbb; }
+        input, select, textarea { padding: 12px; border-radius: 6px; border: 1px solid #444; background: #333; color: white; font-size: 16px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; background: #383838; padding: 10px; border-radius: 6px; cursor: pointer; }
+        .checkbox-group input { width: 20px; height: 20px; cursor: pointer; }
+        button { background: #ff3e3e; color: white; border: none; padding: 15px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #e63535; transform: translateY(-2px); }
+        .output-box { margin-top: 25px; background: #111; padding: 20px; border-left: 5px solid #ff3e3e; border-radius: 4px; }
+        .prompt-text { word-wrap: break-word; white-space: pre-wrap; color: #00ffcc; font-family: 'Courier New', Courier, monospace; }
+        .custom-input { display: none; margin-top: 10px; border-color: #ff3e3e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Director's Prompt Generator</h1>
+
+    <div class="section full">
+        <label>L'Icône ou le Duo (Choisissez ou tapez un nom)</label>
+        <input type="text" id="iconName" list="vedettesSuggestions" placeholder="Ex: Farrah Fawcett, Patrick Duffy...">
+        <datalist id="vedettesSuggestions">
+            <option value="Farrah Fawcett">
+            <option value="Brooke Shields">
+            <option value="Tatum O'Neal">
+            <option value="Steve McQueen">
+            <option value="Patrick McGoohan (Le Prisonnier)">
+            <option value="Roy Thinnes (Les Envahisseurs)">
+            <option value="Robert Conrad & Ross Martin (Les Mystères de l'Ouest)">
+            <option value="Roger Moore & Tony Curtis (Amicalement vôtre)">
+            <option value="Patrick Duffy (L'Homme de l'Atlantide)">
+            <option value="Larry Hagman (Dallas)">
+            <option value="Michael Landon & Melissa Gilbert (La Petite Maison dans la Prairie)">
+            <option value="Tom Selleck (Magnum)">
+            <option value="Jennifer Garner (Alias)">
+            <option value="Matthew Fox (Lost)">
+        </datalist>
+    </div>
+
+    <div class="section full">
+        <label>Titre de l'œuvre (Optionnel : Film, Série, Album)</label>
+        <input type="text" id="workTitle" list="titresSuggestions" placeholder="Ex: Dallas, Le Lagon Bleu, Thriller...">
+        <datalist id="titresSuggestions">
+            <option value="Dallas">
+            <option value="Le Prisonnier">
+            <option value="L'Homme de l'Atlantide">
+            <option value="La Petite Maison dans la Prairie">
+            <option value="Amicalement vôtre">
+            <option value="Magnum">
+            <option value="Lost">
+            <option value="Alias">
+            <option value="Le Lagon Bleu">
+            <option value="Thriller">
+        </datalist>
+    </div>
+
+    <div class="row">
+        <div class="checkbox-group" onclick="toggleCheckbox('selfieOption')">
+            <input type="checkbox" id="selfieOption">
+            <span>Mode Selfie</span>
+        </div>
+        <div class="checkbox-group" onclick="toggleCheckbox('duoOption')">
+            <input type="checkbox" id="duoOption">
+            <span>Mode Duo (16:9)</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="section">
+            <label>Lieu (Background)</label>
+            <select id="contextPlace" onchange="toggleCustom(this, 'customPlace')">
+                <option value="on the mysterious tropical island (Lost)">L'Île mystérieuse (Lost)</option>
+                <option value="at the Southfork Ranch entrance (Dallas)">Ranch de Southfork (Dallas)</option>
+                <option value="in the surrealist Village with a giant white ball">Le Village (Le Prisonnier)</option>
+                <option value="in a wooden cabin on the prairie">La cabane dans la prairie</option>
+                <option value="in an underwater research laboratory">Labo sous-marin (Atlantide)</option>
+                <option value="on a desert island with palm trees">Île déserte (Lagon Bleu)</option>
+                <option value="on a vintage baseball field dugout">Banc de touche baseball (Tatum)</option>
+                <option value="in a legendary music studio">Studio d'enregistrement</option>
+                <option value="on a sun-drenched beach">Plage ensoleillée</option>
+                <option value="in a crowded stadium">Stade bondé</option>
+                <option value="on a red carpet with flashes">Tapis rouge</option>
+                <option value="custom">-- Personnalisé --</option>
+            </select>
+            <input type="text" id="customPlace" class="custom-input" placeholder="Lieu en anglais...">
+        </div>
+        <div class="section">
+            <label>Ambiance (Lighting)</label>
+            <select id="lightingStyle">
+                <option value="natural golden hour sunlight">Golden Hour (Soleil chaud)</option>
+                <option value="glamorous studio lighting with soft shadows">Studio Glamour</option>
+                <option value="vintage Technicolor 1950s aesthetic">Technicolor 50s</option>
+                <option value="nostalgic 1960s film grain and warm tones">Nostalgie 60s</option>
+                <option value="faded 1970s polaroid aesthetic">Polaroid 70s</option>
+                <option value="gritty 1990s analog film style">Argentique 90s</option>
+                <option value="icy blue emergency room lighting">Urgences (Bleu froid)</option>
+            </select>
+        </div>
+    </div>
+
+    <button onclick="generatePrompt()">GÉNÉRER LE PROMPT</button>
+
+    <div class="output-box" id="outputBox" style="display:none;">
+        <label>Prompt Final (Copier dans l'IA) :</label>
+        <div class="prompt-text" id="finalPrompt"></div>
+    </div>
+</div>
+
+<script>
+    function toggleCustom(select, inputId) {
+        document.getElementById(inputId).style.display = (select.value === 'custom') ? 'block' : 'none';
+    }
+
+    function toggleCheckbox(id) {
+        const cb = document.getElementById(id);
+        cb.checked = !cb.checked;
+    }
+
+    function generatePrompt() {
+        const name = document.getElementById('iconName').value || "Celebrity";
+        const title = document.getElementById('workTitle').value;
+        const finalSubject = title ? `${name} from "${title}"` : name;
+        
+        const isSelfie = document.getElementById('selfieOption').checked;
+        const isDuo = document.getElementById('duoOption').checked;
+        
+        const place = (document.getElementById('contextPlace').value === 'custom') 
+            ? document.getElementById('customPlace').value 
+            : document.getElementById('contextPlace').value;
+            
+        const lighting = document.getElementById('lightingStyle').value;
+        
+        // Logique Pluriel/Singulier
+        const personLabel = isDuo ? "celebrities" : "celebrity";
+        const verb = isDuo ? "are" : "is";
+        
+        // Signature intelligente (Pas de signature sur les selfies)
+        const autograph = !isSelfie ? `Subtle handwritten autograph "${name}" in the bottom right corner.` : "";
+
+        let scenario = "";
+        if (isSelfie) {
+            scenario = `A sharp POV selfie at 24mm wide-angle lens. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${finalSubject}** ${verb} leaning into the frame. Background: ${place}. Atmosphere: ${lighting}.`;
+        } else {
+            scenario = `An iconic professional photograph of the ${personLabel} **${finalSubject}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        }
+
+        const ratio = isDuo ? "--ar 16:9" : "--ar 4:5";
+        const fullPrompt = `${scenario} High resolution, photorealistic, 8k, authentic details. ${ratio}`;
+
+        document.getElementById('finalPrompt').innerText = fullPrompt;
+        document.getElementById('outputBox').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
