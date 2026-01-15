@@ -177,28 +177,32 @@
     }
 
     function buildPrompt() {
-        const name = document.getElementById('iconName').value || "Celebrity";
-        const isSelfie = document.getElementById('selfieOption').checked;
-        const isDuo = document.getElementById('duoOption').checked;
-        const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
-        const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
-        const style = document.getElementById('styleChoice').value;
-        
-        const verb = isDuo ? "are" : "is";
-        const aspect = isDuo ? "--ar 16:9" : "--ar 1:1";
-        const autograph = `Subtle handwritten autograph "${name}" in the corner.`;
-        
-        let scenario = isSelfie 
-            ? `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame with a joyful expression. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`
-            : `An iconic professional photograph of **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+    const name = document.getElementById('iconName').value || "Celebrity";
+    const isSelfie = document.getElementById('selfieOption').checked;
+    const isDuo = document.getElementById('duoOption').checked;
+    
+    // Logique d'accord grammatical
+    const verb = isDuo ? "are" : "is";
+    const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
+    const personLabel = isDuo ? "celebrities" : "celebrity"; // La correction est ici !
+    const aspect = isDuo ? "--ar 16:9" : "--ar 1:1";
 
-        // Dans la fonction buildPrompt, remplacez la ligne finalPos par celle-ci :
-const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
-const finalPos = `[${subjectLabel}: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
-        document.getElementById('posPrompt').innerText = finalPos;
-        document.getElementById('output').style.display = 'block';
-    }
+    const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
+    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+    const style = document.getElementById('styleChoice').value;
+    
+    const autograph = `Subtle handwritten autograph "${name}" in the corner.`;
+    
+    let scenario = isSelfie 
+        ? `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`
+        : `An iconic professional photograph of the ${personLabel} **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+
+    const finalPos = `[${subjectLabel}: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
+    document.getElementById('posPrompt').innerText = finalPos;
+    document.getElementById('output').style.display = 'block';
+}
 </script>
 </body>
 </html>
+
 
