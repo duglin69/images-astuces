@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Icon Experience Generator - Pro Director Edition</title>
+    <style>
+        :root { --gold: #ffa502; --action: #2ed573; --bg: #1e2124; --panel: #2f3542; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 20px; line-height: 1.4; }
+        .app-container { max-width: 900px; margin: auto; background: var(--panel); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .section { margin-bottom: 15px; }
+        .full { grid-column: span 2; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--gold); font-size: 0.9em; }
+        select, input, textarea { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #57606f; color: white; box-sizing: border-box; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; background: #1e2124; padding: 12px; border-radius: 8px; border: 1px solid var(--gold); margin-top: 10px; }
+        #generateBtn { width: 100%; padding: 15px; background: var(--action); border: none; border-radius: 10px; color: white; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .output-box { margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; }
+        .negative-prompt { color: #ff4757; font-size: 0.85em; margin-top: 10px; border-top: 1px solid #333; padding-top: 10px; }
+        .custom-input { display: none; margin-top: 5px; background: #4b5563; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Pro Director</h1>
+
+    <div class="grid">
+        <div class="section">
+            <label>L'Icône (Acteur, Sportif, Chanteur...)</label>
+            <input type="text" id="iconName" placeholder="Steve McQueen, Platini, Prince...">
+        </div>
+        <div class="section">
+            <label>Contexte / Lieu (Film, Stade, Scène)</label>
+            <input type="text" id="contextPlace" placeholder="Le Mans, Stade de France, etc.">
+        </div>
+
+        <div class="section">
+            <label>Cadrage & Composition</label>
+            <select id="framing" onchange="toggleCustom(this, 'customFraming')">
+                <option value="Close-up (Portrait rapproché)">Close-up (Portrait)</option>
+                <option value="Rule of thirds (Règle des deux tiers)">Règle des deux tiers</option>
+                <option value="Low angle shot (Contre-plongée héroïque)">Contre-plongée (Héroïque)</option>
+                <option value="Wide shot (Plan large immersif)">Plan large (Immersif)</option>
+                <option value="POV (Point of view)">Point de vue (POV)</option>
+                <option value="custom">-- Personnalisé --</option>
+            </select>
+            <input type="text" id="customFraming" class="custom-input" placeholder="Décrivez votre cadrage...">
+        </div>
+
+        <div class="section">
+            <label>Lumière & Éclairage</label>
+            <select id="lighting" onchange="toggleCustom(this, 'customLighting')">
+                <option value="Cinematic rim lighting (Contre-jour)">Cinématique (Contre-jour)</option>
+                <option value="Golden hour (Lumière chaude)">Golden Hour</option>
+                <option value="Dramatic chiaroscuro (Contrasté)">Chiaroscuro (Contrasté)</option>
+                <option value="Soft studio light (Douce)">Soft Studio</option>
+                <option value="Neon night glow (Néon)">Néon Nocturne</option>
+                <option value="custom">-- Personnalisé --</option>
+            </select>
+            <input type="text" id="customLighting" class="custom-input" placeholder="Décrivez l'éclairage...">
+        </div>
+
+        <div class="section full">
+            <label>Style Artistique (20+ options)</label>
+            <select id="styleChoice" onchange="toggleCustom(this, 'customStyle')">
+                <option value="Hyper-realistic photography (Kodak Portra 400 grain)">Photo Réaliste (Kodak Portra)</option>
+                <option value="3D Ukiyo-e woodblock relief">3D Ukiyo-e Relief</option>
+                <option value="Ethereal Watercolor (Aquarelle)">Aquarelle Éthérée</option>
+                <option value="Noir Cinema 1950s (High contrast B&W)">Film Noir 1950</option>
+                <option value="Vaporwave Synthwave Aesthetic">Vaporwave / Néon</option>
+                <option value="Steampunk Brass & Copper Gears">Steampunk Cuivre</option>
+                <option value="Cyberpunk Glitch Art">Cyberpunk Glitch</option>
+                <option value="Renaissance Oil Painting">Peinture à l'huile Renaissance</option>
+                <option value="Pop Art Silkscreen (Warhol style)">Pop Art Warhol</option>
+                <option value="Minimalist Line Art">Line Art Minimaliste</option>
+                <option value="Double Exposure Surrealism">Double Exposition</option>
+                <option value="Stained Glass Mosaic">Mosaïque Vitrail</option>
+                <option value="Pencil Sketch & Charcoal">Crayon & Fusain</option>
+                <option value="Gothic Pastel">Gothique Pastel</option>
+                <option value="Synthwave Retro-futurism">Retro-futurisme</option>
+                <option value="custom">-- Personnalisé --</option>
+            </select>
+            <input type="text" id="customStyle" class="custom-input" placeholder="Décrivez votre style...">
+        </div>
+
+        <div class="section full">
+            <div class="checkbox-group">
+                <input type="checkbox" id="selfieOption" style="width: auto;">
+                <span>📸 **MODE SELFIE ACTIVÉ** (Ajuste automatiquement l'angle et l'objectif)</span>
+            </div>
+        </div>
+    </div>
+
+    <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER LE PROMPT RÉALISTE</button>
+
+    <div class="output-box" id="output">
+        <label>Prompt Positif (À copier) :</label>
+        <div id="posPrompt" style="color: #2ed573; font-family: monospace; font-size: 0.9em;">...</div>
+        
+        <div class="negative-prompt">
+            <label style="color: #ff4757;">Prompt Négatif (À copier) :</label>
+            <div id="negPrompt">low quality, blurry, deformed hands, extra fingers, distorted face, phone screen facing away, floating phone, bad anatomy, text, watermark, split screen.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCustom(select, inputId) {
+        const input = document.getElementById(inputId);
+        input.style.display = (select.value === 'custom') ? 'block' : 'none';
+    }
+
+    function buildPrompt() {
+        const name = document.getElementById('iconName').value || "[Nom de l'Icône]";
+        const place = document.getElementById('contextPlace').value || "[Lieu mythique]";
+        const isSelfie = document.getElementById('selfieOption').checked;
+        
+        const style = document.getElementById('styleChoice').value === 'custom' ? document.getElementById('customStyle').value : document.getElementById('styleChoice').value;
+        const framing = document.getElementById('framing').value === 'custom' ? document.getElementById('customFraming').value : document.getElementById('framing').value;
+        const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+
+        let technical = `${framing}, ${lighting}, high-end camera lens, extremely detailed textures.`;
+        
+        let scenario = "";
+        if (isSelfie) {
+            scenario = `A realistic wide-angle POV selfie taken by an anonymous person (arm visible in frame) standing next to **${name}**. The smartphone is correctly oriented facing them. They are both smiling naturally at the camera lens. Background: ${place}. 24mm lens distortion, natural lighting.`;
+        } else {
+            scenario = `An iconic masterwork of **${name}** in the middle of ${place}. Atmosphere is immersive and cinematic.`;
+        }
+
+        const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] --v 6.0`;
+        
+        document.getElementById('posPrompt').innerText = finalPos;
+        document.getElementById('output').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
