@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Icon Experience Generator - Pro Director Edition</title>
+    <title>Icon Experience Generator - Nano Banana Edition</title>
     <style>
         :root { --gold: #ffa502; --action: #2ed573; --bg: #1e2124; --panel: #2f3542; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; padding: 20px; line-height: 1.4; }
@@ -11,112 +11,103 @@
         .section { margin-bottom: 15px; }
         .full { grid-column: span 2; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--gold); font-size: 0.9em; }
-        select, input, textarea { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #57606f; color: white; box-sizing: border-box; }
+        select, input { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #57606f; color: white; box-sizing: border-box; }
         .checkbox-group { display: flex; align-items: center; gap: 10px; background: #1e2124; padding: 12px; border-radius: 8px; border: 1px solid var(--gold); margin-top: 10px; }
         .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        #generateBtn { flex: 2; padding: 15px; background: var(--action); border: none; border-radius: 10px; color: white; font-size: 1.1em; font-weight: bold; cursor: pointer; }
-        #surpriseBtn { flex: 1; padding: 15px; background: #9b59b6; border: none; border-radius: 10px; color: white; font-size: 1.1em; font-weight: bold; cursor: pointer; }
-        .output-box { margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; position: relative; }
-        #copyBtn { position: absolute; top: 10px; right: 10px; padding: 5px 10px; background: var(--gold); border: none; border-radius: 5px; cursor: pointer; font-size: 0.8em; font-weight: bold; }
-        .negative-prompt { color: #ff4757; font-size: 0.85em; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
+        button { cursor: pointer; border: none; border-radius: 10px; font-weight: bold; color: white; transition: 0.2s; }
+        #generateBtn { flex: 2; padding: 15px; background: var(--action); font-size: 1.1em; }
+        #surpriseBtn { flex: 1; padding: 15px; background: #9b59b6; font-size: 1.1em; }
+        .output-box { margin-top: 25px; padding: 15px; background: #1a1a1a; border-radius: 8px; border: 1px solid #444; }
+        .copy-controls { display: flex; gap: 10px; margin-bottom: 10px; }
+        .btn-copy { padding: 8px 12px; font-size: 0.8em; background: var(--gold); }
+        .btn-copy-neg { padding: 8px 12px; font-size: 0.8em; background: #ff4757; }
+        .negative-prompt-area { color: #ff4757; font-size: 0.85em; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
         .custom-input { display: none; margin-top: 5px; background: #4b5563; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Pro Director</h1>
+    <h1 style="text-align: center; margin-top:0;">🎥 Icon Experience : Nano Edition</h1>
 
     <div class="grid">
         <div class="section full">
-            <label>L'Icône ou le Duo (ex: Prince et Michael Jackson)</label>
-            <input type="text" id="iconName" placeholder="Entrez un ou plusieurs noms...">
+            <label>L'Icône ou le Duo (ex: Prince and Michael Jackson)</label>
+            <input type="text" id="iconName" placeholder="Entrez les noms...">
         </div>
 
         <div class="section">
             <label>Lieu (Background)</label>
             <select id="contextPlace" onchange="toggleCustom(this, 'customPlace')">
-                <option value="in a legendary music studio">Studio d'enregistrement mythique</option>
+                <option value="in a legendary music studio">Studio d'enregistrement</option>
                 <option value="on a sun-drenched beach">Plage ensoleillée</option>
-                <option value="in the middle of a crowded stadium">Stade bondé</option>
+                <option value="in a crowded stadium">Stade bondé</option>
                 <option value="on a luxury rooftop at sunset">Rooftop luxueux</option>
-                <option value="backstage at a concert">Coulisses de concert</option>
-                <option value="on a red carpet with camera flashes">Tapis rouge</option>
-                <option value="in a vintage American diner">Diner américain rétro</option>
-                <option value="on a busy New York street">Rue de New York</option>
-                <option value="in a private jet cabin">Jet privé</option>
-                <option value="in a neon-lit nightclub">Night-club</option>
+                <option value="backstage at a concert">Coulisses</option>
+                <option value="in a vintage American diner">Diner rétro</option>
                 <option value="custom">-- Personnalisé --</option>
             </select>
-            <input type="text" id="customPlace" class="custom-input" placeholder="Décrivez le lieu en anglais...">
+            <input type="text" id="customPlace" class="custom-input">
         </div>
 
         <div class="section">
-            <label>Atmosphère & Lumière</label>
+            <label>Atmosphère</label>
             <select id="lighting" onchange="toggleCustom(this, 'customLighting')">
-                <option value="Morning glow (soft light, light mist)">Glow matinal</option>
-                <option value="Golden Hour (warm amber hues)">Golden Hour</option>
-                <option value="Night neon (pink and blue reflections)">Néon nocturne</option>
-                <option value="Direct flash (paparazzi look, harsh shadows)">Flash direct</option>
-                <option value="Hygge atmosphere (warm, cozy, candlelit glow)">Hygge</option>
-                <option value="Afrohemian aesthetic (warm earth tones)">Afrohemian</option>
-                <option value="Icy blue lighting (cold atmosphere)">Icy Blue</option>
-                <option value="Rain reflections (shimmering city lights)">Reflets de pluie</option>
-                <option value="Film Noir B&W (heavy grain, 1950s)">Noir et Blanc 1950</option>
-                <option value="Disco Fever (rotating light spots)">Disco Fever</option>
+                <option value="Morning glow">Glow matinal</option>
+                <option value="Golden Hour">Golden Hour</option>
+                <option value="Night neon">Néon nocturne</option>
+                <option value="Direct flash (paparazzi style)">Flash direct</option>
+                <option value="Hygge atmosphere">Hygge</option>
+                <option value="Disco Fever">Disco Fever</option>
                 <option value="custom">-- Personnalisé --</option>
             </select>
-            <input type="text" id="customLighting" class="custom-input" placeholder="Décrivez l'ambiance en anglais...">
+            <input type="text" id="customLighting" class="custom-input">
         </div>
 
         <div class="section">
-            <label>Style & Époque</label>
-            <select id="styleChoice" onchange="toggleCustom(this, 'customStyle')">
-                <option value="Modern 2020s digital photography, ultra-sharp">Digital Moderne (2020s)</option>
-                <option value="Hyper-realistic photography (Kodak Portra 400 grain, 1990s)">Argentique 90s (Portra 400)</option>
-                <option value="Vintage 1970s Kodachrome slide film">Vintage 70s (Kodachrome)</option>
-                <option value="Technicolor 1950s cinematic style">Cinéma 50s (Technicolor)</option>
-                <option value="custom">-- Personnalisé --</option>
-            </select>
-            <input type="text" id="customStyle" class="custom-input" placeholder="Décrivez le style...">
-        </div>
+    <label>Style & Époque (Grain & Texture)</label>
+    <select id="styleChoice">
+        <option value="Modern 2020s digital photography, ultra-sharp 8k">Digital 2020s (Ultra-net)</option>
+        <option value="Early 2010s digital camera, clean look">Numérique 2010s</option>
+        <option value="2000s glossy celebrity magazine style">Magazine 2000s (Brillant)</option>
+        <option value="1990s Kodak Portra 400 grain, soft colors">Argentique 90s (Portra 400)</option>
+        <option value="1980s retro film, vibrant colors, slightly grainy">Années 80 (Couleurs vives & grain)</option>
+        <option value="1970s Kodachrome vintage slide film texture">Vintage 70s (Kodachrome)</option>
+        <option value="1960s film grain, warm nostalgic tones">Nostalgie 60s</option>
+        <option value="1950s Technicolor cinematic style">Cinéma 50s (Technicolor)</option>
+        <option value="Classic Black and White Film Noir style">Noir & Blanc Classique</option>
+    </select>
+</div>
 
-        <div class="section">
-            <label>Cadrage</label>
-            <select id="framing">
-                <option value="Close-up portrait">Close-up</option>
-                <option value="Wide shot">Plan large</option>
-                <option value="POV shot">Point de vue (POV)</option>
-            </select>
-        </div>
 
         <div class="section">
             <div class="checkbox-group">
                 <input type="checkbox" id="selfieOption" checked>
-                <span>📸 **MODE SELFIE ACTIF**</span>
+                <span>📸 MODE SELFIE</span>
             </div>
-        </div>
-
-        <div class="section">
             <div class="checkbox-group">
                 <input type="checkbox" id="duoOption">
-                <span>👥 **MODE DUO (Correction pluriel)**</span>
+                <span>👥 MODE DUO (16:9)</span>
             </div>
         </div>
     </div>
 
     <div class="btn-group">
         <button id="surpriseBtn" onclick="surpriseMe()">🎲 SURPRENDS-MOI</button>
-        <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER LE PROMPT</button>
+        <button id="generateBtn" onclick="buildPrompt()">🎬 GÉNÉRER</button>
     </div>
 
-    <div class="output-box" id="output" style="display:none;">
-        <button id="copyBtn" onclick="copyPrompt()">📋 COPIER</button>
-        <label>Prompt Positif :</label>
-        <div id="posPrompt" style="color: #2ed573; font-family: monospace; font-size: 0.9em; margin-top: 10px;">...</div>
+    <div id="output" class="output-box" style="display:none;">
+        <div class="copy-controls">
+            <button id="copyBtn" class="btn-copy" onclick="copyText('posPrompt', 'copyBtn')">📋 COPIER POSITIF</button>
+            <button id="copyNegBtn" class="btn-copy-neg" onclick="copyText('negPrompt', 'copyNegBtn')">📋 COPIER NÉGATIF</button>
+        </div>
         
-        <div class="negative-prompt">
-            <label style="color: #ff4757;">Prompt Négatif :</label>
+        <label>Prompt Positif :</label>
+        <div id="posPrompt" style="color: #2ed573; font-family: monospace; font-size: 0.9em;"></div>
+        
+        <div class="negative-prompt-area">
+            <label>Prompt Négatif :</label>
             <div id="negPrompt">viewer showing teeth, viewer open mouth, phone visible, camera visible, (celebrity holding phone:1.5), celebrity's extended arm, phone screen, low quality, blurry, deformed hands, extra fingers, distorted face, bad anatomy, text, watermark.</div>
         </div>
     </div>
@@ -125,21 +116,21 @@
 <script>
     function toggleCustom(select, inputId) {
         const input = document.getElementById(inputId);
-        if (input) input.style.display = (select.value === 'custom') ? 'block' : 'none';
+        input.style.display = (select.value === 'custom') ? 'block' : 'none';
     }
 
-    function copyPrompt() {
-        const text = document.getElementById('posPrompt').innerText;
+    function copyText(elementId, btnId) {
+        const text = document.getElementById(elementId).innerText;
+        const btn = document.getElementById(btnId);
+        const originalText = btn.innerText;
         navigator.clipboard.writeText(text).then(() => {
-            const btn = document.getElementById('copyBtn');
             btn.innerText = "✅ COPIÉ !";
-            setTimeout(() => btn.innerText = "📋 COPIER", 2000);
+            setTimeout(() => btn.innerText = originalText, 2000);
         });
     }
 
     function surpriseMe() {
-        const selects = ['contextPlace', 'lighting', 'styleChoice'];
-        selects.forEach(id => {
+        ['contextPlace', 'lighting', 'styleChoice'].forEach(id => {
             const options = document.querySelectorAll(`#${id} option:not([value="custom"])`);
             document.getElementById(id).value = options[Math.floor(Math.random() * options.length)].value;
         });
@@ -147,31 +138,31 @@
     }
 
     function buildPrompt() {
-        const name = document.getElementById('iconName').value || "Famous Icon";
-        const isSelfie = document.getElementById('selfieOption').checked;
-        const isDuo = document.getElementById('duoOption').checked;
-        const verb = isDuo ? "are" : "is";
-
-        const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
-        const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
-        const style = document.getElementById('styleChoice').value === 'custom' ? document.getElementById('customStyle').value : document.getElementById('styleChoice').value;
-        const framing = document.getElementById('framing').value;
-
-        let technical = `${style}, ${framing}, high-shutter speed, sharp focus, 8k resolution, detailed skin textures.`;
-        let signature = `The image features a handwritten signature "${name}" in the bottom right corner.`;
-        
-        let scenario = "";
-        if (isSelfie) {
-            scenario = `A sharp first-person POV selfie. The viewer's own arm is partially visible from the bottom corner. The viewer has a natural, subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame with a joyful expression. Background: ${place}. Atmosphere: ${lighting}.`;
-        } else {
-            scenario = `An iconic masterwork of **${name}** ${place}. Atmosphere: ${lighting}.`;
-        }
-
-        const finalPos = `[SUBJECT: ${name}] [SCENARIO: ${scenario}] [TECHNICAL: ${technical}] [FINISH: ${signature}] --v 6.0`;
-        document.getElementById('posPrompt').innerText = finalPos;
-        document.getElementById('output').style.display = 'block';
+    const name = document.getElementById('iconName').value || "Celebrity";
+    const isSelfie = document.getElementById('selfieOption').checked;
+    const isDuo = document.getElementById('duoOption').checked;
+    
+    const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
+    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
+    const style = document.getElementById('styleChoice').value;
+    
+    const verb = isDuo ? "are" : "is";
+    const aspect = isDuo ? "--ar 16:9" : "--ar 1:1";
+    
+    // Instruction pour l'autographe
+    const autograph = `The photo includes a subtle handwritten autograph "${name}" in a corner.`;
+    
+    let scenario = "";
+    if (isSelfie) {
+        scenario = `A sharp POV selfie. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${name}** ${verb} standing next to the viewer, leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
+    } else {
+        scenario = `An iconic professional photograph of **${name}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
     }
-</script>
 
+    const finalPos = `[SUBJECT: ${name}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
+    document.getElementById('posPrompt').innerText = finalPos;
+    document.getElementById('output').style.display = 'block';
+}
+</script>
 </body>
 </html>
