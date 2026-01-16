@@ -321,8 +321,9 @@ body {
     const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
     const style = document.getElementById('styleChoice').value;
     
-    // Pour la signature, on garde 'name' (on signe son nom, pas le titre du film)
-    const autograph = !isSelfie ? `Subtle handwritten autograph "${name}" in the bottom right corner.` : "";
+    // On prend le nom, et on coupe tout ce qui se trouve après la première parenthèse
+const cleanName = name.split('(')[0].trim();
+const autograph = !isSelfie ? `Subtle handwritten autograph "${cleanName}" in the bottom right corner.` : "";
     
     let scenario = "";
     if (isSelfie) {
@@ -342,6 +343,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
