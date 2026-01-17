@@ -276,7 +276,6 @@ body {
         input.style.display = (select.value === 'custom') ? 'block' : 'none';
     }
 
-    // Suggère le 16:9 si on coche Duo, mais laisse le choix
     function suggestFormat(checkbox) {
         if (checkbox.checked) {
             document.getElementById('aspectRatio').value = "--ar 16:9";
@@ -303,43 +302,41 @@ body {
     }
 
     function buildPrompt() {
-    const name = document.getElementById('iconName').value || "Celebrity";
-    const title = document.getElementById('workTitle').value;
+        const name = document.getElementById('iconName').value || "Celebrity";
+        const title = document.getElementById('workTitle').value;
+        const finalSubject = title ? name + " from " + title : name;
 
-    // Cette ligne fabrique le "Sujet Final" (ex: Patrick Duffy from Dallas)
-    const finalSubject = title ? name + " from " + title : name;
+        const isSelfie = document.getElementById('selfieOption').checked;
+        const isDuo = document.getElementById('duoOption').checked;
+        const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
+        const personLabel = isDuo ? "celebrities" : "celebrity";
+        const verb = isDuo ? "are" : "is";
+        const aspect = document.getElementById('aspectRatio').value; 
 
-    const isSelfie = document.getElementById('selfieOption').checked;
-    const isDuo = document.getElementById('duoOption').checked;
-    
-    const subjectLabel = isDuo ? "SUBJECTS" : "SUBJECT";
-    const personLabel = isDuo ? "celebrities" : "celebrity";
-    const verb = isDuo ? "are" : "is";
-    const aspect = document.getElementById('aspectRatio').value; 
+        // Verrouillage temporel
+        const ageModifier = "young "; 
+        const eraContext = title ? `in the original "${title}" production, ` : "";
 
-    const place = document.getElementById('contextPlace').value === 'custom' ? document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
-    const lighting = document.getElementById('lighting').value === 'custom' ? document.getElementById('customLighting').value : document.getElementById('lighting').value;
-    const style = document.getElementById('styleChoice').value;
-    
-    // On prend le nom, et on coupe tout ce qui se trouve après la première parenthèse
-const cleanName = name.split('(')[0].trim();
-const autograph = !isSelfie ? `Subtle handwritten autograph "${cleanName}" in the bottom right corner.` : "";
-    
-    let scenario = "";
-    if (isSelfie) {
-        // Remplacement de name par finalSubject pour inclure le titre
-        scenario = `A sharp POV selfie at 24mm wide-angle lens. Viewer's arm visible. Viewer has a subtle closed-mouth smile. **${finalSubject}** ${verb} leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
-    } else {
-        // Remplacement de name par finalSubject pour inclure le titre
-        scenario = `An iconic professional photograph of the ${personLabel} **${finalSubject}** ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        const place = document.getElementById('contextPlace').value === 'custom' ?
+            document.getElementById('customPlace').value : document.getElementById('contextPlace').value;
+        const lighting = document.getElementById('lighting').value === 'custom' ? 
+            document.getElementById('customLighting').value : document.getElementById('lighting').value;
+        const style = document.getElementById('styleChoice').value;
+
+        const cleanName = name.split('(')[0].trim();
+        const autograph = !isSelfie ? `Subtle handwritten autograph "${cleanName}" in the bottom right corner.` : "";
+        
+        let scenario = "";
+        if (isSelfie) {
+            scenario = `A sharp POV selfie at 24mm wide-angle lens. Viewer's arm visible. Viewer has a subtle closed-mouth smile. ${ageModifier}**${finalSubject}** ${eraContext}${verb} leaning into the frame. Background: ${place}. Atmosphere: ${lighting}. ${autograph}`;
+        } else {
+            scenario = `An iconic professional photograph of the ${ageModifier}${personLabel} **${finalSubject}** ${eraContext}${place}. Atmosphere: ${lighting}. ${autograph}`;
+        }
+
+        const finalPos = `[${subjectLabel}: ${finalSubject}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
+        document.getElementById('posPrompt').innerText = finalPos;
+        document.getElementById('output').style.display = 'block';
     }
-
-    // Ici aussi, on utilise finalSubject pour le label principal
-    const finalPos = `[${subjectLabel}: ${finalSubject}] [STYLE: ${style}] [SCENARIO: ${scenario}] --v 6.0 ${aspect}`;
-    
-    document.getElementById('posPrompt').innerText = finalPos;
-    document.getElementById('output').style.display = 'block';
-}
 </script>
 </body>
 </html>
