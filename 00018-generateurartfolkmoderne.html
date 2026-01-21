@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio AFM Télé-Temps : Boutique de Souvenirs</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --folk-orange: #e67e22; --success: #27ae60; --bg: #fdfaf6; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: #333; padding: 15px; line-height: 1.6; }
+        .container { max-width: 1150px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; font-size: 2.5em; }
+        .description { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-style: italic; font-size: 1.1em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .form-group { display: flex; flex-direction: column; background: #fcfcfc; padding: 12px; border-radius: 10px; border: 1px solid #f0f0f0; transition: 0.3s; }
+        .form-group:hover { border-color: var(--accent); }
+        .bonus { border: 1px solid #e1f5fe; background: #f1f8ff; }
+        label { font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
+        select, input { padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 5px; font-size: 0.85em; width: 100%; box-sizing: border-box; }
+        .result-area { background: #f4f7f9; padding: 25px; border-radius: 15px; border: 2px solid var(--accent); margin-top: 20px; }
+        .result-label { font-weight: bold; color: var(--accent); margin-bottom: 10px; display: block; font-size: 0.9em; }
+        .result-text { font-family: 'Consolas', monospace; font-size: 0.95em; color: #34495e; white-space: pre-wrap; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .trans-text { font-family: 'Segoe UI', sans-serif; font-size: 0.95em; color: #2c3e50; font-style: italic; background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #eee; }
+        .negative-text { font-family: 'Consolas', monospace; font-size: 0.8em; color: #c0392b; margin-bottom: 20px; }
+        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        button { padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.95em; }
+        .btn-gen { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
+        .btn-random { background: var(--folk-orange); color: white; }
+        .btn-copy-scene { background: var(--primary); color: white; }
+        .btn-copy-all { background: var(--accent); color: white; }
+        .btn-export { background: var(--success); color: white; }
+        .info-section { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; border-top: 2px solid #eee; padding-top: 40px; }
+        .info-card { background: #fef9f3; padding: 25px; border-radius: 15px; border: 1px solid #fae5d3; }
+        .info-card h2 { color: var(--folk-orange); font-size: 1.3em; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid #fae5d3; padding-bottom: 10px; }
+    </style>
+</head>
+<body onload="resetAll()">
+
+<div class="container">
+    <h1>🎨 AFM Télé-Temps : Studio Expert</h1>
+    <p class="description">Hybridez l'histoire, le mythe et le futur avec les codes de l'Art Folk Moderne.</p>
+
+    <form id="afm-form" autocomplete="off">
+    <div class="grid">
+        <div class="form-group">
+            <label>👤 Personnage</label>
+            <select id="char"><option value="" selected>-- Aucun --</option>
+                <option value="Albert Einstein" data-fr="Albert Einstein">Albert Einstein</option>
+                <option value="A majestic griffin" data-fr="Griffon Royal">Griffon Royal</option>
+                <option value="A Valkyrie with neon wings" data-fr="Valkyrie Cyber">Valkyrie Cyber</option>
+                <option value="Icarus with solar wings" data-fr="Icare Solaire">Icare Solaire</option>
+                <option value="Anubis in a business suit" data-fr="Anubis Moderne">Anubis Moderne</option>
+                <option value="Medusa with stylized serpents" data-fr="Méduse">Méduse</option>
+                <option value="A pensive Minotaur" data-fr="Minotaure pensif">Minotaure</option>
+                <option value="A wise ancient Egyptian empress" data-fr="Impératrice égyptienne">Impératrice sage</option>
+                <option value="A lonely astronaut in a vintage suit" data-fr="Astronaute vintage">Astronaute</option>
+            </select>
+            <input type="text" id="char-custom" placeholder="Autre idée (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🐾 Compagnon / Objet</label>
+            <select id="comp"><option value="" selected>-- Aucun --</option>
+                <option value="a small playful dragon" data-fr="un petit dragon">Petit dragon</option>
+                <option value="a mechanical owl" data-fr="une chouette mécanique">Chouette méca</option>
+                <option value="a glowing phoenix" data-fr="un phénix">Phénix de feu</option>
+                <option value="a high-tech floating drone" data-fr="un drone futuriste">Drone flottant</option>
+                <option value="a stylized unicorn" data-fr="une licorne">Licorne AFM</option>
+                <option value="a vintage gramophone" data-fr="un gramophone">Gramophone</option>
+                <option value="a vintage ping-pong table" data-fr="une table de ping-pong">Table de ping-pong</option>
+            </select>
+            <input type="text" id="comp-custom" placeholder="Autre objet (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎭 Action</label>
+            <select id="act"><option value="" selected>-- Aucune --</option>
+                <option value="playing an intense chess match" data-fr="jouant aux échecs">Jouant aux échecs</option>
+                <option value="sharing a cup of tea" data-fr="partageant un thé">Partageant un thé</option>
+                <option value="painting the stars" data-fr="peignant les étoiles">Peignant le ciel</option>
+                <option value="repairing a glowing galaxy" data-fr="réparant une galaxie">Réparant une galaxie</option>
+                <option value="decoding an ancient scroll" data-fr="déchiffrant un parchemin">Lisant un parchemin</option>
+                <option value="meditating in silence" data-fr="en méditation">Méditant en silence</option>
+                <option value="taming a wild electric storm" data-fr="apprivoisant l'orage">Apprivoisant l'orage</option>
+            </select>
+            <input type="text" id="act-custom" placeholder="Action (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>📍 Lieu</label>
+            <select id="loc"><option value="" selected>-- Aucun --</option>
+                <option value="at an oasis with pyramids" data-fr="à l'oasis">Oasis & Pyramides</option>
+                <option value="inside a space station" data-fr="en station spatiale">Station spatiale</option>
+                <option value="in a misty bamboo forest" data-fr="en forêt">Forêt de bambous</option>
+                <option value="at the bottom of the sea" data-fr="sous la mer">Bibliothèque marine</option>
+                <option value="in a floating garden" data-fr="dans les nuages">Jardin suspendu</option>
+                <option value="inside a Greek temple" data-fr="au temple grec">Temple grec</option>
+                <option value="in a neon cyberpunk city" data-fr="en ville cyber">Ville Cyberpunk</option>
+            </select>
+            <input type="text" id="loc-custom" placeholder="Lieu (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>⌛ Époque / Style</label>
+            <select id="era"><option value="" selected>-- Classique AFM --</option>
+                <option value="Ancient Egyptian era" data-fr="Égypte Antique">Égypte Antique</option>
+                <option value="Cyber-Folk Future" data-fr="Futur Cyber-Folk">Futur Cyber-Folk</option>
+                <option value="Victorian Steampunk" data-fr="Steampunk">Steampunk Victorien</option>
+                <option value="Ancient Greek mythology" data-fr="Mythologie">Mythologie Grecque</option>
+                <option value="Medieval Fantasy kingdom" data-fr="Médiéval">Médiéval Fantastique</option>
+                <option value="Retro-1950s space age" data-fr="Années 50">Années 50 Spatiales</option>
+                <option value="Renaissance-Punk fusion" data-fr="Renaissance-Punk">Renaissance-Punk</option>
+<option value="Cyber-Gothic dark folk" data-fr="Cyber-Gothique">Cyber-Gothique</option>
+<option value="Solar-Folk vibrant nature" data-fr="Solar-Folk">Solar-Folk (Optimiste)</option>
+<option value="Hyper-Modernist abstract" data-fr="Hyper-Moderniste">Hyper-Moderniste</option>
+            </select>
+            <input type="text" id="era-custom" placeholder="Époque (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎨 Texture Artistique</label>
+            <select id="textu">
+                <option value="Linocut print texture" selected>Linogravure (Linocut)</option>
+                <option value="Porous lime fresco mural texture">Fresque à la chaux</option>
+                <option value="Cold-press watercolor paper">Aquarelle</option>
+                <option value="Stained glass pattern texture">Vitrail</option>
+                <option value="Byzantine mosaic style">Mosaïque byzantine</option>
+                <option value="Hand-stitched silk embroidery">Broderie de soie</option>
+                <option value="Traditional screen print texture">Sérigraphie</option>
+                <option value="Glazed Azulejos tiles texture">Azulejos (Carreaux)</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>🎁 Boutique Souvenir</label>
+            <select id="souvenir"><option value="" selected>-- Illustration Seule --</option>
+                <option value="presented as a movie poster parody">Affiche de film</option>
+                <option value="presented as a vinyl album cover parody">Pochette de disque</option>
+                <option value="printed on a vintage postcard">Carte postale</option>
+                <option value="captured as a grainy photograph">Photo souvenir</option>
+                <option value="the central design of a bank note">Billet de banque</option>
+                <option value="an enamel collector pin">Pin's de collection</option>
+                <option value="embossed on an ancient gold coin">Pièce de monnaie</option>
+                <option value="a collector postage stamp">Timbre-poste</option>
+                <option value="printed on a ceramic mug">Mug / Tasse</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>📐 Format (Ratio)</label>
+            <select id="ratio">
+                <option value="1:1" selected>1:1 (Mug - Vue de l'objet / Pin's / Pièce de monnaie / Écusson)</option>
+                <option value="21:9">21:9 (Mug - Bandeau complet / Bannière Facebook / Billet long)</option>
+                <option value="2:1">2:1 (Billet de banque classique)</option>
+                <option value="3:2">3:2 (Carte postale / Photo paysage)</option>
+                <option value="5:4">5:4 (Timbre-poste classique)</option>
+                <option value="3:4">3:4 (Étiquette de vin / Portrait élégant)</option>
+                <option value="2:3">2:3 (Affiche de film / Carte portrait)</option>
+                <option value="16:9">16:9 (Format TV / Cinéma)</option>
+                <option value="9:16">9:16 (Story Instagram / TikTok)</option>
+            </select>
+        </div>
+    </div>
+    </form>
+
+    <div class="actions">
+        <button class="btn-gen" onclick="build(false)">🚀 Créer l'Objet AFM</button>
+        <button class="btn-random" onclick="build(true)">🎲 Surprise Aléatoire</button>
+    </div>
+
+    <div class="result-area" id="res-box" style="display:none;">
+        <span class="result-label">PROMPT ANGLAIS (POUR L'IA) :</span>
+        <div class="result-text" id="prompt-en"></div>
+        <span class="result-label">VÉRIFICATION (TRADUCTION) :</span>
+        <div class="trans-text" id="prompt-fr"></div>
+        <span class="result-label">NEGATIVE PROMPT (FILTRE STYLE) :</span>
+        <div class="negative-text" id="neg-out"></div>
+        <div class="actions">
+            <button class="btn-copy-scene" onclick="copyScene()">Copier Scène</button>
+            <button class="btn-copy-all" onclick="copyAll()">Copier Pack (IA)</button>
+            <button class="btn-export" onclick="exportTxt()">Exporter .txt</button>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-card">
+            <h2>📖 Guide Expert</h2>
+            <p><strong>Mug :</strong> Utilisez le <strong>1:1</strong> pour voir le mug ou le <strong>21:9</strong> pour le bandeau à imprimer.</p>
+            <p><strong>Ressources :</strong> Consultez le <a href="https://github.com/duglin69/AFM-Tele-Temps" target="_blank">README du projet</a> pour les instructions détaillées.</p>
+        </div>
+        <div class="info-card">
+            <h2>❓ FAQ</h2>
+            <p><strong>Pourquoi l'anglais ?</strong> Pour une précision maximale sur les textures artisanales.</p>
+            <p><strong>Effacer ?</strong> Actualisez la page pour tout réinitialiser.</p>
+        </div>
+    </div>
+
+    <footer>
+        Une création de <strong>Thierry MARTIN / @duglin69</strong> | Propulsé par l'Art Folk Moderne | <a href="https://github.com/duglin69/AFM-Tele-Temps" target="_blank">GitHub</a>
+    </footer>
+</div>
+
+<script>
+    const neg = "Negative Prompt: photorealistic, 3D render, CGI, shiny plastic, smooth digital art, photograph, blurry, text, watermark, signature.";
+
+    function resetAll() { document.getElementById('afm-form').reset(); document.getElementById('res-box').style.display = 'none'; }
+
+    function build(isRandom) {
+    const fields = ['char','comp','act','loc','era','textu','souvenir','ratio'];
+    const v = {}; const fr = [];
+    
+    fields.forEach(f => {
+        const sel = document.getElementById(f);
+        const cust = document.getElementById(f+'-custom');
+        if(isRandom && f !== 'ratio') sel.selectedIndex = Math.floor(Math.random() * sel.options.length);
+        const opt = sel.options[sel.selectedIndex];
+        v[f] = (cust && cust.value.trim() !== "") ? cust.value : (opt ? opt.value : "");
+        if(v[f]) fr.push(opt.getAttribute('data-fr') || ("["+v[f]+"]"));
+    });
+
+    // --- LOGIQUE DE FORMAT AMÉLIORÉE ---
+    let p = `A vibrant modern folk art illustration with organic forms. Texture: ${v.textu}. `;
+    
+    if(v.ratio === "21:9") {
+        p += "Seamless panoramic wrap-around composition. "; // Ajout automatique pour le Mug Wrap
+    } else if(["16:9","2:1","3:2"].includes(v.ratio)) {
+        p += "Wide landscape composition. ";
+    }
+    
+    if(["2:3","3:4","9:16"].includes(v.ratio)) {
+        p += "Vertical portrait composition. ";
+    }
+
+    let sc = []; if(v.char) sc.push(v.char); if(v.comp) sc.push("with "+v.comp); if(v.act) sc.push(v.act); if(v.loc) sc.push(v.loc); if(v.era) sc.push("set in "+v.era);
+    
+    if(sc.length > 0) p += "Scene: " + sc.join(" ") + ". ";
+    if(v.souvenir) p += `The artwork is ${v.souvenir}. `;
+    
+    p += "Bold palette. Stylized imperfect lines. --ar " + v.ratio;
+
+    document.getElementById('prompt-en').innerText = p;
+    document.getElementById('prompt-fr').innerText = "Vérification : " + fr.join(" + ") + " (Art Folk Moderne)";
+    document.getElementById('neg-out').innerText = neg;
+    document.getElementById('res-box').style.display = 'block';
+}
+
+    function copyScene() { navigator.clipboard.writeText(document.getElementById('prompt-en').innerText).then(() => alert("Scène copiée !")); }
+    function copyAll() { navigator.clipboard.writeText(document.getElementById('prompt-en').innerText + "\n\n" + neg).then(() => alert("Pack Complet copié !")); }
+    function exportTxt() {
+        const content = document.getElementById('prompt-en').innerText + "\n\n" + neg;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'afm_prompt.txt'; a.click();
+    }
+</script>
+</body>
+</html>

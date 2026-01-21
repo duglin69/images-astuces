@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Steampunk : Boutique de Souvenirs</title>
+    <style>
+        :root { --primary: #3d2b1f; --accent: #cd7f32; --steam-gold: #b8860b; --steam-copper: #b87333; --bg: #fdfaf6; }
+        body { font-family: 'Garamond', 'Georgia', serif; background-color: var(--bg); color: #2c1e14; padding: 15px; line-height: 1.6; }
+        .container { max-width: 1150px; margin: auto; background: #fffcf9; padding: 30px; border-radius: 15px; border: 3px double var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        /* Style de l'Intro */
+        .intro-section { margin-bottom: 40px; padding: 25px; border: 2px solid var(--steam-copper); background: #fdf5e6; border-radius: 10px; }
+        .intro-section h2 { color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-top: 0; font-variant: small-caps; border-bottom: 2px solid var(--steam-copper); padding-bottom: 10px; }
+        .intro-section h3 { color: var(--steam-copper); margin-top: 20px; font-size: 1.2em; font-variant: small-caps; }
+        .intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; font-size: 0.95em; margin-bottom: 20px; }
+        .guide-steps { background: #fff; padding: 15px; border: 1px dashed var(--steam-copper); border-radius: 5px; }
+        
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; font-size: 2.8em; font-variant: small-caps; letter-spacing: 2px; }
+        .description { text-align: center; color: #5d4037; margin-bottom: 30px; font-style: italic; font-size: 1.1em; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .form-group { display: flex; flex-direction: column; background: #f9f4ef; padding: 12px; border-radius: 8px; border: 1px solid #d7ccc8; transition: 0.3s; }
+        .form-group:hover { border-color: var(--accent); background: #f4ece4; }
+        .bonus { border-color: var(--steam-gold); background: #fffdf0; }
+        label { font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, input { padding: 10px; border-radius: 4px; border: 1px solid #a1887f; margin-bottom: 5px; font-size: 0.85em; width: 100%; box-sizing: border-box; background: #fff; }
+        
+        .result-area { background: #2c1e14; padding: 25px; border-radius: 12px; border: 3px solid var(--steam-copper); margin-top: 20px; color: #efebe9; }
+        .result-label { font-weight: bold; color: var(--steam-gold); margin-bottom: 10px; display: block; font-size: 0.9em; text-transform: uppercase; }
+        .result-text { font-family: 'Courier New', monospace; font-size: 0.95em; color: #fff; white-space: pre-wrap; margin-bottom: 15px; border-bottom: 1px solid #4e342e; padding-bottom: 15px; }
+        .trans-text { font-family: serif; font-size: 1em; color: #d7ccc8; font-style: italic; background: #3e2723; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+        .negative-text { font-family: monospace; font-size: 0.8em; color: #ffab91; margin-bottom: 20px; }
+        
+        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        button { padding: 12px 25px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.95em; text-transform: uppercase; }
+        .btn-gen { background: var(--steam-copper); color: white; box-shadow: 0 4px 10px rgba(184, 115, 51, 0.3); }
+        .btn-random { background: var(--primary); color: white; }
+        .btn-copy-all { background: var(--steam-gold); color: white; }
+        
+        footer { margin-top: 40px; text-align: center; font-size: 0.8em; color: #8d6e63; border-top: 1px solid #d7ccc8; padding-top: 20px; }
+    </style>
+</head>
+<body onload="resetAll()">
+
+<div class="container">
+    <div class="intro-section">
+        <h2>Le Steampunk : L'Anachronisme par Excellence</h2>
+        <div class="intro-grid">
+            <div>
+                <strong>L'ADN :</strong> Si l'AFM, le Déco et le Bauhaus simplifient la forme, le Steampunk <strong>redéfinit la matière</strong>. C'est la fusion entre l'esthétique Victorienne et la technologie fantastique, utilisant le laiton, le cuivre et la vapeur.
+            </div>
+            <div>
+                <strong>Le Rôle :</strong> C'est le style "roi" du Studio Télé-Temps pour créer des objets impossibles : une technologie du futur emprisonnée dans les rouages du passé.
+            </div>
+        </div>
+
+        <h3>⚙️ Guide de démarrage rapide</h3>
+        <div class="guide-steps">
+            <ol>
+                <li><strong>Forgez votre scène :</strong> Choisissez un inventeur, une machine ou un lieu embrumé. Utilisez les champs "Autre" pour vos idées propres.</li>
+                <li><strong>Boutique :</strong> Sélectionnez un objet (pièce de monnaie, affiche, billet) et son ratio adapté.</li>
+                <li><strong>Générez :</strong> Copiez le "Pack IA" complet pour votre générateur favori.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h1>⚙️ Studio Steampunk</h1>
+    <p class="description">Réinventer le futur avec les rouages du passé.</p>
+
+    <form id="steam-form" autocomplete="off">
+    <div class="grid">
+        <div class="form-group">
+            <label>👤 Sujet Victorien</label>
+            <select id="char"><option value="" selected>-- Aucun --</option>
+                <option value="A Victorian inventor with brass goggles" data-fr="Inventeur Victorien">L'Inventeur</option>
+                <option value="A pensive clockwork lady made of copper" data-fr="Femme automate">L'Automate</option>
+                <option value="A pensive captain with a mechanical arm" data-fr="Capitaine méca">Capitaine Nemo</option>
+                <option value="A lonely astronaut in a heavy brass diving suit" data-fr="Astronaute laiton">Astronaute Vintage</option>
+                <option value="An alchemist in a workshop full of gears" data-fr="Alchimiste méca">L'Alchimiste</option>
+                <option value="A majestic griffin with mechanical wings" data-fr="Griffon méca">Griffon d'Acier</option>
+                <option value="A pensive detective with a steam-powered cane" data-fr="Détective Steam">Détective à Vapeur</option>
+                <option value="A Greek god made of intricate brass clockwork" data-fr="Dieu horloger">Dieu des Rouages</option>
+                <option value="A wisdom empress with a mechanical phoenix" data-fr="Impératrice méca">Impératrice Steam</option>
+                <option value="A stylized worker with a coal-powered jetpack" data-fr="Ouvrier à vapeur">L'Ouvrier du Ciel</option>
+            </select>
+            <input type="text" id="char-custom" placeholder="Autre idée (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🐾 Machine / Objet</label>
+            <select id="comp"><option value="" selected>-- Aucun --</option>
+                <option value="a giant mechanical owl with glowing eyes" data-fr="Chouette mécanique">Chouette Méca</option>
+                <option value="a steam-powered zeppelin" data-fr="Zeppelin à vapeur">Zeppelin</option>
+                <option value="an intricate brass pocket watch" data-fr="Montre à gousset">Montre à Gousset</option>
+                <option value="a mechanical dragon made of copper plates" data-fr="Dragon de cuivre">Dragon Steam</option>
+                <option value="a vintage gramophone with brass pipes" data-fr="Gramophone méca">Gramophone</option>
+                <option value="a mechanical prosthetic hand made of gears" data-fr="Main mécanique">Main d'Engrenages</option>
+                <option value="a steam-powered typewriter" data-fr="Machine à écrire">Machine à Vapeur</option>
+                <option value="a compass made of polished brass" data-fr="Boussole laiton">Boussole d'Époque</option>
+                <option value="a telescope with multiple rotating lenses" data-fr="Télescope complexe">Longue-vue Méca</option>
+                <option value="a clockwork heart exposed and beating" data-fr="Cœur mécanique">Cœur de Rouages</option>
+            </select>
+            <input type="text" id="comp-custom" placeholder="Autre objet (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎭 Action</label>
+            <select id="act"><option value="" selected>-- Aucune --</option>
+                <option value="repairing a complex steam engine" data-fr="réparant une machine">Réparant une machine</option>
+                <option value="piloting a mechanical bird" data-fr="pilotant un oiseau méca">Pilotant un oiseau</option>
+                <option value="decoding a secret brass scroll" data-fr="déchiffrant un parchemin">Lisant un secret</option>
+                <option value="taming an electric lightning storm" data-fr="apprivoisant l'orage">Maître de la foudre</option>
+                <option value="observing the stars through steam pipes" data-fr="regardant les étoiles">Astronome Steam</option>
+                <option value="drinking tea in a moving airship" data-fr="buvant un thé">Thé en plein vol</option>
+                <option value="tuning an intricate gear mechanism" data-fr="réglant les rouages">Réglant le temps</option>
+                <option value="painting a sky full of zeppelins" data-fr="peignant le ciel">Peignant le futur</option>
+                <option value="mapping a subterranean copper city" data-fr="cartographiant la cité">Cartographie</option>
+                <option value="conducting a steam-powered orchestra" data-fr="dirigeant l'orchestre">Chef d'orchestre</option>
+            </select>
+            <input type="text" id="act-custom" placeholder="Action (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>📍 Lieu</label>
+            <select id="loc"><option value="" selected>-- Aucun --</option>
+                <option value="inside a misty Victorian laboratory" data-fr="au laboratoire">Labo Victorien</option>
+                <option value="atop a floating industrial dock" data-fr="au quai flottant">Quai Céleste</option>
+                <option value="inside a copper underwater observatory" data-fr="sous la mer">Observatoire Marin</option>
+                <option value="in a London street full of steam pipes" data-fr="à Londres">Londres à Vapeur</option>
+                <option value="inside a library of clockwork books" data-fr="à la bibliothèque">Bibliothèque méca</option>
+                <option value="at a subterranean coal mine entrance" data-fr="à la mine">Mine de Charbon</option>
+                <option value="on the bridge of a brass zeppelin" data-fr="sur le pont">Pont du Zeppelin</option>
+                <option value="inside a clock tower with massive gears" data-fr="au clocher">Tour de l'Horloge</option>
+                <option value="in a greenhouse with mechanical plants" data-fr="en serre méca">Jardin de Métal</option>
+                <option value="at a train station for steam-powered rockets" data-fr="à la gare spatiale">Gare Spatiale</option>
+            </select>
+            <input type="text" id="loc-custom" placeholder="Lieu (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>⌛ Style / Époque</label>
+            <select id="era"><option value="" selected>-- Steampunk Classique --</option>
+                <option value="Victorian Neo-Futurism" data-fr="Néo-Futurisme Victorien">Victorien Futuriste</option>
+                <option value="Clockwork Industrial era" data-fr="Horlogerie Industrielle">Horlogerie Industrielle</option>
+                <option value="Industrial Gothic steampunk" data-fr="Gothique Industriel">Gothique Industriel</option>
+                <option value="Steampunk Noir atmosphere" data-fr="Steam Noir">Atmosphère Noir</option>
+                <option value="Steam-powered Space Age" data-fr="Spatiale Steam">L'Espace à Vapeur</option>
+                <option value="Underwater Steampunk fantasy" data-fr="Sous-marin Steam">Nautilus Style</option>
+                <option value="Rustic copper-and-brass folk steam" data-fr="Steam Rustique">Steam Rustique</option>
+                <option value="Tesla-punk electric energy style" data-fr="Teslapunk">Teslapunk (Électrique)</option>
+                <option value="Ancient Alchemist Steampunk" data-fr="Alchimiste Steam">Alchimie & Vapeur</option>
+                <option value="Western Steampunk desert style" data-fr="Western Steam">Western Steam</option>
+            </select>
+            <input type="text" id="era-custom" placeholder="Style (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎨 Texture Artistique</label>
+            <select id="textu">
+                <option value="Hammered copper and polished brass" selected>Cuivre & Laiton martelé</option>
+                <option value="Stitched leather and aged parchment">Cuir cousu & Parchemin</option>
+                <option value="Engraved steel and heavy ink">Gravure sur acier</option>
+                <option value="Aged grainy photograph with sepia tones">Photo grainée Sépia</option>
+                <option value="Linocut print on hand-made paper">Linogravure Rustique</option>
+                <option value="Weathered iron and rust texture">Fer & Rouille</option>
+                <option value="Intricate blueprint on blue paper">Cianotype (Bleu-print)</option>
+                <option value="Inlaid wood and ivory patterns">Marqueterie Ébène/Ivoire</option>
+                <option value="Textured enamel and oil paint">Émail & Peinture à l'huile</option>
+                <option value="Screen printed poster on newsprint">Sérigraphie journal</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>🎁 Boutique Souvenir</label>
+            <select id="souvenir">
+                <option value="embossed on an ancient copper coin">Pièce de monnaie</option>
+                <option value="the central design of a bank note">Billet de banque</option>
+                <option value="captured as a grainy vintage photograph">Photo souvenir</option>
+                <option value="presented as a movie poster parody">Affiche de film</option>
+                <option value="a collector postage stamp">Timbre-poste</option>
+                <option value="presented as a vinyl album cover">Pochette de disque</option>
+                <option value="an elegant wine label">Étiquette de vin</option>
+                <option value="printed on a ceramic mug">Mug / Tasse</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>📐 Format (Ratio)</label>
+            <select id="ratio">
+                <option value="1:1" selected>1:1 (Pièce / Mug objet)</option>
+                <option value="2:1">2:1 (Billet)</option>
+                <option value="21:9">21:9 (Bandeau Mug)</option>
+                <option value="2:3">2:3 (Affiche)</option>
+                <option value="3:4">3:4 (Étiquette)</option>
+                <option value="5:4">5:4 (Timbre)</option>
+                <option value="3:2">3:2 (Photo paysage)</option>
+                <option value="16:9">16:9 (Cinéma)</option>
+            </select>
+        </div>
+    </div>
+    </form>
+
+    <div class="actions">
+        <button class="btn-gen" onclick="build(false)">🚀 Créer l'Objet Steampunk</button>
+        <button class="btn-random" onclick="build(true)">🎲 Surprise Aléatoire</button>
+    </div>
+
+    <div class="result-area" id="res-box" style="display:none;">
+        <span class="result-label">PROMPT STEAM_PUNK (POUR L'IA) :</span>
+        <div class="result-text" id="prompt-en"></div>
+        <span class="result-label">VÉRIFICATION (TRADUCTION) :</span>
+        <div class="trans-text" id="prompt-fr"></div>
+        <span class="result-label">NEGATIVE PROMPT :</span>
+        <div class="negative-text" id="neg-out"></div>
+        <div class="actions">
+            <button class="btn-copy-all" onclick="copyAll()">Copier le Pack IA</button>
+        </div>
+    </div>
+    <footer>Extension Steampunk du Studio AFM | Technologie Télé-Temps | Créé par @duglin69</footer>
+</div>
+
+<script>
+    const neg = "photorealistic, 3D render, CGI, shiny plastic, smooth digital art, photograph, blurry, text, watermark, signature.";
+    function resetAll() { document.getElementById('steam-form').reset(); document.getElementById('res-box').style.display = 'none'; }
+
+    function build(isRandom) {
+        const fields = ['char','comp','act','loc','era','textu','souvenir','ratio'];
+        const v = {}; const fr = [];
+        fields.forEach(f => {
+            const sel = document.getElementById(f);
+            const cust = document.getElementById(f+'-custom');
+            if(isRandom && !['textu','souvenir','ratio'].includes(f)) sel.selectedIndex = Math.floor(Math.random() * (sel.options.length - 1)) + 1;
+            const opt = sel.options[sel.selectedIndex];
+            v[f] = (cust && cust.value.trim() !== "") ? cust.value : (opt ? opt.value : "");
+            if(v[f] && opt.text !== "-- Aucun --") fr.push(opt.getAttribute('data-fr') || opt.text);
+        });
+
+        let p = `A striking Steampunk illustration with Victorian industrial aesthetic. Texture: ${v.textu}. `;
+        if(v.ratio === "21:9") p += "Seamless panoramic wrap-around composition. ";
+        
+        let sc = []; if(v.char) sc.push(v.char); if(v.comp) sc.push("with " + v.comp); if(v.act) sc.push(v.act); if(v.loc) sc.push(v.loc); if(v.era) sc.push("set in " + v.era);
+        p += "Scene: " + sc.join(" ") + ". ";
+        if(v.souvenir) p += `The artwork is ${v.souvenir}. `;
+        p += "Rich palette of bronze, copper, and mahogany. Stylized intricate lines. --ar " + v.ratio;
+
+        document.getElementById('prompt-en').innerText = p;
+        document.getElementById('prompt-fr').innerText = "Vérification : " + fr.join(" + ");
+        document.getElementById('neg-out').innerText = "Negative Prompt: " + neg;
+        document.getElementById('res-box').style.display = 'block';
+    }
+
+    function copyAll() { 
+        const full = document.getElementById('prompt-en').innerText + "\n\nNegative Prompt: " + neg;
+        navigator.clipboard.writeText(full).then(() => alert("Pack Steampunk complet copié !")); 
+    }
+</script>
+</body>
+</html>

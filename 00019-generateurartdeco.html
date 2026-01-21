@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Art Déco : Boutique de Souvenirs</title>
+    <style>
+        :root { --primary: #1a1a1a; --accent: #d4af37; --deco-gold: #c5a028; --bg: #fdfaf6; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: #333; padding: 15px; line-height: 1.6; }
+        .container { max-width: 1150px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        
+        .intro-section { margin-bottom: 40px; padding: 25px; border-bottom: 2px solid var(--accent); background: #fffcf0; border-radius: 15px; }
+        .intro-section h2 { color: var(--primary); border-bottom: 1px solid var(--accent); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; }
+        .intro-section h3 { color: var(--deco-gold); margin-top: 20px; font-size: 1.2em; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; font-size: 0.95em; margin-bottom: 20px; }
+        .guide-steps { background: white; padding: 15px; border-radius: 10px; border: 1px solid #f1e1b5; }
+        
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; }
+        .description { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-style: italic; font-size: 1.1em; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .form-group { display: flex; flex-direction: column; background: #fffdf9; padding: 12px; border-radius: 10px; border: 1px solid #e5e5e5; transition: 0.3s; }
+        .form-group:hover { border-color: var(--accent); }
+        .bonus { border: 1px solid #fcf3cf; background: #fffef0; }
+        label { font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+        select, input { padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 5px; font-size: 0.85em; width: 100%; box-sizing: border-box; }
+        
+        .result-area { background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid var(--accent); margin-top: 20px; color: #eee; }
+        .result-label { font-weight: bold; color: var(--accent); margin-bottom: 10px; display: block; font-size: 0.9em; }
+        .result-text { font-family: 'Consolas', monospace; font-size: 0.95em; color: #fff; white-space: pre-wrap; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .trans-text { font-family: 'Segoe UI', sans-serif; font-size: 0.95em; color: #ccc; font-style: italic; background: #222; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .negative-text { font-family: 'Consolas', monospace; font-size: 0.8em; color: #e74c3c; margin-bottom: 20px; }
+        
+        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        button { padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.95em; }
+        .btn-gen { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+        .btn-random { background: #333; color: white; }
+        .btn-copy-all { background: var(--accent); color: white; }
+        
+        footer { margin-top: 40px; text-align: center; font-size: 0.8em; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body onload="resetAll()">
+
+<div class="container">
+    <div class="intro-section">
+        <h2>L'Art Déco vs Art Folk Moderne : Deux faces d'un même Mythe</h2>
+        <div class="intro-grid">
+            <div>
+                <strong>Ce qui les réunit :</strong> Une ADN commune de <strong>simplification symbolique</strong> et de rejet du réalisme. Tous deux servent à créer des "objets mémora-temporels" uniques.
+            </div>
+            <div>
+                <strong>Ce qui les distingue :</strong> L'Art Déco troque l'organique pour la <strong>géométrie, la symétrie et le luxe industriel</strong> des années 20-30.
+            </div>
+        </div>
+
+        <h3>🚀 Guide de démarrage rapide</h3>
+        <div class="guide-steps">
+            <ol>
+                <li><strong>Composez :</strong> Choisissez vos éléments ou saisissez vos propres idées en anglais.</li>
+                <li><strong>Boutique :</strong> Sélectionnez votre objet et son ratio.</li>
+                <li><strong>Générez :</strong> Copiez le "Pack IA" complet pour votre générateur d'image favori.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h1>🏛️ Studio Art Déco : Boutique</h1>
+    <p class="description">Luxe, symétrie et élégance géométrique.</p>
+
+    <form id="deco-form" autocomplete="off">
+    <div class="grid">
+        <div class="form-group">
+            <label>👤 Personnage</label>
+            <select id="char"><option value="" selected>-- Aucun --</option>
+                <option value="A pensive patriarch in a sharp tuxedo" data-fr="Patriarche en smoking">Le Parrain</option>
+                <option value="A stylish 1920s flapper woman" data-fr="Femme des années 20">Icône Années Folles</option>
+                <option value="A futuristic silver robot" data-fr="Robot futuriste">Robot Métropolis</option>
+                <option value="Anubis in a golden suit" data-fr="Anubis moderne">Anubis Business</option>
+                <option value="A majestic Valkyrie" data-fr="Valkyrie d'acier">Valkyrie Industrielle</option>
+                <option value="A pensive detective" data-fr="Détective privé">Détective Noir</option>
+                <option value="A Greek god in marble" data-fr="Dieu grec">Dieu Olympien</option>
+                <option value="A female aviator" data-fr="Aviatrice">L'Aviatrice</option>
+                <option value="A jazz musician" data-fr="Musicien">Le Saxophoniste</option>
+                <option value="Medusa with geometric serpents" data-fr="Méduse Déco">Méduse Géométrique</option>
+            </select>
+            <input type="text" id="char-custom" placeholder="Autre (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🐾 Détail / Objet</label>
+            <select id="comp"><option value="" selected>-- Aucun --</option>
+                <option value="a stylized golden rose" data-fr="Rose dorée">Rose dorée</option>
+                <option value="a mechanical owl" data-fr="Chouette méca">Chouette laiton</option>
+                <option value="a luxury automobile" data-fr="Voiture de luxe">Automobile 1930</option>
+                <option value="a sunburst motif" data-fr="Motif soleil">Rayons de soleil</option>
+                <option value="rigid puppet strings" data-fr="Fils de marionnette">Fils marionnette</option>
+                <option value="a champagne glass" data-fr="Coupe de champagne">Coupe cristal</option>
+                <option value="a geometric eagle" data-fr="Aigle">Aigle de prestige</option>
+                <option value="a chrome microphone" data-fr="Micro chrome">Microphone vintage</option>
+                <option value="a black panther statue" data-fr="Panthère noire">Panthère ébène</option>
+                <option value="a skyscraper silhouette" data-fr="Gratte-ciel">Gratte-ciel</option>
+            </select>
+            <input type="text" id="comp-custom" placeholder="Autre objet (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎭 Action</label>
+            <select id="act"><option value="" selected>-- Aucune --</option>
+                <option value="dancing the Charleston" data-fr="dansant">Dansant le Charleston</option>
+                <option value="sipping a martini" data-fr="buvant un martini">Buvant un Martini</option>
+                <option value="solving a mystery" data-fr="en enquête">Menant l'enquête</option>
+                <option value="flying a biplane" data-fr="en biplan">Pilotant un biplan</option>
+                <option value="controlling an engine" data-fr="maître des machines">Maître des machines</option>
+                <option value="gazing at the skyline" data-fr="regardant la ville">Contemplant la cité</option>
+                <option value="negotiating a deal" data-fr="en négociation">Négociation</option>
+                <option value="playing a trumpet" data-fr="jouant de la trompette">Trompette</option>
+                <option value="standing atop a tower" data-fr="sur un toit">Sommet du monde</option>
+                <option value="unveiling a secret" data-fr="révélant un secret">Secret révélé</option>
+            </select>
+            <input type="text" id="act-custom" placeholder="Action (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>📍 Lieu</label>
+            <select id="loc"><option value="" selected>-- Aucun --</option>
+                <option value="in a Jazz Club" data-fr="au Jazz Club">Jazz Club</option>
+                <option value="atop a penthouse" data-fr="sur un Penthouse">Penthouse NY</option>
+                <option value="on an ocean liner" data-fr="sur un paquebot">Paquebot</option>
+                <option value="at a Cinema Palace" data-fr="au cinéma">Palais du Cinéma</option>
+                <option value="inside a Neo-Egyptian temple" data-fr="au temple">Temple Néo-Égyptien</option>
+                <option value="at a train station" data-fr="à la gare">Gare Ferroviaire</option>
+                <option value="in a laboratory" data-fr="au labo">Laboratoire Secret</option>
+                <option value="in a ballroom" data-fr="au bal">Salle de Bal</option>
+                <option value="at the Eiffel Tower" data-fr="à la Tour Eiffel">Tour Eiffel</option>
+                <option value="inside a casino" data-fr="au casino">Casino</option>
+            </select>
+            <input type="text" id="loc-custom" placeholder="Lieu (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>⌛ Époque / Style</label>
+            <select id="era"><option value="" selected>-- Art Déco Classique --</option>
+                <option value="1920s Great Gatsby era" data-fr="Années 20">Gatsby</option>
+                <option value="Metropolis style" data-fr="Métropolis">Futurisme 1920</option>
+                <option value="Egyptian Revival" data-fr="Néo-Égyptien">Néo-Égyptien</option>
+                <option value="Streamline Moderne" data-fr="Streamline">Streamline Moderne</option>
+                <option value="Cyber-Deco noir" data-fr="Cyber-Déco">Cyber-Déco</option>
+                <option value="Oceanic Liner chic" data-fr="Paquebot">Chic Paquebot</option>
+                <option value="Industrial Age" data-fr="Industriel">Puissance Industrielle</option>
+                <option value="Hollywood Regency" data-fr="Hollywood">Hollywood Regency</option>
+                <option value="Dark Noir style" data-fr="Film Noir">Film Noir</option>
+                <option value="Ziggurat style" data-fr="Ziggourat">Ziggourat</option>
+            </select>
+            <input type="text" id="era-custom" placeholder="Style (en anglais)...">
+        </div>
+
+        <div class="form-group">
+            <label>🎨 Texture</label>
+            <select id="textu">
+                <option value="Inlaid black marble and gold leaf" selected>Marbre noir & Or</option>
+                <option value="Intricate steel engraving">Gravure acier</option>
+                <option value="Traditional screen print">Sérigraphie</option>
+                <option value="Stained glass lead lines">Vitrail</option>
+                <option value="Polished chrome and bakelite">Chrome & Bakélite</option>
+                <option value="Lacquered ebony wood">Ébène laquée</option>
+                <option value="Frosted glass silver etching">Verre dépoli & Argent</option>
+                <option value="Hammered copper and brass">Cuivre & Laiton</option>
+                <option value="Ivory and tortoiseshell">Ivoire & Écaille</option>
+                <option value="Velvet gold embroidery">Velours & Or</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>🎁 Boutique Souvenir</label>
+            <select id="souvenir">
+                <option value="a movie poster parody">Affiche de film</option>
+                <option value="a bank note design">Billet de banque</option>
+                <option value="a vinyl album cover">Pochette de disque</option>
+                <option value="an elegant wine label">Étiquette de vin</option>
+                <option value="a collector postage stamp">Timbre-poste</option>
+                <option value="embossed on a gold coin">Pièce de monnaie</option>
+                <option value="a ceramic mug">Mug / Tasse</option>
+            </select>
+        </div>
+
+        <div class="form-group bonus">
+            <label>📐 Format (Ratio)</label>
+            <select id="ratio">
+                <option value="1:1">1:1</option>
+                <option value="2:1" selected>2:1 (Billet)</option>
+                <option value="21:9">21:9 (Mug bandeau)</option>
+                <option value="2:3">2:3 (Affiche)</option>
+                <option value="3:4">3:4 (Vin)</option>
+                <option value="5:4">5:4 (Timbre)</option>
+                <option value="16:9">16:9</option>
+            </select>
+        </div>
+    </div>
+    </form>
+
+    <div class="actions">
+        <button class="btn-gen" onclick="build(false)">🚀 Créer l'Objet Déco</button>
+        <button class="btn-random" onclick="build(true)">🎲 Surprise Aléatoire</button>
+    </div>
+
+    <div class="result-area" id="res-box" style="display:none;">
+        <span class="result-label">PROMPT ART DÉCO (POUR L'IA) :</span>
+        <div class="result-text" id="prompt-en"></div>
+        <span class="result-label">VÉRIFICATION (TRADUCTION) :</span>
+        <div class="trans-text" id="prompt-fr"></div>
+        <span class="result-label">NEGATIVE PROMPT :</span>
+        <div class="negative-text" id="neg-out"></div>
+        <div class="actions">
+            <button class="btn-copy-all" onclick="copyAll()">Copier le Pack IA</button>
+        </div>
+    </div>
+    <footer>Extension Art Déco du Studio AFM | Technologie Télé-Temps | Créé par @duglin69</footer>
+</div>
+
+<script>
+    const neg = "photorealistic, 3D render, CGI, shiny plastic, smooth digital art, photograph, blurry, text, watermark, signature.";
+    function resetAll() { document.getElementById('deco-form').reset(); document.getElementById('res-box').style.display = 'none'; }
+
+    function build(isRandom) {
+        const fields = ['char','comp','act','loc','era','textu','souvenir','ratio'];
+        const v = {}; const fr = [];
+        
+        fields.forEach(f => {
+            const sel = document.getElementById(f);
+            const cust = document.getElementById(f+'-custom');
+            if(isRandom && f !== 'ratio' && f !== 'textu') sel.selectedIndex = Math.floor(Math.random() * (sel.options.length - 1)) + 1;
+            const opt = sel.options[sel.selectedIndex];
+            v[f] = (cust && cust.value.trim() !== "") ? cust.value : (opt ? opt.value : "");
+            if(v[f] && opt.text !== "-- Aucun --") fr.push(opt.getAttribute('data-fr') || ("["+v[f]+"]"));
+        });
+
+        let p = `A striking Art Deco illustration. Symmetrical geometric composition. Texture: ${v.textu}. `;
+        if(v.ratio === "21:9") p += "Seamless panoramic wrap-around composition. ";
+        let sc = []; if(v.char) sc.push(v.char); if(v.comp) sc.push("with "+v.comp); if(v.act) sc.push(v.act); if(v.loc) sc.push(v.loc); if(v.era) sc.push("set in "+v.era);
+        p += "Scene: " + sc.join(" ") + ". ";
+        if(v.souvenir) p += `The artwork is ${v.souvenir}. `;
+        p += "Bold palette of obsidian black, gold, and vibrant colors. Elegant vintage typography. --ar " + v.ratio;
+
+        document.getElementById('prompt-en').innerText = p;
+        document.getElementById('prompt-fr').innerText = "Vérification : " + fr.join(" + ");
+        document.getElementById('neg-out').innerText = "Negative Prompt: " + neg;
+        document.getElementById('res-box').style.display = 'block';
+    }
+
+    function copyAll() { 
+        const full = document.getElementById('prompt-en').innerText + "\n\nNegative Prompt: " + neg;
+        navigator.clipboard.writeText(full).then(() => alert("Pack Art Déco copié !")); 
+    }
+</script>
+</body>
+</html>
