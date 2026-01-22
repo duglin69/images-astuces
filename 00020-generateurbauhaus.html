@@ -8,198 +8,89 @@
         :root { --primary: #000000; --accent: #e63946; --bauhaus-blue: #0077b6; --bauhaus-yellow: #ffb703; --bg: #fdfaf6; }
         body { font-family: 'Helvetica', 'Arial', sans-serif; background-color: var(--bg); color: #1a1a1a; padding: 15px; line-height: 1.6; }
         .container { max-width: 1150px; margin: auto; background: white; padding: 30px; border-radius: 0px; border: 4px solid var(--primary); box-shadow: 10px 10px 0px rgba(0,0,0,0.1); }
-        
-        /* Style de l'Intro */
-        .intro-section { margin-bottom: 40px; padding: 25px; border-left: 10px solid var(--accent); background: #fff; border-bottom: 1px solid #eee; }
-        .intro-section h2 { color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-top: 0; font-weight: 900; }
-        .intro-section h3 { color: var(--bauhaus-blue); margin-top: 20px; font-size: 1.2em; text-transform: uppercase; font-weight: 900; }
+        .intro-section { margin-bottom: 40px; padding: 25px; border-left: 10px solid var(--accent); background: #fff; }
         .intro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; font-size: 0.95em; margin-bottom: 20px; }
-        .guide-steps { background: #fafafa; padding: 15px; border: 1px solid #000; }
-        
-        h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 3em; text-transform: uppercase; font-weight: 900; }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; font-size: 3em; text-transform: uppercase; font-weight: 900; }
         .description { text-align: center; color: #555; margin-bottom: 30px; font-weight: bold; text-transform: uppercase; font-size: 0.9em; letter-spacing: 1px; }
-        
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .form-group { display: flex; flex-direction: column; background: #fff; padding: 12px; border: 1px solid #000; transition: 0.2s; }
-        .form-group:hover { border-width: 2px; background: #fdfdfd; }
-        .bonus { border-color: var(--bauhaus-blue); background: #f0f7ff; }
+        .form-group { display: flex; flex-direction: column; background: #fff; padding: 12px; border: 1px solid #000; }
         label { font-weight: 900; margin-bottom: 5px; color: var(--primary); font-size: 0.75em; text-transform: uppercase; }
-        
-        select, input { padding: 10px; border-radius: 0; border: 1px solid #000; margin-bottom: 5px; font-size: 0.85em; width: 100%; box-sizing: border-box; }
-        
+        select, input { padding: 10px; border: 1px solid #000; margin-bottom: 5px; font-size: 0.85em; width: 100%; box-sizing: border-box; }
         .result-area { background: #000; padding: 25px; margin-top: 20px; color: #fff; border: 10px solid var(--accent); }
         .result-label { font-weight: 900; color: var(--bauhaus-yellow); margin-bottom: 10px; display: block; text-transform: uppercase; }
         .result-text { font-family: 'Courier New', monospace; font-size: 0.95em; color: #fff; white-space: pre-wrap; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 15px; }
         .trans-text { font-family: sans-serif; font-size: 0.95em; color: #ddd; font-style: italic; background: #222; padding: 15px; margin-bottom: 15px; }
         .negative-text { font-family: monospace; font-size: 0.8em; color: var(--accent); margin-bottom: 20px; }
-        
         .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
         button { padding: 12px 25px; border: 2px solid #000; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .btn-gen { background: var(--accent); color: white; }
         .btn-random { background: var(--bauhaus-blue); color: white; }
         .btn-copy-all { background: var(--bauhaus-yellow); color: black; }
-        
         footer { margin-top: 40px; text-align: center; font-size: 0.8em; font-weight: bold; border-top: 2px solid #000; padding-top: 20px; text-transform: uppercase; color: #777; }
-        .top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
-
-body {
-    padding-top: 80px;
-}
-.btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-}
     </style>
 </head>
 <body onload="resetAll()">
-    <div class="top-right">
-    <a href="index.html" class="btn-retour">🏠 Accueil</a>
-    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
-</div>
-
 <div class="container">
     <div class="intro-section">
         <h2>Bauhaus : La Forme suit la Fonction</h2>
         <div class="intro-grid">
-            <div>
-                <strong>L'ADN partagé :</strong> Comme l'AFM et l'Art Déco, le Bauhaus rejette le réalisme pour le <strong>symbole</strong>. Il épure l'histoire en formes primaires (cercle, carré, triangle) pour créer des icônes intemporelles.
-            </div>
-            <div>
-                <strong>La Distinction :</strong> Là où l'Art Déco cherche le luxe, le Bauhaus cherche l'<strong>équilibre radical</strong> et la modernité industrielle. C'est l'art de l'essentiel.
-            </div>
-        </div>
-
-        <h3>🚀 Guide de démarrage rapide</h3>
-        <div class="guide-steps">
-            <ol>
-                <li><strong>Épurez votre sujet :</strong> Choisissez un personnage et un symbole géométrique fort. Utilisez les champs "Autre" pour vos idées propres.</li>
-                <li><strong>Boutique :</strong> Sélectionnez un objet (affiche, timbre, vinyle) et le ratio adapté.</li>
-                <li><strong>Générez :</strong> Copiez le "Pack IA" et laissez la géométrie opérer.</li>
-            </ol>
+            <div><strong>L'ADN :</strong> Épuration de l'histoire en formes primaires (cercle, carré, triangle).</div>
+            <div><strong>Guide :</strong> Composez, choisissez votre support et générez votre icône moderne.</div>
         </div>
     </div>
-
     <h1>📐 Studio Bauhaus</h1>
     <p class="description">Épurer l'histoire par la géométrie radicale.</p>
-
     <form id="bauhaus-form" autocomplete="off">
     <div class="grid">
         <div class="form-group">
             <label>👤 Sujet Stylisé</label>
             <select id="char"><option value="" selected>-- Aucun --</option>
-                <option value="A minimalist figure in the style of Oskar Schlemmer's Triadic Ballet" data-fr="Danseur du Ballet Triadique">Danseur Triadique</option>
-                <option value="A pensive architect with heavy black-framed glasses" data-fr="Architecte Bauhaus">L'Architecte</option>
-                <option value="An astronaut in a grid-patterned space suit" data-fr="Astronaute en grille">Astronaute</option>
-                <option value="A pensive patriarch reduced to geometric volumes" data-fr="Patriarche géométrique">Le Parrain</option>
-                <option value="A Greek goddess composed of circles and triangles" data-fr="Déesse géométrique">Déesse Grecque</option>
-                <option value="A mechanical chess player made of spheres" data-fr="Joueur d'échecs">Joueur d'Échecs</option>
-                <option value="A stylized aviator with primary color accents" data-fr="Aviateur Bauhaus">L'Aviateur</option>
-                <option value="A wisdom empress in bold flat shapes" data-fr="Impératrice en aplats">L'Impératrice</option>
-                <option value="A musician with a tubular steel instrument" data-fr="Musicien tubulaire">Le Musicien</option>
-                <option value="A stylized worker in an industrial grid" data-fr="Ouvrier industriel">L'Ouvrier</option>
+                <option value="A minimalist figure in the style of Oskar Schlemmer's Triadic Ballet">Danseur Triadique</option>
+                <option value="A pensive architect with heavy black-framed glasses">L'Architecte</option>
+                <option value="An astronaut in a grid-patterned space suit">Astronaute</option>
+                <option value="A pensive patriarch reduced to geometric volumes">Le Parrain</option>
+                <option value="A Greek goddess composed of circles and triangles">Déesse Grecque</option>
+                <option value="A mechanical chess player made of spheres">Joueur d'Échecs</option>
+                <option value="A stylized aviator with primary color accents">L'Aviateur</option>
+                <option value="A wisdom empress in bold flat shapes">L'Impératrice</option>
+                <option value="A musician with a tubular steel instrument">Le Musicien</option>
+                <option value="A stylized worker in an industrial grid">L'Ouvrier</option>
             </select>
             <input type="text" id="char-custom" placeholder="Autre idée (en anglais)...">
         </div>
-
         <div class="form-group">
             <label>🐾 Symbole Géométrique</label>
             <select id="comp"><option value="" selected>-- Aucun --</option>
-                <option value="a cluster of primary color spheres" data-fr="Sphères primaires">Sphères (R,B,J)</option>
-                <option value="a rigid grid of black lines" data-fr="Grille de lignes">Grille de Lignes</option>
-                <option value="a minimalist tubular steel chair" data-fr="Chaise tubulaire">Chaise Wassily</option>
-                <option value="a series of concentric circles" data-fr="Cercles concentriques">Cercles</option>
-                <option value="a heavy industrial gear" data-fr="Engrenage simple">Engrenage Pur</option>
-                <option value="a sharp triangular mountain silhouette" data-fr="Triangle">Montagne Triangle</option>
-                <option value="a minimalist teapot made of a half-circle" data-fr="Théière demi-cercle">Théière Bauhaus</option>
-                <option value="a bold red square floating" data-fr="Carré rouge">Carré Rouge</option>
-                <option value="abstract puppet strings as vertical lines" data-fr="Lignes verticales">Fils Rectilignes</option>
-                <option value="a mechanical clock with no numbers" data-fr="Horloge sans chiffres">Horloge Pure</option>
+                <option value="a cluster of primary color spheres">Sphères (R,B,J)</option>
+                <option value="a rigid grid of black lines">Grille de Lignes</option>
+                <option value="a minimalist tubular steel chair">Chaise Wassily</option>
+                <option value="a series of concentric circles">Cercles</option>
+                <option value="a heavy industrial gear">Engrenage Pur</option>
+                <option value="a sharp triangular mountain silhouette">Montagne Triangle</option>
+                <option value="a minimalist teapot made of a half-circle">Théière Bauhaus</option>
+                <option value="a bold red square floating">Carré Rouge</option>
+                <option value="abstract puppet strings as vertical lines">Fils Rectilignes</option>
+                <option value="a mechanical clock with no numbers">Horloge Pure</option>
             </select>
             <input type="text" id="comp-custom" placeholder="Autre symbole (en anglais)...">
         </div>
-
         <div class="form-group">
-            <label>🎭 Action</label>
-            <select id="act"><option value="" selected>-- Aucune --</option>
-                <option value="performing a geometric dance" data-fr="en danse géométrique">Danse géométrique</option>
-                <option value="drafting an architectural plan" data-fr="dessinant un plan">Dessinant un plan</option>
-                <option value="assembling a modular structure" data-fr="assemblant un module">Assemblage modulaire</option>
-                <option value="analyzing a color wheel" data-fr="analysant les couleurs">Analyse chromatique</option>
-                <option value="walking through a rigid grid" data-fr="marchant dans la grille">Marche rectiligne</option>
-                <option value="playing a tubular saxophone" data-fr="jouant du saxo">Musique tubulaire</option>
-                <option value="constructing a metal sculpture" data-fr="sculptant le métal">Sculpture métal</option>
-                <option value="thinking in abstract volumes" data-fr="pensant en volumes">Pensée abstraite</option>
-                <option value="observing the golden ratio" data-fr="observant le nombre d'or">Nombre d'or</option>
-                <option value="organizing primary shapes" data-fr="ordonnant les formes">Ordonnancement</option>
-            </select>
-            <input type="text" id="act-custom" placeholder="Action (en anglais)...">
-        </div>
-
-        <div class="form-group">
-            <label>📍 Environnement</label>
-            <select id="loc"><option value="" selected>-- Aucun --</option>
-                <option value="inside a glass and concrete workshop" data-fr="à l'atelier Dessau">Atelier Dessau</option>
-                <option value="against a stark white void" data-fr="dans le vide blanc">Vide Blanc</option>
-                <option value="in front of a geometric facade" data-fr="devant la façade">Façade Radicale</option>
-                <option value="within an asymmetrical grid" data-fr="dans la grille">Grille Asymétrique</option>
-                <option value="on a minimalist theater stage" data-fr="sur scène">Théâtre Expérimental</option>
-                <option value="inside a high-tech factory" data-fr="à l'usine">Usine Moderne</option>
-                <option value="at a geometric sunset" data-fr="au coucher de soleil">Sunset Géométrique</option>
-                <option value="inside a primary color library" data-fr="à la bibliothèque">Bibliothèque R/B/J</option>
-                <option value="on a rooftop with tubular railings" data-fr="sur le toit">Toit-Terrasse</option>
-                <option value="inside a space module grid" data-fr="dans le module">Station Spatiale</option>
-            </select>
-            <input type="text" id="loc-custom" placeholder="Lieu (en anglais)...">
-        </div>
-
-        <div class="form-group">
-            <label>⌛ Époque / Style</label>
-            <select id="era"><option value="" selected>-- Bauhaus Classique --</option>
-                <option value="1923 Weimar exhibition era" data-fr="Weimar 1923">Weimar 1923</option>
-                <option value="Dessau school movement" data-fr="Dessau">École de Dessau</option>
-                <option value="Radical Constructivist style" data-fr="Constructivisme">Constructivisme</option>
-                <option value="New Objectivity era" data-fr="Nouvelle Objectivité">Nouvelle Objectivité</option>
-                <option value="Minimalist Geometric future" data-fr="Futur Géométrique">Futur Géométrique</option>
-                <option value="Soviet Vkhutemas influence" data-fr="Vkhutemas">Vkhutemas</option>
-                <option value="Avant-garde 1920s Berlin" data-fr="Berlin 1920">Berlin Avant-garde</option>
-                <option value="Functionalist architecture era" data-fr="Fonctionnalisme">Fonctionnalisme</option>
-                <option value="Abstract Bauhaus experimentalism" data-fr="Expérimental">Expérimental</option>
-                <option value="Modernist Bauhaus movement" data-fr="Modernisme">Modernisme Pur</option>
-            </select>
-            <input type="text" id="era-custom" placeholder="Style (en anglais)...">
-        </div>
-
-        <div class="form-group">
-            <label>🎨 Texture Artistique</label>
+            <label>🎨 Texture</label>
             <select id="textu">
-                <option value="Flat matte paint on rough canvas" selected>Peinture mate / Canevas</option>
-                <option value="Traditional block print texture">Linogravure / Encre</option>
+                <option value="Flat matte paint on rough canvas" selected>Peinture mate</option>
+                <option value="Traditional block print texture">Linogravure</option>
                 <option value="Smooth industrial concrete and steel">Béton & Acier</option>
                 <option value="Screen printed poster on aged paper">Sérigraphie</option>
                 <option value="Textured plywood and primary lacquer">Bois laqué</option>
-                <option value="Heavy lithographic grain">Grain lithographique</option>
-                <option value="Woven textile with geometric patterns">Textile tissé</option>
+                <option value="Heavy lithographic grain">Grain litho</option>
+                <option value="Woven textile patterns">Textile tissé</option>
                 <option value="Matte enamel on metal">Émail mat</option>
-                <option value="Rough newsprint ink texture">Papier journal</option>
-                <option value="Constructivist photomontage elements">Photomontage</option>
             </select>
         </div>
-
         <div class="form-group bonus">
             <label>🎁 Boutique Souvenir</label>
             <select id="souvenir">
+                <option value="" selected>-- Illustration Seule --</option>
                 <option value="an avant-garde movie poster parody">Affiche de film</option>
                 <option value="a modernist vinyl record cover">Pochette de disque</option>
                 <option value="a minimalist postage stamp">Timbre-poste</option>
@@ -209,31 +100,27 @@ body {
                 <option value="a ceramic mug">Mug / Tasse</option>
             </select>
         </div>
-
         <div class="form-group bonus">
             <label>📐 Format (Ratio)</label>
             <select id="ratio">
                 <option value="1:1">1:1</option>
-                <option value="2:1">2:1 (Billet)</option>
-                <option value="21:9">21:9 (Bandeau Mug)</option>
-                <option value="2:3" selected>2:3 (Affiche)</option>
-                <option value="3:4">3:4 (Vin)</option>
-                <option value="5:4">5:4 (Timbre)</option>
-                <option value="16:9">16:9</option>
+                <option value="2:1">2:1</option>
+                <option value="21:9">21:9</option>
+                <option value="2:3" selected>2:3</option>
+                <option value="3:4">3:4</option>
+                <option value="5:4">5:4</option>
             </select>
         </div>
     </div>
     </form>
-
     <div class="actions">
         <button class="btn-gen" onclick="build(false)">🚀 Créer l'Objet Bauhaus</button>
-        <button class="btn-random" onclick="build(true)">🎲 Surprise Aléatoire</button>
+        <button class="btn-random" onclick="build(true)">🎲 Aléatoire</button>
     </div>
-
     <div class="result-area" id="res-box" style="display:none;">
-        <span class="result-label">PROMPT BAUHAUS (POUR L'IA) :</span>
+        <span class="result-label">PROMPT BAUHAUS :</span>
         <div class="result-text" id="prompt-en"></div>
-        <span class="result-label">VÉRIFICATION (TRADUCTION) :</span>
+        <span class="result-label">VÉRIFICATION :</span>
         <div class="trans-text" id="prompt-fr"></div>
         <span class="result-label">NEGATIVE PROMPT :</span>
         <div class="negative-text" id="neg-out"></div>
@@ -243,44 +130,29 @@ body {
     </div>
     <footer>Extension Bauhaus du Studio AFM | Technologie Télé-Temps | Créé par @duglin69</footer>
 </div>
-
 <script>
     const neg = "photorealistic, 3D render, CGI, shiny plastic, smooth digital art, photograph, blurry, text, watermark, signature, ornate, complex details, floral motifs.";
     function resetAll() { document.getElementById('bauhaus-form').reset(); document.getElementById('res-box').style.display = 'none'; }
-
     function build(isRandom) {
-        const fields = ['char','comp','act','loc','era','textu','souvenir','ratio'];
+        const fields = ['char','comp','textu','souvenir','ratio'];
         const v = {}; const fr = [];
-        
         fields.forEach(f => {
             const sel = document.getElementById(f);
             const cust = document.getElementById(f+'-custom');
             if(isRandom && !['textu','souvenir','ratio'].includes(f)) sel.selectedIndex = Math.floor(Math.random() * (sel.options.length - 1)) + 1;
             const opt = sel.options[sel.selectedIndex];
             v[f] = (cust && cust.value.trim() !== "") ? cust.value : (opt ? opt.value : "");
-            if(v[f] && opt.text !== "-- Aucun --") fr.push(opt.getAttribute('data-fr') || opt.text);
+            if(v[f] && opt.text !== "-- Aucun --" && opt.text !== "-- Illustration Seule --") fr.push(opt.text);
         });
-
-        let p = `A radical Bauhaus illustration. Minimalist geometric composition based on a strict grid. Texture: ${v.textu}. `;
-        if(v.ratio === "21:9") p += "Seamless panoramic wrap-around composition. ";
-        
-        let sc = []; if(v.char) sc.push(v.char); if(v.comp) sc.push("with " + v.comp); if(v.act) sc.push(v.act); if(v.loc) sc.push(v.loc); if(v.era) sc.push("set in " + v.era);
-        p += "Scene: " + sc.join(" ") + ". ";
+        let p = `A radical Bauhaus illustration. Minimalist geometric composition based on a strict grid. Texture: ${v.textu}. Scene: ${v.char} with ${v.comp}. `;
         if(v.souvenir) p += `The artwork is ${v.souvenir}. `;
         p += "Primary color palette: Red, Blue, Yellow, with Black and White. Bold sans-serif typography. Flat shapes and thick lines. --ar " + v.ratio;
-
         document.getElementById('prompt-en').innerText = p;
         document.getElementById('prompt-fr').innerText = "Vérification : " + fr.join(" + ");
         document.getElementById('neg-out').innerText = "Negative Prompt: " + neg;
         document.getElementById('res-box').style.display = 'block';
     }
-
-    function copyAll() { 
-        const full = document.getElementById('prompt-en').innerText + "\n\nNegative Prompt: " + neg;
-        navigator.clipboard.writeText(full).then(() => alert("Pack Bauhaus copié !")); 
-    }
+    function copyAll() { const full = document.getElementById('prompt-en').innerText + "\n\nNegative Prompt: " + neg; navigator.clipboard.writeText(full).then(() => alert("Pack Bauhaus copié !")); }
 </script>
 </body>
 </html>
-
-
