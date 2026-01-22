@@ -59,7 +59,6 @@ body {
     border-radius: 8px;
     font-weight: 600;
 }
-
     </style>
 </head>
 <body onload="resetAll()">
@@ -73,19 +72,19 @@ body {
         <h2>L'Art Déco vs Art Folk Moderne : Deux faces d'un même Mythe</h2>
         <div class="intro-grid">
             <div>
-                <strong>Ce qui les réunit :</strong> Une ADN commune de <strong>simplification symbolique</strong> et de rejet du réalisme. Tous deux servent à créer des "objets mémora-temporels" uniques.
+                <strong>Ce qui les réunit :</strong> Une ADN commune de <strong>simplification symbolique</strong> et de rejet du réalisme[cite: 39]. Tous deux servent à créer des "objets mémora-temporels" uniques[cite: 39].
             </div>
             <div>
-                <strong>Ce qui les distingue :</strong> L'Art Déco troque l'organique pour la <strong>géométrie, la symétrie et le luxe industriel</strong> des années 20-30.
+                <strong>Ce qui les distingue :</strong> L'Art Déco troque l'organique pour la <strong>géométrie, la symétrie et le luxe industriel</strong> des années 20-30[cite: 40].
             </div>
         </div>
 
         <h3>🚀 Guide de démarrage rapide</h3>
         <div class="guide-steps">
             <ol>
-                <li><strong>Composez :</strong> Choisissez vos éléments ou saisissez vos propres idées en anglais.</li>
-                <li><strong>Boutique :</strong> Sélectionnez votre objet et son ratio.</li>
-                <li><strong>Générez :</strong> Copiez le "Pack IA" complet pour votre générateur d'image favori.</li>
+                <li><strong>Composez :</strong> Choisissez vos éléments ou saisissez vos propres idées en anglais[cite: 41].</li>
+                <li><strong>Boutique :</strong> Sélectionnez votre objet et son ratio[cite: 41].</li>
+                <li><strong>Générez :</strong> Copiez le "Pack IA" complet pour votre générateur d'image favori[cite: 41].</li>
             </ol>
         </div>
     </div>
@@ -199,6 +198,7 @@ body {
         <div class="form-group bonus">
             <label>🎁 Boutique Souvenir</label>
             <select id="souvenir">
+                <option value="" selected>-- Illustration Seule --</option>
                 <option value="a movie poster parody">Affiche de film</option>
                 <option value="a bank note design">Billet de banque</option>
                 <option value="a vinyl album cover">Pochette de disque</option>
@@ -257,7 +257,7 @@ body {
             if(isRandom && f !== 'ratio' && f !== 'textu') sel.selectedIndex = Math.floor(Math.random() * (sel.options.length - 1)) + 1;
             const opt = sel.options[sel.selectedIndex];
             v[f] = (cust && cust.value.trim() !== "") ? cust.value : (opt ? opt.value : "");
-            if(v[f] && opt.text !== "-- Aucun --") fr.push(opt.getAttribute('data-fr') || ("["+v[f]+"]"));
+            if(v[f] && opt.text !== "-- Aucun --" && opt.text !== "-- Illustration Seule --") fr.push(opt.getAttribute('data-fr') || ("["+v[f]+"]"));
         });
 
         let p = `A striking Art Deco illustration. Symmetrical geometric composition. Texture: ${v.textu}. `;
@@ -280,4 +280,3 @@ body {
 </script>
 </body>
 </html>
-
