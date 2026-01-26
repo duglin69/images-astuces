@@ -27,9 +27,34 @@
         .footer-docs { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 30px; background: #0a0a0f; border-radius: 15px; border-top: 2px solid #1a1a2e; }
         .recipe-card { background: #050508; padding: 15px; border-radius: 8px; border: 1px solid #222; margin-bottom: 10px; font-size: 0.85em; }
         .custom-input { display: none; margin-top: 8px; border-color: var(--neon-cyan); }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+        .btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
 <div class="container">
     <h1>🌌 ALCHIMISTE 33 : FUSION TOTALE</h1>
     <div class="grid">
@@ -237,4 +262,5 @@
     setupStyles();
 </script>
 </body>
+
 </html>
