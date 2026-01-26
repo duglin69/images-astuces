@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alchimiste 33 : Fusion Totale - Master</title>
+    <style>
+        :root { --neon-cyan: #00f2ff; --neon-pink: #ff0055; --bg-dark: #08080c; }
+        body { font-family: 'Inter', sans-serif; background: #010103; color: #e0e0e0; padding: 20px; line-height: 1.4; margin: 0; }
+        .container { max-width: 1200px; margin: auto; background: var(--bg-dark); padding: 30px; border-radius: 20px; border: 1px solid #1a1a2e; box-shadow: 0 0 60px rgba(0,242,255,0.1); width: 95%; box-sizing: border-box; }
+        h1 { color: var(--neon-cyan); text-align: center; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; font-size: 2em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 8px; font-size: 0.75em; color: var(--neon-cyan); text-transform: uppercase; font-weight: 700; opacity: 0.8; }
+        select, input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #222; background: #0d0d14; color: #fff; font-size: 0.9em; box-sizing: border-box; transition: 0.3s; }
+        select:focus, input:focus { border-color: var(--neon-cyan); outline: none; }
+        .style-row { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 8px; align-items: center; margin-bottom: 12px; }
+        .weight-num { text-align: center; font-weight: bold; color: var(--neon-pink); background: #1a050d; }
+        .output-box { background: #000; border: 1px solid var(--neon-cyan); padding: 25px; border-radius: 12px; margin-top: 25px; }
+        #finalPrompt { display: block; font-family: 'Fira Code', monospace; font-size: 0.85em; color: #a5b4fc; white-space: pre-wrap; word-break: break-all; }
+        .actions-btn { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 20px; }
+        button { cursor: pointer; padding: 15px; border: none; border-radius: 8px; font-weight: bold; transition: 0.3s; text-transform: uppercase; flex: 1; min-width: 160px; }
+        .btn-main { background: var(--neon-cyan); color: #000; font-size: 1.1em; }
+        .btn-rand { background: #7000ff; color: white; }
+        .btn-reset { background: #333; color: white; }
+        .btn-copy { background: var(--neon-pink); color: white; }
+        .footer-docs { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 30px; background: #0a0a0f; border-radius: 15px; border-top: 2px solid #1a1a2e; }
+        .recipe-card { background: #050508; padding: 15px; border-radius: 8px; border: 1px solid #222; margin-bottom: 10px; font-size: 0.85em; }
+        .custom-input { display: none; margin-top: 8px; border-color: var(--neon-cyan); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🌌 ALCHIMISTE 33 : FUSION TOTALE</h1>
+    <div class="grid">
+        <div>
+            <label>👤 Personnage</label>
+            <select id="char" onchange="toggleCustom(this)">
+                <option value="none">-- Aucun --</option>
+                <option value="Albert Einstein">Albert Einstein</option>
+                <option value="A majestic griffin">Griffon Royal</option>
+                <option value="A Valkyrie with neon wings">Valkyrie Cyber</option>
+                <option value="Icarus with solar wings">Icare Solaire</option>
+                <option value="Anubis in a business suit">Anubis Moderne</option>
+                <option value="Medusa with stylized serpents">Méduse Stylisée</option>
+                <option value="A pensive Minotaur">Minotaure Pensif</option>
+                <option value="A wise ancient Egyptian empress">Impératrice Sage</option>
+                <option value="A lonely astronaut in a vintage suit">Astronaute Vintage</option>
+                <option value="custom" selected>-- Personnaliser --</option>
+            </select>
+            <input type="text" id="char_custom" class="custom-input" placeholder="Sujet en anglais..." style="display:block;">
+        </div>
+
+        <div>
+            <label>🐾 Compagnon / Objet</label>
+            <select id="comp" onchange="toggleCustom(this)">
+                <option value="none" selected>-- Aucun --</option>
+                <option value="with a small playful dragon">Petit Dragon</option>
+                <option value="with a mechanical owl">Chouette Mécanique</option>
+                <option value="with a glowing phoenix">Phénix de Feu</option>
+                <option value="with a high-tech floating drone">Drone Futuriste</option>
+                <option value="with a stylized unicorn">Licorne AFM</option>
+                <option value="with a vintage gramophone">Gramophone</option>
+                <option value="with a vintage ping-pong table">Table de ping-pong</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="comp_custom" class="custom-input" placeholder="Objet en anglais...">
+        </div>
+
+        <div>
+            <label>🎭 Action</label>
+            <select id="act" onchange="toggleCustom(this)">
+                <option value="none" selected>-- Aucune --</option>
+                <option value="playing an intense chess match">Jouant aux échecs</option>
+                <option value="sharing a cup of tea">Partageant un thé</option>
+                <option value="painting the stars">Peignant les étoiles</option>
+                <option value="repairing a glowing galaxy">Réparant une galaxie</option>
+                <option value="decoding an ancient scroll">Déchiffrant un parchemin</option>
+                <option value="meditating in silence">Méditant en silence</option>
+                <option value="taming a wild electric storm">Apprivoisant l'orage</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="act_custom" class="custom-input" placeholder="Action en anglais...">
+        </div>
+
+        <div class="full-width">
+            <label>🎨 Alchimie des Styles (Les 33 Styles de Maître)</label>
+            <div id="style-container"></div>
+        </div>
+
+        <div>
+            <label>📍 Lieu & Fond</label>
+            <select id="loc" onchange="toggleCustom(this)">
+                <option value="custom" selected>-- Personnaliser --</option>
+                <option value="at an oasis with pyramids">Oasis & Pyramides</option>
+                <option value="inside a space station">Station Spatiale</option>
+                <option value="in a misty bamboo forest">Forêt de Bambous</option>
+                <option value="at the bottom of a bioluminescent sea">Bibliothèque Marine</option>
+                <option value="in a floating garden">Jardin Suspendu</option>
+                <option value="inside a Greek temple">Temple Grec</option>
+                <option value="in a neon cyberpunk city">Ville Cyberpunk</option>
+                <option value="on a clean minimalist white background">Fond Blanc (Paint)</option>
+            </select>
+            <input type="text" id="loc_custom" class="custom-input" placeholder="Lieu en anglais..." style="display:block;">
+        </div>
+
+        <div>
+            <label>✨ Météo & Polarité</label>
+            <select id="weather" onchange="toggleCustom(this)">
+                <option value="custom" selected>-- Personnaliser --</option>
+                <option value="none">-- Vide Absolu (Black Space) --</option>
+                <option value="at Blue Hour (entre chien et loup)">Entre chien et loup</option>
+                <option value="at Midnight with diamond rain">Minuit & Pluie de diamants</option>
+                <option value="with solar wind auroras">Vents Solaires</option>
+                <option value="with vibrant watercolor splashes">Éclats d'Aquarelle</option>
+                <option value="with flowing neon ribbons">Rubans de Néon</option>
+            </select>
+            <input type="text" id="weather_custom" class="custom-input" placeholder="Effet météo en anglais..." style="display:block;">
+        </div>
+
+        <div>
+            <label>🧱 Matériau</label>
+            <select id="material" onchange="toggleCustom(this)">
+                <option value="custom" selected>-- Personnaliser --</option>
+                <option value="none">-- Aucun (Libre interprétation) --</option>
+                <option value="made of polished enamel">Émail (Pin's)</option>
+                <option value="made of aged textured paper">Papier Ancien</option>
+                <option value="crafted with silk embroidery">Broderie de Soie</option>
+                <option value="made of glazed ceramic">Céramique glacée (Mug)</option>
+                <option value="embossed on ancient gold">Or ancien gravé (Pièce)</option>
+                <option value="carved in heavy obsidian">Obsidienne Noire</option>
+            </select>
+            <input type="text" id="material_custom" class="custom-input" placeholder="Matériau en anglais..." style="display:block;">
+        </div>
+
+        <div class="col-2" style="grid-column: span 2;">
+            <label>🎁 Boutique Souvenir</label>
+            <select id="souvenir" onchange="autoRatio()">
+                <option value="none" selected>-- Illustration Seule --</option>
+                <option value="presented as a movie poster parody">Affiche de film</option>
+                <option value="presented as a vinyl album cover">Pochette de disque</option>
+                <option value="printed on a vintage postcard">Carte postale</option>
+                <option value="captured as a grainy souvenir photograph">Photo souvenir</option>
+                <option value="the central design of a bank note">Billet de banque</option>
+                <option value="an enamel collector pin">Pin's de collection</option>
+                <option value="embossed on an ancient gold coin">Pièce de monnaie</option>
+                <option value="a collector postage stamp">Timbre-poste</option>
+                <option value="printed on a ceramic mug">Mug / Tasse</option>
+            </select>
+        </div>
+
+        <div>
+            <label>📐 Format (Ratio)</label>
+            <select id="ratio">
+                <option value="21:9">21:9 (Ultrawide / Billet)</option>
+                <option value="16:9" selected>16:9 (Cinéma)</option>
+                <option value="3:2">3:2 (Carte Postale)</option>
+                <option value="2:3">2:3 (Affiche)</option>
+                <option value="1:1">1:1 (Mug / Pin's)</option>
+                <option value="5:4">5:4 (Timbre)</option>
+                <option value="9:16">9:16 (Story)</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn-main" onclick="generate()">🚀 FORGER LE PROMPT ULTIME</button>
+    <div class="actions-btn">
+        <button class="btn-rand" onclick="randomize()">🎲 SURPRISE</button>
+        <button class="btn-reset" onclick="resetAll()">🔄 RESET</button>
+        <button class="btn-copy" onclick="copyPrompt()">📋 COPIER</button>
+    </div>
+    <div class="output-box"><code id="finalPrompt">En attente de vos réglages...</code></div>
+    <div class="footer-docs">
+        <div class="doc-section">
+            <h3>📜 Grimoire Alchimique</h3>
+            <div class="recipe-card"><b>L'Équilibre Maître :</b> Black Space (70%) + Absurealism (30%).</div>
+            <div class="recipe-card"><b>Le Survivant :</b> Black Space (50%) + Dystopian Grit (50%).</div>
+        </div>
+        <div class="doc-section">
+            <h3>💎 Guide du Puriste</h3>
+            <div class="recipe-card"><b>Recette Black Space :</b><br>1. Style 1 : <b>Black Space Aesthetic</b> à 100%.<br>2. Ratio : <b>21:9</b>.<br>3. Météo : <b>Vide Absolu</b>.</div>
+        </div>
+    </div>
+</div>
+<script>
+    const stylesList = [ "Black Space Aesthetic", "Absurealism", "Icy Blue Palette", "Pixar 3D Render", "Japanese Ukiyo-e", "Hyperrealism", "Dystopian Grit", "Afrohemian Art", "Modern Folk Art", "Studio Ghibli Painting", "Cyberpunk Noir", "Vaporwave Dreams", "Biopunk Bioluminescence", "Dark Fantasy", "Art Nouveau", "Synthwave 80s", "Ethereal Watercolor", "Gothic Horror", "Minimalism", "Glitch Art", "Dreamcore", "Linocut Print", "Steampunk Brass", "Aurora Borealis", "Baroque Chiaroscuro", "Claymation", "Brutalist Architecture", "Ligne Claire", "Pop Art", "Byzantine Mosaic", "Impressionism", "Surrealist Collage", "Solar-Folk" ];
+    
+    function setupStyles() {
+        const container = document.getElementById('style-container');
+        for(let i=1; i<=3; i++) {
+            const row = document.createElement('div');
+            row.className = 'style-row';
+            let h = `<select id="s${i}" onchange="toggleCustom(this)"><option value="none">-- Style ${i} --</option>`;
+            stylesList.forEach(s => h += `<option value="${s}">${s}</option>`);
+            h += `<option value="custom">-- Personnaliser --</option></select><input type="number" id="w${i}" class="weight-num" value="0" placeholder="%"><input type="text" id="s${i}_custom" class="custom-input">`;
+            row.innerHTML = h; container.appendChild(row);
+        }
+    }
+
+    function toggleCustom(el) {
+        const c = document.getElementById(el.id + '_custom');
+        if(c) c.style.display = (el.value === 'custom') ? 'block' : 'none';
+    }
+
+    function autoRatio() {
+        const s = document.getElementById('souvenir').value;
+        const r = document.getElementById('ratio');
+        if(s.includes('stamp')) r.value = "5:4";
+        else if(s.includes('mug') || s.includes('pin') || s.includes('coin') || s.includes('vinyl')) r.value = "1:1";
+        else if(s.includes('postcard') || s.includes('photo')) r.value = "3:2";
+        else if(s.includes('poster') || s.includes('card')) r.value = "2:3";
+        else if(s.includes('note')) r.value = "21:9";
+    }
+
+    function generate() {
+        const getV = (id) => {
+            const sel = document.getElementById(id);
+            return sel.value === 'custom' ? document.getElementById(id + '_custom').value : sel.value;
+        };
+        let mix = "";
+        for(let i=1; i<=3; i++) {
+            const s = getV('s'+i);
+            const w = document.getElementById('w'+i).value;
+            if(s !== "none" && w > 0) mix += `(${s}:${w/100}), `;
+        }
+        const souvenir = getV('souvenir');
+        const material = getV('material');
+        const prompt = `Digital art masterpiece. A fusion of ${mix}featuring ${getV('char')} ${getV('comp')==='none'?'':getV('comp')} ${getV('act')==='none'?'':getV('act')}, ${getV('loc')} ${getV('weather')==='none'?'':getV('weather')}. ${material==='none'||material==='custom'?'':material + ','} ${souvenir==='none'?'':souvenir + ','} High-contrast, neon bioluminescence, volumetric atmosphere, 8k, ultra-detailed. --ar ${document.getElementById('ratio').value}`;
+        document.getElementById('finalPrompt').innerText = prompt + "\n\nPROMPT NÉGATIF : oblitération, texte, signature, filigrane, flou, basse résolution, membres déformés, mains mal dessinées, bruit numérique, couleurs ternes, doublon de personnage, mauvaise anatomie.";
+    }
+
+    function resetAll() { location.reload(); }
+    function randomize() {
+        document.querySelectorAll('select').forEach(s => { s.selectedIndex = Math.floor(Math.random() * s.options.length); toggleCustom(s); });
+        document.getElementById('w1').value = 70; document.getElementById('w2').value = 30; generate();
+    }
+    function copyPrompt() { navigator.clipboard.writeText(document.getElementById('finalPrompt').innerText); alert("Prompt copié !"); }
+    setupStyles();
+</script>
+</body>
+</html>
