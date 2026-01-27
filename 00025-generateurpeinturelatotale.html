@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Alchimiste Master : Codex Suprême</title>
+    <style>
+        :root { --neon-cyan: #00f2ff; --neon-pink: #ff0055; --bg: #050508; }
+        body { font-family: 'Inter', sans-serif; background: #010103; color: #e0e0e0; padding: 20px; line-height: 1.4; }
+        .container { max-width: 1300px; margin: auto; background: var(--bg); padding: 30px; border-radius: 20px; border: 1px solid #1a1a2e; box-shadow: 0 0 50px rgba(0,242,255,0.1); }
+        h1 { color: var(--neon-cyan); text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; }
+        h2 { color: var(--neon-pink); font-size: 0.8em; text-transform: uppercase; margin-top: 20px; border-left: 3px solid var(--neon-pink); padding-left: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; font-size: 0.7em; color: var(--neon-cyan); font-weight: 700; opacity: 0.8; }
+        select, input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #222; background: #0d0d14; color: #fff; font-size: 0.85em; box-sizing: border-box; }
+        .style-row { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 8px; margin-bottom: 10px; }
+        .weight-num { text-align: center; font-weight: bold; color: var(--neon-pink); background: #1a050d; }
+        .output-box { background: #000; border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 12px; margin-top: 20px; }
+        #finalPrompt { display: block; font-family: 'Fira Code', monospace; font-size: 0.8em; color: #a5b4fc; white-space: pre-wrap; word-break: break-all; }
+        button { cursor: pointer; padding: 15px; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; margin-top: 10px; transition: 0.3s; }
+        .btn-main { background: var(--neon-cyan); color: #000; width: 100%; font-size: 1.1em; }
+        .btn-surprise { background: #9d00ff; color: #fff; width: 49%; display: inline-block; }
+        .btn-reset { background: #333; color: #fff; width: 49%; display: inline-block; }
+        .btn-copy { background: var(--neon-pink); color: white; width: 100%; }
+        .custom-input { display: none; margin-top: 5px; border-color: var(--neon-cyan); }
+        .boutique-custom-box { display: none; background: #0a0a15; border: 1px dashed var(--neon-cyan); padding: 15px; border-radius: 10px; margin-top: 10px; }
+        .boutique-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .lexique { font-size: 0.7em; color: #666; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 5px; margin-top: 10px; }
+        .lexique span { border-bottom: 1px solid #1a1a2e; padding-bottom: 2px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🌌 ALCHIMISTE MASTER : CODEX SUPRÊME</h1>
+    <div class="grid">
+        <div>
+            <h2>👥 Casting Principal</h2>
+            <label>Sujet</label>
+            <select id="char" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Sujet --</option>
+                <option value="Alice in Wonderland">Alice aux pays des Merveilles</option>
+                <option value="Cleopatra">Cléopâtre</option>
+                <option value="Albert Einstein">Albert Einstein</option>
+                <option value="an Aztec warrior in traditional ceremonial regalia with a majestic feathered headdress">Guerrier Aztèque (Traditionnel)</option>
+                <option value="A handsome man">Un homme</option>
+                <option value="A graceful woman in an elegant gown">Une femme élégante</option>
+                <option value="A majestic celestial dragon">Un dragon céleste</option>
+                <option value="A tiny glowing forest fairy">Une fée des bois</option>
+                <option value="A rugged futuristic robot">Un robot futuriste</option>
+                <option value="Audrey Hepburn, Goldorak, and Leonardo da Vinci">Hepburn, Goldorak & Vinci</option>
+                <option value="Prince and Santa Claus">Prince & Père Noël</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="char_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Attribut du Sujet</label>
+            <select id="char_attr" onchange="toggleCustom(this)">
+                <option value="none" selected>-- Aucun --</option>
+                <option value="with vibrant paint emanating from the body">Émanation de peinture</option>
+                <option value="surrounded by mystical neon sparks">Étincelles néon</option>
+                <option value="dissolving into a cloud of colorful smoke">Dissolution en fumée</option>
+                <option value="covered in glowing crystalline veins">Veines de cristal</option>
+                <option value="dripping with liquid gold">Suintement d'or</option>
+                <option value="turning into organic flower petals">Pétales organiques</option>
+                <option value="with yellow, blue, and green paint emanating from the body and changing the water color around">Émanations tricolores (Aztèque)</option>
+                <option value="with pixelated wings of light">Ailes de pixels lumineuses</option>
+                <option value="with a liquid mercury skin">Peau en mercure liquide</option>
+                <option value="under a digital glitch effect">Effet de glitch numérique</option>
+                <option value="surrounded by a prismatic rainbow aura">Aura prismatique</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="char_attr_custom" class="custom-input">
+        </div>
+
+        <div>
+            <h2>🤝 Compagnon & Duo</h2>
+            <label>Accompagné de...</label>
+            <select id="companion" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Compagnon --</option>
+                <option value="none">Seul</option>
+                <option value="with the Mad Hatter, the Cheshire Cat, the White Rabbit, and the Queen of Hearts">La clique d'Alice</option>
+                <option value="with Albert Einstein">Albert Einstein</option>
+                <option value="with Cleopatra">Cléopâtre</option>
+                <option value="with a friendly alien creature">Un extraterrestre</option>
+                <option value="with a mechanical tiger">Un tigre mécanique</option>
+                <option value="with a pensive cybernetic robot">Un robot pensif</option>
+                <option value="an Aztec warrior in traditional ceremonial regalia with a majestic feathered headdress">Guerrier Aztèque (Traditionnel)</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="companion_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Attribut du Compagnon</label>
+            <select id="comp_attr" onchange="toggleCustom(this)">
+                <option value="none" selected>-- Aucun --</option>
+                <option value="with vibrant paint emanating from the body">Émanation de peinture</option>
+                <option value="surrounded by mystical neon sparks">Étincelles néon</option>
+                <option value="covered in glowing crystalline veins">Veines de cristal</option>
+                <option value="dripping with liquid gold">Suintement d'or</option>
+                <option value="with yellow, blue, and green paint emanating from the body and changing the water color around">Émanations tricolores (Aztèque)</option>
+                <option value="with pixelated wings of light">Ailes de pixels lumineuses</option>
+                <option value="with a liquid mercury skin">Peau en mercure liquide</option>
+                <option value="surrounded by a prismatic rainbow aura">Aura prismatique</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="comp_attr_custom" class="custom-input">
+        </div>
+
+        <div>
+            <h2>🎭 Mise en Scène</h2>
+            <label>Action</label>
+            <select id="action" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Action --</option>
+                <option value="none">Statique</option>
+                <option value="doing grocery shopping">Faisant ses courses</option>
+                <option value="swimming in a giant cooking pot">Dans une casserole</option>
+                <option value="skateboarding on the rings of Saturn">Skateboard sur Saturne</option>
+                <option value="in a heated televised debate with the President">Débat télévisé</option>
+                <option value="playing chess on a holographic board">Jouant aux échecs</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="action_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Éclairage</label>
+            <select id="lighting" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Éclairage --</option>
+                <option value="illuminated by divine heavenly light">Lumière Divine</option>
+                <option value="under a mystical silvery moonlight">Clair de Lune</option>
+                <option value="with stroboscopic neon flashes">Néons Stroboscopiques</option>
+                <option value="with eerie bioluminescent glow">Bioluminescence</option>
+                <option value="in a soft cinematic morning mist">Brume Matinale</option>
+                <option value="with underwater shimmering caustics">Reflets Sous-marins</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="lighting_custom" class="custom-input">
+        </div>
+
+        <div>
+            <h2>🎨 Technique & Fusion</h2>
+            <label>Médium & Outils</label>
+            <select id="medium" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Médium --</option>
+                <option value="Alcohol Ink technique">Alcohol Ink</option>
+                <option value="rough charcoal sketch">Fusain</option>
+                <option value="thick impasto oil painting">Peinture à l'Huile</option>
+                <option value="classic etching engraving">Gravure</option>
+                <option value="raw spray paint street art">Bombe de Peinture</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="medium_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Fusion</label>
+            <select id="fusion" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Fusion --</option>
+                <option value="sculpted by crashing ocean waves and sea foam">Fusion Océanique</option>
+                <option value="dissolving into vibrant organic pigments">Dissolution (Paint)</option>
+                <option value="emanating liquid energy from the skin">Émanation (Suintement)</option>
+                <option value="integrated into elegant ribbon-like curves">Rubans (Style Visage)</option>
+                <option value="surrounded by floating mercury droplets">Mercure Liquide</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="fusion_custom" class="custom-input">
+        </div>
+
+        <div>
+            <h2>📐 Structure & Focus</h2>
+            <label>Viscosité</label>
+            <select id="viscosity" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Viscosité --</option>
+                <option value="watery and translucent">Aqueuse (Translucide)</option>
+                <option value="thick and textured">Visqueuse (Huile)</option>
+                <option value="glowing and ethereal">Éthérée (Néon)</option>
+                <option value="metallic and reflective">Métallique</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="viscosity_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Focus Anatomique</label>
+            <select id="focus" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Focus --</option>
+                <option value="close-up profile portrait">Portrait de Profil</option>
+                <option value="full body dynamic pose">Corps Entier</option>
+                <option value="upper body bust">Buste & Torse</option>
+                <option value="wide-angle cinematic shot">Plan Large</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="focus_custom" class="custom-input">
+        </div>
+
+        <div>
+            <h2>🧱 Matériau & Lieu</h2>
+            <label>Matériau de Base</label>
+            <select id="material" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Matériau --</option>
+                <option value="crafted from heavy obsidian">Obsidienne Noire</option>
+                <option value="made of polished gold enamel">Émail Or</option>
+                <option value="sculpted from white marble">Marbre Blanc</option>
+                <option value="rusted weathered chrome">Chrome Rouillé</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="material_custom" class="custom-input">
+
+            <label style="margin-top:10px;">Lieu</label>
+            <select id="loc" onchange="toggleCustom(this)">
+                <option value="none" selected disabled>-- Choisir Lieu --</option>
+                <option value="facing a massive planet Jupiter">Face à Jupiter</option>
+                <option value="on a minimalist white background">Fond Blanc</option>
+                <option value="inside a bioluminescent cave">Grotte</option>
+                <option value="on Brooklyn Bridge">Pont de Brooklyn</option>
+                <option value="in a flooded ancient temple">Temple Englouti</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="loc_custom" class="custom-input">
+        </div>
+
+        <div class="full-width">
+            <h2>🎁 Boutique & Objets</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label>Objet Souvenir</label>
+                    <select id="souvenir" onchange="autoRatio(); toggleBoutiqueCustom()">
+                        <option value="none" selected disabled>-- Choisir Objet --</option>
+                        <option value="vertical cinema poster">Affiche Cinéma (V)</option>
+                        <option value="horizontal cinema poster">Affiche Cinéma (H)</option>
+                        <option value="retro comic book cover">Couverture de BD (Comic)</option>
+                        <option value="printed on a circular cardboard beer coaster">Sous-bock pour bière</option>
+                        <option value="encased in a clear acrylic keychain frame">Porte-clé Cadre (2D)</option>
+                        <option value="as a detailed 3D sculpted relief keychain">Porte-clé Sculpter (3D)</option>
+                        <option value="inside a snow globe">Boule à Neige</option>
+                        <option value="as a mystical tarot card">Carte de Tarot</option>
+                        <option value="vintage polaroid photo">Photo Polaroid</option>
+                        <option value="high-quality cinematic film still of a TV studio set">Photo Plateau TV</option>
+                        <option value="architectural blueprint drawing">Plan technique (Blueprint)</option>
+                        <option value="medieval stained glass window">Vitrail médiéval</option>
+                        <option value="custom">-- Personnaliser --</option>
+                    </select>
+                    <input type="text" id="souvenir_custom" class="custom-input">
+                </div>
+                <div>
+                    <label>Format & Ratio</label>
+                    <select id="ratio" onchange="toggleCustom(this)">
+                        <option value="none" selected disabled>-- Choisir Format --</option>
+                        <option value="16:9">16:9</option>
+                        <option value="1:1">1:1</option>
+                        <option value="3:2">3:2</option>
+                        <option value="2:3">2:3</option>
+                        <option value="custom">-- Personnaliser --</option>
+                    </select>
+                    <input type="text" id="ratio_custom" class="custom-input" placeholder="Ex: 4:3">
+                </div>
+            </div>
+
+            <div id="boutique-custom-fields" class="boutique-custom-box">
+                <label style="color: var(--neon-pink); font-size: 0.8em; margin-bottom: 10px;">OPTIONS DE L'OBJET :</label>
+                <div class="boutique-grid">
+                    <div>
+                        <label>Titre de l'œuvre</label>
+                        <input type="text" id="obj_title" placeholder="Ex: ALICE AU PAYS DES NÉONS">
+                    </div>
+                    <div>
+                        <label>Style de Typographie</label>
+                        <select id="obj_typo">
+                            <option value="bold typography">Cinematic (Classique)</option>
+                            <option value="sharp gothic lettering">Gothic (Médiéval)</option>
+                            <option value="vibrant neon signage style">Neon (Cyber-vif)</option>
+                            <option value="elegant art-deco style">Art Deco (Rétro Chic)</option>
+                            <option value="rustic western woodcut">Western (Rustique)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Noms (Acteurs/Sujets)</label>
+                        <input type="text" id="obj_actors" placeholder="Ex: Einstein, Goldorak">
+                    </div>
+                    <div>
+                        <label>Date / Texte bas</label>
+                        <input type="text" id="obj_date" placeholder="Ex: Release 2026">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="full-width">
+            <h2>🧪 Laboratoire des Styles (Pondérables)</h2>
+            <div id="style-container"></div>
+        </div>
+
+        <div class="full-width" style="margin-top: 30px; border-top: 1px solid #1a1a2e; padding-top: 15px;">
+            <h2 style="color: #444; border-left: 3px solid #444;">💡 Aide & Lexique (FR > EN)</h2>
+            <div class="lexique">
+                <span>Guerrier: Warrior</span>
+                <span>Plumes: Feathers</span>
+                <span>Épée: Sword</span>
+                <span>Forêt: Forest</span>
+                <span>Cheveux: Hair</span>
+                <span>Yeux: Eyes</span>
+                <span>Fleurs: Flowers</span>
+                <span>Espace: Space</span>
+                <span>Ancien: Ancient</span>
+                <span>Magique: Magical</span>
+                <span>Sombre: Dark</span>
+                <span>Lumineux: Glowing</span>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-main" onclick="generate()">🚀 FORGER LE CHEF-D'ŒUVRE</button>
+    <div style="display: flex; justify-content: space-between;">
+        <button class="btn-surprise" onclick="randomize()">🎲 SURPRISE ALCHIMIQUE</button>
+        <button class="btn-reset" onclick="resetForge()">🧹 RÉINITIALISER LA FORGE</button>
+    </div>
+    <button class="btn-copy" onclick="copyPrompt()">📋 COPIER LE PROMPT COMPLET</button>
+    
+    <div class="output-box"><code id="finalPrompt">Sélectionnez vos ingrédients alchimiques...</code></div>
+</div>
+
+<script>
+    const styles = ["Photorealistic Fluid Dynamics", "Andino Surrealism", "Moscow Caricature", "Vintage Space Anime", "Black Space Aesthetic", "Absurealism", "Icy Blue Palette", "Pixar 3D Render", "Japanese Ukiyo-e", "Hyperrealism", "Dystopian Grit", "Modern Folk Art", "Studio Ghibli Painting", "Cyberpunk Noir", "Vaporwave Dreams", "Art Nouveau", "Synthwave 80s", "Ethereal Watercolor", "Gothic Horror", "Minimalism", "Glitch Art", "Linocut Print", "Steampunk Brass", "Baroque Chiaroscuro", "Byzantine Mosaic", "Impressionism", "Surrealist Collage", "Abstract Expressionism", "Solar-Folk"];
+
+    function setup() {
+        const container = document.getElementById('style-container');
+        container.innerHTML = "";
+        for(let i=1; i<=3; i++) {
+            const row = document.createElement('div');
+            row.className = 'style-row';
+            let h = `<select id="s${i}" onchange="toggleCustom(this)"><option value="none" selected disabled>-- Style ${i} --</option>`;
+            styles.forEach(s => h += `<option value="${s}">${s}</option>`);
+            h += `<option value="custom">-- Perso --</option></select><input type="number" id="w${i}" class="weight-num" value="0"><input type="text" id="s${i}_custom" class="custom-input">`;
+            row.innerHTML = h; container.appendChild(row);
+        }
+    }
+
+    function toggleCustom(el) {
+        const c = document.getElementById(el.id + '_custom');
+        if(c) {
+            c.style.display = (el.value === 'custom') ? 'block' : 'none';
+            if(el.value !== 'custom') c.value = "";
+        }
+    }
+
+    function toggleBoutiqueCustom() {
+        const s = document.getElementById('souvenir').value;
+        const box = document.getElementById('boutique-custom-fields');
+        const triggerItems = ['poster', 'comic', 'placard', 'tarot'];
+        const matches = triggerItems.some(item => s.includes(item));
+        box.style.display = matches ? 'block' : 'none';
+    }
+
+    function randomize() {
+        const selects = document.querySelectorAll('select');
+        selects.forEach(sel => {
+            const options = Array.from(sel.options).filter(opt => !opt.disabled && opt.value !== "custom");
+            if (options.length > 0) {
+                sel.value = options[Math.floor(Math.random() * options.length)].value;
+                sel.dispatchEvent(new Event('change'));
+            }
+        });
+        for(let i=1; i<=3; i++) document.getElementById('w'+i).value = Math.floor(Math.random() * 75) + 15;
+        generate();
+    }
+
+    function resetForge() {
+        const selects = document.querySelectorAll('select');
+        selects.forEach(sel => { sel.selectedIndex = 0; sel.dispatchEvent(new Event('change')); });
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(inp => { if(inp.type === "number") inp.value = 0; else inp.value = ""; });
+        document.getElementById('finalPrompt').innerText = "Sélectionnez vos ingrédients alchimiques...";
+        toggleBoutiqueCustom();
+    }
+
+    function autoRatio() {
+        const s = document.getElementById('souvenir').value;
+        const r = document.getElementById('ratio');
+        if(s.includes('horizontal poster')) r.value = "3:2";
+        else if(s.includes('vertical poster') || s.includes('comic') || s.includes('tarot')) r.value = "2:3";
+        else if(s.includes('polaroid') || s.includes('beer') || s.includes('keychain') || s.includes('globe')) r.value = "1:1";
+        toggleCustom(document.getElementById('souvenir'));
+    }
+
+    function generate() {
+        const getV = (id) => {
+            const sel = document.getElementById(id);
+            if(!sel || sel.value === "none") return "";
+            return (sel.value === 'custom') ? document.getElementById(id + '_custom').value : sel.value;
+        };
+
+        let styleStr = "";
+        for(let i=1; i<=3; i++) {
+            const s = getV('s'+i);
+            const w = document.getElementById('w'+i).value;
+            if(s && w > 0) styleStr += `(${s}:${w/100}), `;
+        }
+
+        const char = getV('char');
+        const charAttr = getV('char_attr');
+        const comp = getV('companion');
+        const compAttr = getV('comp_attr');
+        const act = getV('action');
+        const med = getV('medium');
+        const light = getV('lighting');
+        const fusion = getV('fusion');
+        const visc = getV('viscosity');
+        const focus = getV('focus');
+        const mat = getV('material');
+        const loc = getV('loc');
+        const souv = getV('souvenir');
+        const rat = getV('ratio');
+
+        const title = document.getElementById('obj_title').value;
+        const typo = document.getElementById('obj_typo').value;
+        const actors = document.getElementById('obj_actors').value;
+        const date = document.getElementById('obj_date').value;
+
+        let objText = `as a professional ${souv}`;
+        if(title) objText += ` featuring the title '${title}' in ${typo}`;
+        if(actors) objText += ` starring ${actors}`;
+        if(date) objText += `, with a release date mentioned as ${date}`;
+
+        const prompt = `Digital art masterpiece. ${char} ${charAttr !== 'none' ? charAttr : ''}, ${comp !== 'none' ? comp : ''} ${compAttr !== 'none' ? compAttr : ''}, ${act ? act : ''}, in a ${focus}, ${fusion}. A sophisticated alchemical fusion of ${styleStr} rendered using ${med}, dominated by a ${visc} texture. ${light ? 'Illuminated by ' + light + '.' : ''} ${mat ? mat + ',' : ''} ${loc}. ${souv === 'none' ? 'as a high-end gallery piece' : objText}. High-contrast lighting, cinematic atmosphere, 8k. ${rat} format`;
+        
+        document.getElementById('finalPrompt').innerText = prompt + "\n\nPROMPT NÉGATIF : photograph, 3d render, text, signature, watermark, blurry, low resolution, distorted anatomy, messy colors, plastic skin.";
+    }
+
+    function copyPrompt() { navigator.clipboard.writeText(document.getElementById('finalPrompt').innerText); alert("Prompt Master copié !"); }
+    setup();
+</script>
+</body>
+</html>
