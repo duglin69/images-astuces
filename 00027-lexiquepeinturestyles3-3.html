@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexique des Styles Artistiques - Partie 3/3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #000;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #fff;
+        }
+        
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .style-card {
+            margin-bottom: 40px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .style-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .style-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .characteristics {
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+        
+        .characteristics strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .techniques {
+            background: rgba(0,0,0,0.1);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .techniques strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .prompt-block {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid rgba(0,0,0,0.3);
+        }
+        
+        .prompt-label {
+            font-weight: 700;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+        
+        .prompt-text {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            border: 1px solid #ddd;
+        }
+        
+        .negative-prompt {
+            background: #fff5f5;
+            border: 1px solid #ffdddd;
+        }
+        
+        .copy-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.8em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+        
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .example-scene {
+            background: rgba(0,0,0,0.15);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        
+        .example-scene strong {
+            font-style: normal;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .complete-example {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.85em;
+        }
+        
+        .complete-example strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .complete-example pre {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+        
+        /* Couleurs de fond spécifiques pour chaque style */
+        .ligne-claire { background: #FFF9E6; }
+        .anime-ghibli { background: #E6F7E6; }
+        .synthwave { background: #FFD6F5; }
+        .cyberpunk { background: #D6E6FF; }
+        .steampunk { background: #F5E6CC; }
+        .hyperrealisme { background: #F0F0F0; }
+        .neo-impressionnisme { background: #E6F5FF; }
+        .symbolisme { background: #E8D5F2; }
+        .rococo { background: #FFE6F0; }
+        .romantisme { background: #FFE5E5; }
+        .dreamscape { background: #E6D5F5; }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: #fff;
+            font-size: 0.9em;
+        }
+        
+        .final-message {
+            background: linear-gradient(135deg, #ff0055 0%, #9d00ff 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .final-message h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            .style-name { font-size: 1.8em; }
+            .prompt-text { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Lexique des Styles Artistiques</h1>
+            <p>Partie 3/3 : Styles 23-33 | Master Prompts pour IA Générative</p>
+        </header>
+
+        <!-- STYLE 23: LIGNE CLAIRE -->
+        <div class="style-card ligne-claire">
+            <div class="style-name">23. Ligne Claire</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Contours noirs uniformes sans variation d'épaisseur, aplats de couleur sans ombrage modelé, clarté lisible maximale, pas d'effets atmosphériques, style BD franco-belge. Hergé (Tintin) en pionnier, suivi par l'école de Bruxelles.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Encre de Chine • Aplats couleur • Gouache • Colorisation numérique
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="ligne-claire-en-pos">Ligne Claire style, uniform black outlines, no line weight variation, flat color areas without shading, maximum readability, no atmospheric effects, Franco-Belgian comics aesthetic, Hergé influence, clean precise linework, Tintin style</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="ligne-claire-en-neg">variable line weight, cross-hatching, shading gradients, atmospheric perspective, painterly texture, sketchy lines, realistic rendering, manga style, American comics dramatic shadows, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('ligne-claire-en-pos', 'ligne-claire-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="ligne-claire-fr-pos">Style Ligne Claire, contours noirs uniformes, aucune variation épaisseur de trait, aplats de couleur sans ombrage, lisibilité maximale, aucun effet atmosphérique, esthétique BD franco-belge, influence Hergé, lignes précises propres, style Tintin</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="ligne-claire-fr-neg">épaisseur trait variable, hachures croisées, dégradés ombrage, perspective atmosphérique, texture picturale, lignes esquissées, rendu réaliste, style manga, ombres dramatiques comics américains, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('ligne-claire-fr-pos', 'ligne-claire-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Détective en imperméable explorant château médiéval, contours noirs nets, couleurs vives aplaties, clarté totale."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Ligne Claire style, uniform black outlines, no line weight variation, flat color areas without shading, maximum readability, no atmospheric effects, Franco-Belgian comics aesthetic, Hergé influence, clean precise linework, Tintin style. Detective in trench coat exploring medieval castle, sharp black outlines, flat vivid colors, total clarity.
+
+Negative prompt: variable line weight, cross-hatching, shading gradients, atmospheric perspective, painterly texture, sketchy lines, realistic rendering, manga style, American comics dramatic shadows, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 24: ANIME GHIBLI -->
+        <div class="style-card anime-ghibli">
+            <div class="style-name">24. Anime Ghibli</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Douceur des traits, couleurs naturelles apaisantes, arrière-plans peints à l'aquarelle détaillés, animation fluide, thèmes écologiques et humanistes, magie subtile du quotidien. Studio Ghibli (Miyazaki, Takahata) : poésie visuelle japonaise.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Aquarelle (décors) • Cel animation • Gouache • Palette naturelle
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="anime-ghibli-en-pos">Studio Ghibli anime style, soft character lines, natural soothing colors, detailed watercolor backgrounds, fluid animation aesthetic, ecological themes, subtle everyday magic, Miyazaki influence, hand-painted atmosphere, gentle whimsical quality</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="anime-ghibli-en-neg">harsh neon colors, CGI 3D style, action-focused shonen aesthetic, overly dramatic lighting, sharp angular designs, modern digital anime, dark gritty atmosphere, cyberpunk elements, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('anime-ghibli-en-pos', 'anime-ghibli-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="anime-ghibli-fr-pos">Style anime Studio Ghibli, traits de personnages doux, couleurs naturelles apaisantes, arrière-plans aquarelle détaillés, esthétique animation fluide, thèmes écologiques, magie quotidienne subtile, influence Miyazaki, atmosphère peinte à la main, qualité douce fantaisiste</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="anime-ghibli-fr-neg">couleurs néon dures, style 3D CGI, esthétique shonen orientée action, éclairage trop dramatique, designs angulaires abrupts, anime numérique moderne, atmosphère sombre rugueuse, éléments cyberpunk, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('anime-ghibli-fr-pos', 'anime-ghibli-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Jeune fille marchant dans prairie fleurie, collines verdoyantes aquarellées, ciel bleu doux, nuages cotonneux."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Studio Ghibli anime style, soft character lines, natural soothing colors, detailed watercolor backgrounds, fluid animation aesthetic, ecological themes, subtle everyday magic, Miyazaki influence, hand-painted atmosphere, gentle whimsical quality. Young girl walking through flowered meadow, watercolor green hills, soft blue sky, fluffy clouds.
+
+Negative prompt: harsh neon colors, CGI 3D style, action-focused shonen aesthetic, overly dramatic lighting, sharp angular designs, modern digital anime, dark gritty atmosphere, cyberpunk elements, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 25: SYNTHWAVE -->
+        <div class="style-card synthwave">
+            <div class="style-name">25. Synthwave</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Palette néon rose-violet-cyan, grilles en perspective fuyante, soleils couchants stylisés, esthétique rétro-futuriste années 80, références Miami Vice et films d'action VHS. Mouvement nostalgique né de la musique électronique.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Art numérique • Aérographe • Néons • Effets glow
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="synthwave-en-pos">Synthwave 80s style, neon pink-purple-cyan palette, perspective grid lines, stylized sunset, retro-futuristic aesthetic, Miami Vice vibe, VHS action film references, glowing neon effects, digital art, nostalgic 1980s atmosphere</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="synthwave-en-neg">muted colors, realistic photography, modern minimalism, organic forms, natural lighting, earth tones, traditional painting, contemporary style, subdued palette, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('synthwave-en-pos', 'synthwave-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="synthwave-fr-pos">Style Synthwave années 80, palette néon rose-violet-cyan, lignes de grille en perspective, coucher de soleil stylisé, esthétique rétro-futuriste, ambiance Miami Vice, références films action VHS, effets néon lumineux, art numérique, atmosphère nostalgique années 1980</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="synthwave-fr-neg">couleurs atténuées, photographie réaliste, minimalisme moderne, formes organiques, éclairage naturel, tons terre, peinture traditionnelle, style contemporain, palette sobre, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('synthwave-fr-pos', 'synthwave-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Voiture de sport décapotable sur route vers soleil couchant néon, grille cybernétique rose et cyan."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Synthwave 80s style, neon pink-purple-cyan palette, perspective grid lines, stylized sunset, retro-futuristic aesthetic, Miami Vice vibe, VHS action film references, glowing neon effects, digital art, nostalgic 1980s atmosphere. Convertible sports car on road toward neon sunset, pink and cyan cybernetic grid.
+
+Negative prompt: muted colors, realistic photography, modern minimalism, organic forms, natural lighting, earth tones, traditional painting, contemporary style, subdued palette, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 26: CYBERPUNK -->
+        <div class="style-card cyberpunk">
+            <div class="style-name">26. Cyberpunk</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Mégalopoles dystopiques nocturnes, néons partout, pluie et reflets, high-tech et bas-fonds, augmentations cybernétiques, contraste riche-pauvre extrême. Blade Runner, Ghost in the Shell : technologie déshumanisante et beauté urbaine toxique.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Art numérique • Concept art • Photobashing • Effets néons
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="cyberpunk-en-pos">Cyberpunk style, dystopian night megacity, neon signs everywhere, rain and reflections, high-tech meets low-life, cybernetic augmentations, extreme wealth gap, Blade Runner aesthetic, toxic urban beauty, digital concept art, dark futuristic atmosphere</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="cyberpunk-en-neg">bright daylight, natural landscapes, utopian society, clean architecture, organic forms, pastoral setting, traditional clothing, optimistic atmosphere, soft colors, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('cyberpunk-en-pos', 'cyberpunk-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="cyberpunk-fr-pos">Style cyberpunk, mégapole dystopique nocturne, enseignes néon partout, pluie et reflets, high-tech rencontre bas-fonds, augmentations cybernétiques, écart de richesse extrême, esthétique Blade Runner, beauté urbaine toxique, concept art numérique, atmosphère futuriste sombre</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="cyberpunk-fr-neg">lumière du jour vive, paysages naturels, société utopique, architecture propre, formes organiques, cadre pastoral, vêtements traditionnels, atmosphère optimiste, couleurs douces, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('cyberpunk-fr-pos', 'cyberpunk-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Ruelle sombre avec vendeurs de rue, hologrammes publicitaires japonais, pluie battante, néons rouges et bleus."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Cyberpunk style, dystopian night megacity, neon signs everywhere, rain and reflections, high-tech meets low-life, cybernetic augmentations, extreme wealth gap, Blade Runner aesthetic, toxic urban beauty, digital concept art, dark futuristic atmosphere. Dark alley with street vendors, Japanese advertising holograms, pouring rain, red and blue neons.
+
+Negative prompt: bright daylight, natural landscapes, utopian society, clean architecture, organic forms, pastoral setting, traditional clothing, optimistic atmosphere, soft colors, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 27: STEAMPUNK -->
+        <div class="style-card steampunk">
+            <div class="style-name">27. Steampunk</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Ère victorienne avec technologie à vapeur anachronique, rouages et engrenages visibles, laiton et cuivre, dirigeables et machines fantastiques, habits d'époque avec lunettes et gadgets. Rétro-futurisme XIXe siècle (Jules Verne, H.G. Wells).
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Art numérique • Concept art • Huile (pour aspect vintage)
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="steampunk-en-pos">Steampunk style, Victorian era with anachronistic steam technology, visible gears and cogs, brass and copper materials, airships and fantastic machines, period clothing with goggles and gadgets, 19th century retro-futurism, Jules Verne aesthetic, industrial clockwork</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="steampunk-en-neg">modern electronics, sleek minimalism, digital technology, clean futurism, contemporary clothing, plastic materials, LED lights, cyberpunk neon, space age aesthetic, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('steampunk-en-pos', 'steampunk-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="steampunk-fr-pos">Style steampunk, ère victorienne avec technologie vapeur anachronique, engrenages et rouages visibles, matériaux laiton et cuivre, dirigeables et machines fantastiques, vêtements d'époque avec lunettes et gadgets, rétro-futurisme XIXe siècle, esthétique Jules Verne, mécanique horlogère industrielle</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="steampunk-fr-neg">électronique moderne, minimalisme épuré, technologie numérique, futurisme propre, vêtements contemporains, matériaux plastique, lumières LED, néon cyberpunk, esthétique ère spatiale, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('steampunk-fr-pos', 'steampunk-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Inventeur victorien dans atelier encombré, dirigeable par fenêtre, rouages cuivre, lunettes de protection, vapeur."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Steampunk style, Victorian era with anachronistic steam technology, visible gears and cogs, brass and copper materials, airships and fantastic machines, period clothing with goggles and gadgets, 19th century retro-futurism, Jules Verne aesthetic, industrial clockwork. Victorian inventor in cluttered workshop, airship through window, copper gears, protective goggles, steam.
+
+Negative prompt: modern electronics, sleek minimalism, digital technology, clean futurism, contemporary clothing, plastic materials, LED lights, cyberpunk neon, space age aesthetic, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 28: HYPERRÉALISME -->
+        <div class="style-card hyperrealisme">
+            <div class="style-name">28. Hyperréalisme</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Précision photographique surpassée, détails microscopiques visibles, reflets et textures exacerbés, temps de réalisation considérable, illusion trompe-l'œil poussée à l'extrême. Dépassement du réel par l'art (Close, Estes, Hanson).
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Acrylique • Huile • Aérographe • Référence photographique
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="hyperrealisme-en-pos">Hyperrealism style, photographic precision exceeded, microscopic details visible, exaggerated reflections and textures, trompe-l'oeil illusion, extreme detail rendering, surpassing reality through art, crisp focus, meticulous execution, photorealistic painting technique</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="hyperrealisme-en-neg">loose brushwork, impressionistic style, abstract forms, stylization, sketchy lines, atmospheric blur, expressionist technique, simplified shapes, painterly texture, soft focus, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('hyperrealisme-en-pos', 'hyperrealisme-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="hyperrealisme-fr-pos">Style hyperréalisme, précision photographique dépassée, détails microscopiques visibles, reflets et textures exagérés, illusion trompe-l'œil, rendu détail extrême, dépassement réalité par l'art, focus net, exécution méticuleuse, technique peinture photoréaliste</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="hyperrealisme-fr-neg">coups de pinceau libres, style impressionniste, formes abstraites, stylisation, lignes esquissées, flou atmosphérique, technique expressionniste, formes simplifiées, texture picturale, mise au point douce, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('hyperrealisme-fr-pos', 'hyperrealisme-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Gros plan goutte d'eau sur pétale de rose, chaque reflet cristallin, texture microscale, illusion photographique."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Hyperrealism style, photographic precision exceeded, microscopic details visible, exaggerated reflections and textures, trompe-l'oeil illusion, extreme detail rendering, surpassing reality through art, crisp focus, meticulous execution, photorealistic painting technique. Close-up water droplet on rose petal, every crystalline reflection, microscale texture, photographic illusion.
+
+Negative prompt: loose brushwork, impressionistic style, abstract forms, stylization, sketchy lines, atmospheric blur, expressionist technique, simplified shapes, painterly texture, soft focus, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 29: NÉO-IMPRESSIONNISME -->
+        <div class="style-card neo-impressionnisme">
+            <div class="style-name">29. Néo-Impressionnisme</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Pointillisme scientifique, juxtaposition de points de couleur pure, mélange optique dans l'œil du spectateur, théories chromatiques appliquées, luminosité vibrante, patience extrême. Seurat, Signac : impressionnisme systématisé fin XIXe.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Huile • Pointillisme • Divisionnisme
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="neo-impressionnisme-en-pos">Neo-Impressionism style, scientific pointillism, juxtaposition of pure color dots, optical mixing in viewer's eye, chromatic theories applied, vibrant luminosity, systematic technique, Seurat and Signac influence, divisionism method, late 19th century</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="neo-impressionnisme-en-neg">blended colors, smooth transitions, broad brushstrokes, mixed palette, impasto texture, spontaneous application, realistic details, unified color areas, expressionist style, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('neo-impressionnisme-en-pos', 'neo-impressionnisme-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="neo-impressionnisme-fr-pos">Style néo-impressionnisme, pointillisme scientifique, juxtaposition de points de couleur pure, mélange optique dans œil du spectateur, théories chromatiques appliquées, luminosité vibrante, technique systématique, influence Seurat et Signac, méthode divisionnisme, fin XIXe siècle</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="neo-impressionnisme-fr-neg">couleurs mélangées, transitions douces, larges coups de pinceau, palette mixte, texture empâtement, application spontanée, détails réalistes, zones de couleur unifiées, style expressionniste, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('neo-impressionnisme-fr-pos', 'neo-impressionnisme-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Dimanche après-midi au parc, personnages composés de milliers de points colorés, lumière vibrante d'été."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Neo-Impressionism style, scientific pointillism, juxtaposition of pure color dots, optical mixing in viewer's eye, chromatic theories applied, vibrant luminosity, systematic technique, Seurat and Signac influence, divisionism method, late 19th century. Sunday afternoon at park, figures composed of thousands of colored dots, vibrant summer light.
+
+Negative prompt: blended colors, smooth transitions, broad brushstrokes, mixed palette, impasto texture, spontaneous application, realistic details, unified color areas, expressionist style, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 30: SYMBOLISME -->
+        <div class="style-card symbolisme">
+            <div class="style-name">30. Symbolisme</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Évocation plutôt que description, symboles et allégories, atmosphères mystiques ou décadentes, rêve et imaginaire, refus du réalisme et de l'impressionnisme. Littérature et arts visuels fin XIXe (Moreau, Redon, Klimt, Böcklin).
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Huile • Aquarelle • Techniques mixtes • Or en feuille
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="symbolisme-en-pos">Symbolism style, evocation over description, symbols and allegories, mystical or decadent atmosphere, dream and imagination, rejection of realism and impressionism, Moreau and Redon influence, metaphorical imagery, late 19th century, poetic mystery</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="symbolisme-en-neg">literal representation, documentary realism, everyday subjects, bright cheerful colors, impressionistic light effects, straightforward narrative, modern minimalism, plain composition, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('symbolisme-en-pos', 'symbolisme-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="symbolisme-fr-pos">Style symbolisme, évocation plutôt que description, symboles et allégories, atmosphère mystique ou décadente, rêve et imaginaire, rejet du réalisme et impressionnisme, influence Moreau et Redon, imagerie métaphorique, fin XIXe siècle, mystère poétique</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="symbolisme-fr-neg">représentation littérale, réalisme documentaire, sujets quotidiens, couleurs vives joyeuses, effets lumière impressionnistes, narration directe, minimalisme moderne, composition simple, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('symbolisme-fr-pos', 'symbolisme-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Femme ailée émergeant de brume mystique, symboles ésotériques flottants, palette sombre et dorée, ambiance énigmatique."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Symbolism style, evocation over description, symbols and allegories, mystical or decadent atmosphere, dream and imagination, rejection of realism and impressionism, Moreau and Redon influence, metaphorical imagery, late 19th century, poetic mystery. Winged woman emerging from mystical mist, floating esoteric symbols, dark and gold palette, enigmatic ambiance.
+
+Negative prompt: literal representation, documentary realism, everyday subjects, bright cheerful colors, impressionistic light effects, straightforward narrative, modern minimalism, plain composition, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 31: ROCOCO -->
+        <div class="style-card rococo">
+            <div class="style-name">31. Rococo</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Légèreté ornementale excessive, courbes et contre-courbes, thèmes galants et pastoraux, palette pastel rose-bleu-or, asymétrie décorative, insouciance aristocratique. XVIIIe siècle français (Watteau, Fragonard, Boucher) : art de vivre raffiné.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Huile • Pastel • Aquarelle • Feuille d'or
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="rococo-en-pos">Rococo style, excessive ornamental lightness, curves and counter-curves, gallant and pastoral themes, pastel pink-blue-gold palette, decorative asymmetry, aristocratic carefree spirit, 18th century French, Watteau and Fragonard influence, refined living art</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="rococo-en-neg">heavy dark colors, geometric simplicity, serious subjects, minimalist design, straight lines, somber mood, realistic depiction, modern aesthetic, industrial materials, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('rococo-en-pos', 'rococo-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="rococo-fr-pos">Style rococo, légèreté ornementale excessive, courbes et contre-courbes, thèmes galants et pastoraux, palette pastel rose-bleu-or, asymétrie décorative, esprit aristocratique insouciant, XVIIIe siècle français, influence Watteau et Fragonard, art de vivre raffiné</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="rococo-fr-neg">couleurs sombres lourdes, simplicité géométrique, sujets sérieux, design minimaliste, lignes droites, ambiance sombre, représentation réaliste, esthétique moderne, matériaux industriels, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('rococo-fr-pos', 'rococo-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Fête galante dans jardin, nobles en robes pastel sur balançoire fleurie, chérubins, dorures, légèreté insouciante."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Rococo style, excessive ornamental lightness, curves and counter-curves, gallant and pastoral themes, pastel pink-blue-gold palette, decorative asymmetry, aristocratic carefree spirit, 18th century French, Watteau and Fragonard influence, refined living art. Garden party, nobles in pastel gowns on flowered swing, cherubs, gilding, carefree lightness.
+
+Negative prompt: heavy dark colors, geometric simplicity, serious subjects, minimalist design, straight lines, somber mood, realistic depiction, modern aesthetic, industrial materials, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 32: ROMANTISME -->
+        <div class="style-card romantisme">
+            <div class="style-name">32. Romantisme</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Exaltation des émotions et de l'individu, nature sublime et tourmentée, héros solitaires, palette dramatique, mouvement et passion, rejet du rationalisme des Lumières. Début XIXe (Delacroix, Friedrich, Turner, Géricault).
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Huile • Aquarelle • Palette expressive
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="romantisme-en-pos">Romanticism style, exaltation of emotions and individual, sublime tormented nature, solitary heroes, dramatic palette, movement and passion, rejection of Enlightenment rationalism, early 19th century, Delacroix and Friedrich influence, emotional intensity, wild landscapes</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="romantisme-en-neg">rational composition, tame domesticated nature, group harmony, restrained emotions, neoclassical order, geometric precision, pastel colors, serene mood, contemporary minimalism, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('romantisme-en-pos', 'romantisme-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="romantisme-fr-pos">Style romantisme, exaltation des émotions et de l'individu, nature sublime tourmentée, héros solitaires, palette dramatique, mouvement et passion, rejet du rationalisme des Lumières, début XIXe siècle, influence Delacroix et Friedrich, intensité émotionnelle, paysages sauvages</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="romantisme-fr-neg">composition rationnelle, nature domestiquée apprivoisée, harmonie de groupe, émotions retenues, ordre néoclassique, précision géométrique, couleurs pastel, ambiance sereine, minimalisme contemporain, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('romantisme-fr-pos', 'romantisme-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Voyageur solitaire contemplant mer de nuages depuis sommet montagneux, ciel orageux, sublime et mélancolique."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Romanticism style, exaltation of emotions and individual, sublime tormented nature, solitary heroes, dramatic palette, movement and passion, rejection of Enlightenment rationalism, early 19th century, Delacroix and Friedrich influence, emotional intensity, wild landscapes. Solitary wanderer contemplating sea of clouds from mountain summit, stormy sky, sublime and melancholic.
+
+Negative prompt: rational composition, tame domesticated nature, group harmony, restrained emotions, neoclassical order, geometric precision, pastel colors, serene mood, contemporary minimalism, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <!-- STYLE 33: DREAMSCAPE / ONIRIQUE (ABSUREAL) -->
+        <div class="style-card dreamscape">
+            <div class="style-name">33. Dreamscape / Onirique (Absureal)</div>
+            
+            <div class="characteristics">
+                <strong>📋 Caractéristiques clés :</strong>
+                Logique du rêve et de l'absurde, juxtapositions impossibles mais poétiques, atmosphères éthérées et flottantes, couleurs irréelles, espaces non-euclidiens, sentiment d'étrangeté familière. Au-delà du surréalisme classique : l'absurde onirique contemporain.
+            </div>
+            
+            <div class="techniques">
+                <strong>🎨 Techniques recommandées :</strong>
+                Art numérique • Techniques mixtes • Photomanipulation • Aérographe
+            </div>
+            
+            <!-- BLOC EN -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇬🇧 Master Prompt EN</div>
+                <div class="prompt-text" id="dreamscape-en-pos">Dreamscape absurreal style, dream logic and absurdity, impossible yet poetic juxtapositions, ethereal floating atmosphere, unreal colors, non-Euclidean spaces, uncanny familiar strangeness, beyond classical surrealism, contemporary oneiric aesthetic, liminal spaces, glitch in reality</div>
+                <div class="prompt-label">❌ Negative Prompt EN</div>
+                <div class="prompt-text negative-prompt" id="dreamscape-en-neg">rational perspective, realistic physics, everyday logic, conventional composition, documentary realism, naturalistic colors, clear narrative, grounded reality, photographic accuracy, signature, watermark, text, artist name</div>
+                <button class="copy-btn" onclick="copyBoth('dreamscape-en-pos', 'dreamscape-en-neg')">📋 Copy EN (Positive + Negative)</button>
+            </div>
+            
+            <!-- BLOC FR -->
+            <div class="prompt-block">
+                <div class="prompt-label">🇫🇷 Master Prompt FR</div>
+                <div class="prompt-text" id="dreamscape-fr-pos">Style dreamscape absuréel, logique du rêve et absurdité, juxtapositions impossibles mais poétiques, atmosphère éthérée flottante, couleurs irréelles, espaces non-euclidiens, étrangeté familière inquiétante, au-delà surréalisme classique, esthétique onirique contemporaine, espaces liminaux, glitch dans réalité</div>
+                <div class="prompt-label">❌ Prompt Négatif FR</div>
+                <div class="prompt-text negative-prompt" id="dreamscape-fr-neg">perspective rationnelle, physique réaliste, logique quotidienne, composition conventionnelle, réalisme documentaire, couleurs naturalistes, narration claire, réalité ancrée, précision photographique, signature, filigrane, texte, nom d\'artiste</div>
+                <button class="copy-btn" onclick="copyBoth('dreamscape-fr-pos', 'dreamscape-fr-neg')">📋 Copier FR (Positif + Négatif)</button>
+            </div>
+            
+            <div class="example-scene">
+                <strong>💡 Exemple de scène :</strong>
+                "Couloir infini avec portes flottantes, gravité incertaine, couleurs pastel irréelles, sensation de déjà-vu impossible."
+            </div>
+            
+            <div class="complete-example">
+                <strong>✨ Exemple Complet Assemblé (EN) :</strong>
+                <pre>Dreamscape absurreal style, dream logic and absurdity, impossible yet poetic juxtapositions, ethereal floating atmosphere, unreal colors, non-Euclidean spaces, uncanny familiar strangeness, beyond classical surrealism, contemporary oneiric aesthetic, liminal spaces, glitch in reality. Infinite corridor with floating doors, uncertain gravity, unreal pastel colors, impossible déjà-vu sensation.
+
+Negative prompt: rational perspective, realistic physics, everyday logic, conventional composition, documentary realism, naturalistic colors, clear narrative, grounded reality, photographic accuracy, signature, watermark, text, artist name</pre>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <h2>🎉 LEXIQUE COMPLET ! 🎉</h2>
+            <p style="font-size: 1.2em; margin-bottom: 20px;">
+                <strong>33 styles artistiques maîtrisés</strong><br>
+                Du Fauvisme au Dreamscape, de la Renaissance au Cyberpunk
+            </p>
+            <p style="font-size: 1em; opacity: 0.9;">
+                Chaque style avec ses prompts positifs et négatifs en FR et EN<br>
+                Prêt à créer des œuvres d'exception avec ton générateur !<br><br>
+                <strong>Bon voyage créatif, l'artiste ! 🎨✨</strong>
+            </p>
+        </div>
+
+        <footer>
+            <p><strong>🎨 FIN DE LA PARTIE 3/3</strong></p>
+            <p>Styles 23-33 complétés | Collection complète : 33 styles</p>
+            <p>© 2026 Lexique des Styles Artistiques pour IA Générative</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyBoth(posId, negId) {
+            const posText = document.getElementById(posId).innerText;
+            const negText = document.getElementById(negId).innerText;
+            const combined = posText + "\n\nNegative prompt: " + negText;, signature, watermark, text, artist name
+            
+            navigator.clipboard.writeText(combined).then(() => {
+                // Feedback visuel
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = '✅ COPIÉ !';
+                btn.style.background = '#22c55e';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#000';
+                }, 2000);
+            }).catch(err => {
+                alert('Erreur de copie : ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
