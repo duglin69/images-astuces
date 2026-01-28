@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Palette v8.2 : Magnum Opus [Expanded Edition]</title>
+    <style>
+        :root { --neon-cyan: #00f2ff; --neon-pink: #ff0055; --bg: #050508; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #010103; color: #e0e0e0; padding: 20px; line-height: 1.4; padding-top: 60px; }
+        .container { max-width: 1400px; margin: auto; background: var(--bg); padding: 30px; border-radius: 20px; border: 1px solid #1a1a2e; box-shadow: 0 0 50px rgba(0,242,255,0.1); }
+        h1 { color: var(--neon-cyan); text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; }
+        h2 { color: var(--neon-pink); font-size: 0.8em; text-transform: uppercase; margin-top: 20px; border-left: 3px solid var(--neon-pink); padding-left: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; }
+        .full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 5px; font-size: 0.65em; color: var(--neon-cyan); font-weight: 700; opacity: 0.8; }
+        select, input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #222; background: #0d0d14; color: #fff; font-size: 0.85em; box-sizing: border-box; }
+        .weight-row { display: grid; grid-template-columns: 3fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .custom-input { display: none; margin-top: 5px; border-color: var(--neon-pink); }
+        .output-box { background: #000; border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 12px; margin-top: 20px; }
+        #finalPrompt { display: block; font-family: 'Fira Code', monospace; font-size: 0.75em; color: #a5b4fc; white-space: pre-wrap; word-break: break-all; }
+        .controls { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button { cursor: pointer; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.3s; flex: 1; min-width: 150px; }
+        .btn-forge { background: var(--neon-cyan); color: #000; font-size: 1.1em; }
+        .btn-surprise { background: #9d00ff; color: #fff; }
+        .btn-copy { background: var(--neon-pink); color: white; margin-top: 10px; width: 100%; }
+        .btn-reset { background: #ff4444; color: white; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,5,8,0.95); padding: 10px 20px; border-bottom: 1px solid #1a1a2e; z-index: 1000; text-align: center; }
+        .weight-warning { color: #ff4444; font-size: 0.7em; margin-top: 5px; display: none; }
+        #totalWeight { color: var(--neon-cyan); font-size: 0.75em; margin-top: 10px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div style="color: var(--neon-cyan); font-weight: 900;">🌌 ALCHIMIE ALPHA v8.2 : MAGNUM OPUS [ENRICHED]</div>
+</div>
+
+<div class="container">
+    <h1>🎨 LA FORGE UNIVERSELLE</h1>
+    
+    <div class="grid">
+        <div class="full-width">
+            <h2>🧪 Mélangeur de Styles (Poids)</h2>
+            <div id="mixer-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+    
+    <div>
+        <div class="weight-row">
+            <select id="sty1" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Style 1 --</option>
+                <optgroup label="Classiques">
+                    <option value="Oil painting, Baroque">1. Huile Baroque</option>
+                    <option value="Ethereal watercolor">2. Aquarelle Éthérée</option>
+                    <option value="Impressionism">3. Impressionnisme</option>
+                    <option value="Renaissance fresco style">4. Renaissance</option>
+                    <option value="Opaque Gouache">5. Gouache Opaque</option>
+                    <option value="Byzantine fresco">6. Fresque Byzantine</option>
+                    <option value="Soft Pastel">7. Pastel Sec</option>
+                    <option value="Sumi-e ink">8. Sumi-e (Encre)</option>
+                    <option value="Medieval Engraving">9. Gravure Médiévale</option>
+                    <option value="Fauvism">10. Fauvisme</option>
+                </optgroup>
+                <optgroup label="Modernes">
+                    <option value="Art Nouveau style">11. Art Nouveau</option>
+                    <option value="Dali Surrealism">12. Surréalisme</option>
+                    <option value="Pop Art, Lichtenstein style">13. Pop Art</option>
+                    <option value="German Expressionism">14. Expressionnisme</option>
+                    <option value="Bauhaus Minimalism">15. Minimalisme</option>
+                    <option value="Cubism">16. Cubisme</option>
+                    <option value="Futurism style">17. Futurisme</option>
+                    <option value="Constructivism">18. Constructivisme</option>
+                    <option value="Art Deco">19. Art Déco</option>
+                    <option value="Abstract Expressionism">20. Abstrait Exp.</option>
+                </optgroup>
+                <optgroup label="Digital & Pop">
+                    <option value="Vaporwave dreams">21. Vaporwave</option>
+                    <option value="Synthwave 80s">22. Synthwave</option>
+                    <option value="Kawaii pastel">23. Kawaii</option>
+                    <option value="Pixar 3D Render">24. Pixar 3D</option>
+                    <option value="Glitch Art">25. Glitch Art</option>
+                    <option value="Pixel Art 16-bit">26. Pixel Art</option>
+                    <option value="Low Poly">27. Low Poly</option>
+                    <option value="Vector Illustration">28. Vectoriel</option>
+                    <option value="Holographic Iridescent">29. Holographique</option>
+                    <option value="Cyber-Noir">30. Cyber-Noir</option>
+                </optgroup>
+                <optgroup label="Illustration / BD">
+                    <option value="Ligne Claire style">31. Ligne Claire</option>
+                    <option value="Studio Ghibli anime">32. Anime Ghibli</option>
+                    <option value="Retro Anime 90s">33. Retro Anime</option>
+                    <option value="Marvel Comics style">34. Marvel Comics</option>
+                    <option value="Sin City Frank Miller style">35. Frank Miller</option>
+                    <option value="Charcoal sketch">36. Fusain</option>
+                    <option value="Ukiyo-e woodblock">37. Ukiyo-e</option>
+                    <option value="Linocut print">38. Linogravure</option>
+                    <option value="Banksy Street Art">39. Street Art</option>
+                    <option value="Matte Concept Art">40. Concept Art</option>
+                </optgroup>
+                <optgroup label="Atmosphères">
+                    <option value="Blade Runner Cyberpunk">41. Blade Runner</option>
+                    <option value="Hygge aesthetic">42. Hygge</option>
+                    <option value="Icy Blue aesthetic">43. Icy Blue</option>
+                    <option value="Absureal dreamscape">44. Absureal</option>
+                    <option value="Steampunk brass">45. Steampunk</option>
+                    <option value="Solarpunk aesthetic">46. Solarpunk</option>
+                    <option value="Wes Anderson symmetry">47. Wes Anderson</option>
+                    <option value="Film Noir B&W">48. Film Noir</option>
+                    <option value="Ethereal Goddess">49. Ethereal Goddess</option>
+                    <option value="Cosmic Horror Lovecraftian">50. Cosmic Horror</option>
+                </optgroup>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="number" id="w1" value="0.0" step="0.1" min="0" max="1.0" oninput="checkWeightLimit()">
+        </div>
+        <input type="text" id="sty1_custom" class="custom-input">
+    </div>
+
+    <div>
+        <div class="weight-row">
+            <select id="sty2" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Style 2 --</option>
+                <optgroup label="Classiques">
+                    <option value="Oil painting, Baroque">1. Huile Baroque</option>
+                    <option value="Ethereal watercolor">2. Aquarelle Éthérée</option>
+                    <option value="Impressionism">3. Impressionnisme</option>
+                    <option value="Renaissance fresco style">4. Renaissance</option>
+                    <option value="Opaque Gouache">5. Gouache Opaque</option>
+                    <option value="Byzantine fresco">6. Fresque Byzantine</option>
+                    <option value="Soft Pastel">7. Pastel Sec</option>
+                    <option value="Sumi-e ink">8. Sumi-e (Encre)</option>
+                    <option value="Medieval Engraving">9. Gravure Médiévale</option>
+                    <option value="Fauvism">10. Fauvisme</option>
+                </optgroup>
+                <optgroup label="Modernes">
+                    <option value="Art Nouveau style">11. Art Nouveau</option>
+                    <option value="Dali Surrealism">12. Surréalisme</option>
+                    <option value="Pop Art, Lichtenstein style">13. Pop Art</option>
+                    <option value="German Expressionism">14. Expressionnisme</option>
+                    <option value="Bauhaus Minimalism">15. Minimalisme</option>
+                    <option value="Cubism">16. Cubisme</option>
+                    <option value="Futurism style">17. Futurisme</option>
+                    <option value="Constructivism">18. Constructivisme</option>
+                    <option value="Art Deco">19. Art Déco</option>
+                    <option value="Abstract Expressionism">20. Abstrait Exp.</option>
+                </optgroup>
+                <optgroup label="Digital & Pop">
+                    <option value="Vaporwave dreams">21. Vaporwave</option>
+                    <option value="Synthwave 80s">22. Synthwave</option>
+                    <option value="Kawaii pastel">23. Kawaii</option>
+                    <option value="Pixar 3D Render">24. Pixar 3D</option>
+                    <option value="Glitch Art">25. Glitch Art</option>
+                    <option value="Pixel Art 16-bit">26. Pixel Art</option>
+                    <option value="Low Poly">27. Low Poly</option>
+                    <option value="Vector Illustration">28. Vectoriel</option>
+                    <option value="Holographic Iridescent">29. Holographique</option>
+                    <option value="Cyber-Noir">30. Cyber-Noir</option>
+                </optgroup>
+                <optgroup label="Illustration / BD">
+                    <option value="Ligne Claire style">31. Ligne Claire</option>
+                    <option value="Studio Ghibli anime">32. Anime Ghibli</option>
+                    <option value="Retro Anime 90s">33. Retro Anime</option>
+                    <option value="Marvel Comics style">34. Marvel Comics</option>
+                    <option value="Sin City Frank Miller style">35. Frank Miller</option>
+                    <option value="Charcoal sketch">36. Fusain</option>
+                    <option value="Ukiyo-e woodblock">37. Ukiyo-e</option>
+                    <option value="Linocut print">38. Linogravure</option>
+                    <option value="Banksy Street Art">39. Street Art</option>
+                    <option value="Matte Concept Art">40. Concept Art</option>
+                </optgroup>
+                <optgroup label="Atmosphères">
+                    <option value="Blade Runner Cyberpunk">41. Blade Runner</option>
+                    <option value="Hygge aesthetic">42. Hygge</option>
+                    <option value="Icy Blue aesthetic">43. Icy Blue</option>
+                    <option value="Absureal dreamscape">44. Absureal</option>
+                    <option value="Steampunk brass">45. Steampunk</option>
+                    <option value="Solarpunk aesthetic">46. Solarpunk</option>
+                    <option value="Wes Anderson symmetry">47. Wes Anderson</option>
+                    <option value="Film Noir B&W">48. Film Noir</option>
+                    <option value="Ethereal Goddess">49. Ethereal Goddess</option>
+                    <option value="Cosmic Horror Lovecraftian">50. Cosmic Horror</option>
+                </optgroup>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="number" id="w2" value="0.0" step="0.1" min="0" max="1.0" oninput="checkWeightLimit()">
+        </div>
+        <input type="text" id="sty2_custom" class="custom-input">
+    </div>
+
+    <div>
+        <div class="weight-row">
+            <select id="sty3" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Style 3 --</option>
+                <optgroup label="Classiques">
+                    <option value="Oil painting, Baroque">1. Huile Baroque</option>
+                    <option value="Ethereal watercolor">2. Aquarelle Éthérée</option>
+                    <option value="Impressionism">3. Impressionnisme</option>
+                    <option value="Renaissance fresco style">4. Renaissance</option>
+                    <option value="Opaque Gouache">5. Gouache Opaque</option>
+                    <option value="Byzantine fresco">6. Fresque Byzantine</option>
+                    <option value="Soft Pastel">7. Pastel Sec</option>
+                    <option value="Sumi-e ink">8. Sumi-e (Encre)</option>
+                    <option value="Medieval Engraving">9. Gravure Médiévale</option>
+                    <option value="Fauvism">10. Fauvisme</option>
+                </optgroup>
+                <optgroup label="Modernes">
+                    <option value="Art Nouveau style">11. Art Nouveau</option>
+                    <option value="Dali Surrealism">12. Surréalisme</option>
+                    <option value="Pop Art, Lichtenstein style">13. Pop Art</option>
+                    <option value="German Expressionism">14. Expressionnisme</option>
+                    <option value="Bauhaus Minimalism">15. Minimalisme</option>
+                    <option value="Cubism">16. Cubisme</option>
+                    <option value="Futurism style">17. Futurisme</option>
+                    <option value="Constructivism">18. Constructivisme</option>
+                    <option value="Art Deco">19. Art Déco</option>
+                    <option value="Abstract Expressionism">20. Abstrait Exp.</option>
+                </optgroup>
+                <optgroup label="Digital & Pop">
+                    <option value="Vaporwave dreams">21. Vaporwave</option>
+                    <option value="Synthwave 80s">22. Synthwave</option>
+                    <option value="Kawaii pastel">23. Kawaii</option>
+                    <option value="Pixar 3D Render">24. Pixar 3D</option>
+                    <option value="Glitch Art">25. Glitch Art</option>
+                    <option value="Pixel Art 16-bit">26. Pixel Art</option>
+                    <option value="Low Poly">27. Low Poly</option>
+                    <option value="Vector Illustration">28. Vectoriel</option>
+                    <option value="Holographic Iridescent">29. Holographique</option>
+                    <option value="Cyber-Noir">30. Cyber-Noir</option>
+                </optgroup>
+                <optgroup label="Illustration / BD">
+                    <option value="Ligne Claire style">31. Ligne Claire</option>
+                    <option value="Studio Ghibli anime">32. Anime Ghibli</option>
+                    <option value="Retro Anime 90s">33. Retro Anime</option>
+                    <option value="Marvel Comics style">34. Marvel Comics</option>
+                    <option value="Sin City Frank Miller style">35. Frank Miller</option>
+                    <option value="Charcoal sketch">36. Fusain</option>
+                    <option value="Ukiyo-e woodblock">37. Ukiyo-e</option>
+                    <option value="Linocut print">38. Linogravure</option>
+                    <option value="Banksy Street Art">39. Street Art</option>
+                    <option value="Matte Concept Art">40. Concept Art</option>
+                </optgroup>
+                <optgroup label="Atmosphères">
+                    <option value="Blade Runner Cyberpunk">41. Blade Runner</option>
+                    <option value="Hygge aesthetic">42. Hygge</option>
+                    <option value="Icy Blue aesthetic">43. Icy Blue</option>
+                    <option value="Absureal dreamscape">44. Absureal</option>
+                    <option value="Steampunk brass">45. Steampunk</option>
+                    <option value="Solarpunk aesthetic">46. Solarpunk</option>
+                    <option value="Wes Anderson symmetry">47. Wes Anderson</option>
+                    <option value="Film Noir B&W">48. Film Noir</option>
+                    <option value="Ethereal Goddess">49. Ethereal Goddess</option>
+                    <option value="Cosmic Horror Lovecraftian">50. Cosmic Horror</option>
+                </optgroup>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="number" id="w3" value="0.0" step="0.1" min="0" max="1.0" oninput="checkWeightLimit()">
+        </div>
+        <input type="text" id="sty3_custom" class="custom-input">
+    </div>
+
+            </div>
+            <div id="totalWeight">Total des poids : 0.0 / 1.1</div>
+            <div class="weight-warning" id="weightWarning">⚠️ Le total des poids dépasse 1.1 ! Réduisez vos valeurs.</div>
+        </div>
+
+        <div>
+            <h2>🎭 Personnage Principal</h2>
+            <select id="personnage" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="a young Victorian nobleman">Aristocrate victorien</option>
+                <option value="a medieval knight in full armor">Chevalier médiéval</option>
+                <option value="a cyberpunk hacker">Hacker cyberpunk</option>
+                <option value="a Renaissance scholar">Érudit Renaissance</option>
+                <option value="an ethereal forest deity">Déité forestière</option>
+                <option value="a 1920s jazz singer">Chanteuse jazz années 20</option>
+                <option value="a samurai warrior">Guerrier samouraï</option>
+                <option value="a Baroque queen">Reine baroque</option>
+                <option value="a futuristic astronaut">Astronaute futuriste</option>
+                <option value="a tribal shaman">Chaman tribal</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="personnage_custom" class="custom-input" placeholder="Décrivez votre personnage...">
+        </div>
+
+        <div>
+            <h2>⚡ Action</h2>
+            <select id="action" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="contemplating the horizon">contemplant l'horizon</option>
+                <option value="reading an ancient manuscript">lisant un manuscrit ancien</option>
+                <option value="dancing under moonlight">dansant au clair de lune</option>
+                <option value="wielding a glowing sword">brandissant une épée lumineuse</option>
+                <option value="meditating in lotus position">méditant en lotus</option>
+                <option value="conducting an orchestra">dirigeant un orchestre</option>
+                <option value="painting a self-portrait">peignant un autoportrait</option>
+                <option value="riding a mythical creature">chevauchant une créature mythique</option>
+                <option value="standing in defiance">se tenant en défi</option>
+                <option value="whispering to the wind">murmurant au vent</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="action_custom" class="custom-input" placeholder="Décrivez l'action...">
+        </div>
+
+        <div>
+            <h2>🏺 Souvenir / Format Objet</h2>
+            <select id="souvenir" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <optgroup label="Formats Horizontaux">
+                    <option value="horizontal cinema poster">Poster cinéma horizontal</option>
+                    <option value="horizontal art poster">Poster artistique horizontal</option>
+                    <option value="high-quality cinematic film still of a TV studio set">Plateau TV cinématique</option>
+                    <option value="museum information placard">Plaque muséale</option>
+                    <option value="architectural blueprint drawing">Blueprint architectural</option>
+                    <option value="commemorative currency note">Billet commémoratif</option>
+                </optgroup>
+                <optgroup label="Formats Verticaux">
+                    <option value="vertical cinema poster">Poster cinéma vertical</option>
+                    <option value="vertical art poster">Poster artistique vertical</option>
+                    <option value="retro comic book cover">Couverture BD rétro</option>
+                    <option value="as a mystical tarot card">Carte de tarot mystique</option>
+                    <option value="medieval stained glass window">Vitrail médiéval</option>
+                </optgroup>
+                <optgroup label="Formats Carrés">
+                    <option value="printed on a circular cardboard beer coaster">Sous-bock circulaire</option>
+                    <option value="encased in a clear acrylic keychain frame">Porte-clés acrylique</option>
+                    <option value="as a detailed 3D sculpted relief keychain">Porte-clés relief 3D</option>
+                    <option value="etched onto a collector coin">Pièce de collection gravée</option>
+                    <option value="inside a snow globe">Boule à neige</option>
+                    <option value="vintage polaroid photo">Photo polaroid vintage</option>
+                    <option value="surrealist postage stamp">Timbre surréaliste</option>
+                </optgroup>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="souvenir_custom" class="custom-input" placeholder="Format personnalisé...">
+        </div>
+
+        <div>
+            <h2>🧱 Matériau Principal</h2>
+            <select id="material" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="crafted in ancient bronze">Bronze antique</option>
+                <option value="carved from obsidian">Obsidienne sculptée</option>
+                <option value="molded in translucent resin">Résine translucide</option>
+                <option value="woven in golden threads">Fils d'or tissés</option>
+                <option value="etched on crystal glass">Verre cristal gravé</option>
+                <option value="forged in dark steel">Acier sombre forgé</option>
+                <option value="sculpted in white marble">Marbre blanc sculpté</option>
+                <option value="painted on aged parchment">Parchemin vieilli peint</option>
+                <option value="cast in liquid silver">Argent liquide moulé</option>
+                <option value="formed from volcanic rock">Roche volcanique formée</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="material_custom" class="custom-input" placeholder="Matériau personnalisé...">
+        </div>
+
+        <div>
+            <h2>✨ Particules / Effets</h2>
+            <select id="particles" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="floating golden dust particles">Poussière dorée flottante</option>
+                <option value="ethereal light rays piercing through">Rayons lumineux éthérés</option>
+                <option value="swirling cosmic nebula">Nébuleuse cosmique tourbillonnante</option>
+                <option value="falling cherry blossom petals">Pétales de cerisier tombants</option>
+                <option value="glowing embers rising">Braises incandescentes montantes</option>
+                <option value="shimmering water droplets">Gouttelettes d'eau scintillantes</option>
+                <option value="sparkling magical runes">Runes magiques étincelantes</option>
+                <option value="drifting autumn leaves">Feuilles d'automne flottantes</option>
+                <option value="glittering diamond fragments">Fragments de diamant scintillants</option>
+                <option value="radiating energy waves">Ondes d'énergie rayonnantes</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="particles_custom" class="custom-input" placeholder="Particules personnalisées...">
+        </div>
+
+        <div>
+            <h2>🎨 Finition</h2>
+            <select id="finish" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="matte museum finish">Finition musée mate</option>
+                <option value="high-gloss lacquer">Laque brillante</option>
+                <option value="weathered patina texture">Texture patine vieillie</option>
+                <option value="iridescent holographic coating">Revêtement holographique irisé</option>
+                <option value="cracked aged surface">Surface vieillie craquelée</option>
+                <option value="brushed metallic sheen">Éclat métallique brossé</option>
+                <option value="frosted glass effect">Effet verre givré</option>
+                <option value="oxidized copper finish">Finition cuivre oxydé</option>
+                <option value="smooth porcelain glaze">Glaçure porcelaine lisse</option>
+                <option value="rough sandstone texture">Texture grès rugueux</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="finish_custom" class="custom-input" placeholder="Finition personnalisée...">
+        </div>
+
+        <div>
+            <h2>🌍 Localisation</h2>
+            <select id="loc" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="in a misty mountain temple">Temple montagneux brumeux</option>
+                <option value="inside a futuristic cathedral">Cathédrale futuriste</option>
+                <option value="on a windswept cliff edge">Falaise balayée par le vent</option>
+                <option value="within a enchanted forest grove">Bosquet forestier enchanté</option>
+                <option value="beneath aurora borealis skies">Sous aurore boréale</option>
+                <option value="in a steampunk clockwork tower">Tour steampunk mécanique</option>
+                <option value="floating in cosmic void">Flottant dans vide cosmique</option>
+                <option value="inside a baroque palace hall">Hall palais baroque</option>
+                <option value="on a neon-lit cyberpunk street">Rue cyberpunk néons</option>
+                <option value="within an ancient library">Bibliothèque ancienne</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="loc_custom" class="custom-input" placeholder="Localisation personnalisée...">
+        </div>
+
+        <div>
+            <h2>🕰️ Époque / Style Temporel</h2>
+            <select id="era" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="Victorian era aesthetic">Ère victorienne</option>
+                <option value="Medieval times atmosphere">Époque médiévale</option>
+                <option value="Cyberpunk 2077 future">Futur cyberpunk 2077</option>
+                <option value="Renaissance period elegance">Élégance Renaissance</option>
+                <option value="1920s Art Deco glamour">Glamour Art Déco 1920</option>
+                <option value="Ancient Egyptian civilization">Civilisation égyptienne antique</option>
+                <option value="Feudal Japan era">Ère Japon féodal</option>
+                <option value="Greco-Roman antiquity">Antiquité gréco-romaine</option>
+                <option value="Post-apocalyptic wasteland">Friche post-apocalyptique</option>
+                <option value="Space Age retro-futurism">Rétro-futurisme spatial</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="era_custom" class="custom-input" placeholder="Époque personnalisée...">
+        </div>
+
+        <div>
+            <h2>💡 Éclairage</h2>
+            <select id="light" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="dramatic chiaroscuro lighting">Clair-obscur dramatique</option>
+                <option value="soft diffused morning light">Lumière matinale diffuse</option>
+                <option value="neon glow in darkness">Lueur néon dans l'obscurité</option>
+                <option value="candlelight flicker">Vacillement chandelles</option>
+                <option value="golden hour sunset">Heure dorée coucher soleil</option>
+                <option value="harsh overhead spotlight">Projecteur dur plafond</option>
+                <option value="bioluminescent glow">Lueur bioluminescente</option>
+                <option value="moonlight silver rays">Rayons argent lunaires</option>
+                <option value="firelight warm ambiance">Ambiance chaleureuse feu</option>
+                <option value="ethereal backlight halo">Halo rétro-éclairage éthéré</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="light_custom" class="custom-input" placeholder="Éclairage personnalisé...">
+        </div>
+
+        <div>
+            <h2>📐 Ratio (Format d'Image)</h2>
+            <select id="ratio" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="1:1">1:1 (Carré)</option>
+                <option value="4:5">4:5 (Portrait Instagram)</option>
+                <option value="2:3">2:3 (Portrait classique)</option>
+                <option value="9:16">9:16 (Smartphone vertical)</option>
+                <option value="16:9">16:9 (Paysage HD)</option>
+                <option value="21:9">21:9 (Cinéma ultra-large)</option>
+                <option value="3:2">3:2 (Photo classique)</option>
+                <option value="5:4">5:4 (Portrait large)</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="ratio_custom" class="custom-input" placeholder="ex: 7:5">
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-forge" onclick="generate()">⚡ FORGER LE NANO-PROMPT</button>
+        <button class="btn-surprise" onclick="surprise()">🎲 TABLEAU SURPRISE</button>
+        <button class="btn-reset" onclick="resetAll()">🧹 RESET TOTAL</button>
+    </div>
+
+    <div class="output-box">
+        <div id="finalPrompt">En attente de vos instructions...</div>
+        <button class="btn-copy" onclick="copyPrompt()">📋 COPIER LE PACK MAGNUM OPUS</button>
+    </div>
+</div>
+
+<script>
+    // 1. GESTION DES CHAMPS PERSONNALISÉS (Toggle)
+    function checkCustom(select) {
+        const customInput = document.getElementById(select.id + '_custom');
+        if (customInput) {
+            customInput.style.display = (select.value === 'custom') ? 'block' : 'none';
+        }
+    }
+
+    // 2. RÉCUPÉRATION DES VALEURS (Universal Getter)
+    function getVal(id) {
+        const select = document.getElementById(id);
+        if (!select) return "";
+        const customInput = document.getElementById(id + '_custom');
+        if (select.value === 'custom' && customInput) {
+            return customInput.value;
+        }
+        return (select.value === 'none' || !select.value) ? '' : select.value;
+    }
+
+    // 3. VÉRIFICATION DE LA LIMITE DES POIDS (Nouveau !)
+    function checkWeightLimit() {
+        const w1 = parseFloat(document.getElementById('w1').value) || 0;
+        const w2 = parseFloat(document.getElementById('w2').value) || 0;
+        const w3 = parseFloat(document.getElementById('w3').value) || 0;
+        const total = w1 + w2 + w3;
+        
+        // Mise à jour de l'affichage du total
+        const totalDisplay = document.getElementById('totalWeight');
+        totalDisplay.textContent = `Total des poids : ${total.toFixed(1)} / 1.1`;
+        
+        // Affichage du warning si dépassement
+        const warning = document.getElementById('weightWarning');
+        if (total > 1.1) {
+            warning.style.display = 'block';
+            totalDisplay.style.color = '#ff4444';
+        } else {
+            warning.style.display = 'none';
+            totalDisplay.style.color = 'var(--neon-cyan)';
+        }
+    }
+
+    // 4. LOGIQUE AUTO-RATIO (L'intégralité de tes 18 objets)
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'souvenir') {
+            const ratioMenu = document.getElementById('ratio');
+            const val = e.target.value;
+
+            // --- LISTE CARRÉ (1:1) ---
+            const force11 = [
+                "printed on a circular cardboard beer coaster",
+                "encased in a clear acrylic keychain frame",
+                "as a detailed 3D sculpted relief keychain",
+                "etched onto a collector coin",
+                "inside a snow globe",
+                "vintage polaroid photo",
+                "surrealist postage stamp"
+            ];
+
+            // --- LISTE VERTICALE (2:3) ---
+            const forceVertical = [
+                "vertical cinema poster",
+                "vertical art poster",
+                "retro comic book cover",
+                "as a mystical tarot card",
+                "medieval stained glass window"
+            ];
+
+            // --- LISTE HORIZONTALE (16:9) ---
+            const forceHorizontal = [
+                "horizontal cinema poster",
+                "horizontal art poster",
+                "high-quality cinematic film still of a TV studio set",
+                "museum information placard",
+                "architectural blueprint drawing",
+                "commemorative currency note"
+            ];
+
+            // Application immédiate
+            if (force11.includes(val)) {
+                ratioMenu.value = "1:1";
+            } else if (forceVertical.includes(val)) {
+                ratioMenu.value = "2:3";
+            } else if (forceHorizontal.includes(val)) {
+                ratioMenu.value = "16:9";
+            }
+
+            // Mise à jour visuelle du champ personnalisé ratio
+            checkCustom(ratioMenu);
+        }
+    });
+
+    // 5. LA FORGE (Bouton : FORGER LE NANO-PROMPT)
+    function generate() {
+        // Vérification de la limite des poids
+        const w1 = parseFloat(document.getElementById('w1').value) || 0;
+        const w2 = parseFloat(document.getElementById('w2').value) || 0;
+        const w3 = parseFloat(document.getElementById('w3').value) || 0;
+        const total = w1 + w2 + w3;
+        
+        if (total > 1.1) {
+            alert("⚠️ Le total des poids dépasse 1.1 ! Veuillez réduire vos valeurs avant de forger.");
+            return;
+        }
+        
+        const pers = getVal('personnage');
+        const act = getVal('action');
+        const souv = getVal('souvenir');
+        const mat = getVal('material');
+        const prt = getVal('particles');
+        const fin = getVal('finish');
+        const loc = getVal('loc');
+        const era = getVal('era');
+        const lgt = getVal('light');
+        const rat = getVal('ratio');
+
+        // Mixage des 3 Styles
+        let styleStr = "";
+        for (let i = 1; i <= 3; i++) {
+            const s = getVal('sty' + i);
+            const wInput = document.getElementById('w' + i);
+            const w = wInput ? wInput.value : "0.0";
+            if (s && parseFloat(w) > 0) {
+                styleStr += `${s} (${w}), `;
+            }
+        }
+
+        const pos = `A high-end masterpiece, ${styleStr}${pers} ${act}, ${souv}, ${mat}, ${prt}, ${fin}, ${loc}, ${era}. Lighting: ${lgt}. Realism, hyper-detailed textures, 8k. ${rat} format`;
+        const neg = "\n\nPROMPT NÉGATIF : photograph, 3d render, cartoon, anime, illustration, text, signature, watermark, blurry, low resolution, distorted anatomy, messy colors, plastic skin, smooth skin, airbrushed, duplicate items, background leaking, fake shadows, grainy, low quality, bad hands, floating elements, messy artifacts, over-exposed, oversaturated, amateurish work.";
+
+        document.getElementById('finalPrompt').innerText = pos + neg;
+    }
+
+    // 6. TABLEAU SURPRISE (Bouton : TABLEAU SURPRISE)
+    function surprise() {
+        // Tous les IDs à randomiser
+        const ids = ['sty1', 'sty2', 'sty3', 'personnage', 'action', 'souvenir', 'material', 'particles', 'finish', 'loc', 'era', 'light', 'ratio'];
+        
+        ids.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                const options = Array.from(select.options).filter(opt => opt.value !== 'none' && opt.value !== 'custom');
+                if (options.length > 0) {
+                    select.value = options[Math.floor(Math.random() * options.length)].value;
+                    checkCustom(select);
+                }
+            }
+        });
+
+        // Poids aléatoires avec respect de la limite 1.1
+        let remaining = 1.1;
+        for (let i = 1; i <= 3; i++) {
+            const w = document.getElementById('w' + i);
+            if (w) {
+                if (i < 3) {
+                    const maxPossible = Math.min(0.7, remaining);
+                    const value = (Math.random() * maxPossible).toFixed(1);
+                    w.value = value;
+                    remaining -= parseFloat(value);
+                } else {
+                    // Pour le dernier poids, on utilise ce qui reste
+                    w.value = Math.max(0, remaining).toFixed(1);
+                }
+            }
+        }
+        
+        checkWeightLimit();
+        generate(); // Lance la création du texte
+    }
+
+    // 7. FONCTION DE RESET TOTAL (Nouveau !)
+    function resetAll() {
+        // Reset de tous les selects
+        const allSelects = document.querySelectorAll('select');
+        allSelects.forEach(select => {
+            // Trouve la première option "none" ou disabled
+            const noneOption = Array.from(select.options).find(opt => opt.value === 'none' || opt.disabled);
+            if (noneOption) {
+                select.value = noneOption.value;
+            } else {
+                select.selectedIndex = 0;
+            }
+            checkCustom(select);
+        });
+        
+        // Reset des poids à 0
+        document.getElementById('w1').value = '0.0';
+        document.getElementById('w2').value = '0.0';
+        document.getElementById('w3').value = '0.0';
+        
+        // Reset des custom inputs
+        const allCustomInputs = document.querySelectorAll('.custom-input');
+        allCustomInputs.forEach(input => {
+            input.value = '';
+            input.style.display = 'none';
+        });
+        
+        // Reset du prompt
+        document.getElementById('finalPrompt').innerText = 'En attente de vos instructions...';
+        
+        // Reset de l'affichage des poids
+        checkWeightLimit();
+        
+        console.log('✅ Reset total effectué !');
+    }
+
+    // 8. FONCTION DE COPIE
+    function copyPrompt() {
+        const text = document.getElementById('finalPrompt').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Pack Magnum Opus copié !");
+    }
+    
+    // Initialisation au chargement
+    window.addEventListener('load', function() {
+        checkWeightLimit();
+    });
+</script>
+</body>
+</html>
