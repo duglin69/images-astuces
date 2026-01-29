@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur Simple v1.0</title>
+    <style>
+        :root { --neon-cyan: #00f2ff; --neon-pink: #ff0055; --bg: #050508; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #010103; color: #e0e0e0; padding: 20px; line-height: 1.4; padding-top: 60px; }
+        .container { max-width: 1200px; margin: auto; background: var(--bg); padding: 30px; border-radius: 20px; border: 1px solid #1a1a2e; box-shadow: 0 0 50px rgba(0,242,255,0.1); }
+        h1 { color: var(--neon-cyan); text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid #1a1a2e; padding-bottom: 15px; }
+        h2 { color: var(--neon-pink); font-size: 0.8em; text-transform: uppercase; margin-top: 20px; border-left: 3px solid var(--neon-pink); padding-left: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 0.7em; color: var(--neon-cyan); font-weight: 700; opacity: 0.8; }
+        select, input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #222; background: #0d0d14; color: #fff; font-size: 0.85em; box-sizing: border-box; }
+        .custom-input { display: none; margin-top: 5px; border-color: var(--neon-pink); }
+        .output-box { background: #000; border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 12px; margin-top: 20px; }
+        #finalPrompt { display: block; font-family: 'Fira Code', monospace; font-size: 0.75em; color: #a5b4fc; white-space: pre-wrap; word-break: break-all; }
+        .controls { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button { cursor: pointer; padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; text-transform: uppercase; transition: 0.3s; flex: 1; min-width: 150px; }
+        .btn-generate { background: var(--neon-cyan); color: #000; font-size: 1.1em; }
+        .btn-random { background: #9d00ff; color: #fff; }
+        .btn-reset { background: #ff4444; color: #fff; }
+        .btn-copy { background: var(--neon-pink); color: white; margin-top: 10px; width: 100%; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,5,8,0.95); padding: 10px 20px; border-bottom: 1px solid #1a1a2e; z-index: 1000; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div style="color: var(--neon-cyan); font-weight: 900;">⚡ GÉNÉRATEUR SIMPLE v1.0</div>
+</div>
+
+<div class="container">
+    <h1>🎨 GÉNÉRATEUR DE PROMPT</h1>
+    
+    <div class="grid">
+        <!-- PERSONNAGE -->
+        <div>
+            <h2>👤 Personnage</h2>
+            <select id="personnage" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="a young woman">Jeune femme</option>
+                <option value="an old man with a beard">Vieil homme barbu</option>
+                <option value="a child playing">Enfant jouant</option>
+                <option value="a warrior in armor">Guerrier en armure</option>
+                <option value="a elegant lady in a dress">Dame élégante en robe</option>
+                <option value="a mysterious hooded figure">Figure encapuchonnée mystérieuse</option>
+                <option value="a robot">Robot</option>
+                <option value="an alien creature">Créature alien</option>
+                <option value="a wizard with a staff">Sorcier avec bâton</option>
+                <option value="a cowboy">Cowboy</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="personnage_custom" class="custom-input" placeholder="Décrivez votre personnage...">
+        </div>
+
+        <!-- ACTION -->
+        <div>
+            <h2>⚡ Action</h2>
+            <select id="action" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="walking">marchant</option>
+                <option value="running">courant</option>
+                <option value="sitting">assis(e)</option>
+                <option value="dancing">dansant</option>
+                <option value="fighting">combattant</option>
+                <option value="reading a book">lisant un livre</option>
+                <option value="looking at the horizon">contemplant l'horizon</option>
+                <option value="riding a horse">chevauchant un cheval</option>
+                <option value="flying">volant</option>
+                <option value="meditating">méditant</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="action_custom" class="custom-input" placeholder="Décrivez l'action...">
+        </div>
+
+        <!-- LIEU -->
+        <div>
+            <h2>🌍 Lieu</h2>
+            <select id="lieu" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="in a forest">dans une forêt</option>
+                <option value="on a mountain top">au sommet d'une montagne</option>
+                <option value="in a medieval castle">dans un château médiéval</option>
+                <option value="on a beach at sunset">sur une plage au coucher du soleil</option>
+                <option value="in a futuristic city">dans une ville futuriste</option>
+                <option value="in outer space">dans l'espace</option>
+                <option value="in a desert">dans un désert</option>
+                <option value="in an old library">dans une vieille bibliothèque</option>
+                <option value="underwater">sous l'eau</option>
+                <option value="in a snowy landscape">dans un paysage enneigé</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="lieu_custom" class="custom-input" placeholder="Décrivez le lieu...">
+        </div>
+
+        <!-- ÉPOQUE -->
+        <div>
+            <h2>🕰️ Époque</h2>
+            <select id="epoque" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="during the dinosaur era">Ère des dinosaures</option>
+                <option value="in ancient Egypt">Égypte antique</option>
+                <option value="during the Middle Ages">Moyen-Âge</option>
+                <option value="in the Renaissance">Renaissance</option>
+                <option value="in the Victorian era">Ère victorienne</option>
+                <option value="in the 1920s">Années 1920</option>
+                <option value="in the 1980s">Années 1980</option>
+                <option value="in modern times">Époque moderne</option>
+                <option value="in the year 2100">An 2100</option>
+                <option value="in the year 22000">An 22000</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="epoque_custom" class="custom-input" placeholder="Décrivez l'époque...">
+        </div>
+
+        <!-- MÉTÉO -->
+        <div>
+            <h2>🌤️ Météo</h2>
+            <select id="meteo" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="sunny weather">Ensoleillé</option>
+                <option value="cloudy sky">Nuageux</option>
+                <option value="rainy day">Pluvieux</option>
+                <option value="snowing">Neigeux</option>
+                <option value="stormy weather">Orageux</option>
+                <option value="foggy atmosphere">Brumeux</option>
+                <option value="windy conditions">Venteux</option>
+                <option value="night with stars">Nuit étoilée</option>
+                <option value="aurora borealis">Aurore boréale</option>
+                <option value="golden hour light">Heure dorée</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="meteo_custom" class="custom-input" placeholder="Décrivez la météo...">
+        </div>
+
+        <!-- FINITION -->
+        <div>
+            <h2>🎨 Finition</h2>
+            <select id="finition" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="oil painting">Peinture à l'huile</option>
+                <option value="watercolor">Aquarelle</option>
+                <option value="digital art">Art numérique</option>
+                <option value="pencil sketch">Croquis au crayon</option>
+                <option value="acrylic painting">Peinture acrylique</option>
+                <option value="pixel art">Pixel art</option>
+                <option value="3D render">Rendu 3D</option>
+                <option value="charcoal drawing">Dessin au fusain</option>
+                <option value="pastel art">Pastel</option>
+                <option value="photorealistic">Photoréaliste</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="finition_custom" class="custom-input" placeholder="Décrivez la finition...">
+        </div>
+
+        <!-- ÉCLAIRAGE -->
+        <div>
+            <h2>💡 Éclairage</h2>
+            <select id="eclairage" onchange="checkCustom(this)">
+                <option value="none" selected disabled>-- Choisir --</option>
+                <option value="natural daylight">Lumière naturelle du jour</option>
+                <option value="dramatic chiaroscuro">Clair-obscur dramatique</option>
+                <option value="soft diffused light">Lumière douce diffuse</option>
+                <option value="neon lights">Néons</option>
+                <option value="candlelight">Lumière de bougie</option>
+                <option value="moonlight">Clair de lune</option>
+                <option value="sunset glow">Lueur du coucher de soleil</option>
+                <option value="studio lighting">Éclairage studio</option>
+                <option value="backlit silhouette">Silhouette rétro-éclairée</option>
+                <option value="bioluminescent glow">Lueur bioluminescente</option>
+                <option value="custom">-- Personnaliser --</option>
+            </select>
+            <input type="text" id="eclairage_custom" class="custom-input" placeholder="Décrivez l'éclairage...">
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-generate" onclick="generate()">⚡ GÉNÉRER LE PROMPT</button>
+        <button class="btn-random" onclick="randomize()">🎲 TABLEAU ALÉATOIRE</button>
+        <button class="btn-reset" onclick="resetAll()">🧹 RESET TOTAL</button>
+    </div>
+
+    <div class="output-box">
+        <div id="finalPrompt">En attente de vos instructions...</div>
+        <button class="btn-copy" onclick="copyPrompt()">📋 COPIER LE PROMPT COMPLET</button>
+    </div>
+</div>
+
+<script>
+    // Gestion des champs personnalisés
+    function checkCustom(select) {
+        const customInput = document.getElementById(select.id + '_custom');
+        if (customInput) {
+            customInput.style.display = (select.value === 'custom') ? 'block' : 'none';
+        }
+    }
+
+    // Récupération des valeurs
+    function getVal(id) {
+        const select = document.getElementById(id);
+        if (!select) return "";
+        const customInput = document.getElementById(id + '_custom');
+        if (select.value === 'custom' && customInput) {
+            return customInput.value;
+        }
+        return (select.value === 'none' || !select.value) ? '' : select.value;
+    }
+
+    // Génération du prompt
+    function generate() {
+        const personnage = getVal('personnage');
+        const action = getVal('action');
+        const lieu = getVal('lieu');
+        const epoque = getVal('epoque');
+        const meteo = getVal('meteo');
+        const finition = getVal('finition');
+        const eclairage = getVal('eclairage');
+
+        const prompt = `${personnage} ${action} ${lieu}, ${epoque}, ${meteo}. ${finition} style, ${eclairage}. High quality, detailed, masterpiece.`;
+        
+        const negativePrompt = "\n\nPROMPT NÉGATIF : signature, watermark, text, artist name, low quality, blurry, distorted, deformed, ugly, bad anatomy, bad proportions, duplicate, cropped, out of frame, draft, grainy.";
+
+        document.getElementById('finalPrompt').innerText = prompt + negativePrompt;
+    }
+
+    // Randomisation
+    function randomize() {
+        const ids = ['personnage', 'action', 'lieu', 'epoque', 'meteo', 'finition', 'eclairage'];
+        
+        ids.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                const options = Array.from(select.options).filter(opt => opt.value !== 'none' && opt.value !== 'custom');
+                if (options.length > 0) {
+                    select.value = options[Math.floor(Math.random() * options.length)].value;
+                    checkCustom(select);
+                }
+            }
+        });
+
+        generate();
+    }
+
+    // Reset total
+    function resetAll() {
+        const allSelects = document.querySelectorAll('select');
+        allSelects.forEach(select => {
+            const noneOption = Array.from(select.options).find(opt => opt.value === 'none' || opt.disabled);
+            if (noneOption) {
+                select.value = noneOption.value;
+            } else {
+                select.selectedIndex = 0;
+            }
+            checkCustom(select);
+        });
+        
+        const allCustomInputs = document.querySelectorAll('.custom-input');
+        allCustomInputs.forEach(input => {
+            input.value = '';
+            input.style.display = 'none';
+        });
+        
+        document.getElementById('finalPrompt').innerText = 'En attente de vos instructions...';
+    }
+
+    // Copie du prompt
+    function copyPrompt() {
+        const text = document.getElementById('finalPrompt').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Prompt complet copié !");
+    }
+</script>
+</body>
+</html>
