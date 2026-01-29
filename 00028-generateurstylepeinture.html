@@ -23,6 +23,27 @@
         .btn-reset { background: #ff4444; color: #fff; }
         .btn-copy { background: var(--neon-pink); color: white; margin-top: 10px; width: 100%; }
         .top-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(5,5,8,0.95); padding: 10px 20px; border-bottom: 1px solid #1a1a2e; z-index: 1000; text-align: center; }
+     .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+    .btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
@@ -376,26 +397,5 @@
         alert("Prompt complet copié !");
     }
 </script>
-    .top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
-
-body {
-    padding-top: 80px;
-}
-    .btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-}
-</body>
+   </body>
 </html>
