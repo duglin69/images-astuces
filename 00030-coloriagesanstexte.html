@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Coloriages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-surprise {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-discovery {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            color: #2d3436;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        .btn-import {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-tiny {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 20px;
+        }
+
+        .themes-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 100%);
+            border-radius: 20px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .theme-select {
+            width: 100%;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #ffc0cb;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .theme-select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border-color: #ff69b4;
+        }
+
+        .theme-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .suggestions-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            border-radius: 20px;
+            animation: slideIn 0.6s ease-out 0.2s both;
+        }
+
+        .suggestions-section.hidden {
+            display: none;
+        }
+
+        .suggestions-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-chip {
+            padding: 10px 18px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .config-section {
+            margin-bottom: 30px;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .selector-group {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .selector-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .emoji {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .selector-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .selector {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .selector:hover {
+            border-color: #667eea;
+        }
+
+        .selector:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .custom-input.show {
+            display: block;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .special-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .input-label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .title-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .title-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .complexity-section {
+            padding: 25px;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .complexity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .complexity-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .complexity-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .complexity-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .complexity-fill {
+            height: 100%;
+            transition: all 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .complexity-hint {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .preview-section {
+            margin-bottom: 30px;
+            animation: slideIn 0.6s ease-out;
+            display: none;
+        }
+
+        .preview-section.show {
+            display: block;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .prompt-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .prompt-box {
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .prompt-box.positive {
+            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+        }
+
+        .prompt-box.negative {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+        }
+
+        .prompt-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+
+        .prompt-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .gallery-section {
+            animation: slideIn 0.6s ease-out;
+            display: none;
+        }
+
+        .gallery-section.show {
+            display: block;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-card {
+            padding: 20px;
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-card-header {
+            margin-bottom: 15px;
+        }
+
+        .gallery-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+
+        .gallery-date {
+            font-size: 0.85rem;
+            color: #636e72;
+        }
+
+        .gallery-preview {
+            font-size: 0.9rem;
+            color: #2d3436;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .gallery-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .preview-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .preview-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🎨 Générateur de Coloriages</h1>
+                <p class="subtitle">Créez des prompts parfaits pour vos coloriages ✨</p>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Actions rapides -->
+            <div class="quick-actions">
+                <button onclick="randomize()" class="btn btn-surprise">🎲 Dessin Surprise</button>
+                <button onclick="discoveryMode()" class="btn btn-discovery">💡 Mode Découverte</button>
+                <button onclick="reset()" class="btn btn-reset">🗑️ Reset 100%</button>
+                <label class="btn btn-import">
+                    📤 Charger JSON
+                    <input type="file" accept=".json" onchange="importJSON(event)" style="display: none;">
+                </label>
+            </div>
+
+            <!-- Thèmes prédéfinis -->
+            <div class="themes-section">
+                <h3 class="section-title">🎨 Thèmes Prédéfinis</h3>
+                <select id="theme-select" class="theme-select" onchange="applyTheme(this.value)">
+                    <option value="">-- Choisir un thème --</option>
+                    <option value="0">🏴‍☠️ Anniversaire Pirate</option>
+                    <option value="1">🎄 Noël Magique</option>
+                    <option value="2">🚀 Aventure Spatiale</option>
+                    <option value="3">🦖 Voyage Préhistorique</option>
+                    <option value="4">🏰 Conte de Fées</option>
+                    <option value="5">🌊 Aventure sous-marine</option>
+                    <option value="6">🦄 Monde magique</option>
+                    <option value="7">🤖 Futur robotique</option>
+                    <option value="8">🍰 Goûter d'anniversaire</option>
+                    <option value="9">🌈 Pays des merveilles</option>
+                    <option value="10">🦕 Parc de dinosaures</option>
+                    <option value="11">🎪 Cirque extraordinaire</option>
+                    <option value="12">🏕️ Camping en forêt</option>
+                    <option value="13">🧚 Jardin enchanté</option>
+                    <option value="14">🚂 Voyage en train magique</option>
+                    <option value="custom">✨ Personnaliser (ignorer le thème)</option>
+                </select>
+            </div>
+
+            <!-- Suggestions intelligentes -->
+            <div id="suggestions-section" class="suggestions-section hidden">
+                <h3 class="section-title">💡 Suggestions</h3>
+                <div id="suggestions-grid" class="suggestions-grid"></div>
+            </div>
+
+            <!-- Configuration principale -->
+            <div class="config-section">
+                <div class="config-grid">
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">👤</span>Personnage</label>
+                        <div class="selector-controls">
+                            <select id="personnage" class="selector" onchange="handleSelectorChange('personnage')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Enfant">Enfant</option>
+                                <option value="Adulte">Adulte</option>
+                                <option value="Famille">Famille</option>
+                                <option value="Robot">Robot</option>
+                                <option value="Chat">Chat</option>
+                                <option value="Chien">Chien</option>
+                                <option value="Lapin">Lapin</option>
+                                <option value="Ours">Ours</option>
+                                <option value="Lion">Lion</option>
+                                <option value="Éléphant">Éléphant</option>
+                                <option value="Dinosaure">Dinosaure</option>
+                                <option value="Dragon">Dragon</option>
+                                <option value="Licorne">Licorne</option>
+                                <option value="Fée">Fée</option>
+                                <option value="Pirate">Pirate</option>
+                                <option value="Princesse">Princesse</option>
+                                <option value="Chevalier">Chevalier</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="personnage-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">👥</span>Personnage en +</label>
+                        <div class="selector-controls">
+                            <select id="personnageExtra" class="selector" onchange="handleSelectorChange('personnageExtra')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Enfant">Enfant</option>
+                                <option value="Adulte">Adulte</option>
+                                <option value="Famille">Famille</option>
+                                <option value="Robot">Robot</option>
+                                <option value="Chat">Chat</option>
+                                <option value="Chien">Chien</option>
+                                <option value="Lapin">Lapin</option>
+                                <option value="Ours">Ours</option>
+                                <option value="Lion">Lion</option>
+                                <option value="Éléphant">Éléphant</option>
+                                <option value="Dinosaure">Dinosaure</option>
+                                <option value="Dragon">Dragon</option>
+                                <option value="Licorne">Licorne</option>
+                                <option value="Fée">Fée</option>
+                                <option value="Pirate">Pirate</option>
+                                <option value="Princesse">Princesse</option>
+                                <option value="Chevalier">Chevalier</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="personnageExtra-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🏞️</span>Décor</label>
+                        <div class="selector-controls">
+                            <select id="decor" class="selector" onchange="handleSelectorChange('decor')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Forêt">Forêt</option>
+                                <option value="Espace">Espace</option>
+                                <option value="Château">Château</option>
+                                <option value="Plage">Plage</option>
+                                <option value="Ville">Ville</option>
+                                <option value="Montagne">Montagne</option>
+                                <option value="Jungle">Jungle</option>
+                                <option value="Désert">Désert</option>
+                                <option value="Océan">Océan</option>
+                                <option value="Grotte">Grotte</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="decor-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🎬</span>Action</label>
+                        <div class="selector-controls">
+                            <select id="action" class="selector" onchange="handleSelectorChange('action')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Danser">Danser</option>
+                                <option value="Courir">Courir</option>
+                                <option value="Dormir">Dormir</option>
+                                <option value="Voler">Voler</option>
+                                <option value="Explorer">Explorer</option>
+                                <option value="Nager">Nager</option>
+                                <option value="Sauter">Sauter</option>
+                                <option value="Jouer">Jouer</option>
+                                <option value="Rire">Rire</option>
+                                <option value="Créer">Créer</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="action-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🎁</span>Objets</label>
+                        <div class="selector-controls">
+                            <select id="objets" class="selector" onchange="handleSelectorChange('objets')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Épée">Épée</option>
+                                <option value="Ballon">Ballon</option>
+                                <option value="Livre">Livre</option>
+                                <option value="Trésor">Trésor</option>
+                                <option value="Chapeau">Chapeau</option>
+                                <option value="Parapluie">Parapluie</option>
+                                <option value="Instrument">Instrument</option>
+                                <option value="Jouet">Jouet</option>
+                                <option value="Outil">Outil</option>
+                                <option value="Lanterne">Lanterne</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="objets-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">👨‍👩‍👧‍👦</span>Personnes</label>
+                        <div class="selector-controls">
+                            <select id="personnes" class="selector" onchange="handleSelectorChange('personnes')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Ami">Ami</option>
+                                <option value="Animal">Animal</option>
+                                <option value="Famille">Famille</option>
+                                <option value="Ennemi">Ennemi</option>
+                                <option value="Compagnon">Compagnon</option>
+                                <option value="Mentor">Mentor</option>
+                                <option value="Héros">Héros</option>
+                                <option value="Créature">Créature</option>
+                                <option value="Guide">Guide</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="personnes-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🌤️</span>Météo & Saisons</label>
+                        <div class="selector-controls">
+                            <select id="meteo" class="selector" onchange="handleSelectorChange('meteo')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Soleil">Soleil</option>
+                                <option value="Pluie">Pluie</option>
+                                <option value="Neige">Neige</option>
+                                <option value="Printemps">Printemps</option>
+                                <option value="Été">Été</option>
+                                <option value="Automne">Automne</option>
+                                <option value="Hiver">Hiver</option>
+                                <option value="Arc-en-ciel">Arc-en-ciel</option>
+                                <option value="Nuages">Nuages</option>
+                                <option value="Brouillard">Brouillard</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="meteo-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🕐</span>Heure du jour</label>
+                        <div class="selector-controls">
+                            <select id="heure" class="selector" onchange="handleSelectorChange('heure')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Matin">Matin</option>
+                                <option value="Midi">Midi</option>
+                                <option value="Soir">Soir</option>
+                                <option value="Nuit">Nuit</option>
+                                <option value="Aube">Aube</option>
+                                <option value="Crépuscule">Crépuscule</option>
+                                <option value="Après-midi">Après-midi</option>
+                                <option value="Minuit">Minuit</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="heure-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">👨‍🚀</span>Métiers</label>
+                        <div class="selector-controls">
+                            <select id="metier" class="selector" onchange="handleSelectorChange('metier')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Pompier">Pompier</option>
+                                <option value="Docteur">Docteur</option>
+                                <option value="Astronaute">Astronaute</option>
+                                <option value="Chef">Chef</option>
+                                <option value="Artiste">Artiste</option>
+                                <option value="Musicien">Musicien</option>
+                                <option value="Explorateur">Explorateur</option>
+                                <option value="Scientifique">Scientifique</option>
+                                <option value="Jardinier">Jardinier</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="metier-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">⏳</span>Époques</label>
+                        <div class="selector-controls">
+                            <select id="epoque" class="selector" onchange="handleSelectorChange('epoque')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Préhistoire">Préhistoire</option>
+                                <option value="Antiquité">Antiquité</option>
+                                <option value="Moyen Âge">Moyen Âge</option>
+                                <option value="Futur">Futur</option>
+                                <option value="An 2500">An 2500</option>
+                                <option value="Renaissance">Renaissance</option>
+                                <option value="Ère victorienne">Ère victorienne</option>
+                                <option value="Années 50">Années 50</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="epoque-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🚗</span>Véhicules</label>
+                        <div class="selector-controls">
+                            <select id="vehicule" class="selector" onchange="handleSelectorChange('vehicule')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Voiture">Voiture</option>
+                                <option value="Fusée">Fusée</option>
+                                <option value="Bateau">Bateau</option>
+                                <option value="Vélo">Vélo</option>
+                                <option value="Dragon">Dragon</option>
+                                <option value="Avion">Avion</option>
+                                <option value="Train">Train</option>
+                                <option value="Montgolfière">Montgolfière</option>
+                                <option value="Sous-marin">Sous-marin</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="vehicule-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🎨</span>Style artistique</label>
+                        <div class="selector-controls">
+                            <select id="style" class="selector" onchange="handleSelectorChange('style')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Manga">Manga</option>
+                                <option value="Kawaii">Kawaii</option>
+                                <option value="Cartoon rétro">Cartoon rétro</option>
+                                <option value="Cartoon moderne">Cartoon moderne</option>
+                                <option value="Ligne claire">Ligne claire</option>
+                                <option value="Comic">Comic</option>
+                                <option value="Art nouveau">Art nouveau</option>
+                                <option value="Enfantin">Enfantin</option>
+                                <option value="Simple et mignon">Simple et mignon</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="style-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">📐</span>Format</label>
+                        <div class="selector-controls">
+                            <select id="format" class="selector">
+                                <option value="">-- Choisir --</option>
+                                <option value="1:1">1:1</option>
+                                <option value="16:9">16:9</option>
+                                <option value="9:16">9:16</option>
+                                <option value="21:9">21:9</option>
+                                <option value="3:2">3:2</option>
+                                <option value="4:3">4:3</option>
+                                <option value="A4 portrait">A4 portrait</option>
+                                <option value="A4 paysage">A4 paysage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🖼️</span>Format spécial</label>
+                        <div class="selector-controls">
+                            <select id="formatSpecial" class="selector" onchange="handleSelectorChange('formatSpecial')">
+                                <option value="">-- Choisir --</option>
+                                <option value="Standard">Standard</option>
+                                <option value="Affiche">Affiche</option>
+                                <option value="Sous-bock">Sous-bock</option>
+                                <option value="Couverture de livre">Couverture de livre</option>
+                                <option value="Pièce de monnaie">Pièce de monnaie</option>
+                                <option value="Billet de banque">Billet de banque</option>
+                                <option value="Carte postale">Carte postale</option>
+                                <option value="Autocollant">Autocollant</option>
+                                <option value="+ Perso">+ Perso</option>
+                            </select>
+                            <input type="text" id="formatSpecial-custom" class="custom-input" placeholder="Votre choix...">
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label class="selector-label"><span class="emoji">🔍</span>Niveau de difficulté</label>
+                        <div class="selector-controls">
+                            <select id="detail" class="selector">
+                                <option value="">-- Choisir --</option>
+                                <option value="Simple (3-5 ans)">Simple (3-5 ans)</option>
+                                <option value="Moyen (6-10 ans)">Moyen (6-10 ans)</option>
+                                <option value="Complexe (adultes)">Complexe (adultes)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options spéciales -->
+                <div class="special-options">
+                    <div class="option-card">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="histoire3cases">
+                            <span>📖 Histoire en 3 cases (début, milieu, fin)</span>
+                        </label>
+                    </div>
+
+                    <div class="option-card">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="modeContour" checked>
+                            <span>✏️ Mode contour seul (traits noirs uniquement)</span>
+                        </label>
+                    </div>
+
+                    <div class="option-card">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="modeCouleur">
+                            <span>🎨 Générer en couleurs (dessin déjà colorié)</span>
+                        </label>
+                    </div>
+
+                    <div class="option-card full-width">
+                        <label class="input-label">
+                            <span>🏷️ Nommer le coloriage</span>
+                            <input type="text" id="titre" class="title-input" placeholder="Ex: Mon aventure spatiale">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Indicateur de complexité -->
+                <div class="complexity-section">
+                    <div class="complexity-header">
+                        <span class="complexity-label">Complexité estimée</span>
+                        <span class="complexity-value" id="complexity-value">0%</span>
+                    </div>
+                    <div class="complexity-bar">
+                        <div class="complexity-fill" id="complexity-fill" style="width: 0%; background: #4ade80;"></div>
+                    </div>
+                    <p class="complexity-hint" id="complexity-hint">⚡ Rapide à colorier</p>
+                </div>
+
+                <!-- Bouton de génération -->
+                <button onclick="generatePrompt()" class="btn-generate">✨ Générer le Prompt</button>
+            </div>
+
+            <!-- Prévisualisation -->
+            <div id="preview-section" class="preview-section">
+                <div class="preview-header">
+                    <h3 class="section-title">👁️ Prévisualisation du Prompt</h3>
+                    <div class="preview-actions">
+                        <button onclick="copyPrompt('positive')" class="btn btn-small">📋 Positif</button>
+                        <button onclick="copyPrompt('negative')" class="btn btn-small">📋 Négatif</button>
+                        <button onclick="copyPrompt('both')" class="btn btn-small btn-primary">📋 Les deux</button>
+                        <button onclick="generateVariant()" class="btn btn-small">🔄 Variante</button>
+                        <button onclick="addToGallery()" class="btn btn-small">🖼️ Galerie</button>
+                        <button onclick="exportJSON()" class="btn btn-small btn-export">💾 Export JSON</button>
+                    </div>
+                </div>
+
+                <div class="prompt-container">
+                    <div class="prompt-box positive">
+                        <h4 class="prompt-title">✨ Prompt Positif</h4>
+                        <p class="prompt-text" id="positive-prompt"></p>
+                    </div>
+
+                    <div class="prompt-box negative">
+                        <h4 class="prompt-title">⛔ Prompt Négatif</h4>
+                        <p class="prompt-text" id="negative-prompt"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galerie -->
+            <div id="gallery-section" class="gallery-section">
+                <h3 class="section-title">🖼️ Galerie (<span id="gallery-count">0</span>)</h3>
+                <div id="gallery-grid" class="gallery-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let customInputs = {};
+        let generatedPrompt = '';
+        let negativePrompt = '';
+        let gallery = [];
+
+        // Thèmes prédéfinis
+        const themes = [
+            {
+                nom: '🏴‍☠️ Anniversaire Pirate',
+                config: { personnage: 'Pirate', decor: 'Océan', action: 'Explorer', objets: 'Trésor', meteo: 'Soleil', vehicule: 'Bateau', style: 'Cartoon rétro' }
+            },
+            {
+                nom: '🎄 Noël Magique',
+                config: { personnage: 'Famille', decor: 'Château', action: 'Jouer', objets: 'Jouet', meteo: 'Neige', heure: 'Nuit', style: 'Cartoon moderne' }
+            },
+            {
+                nom: '🚀 Aventure Spatiale',
+                config: { personnage: 'Robot', decor: 'Espace', action: 'Explorer', metier: 'Astronaute', vehicule: 'Fusée', epoque: 'Futur' }
+            },
+            {
+                nom: '🦖 Voyage Préhistorique',
+                config: { personnage: 'Enfant', decor: 'Jungle', action: 'Courir', objets: 'Outil', epoque: 'Préhistoire', style: 'Cartoon rétro' }
+            },
+            {
+                nom: '🏰 Conte de Fées',
+                config: { personnage: 'Princesse', decor: 'Château', action: 'Danser', objets: 'Chapeau', epoque: 'Moyen Âge', style: 'Cartoon moderne' }
+            },
+            {
+                nom: '🌊 Aventure sous-marine',
+                config: { personnage: 'Poisson', decor: 'Océan', action: 'Nager', objets: 'Coquillage', meteo: 'Soleil', style: 'Cartoon moderne' }
+            },
+            {
+                nom: '🦄 Monde magique',
+                config: { personnage: 'Licorne', decor: 'Forêt enchantée', action: 'Voler', objets: 'Baguette magique', meteo: 'Arc-en-ciel', style: 'Fantasy' }
+            },
+            {
+                nom: '🤖 Futur robotique',
+                config: { personnage: 'Robot', decor: 'Ville futuriste', action: 'Construire', metier: 'Inventeur', vehicule: 'Voiture volante', epoque: 'Futur' }
+            },
+            {
+                nom: '🍰 Goûter d\'anniversaire',
+                config: { personnage: 'Enfant', decor: 'Maison', action: 'Jouer', objets: 'Gâteau', personnes: 'Amis', meteo: 'Soleil' }
+            },
+            {
+                nom: '🌈 Pays des merveilles',
+                config: { personnage: 'Alice', decor: 'Jardin magique', action: 'Découvrir', objets: 'Clé', style: 'Fantasy' }
+            },
+            {
+                nom: '🦕 Parc de dinosaures',
+                config: { personnage: 'Dinosaure', decor: 'Jungle', action: 'Rugir', objets: 'Os', epoque: 'Préhistoire', style: 'Cartoon rétro' }
+            },
+            {
+                nom: '🎪 Cirque extraordinaire',
+                config: { personnage: 'Clown', decor: 'Chapiteau', action: 'Jongler', objets: 'Ballon', personnes: 'Public', meteo: 'Soleil' }
+            },
+            {
+                nom: '🏕️ Camping en forêt',
+                config: { personnage: 'Enfant', decor: 'Forêt', action: 'Camper', objets: 'Tente', meteo: 'Soleil', heure: 'Nuit' }
+            },
+            {
+                nom: '🧚 Jardin enchanté',
+                config: { personnage: 'Fée', decor: 'Jardin', action: 'Voler', objets: 'Fleur', meteo: 'Soleil', style: 'Fantasy' }
+            },
+            {
+                nom: '🚂 Voyage en train magique',
+                config: { personnage: 'Enfant', decor: 'Montagne', action: 'Voyager', vehicule: 'Train', meteo: 'Nuages', style: 'Cartoon moderne' }
+            }
+        ];
+
+        // Gestion des sélecteurs
+        function handleSelectorChange(name) {
+            const select = document.getElementById(name);
+            const customInput = document.getElementById(name + '-custom');
+            
+            if (select.value === '+ Perso') {
+                customInput.classList.add('show');
+            } else {
+                customInput.classList.remove('show');
+            }
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Calculer la complexité
+        function updateComplexity() {
+            let score = 0;
+            
+            const fields = ['personnage', 'personnageExtra', 'decor', 'action', 'objets', 'personnes', 'meteo', 'heure', 'metier', 'epoque', 'vehicule', 'style', 'formatSpecial'];
+            
+            fields.forEach(field => {
+                const select = document.getElementById(field);
+                if (select && select.value && select.value !== 'Standard' && select.value !== '') {
+                    score += 10;
+                }
+            });
+            
+            if (document.getElementById('histoire3cases').checked) score += 30;
+            if (document.getElementById('detail').value === 'Complexe (adultes)') score += 20;
+            if (document.getElementById('detail').value === 'Simple (3-5 ans)') score -= 10;
+            
+            score = Math.min(100, Math.max(0, score));
+            
+            document.getElementById('complexity-value').textContent = score + '%';
+            document.getElementById('complexity-fill').style.width = score + '%';
+            
+            let color = '#4ade80';
+            let hint = '⚡ Rapide à colorier';
+            
+            if (score >= 30 && score < 70) {
+                color = '#fbbf24';
+                hint = '🎨 Temps de coloriage modéré';
+            } else if (score >= 70) {
+                color = '#f87171';
+                hint = '🔥 Complexe et détaillé';
+            }
+            
+            document.getElementById('complexity-fill').style.background = color;
+            document.getElementById('complexity-hint').textContent = hint;
+        }
+
+        // Mettre à jour les suggestions
+        function updateSuggestions() {
+            const suggestions = [];
+            const decor = document.getElementById('decor').value;
+            const meteo = document.getElementById('meteo').value;
+            const epoque = document.getElementById('epoque').value;
+            
+            if (decor === 'Espace') {
+                if (!document.getElementById('metier').value) suggestions.push({ type: 'metier', value: 'Astronaute', label: '👨‍🚀 Astronaute' });
+                if (!document.getElementById('vehicule').value) suggestions.push({ type: 'vehicule', value: 'Fusée', label: '🚀 Fusée' });
+                if (!document.getElementById('personnage').value) suggestions.push({ type: 'personnage', value: 'Robot', label: '🤖 Robot' });
+            }
+            
+            if (decor === 'Océan' || decor === 'Plage') {
+                if (!document.getElementById('vehicule').value) suggestions.push({ type: 'vehicule', value: 'Bateau', label: '⛵ Bateau' });
+                if (!document.getElementById('action').value) suggestions.push({ type: 'action', value: 'Nager', label: '🏊 Nager' });
+            }
+            
+            if (meteo === 'Neige' || meteo === 'Hiver') {
+                if (!document.getElementById('heure').value) suggestions.push({ type: 'heure', value: 'Nuit', label: '🌙 Nuit' });
+            }
+            
+            if (epoque === 'Moyen Âge') {
+                if (!document.getElementById('decor').value) suggestions.push({ type: 'decor', value: 'Château', label: '🏰 Château' });
+                if (!document.getElementById('objets').value) suggestions.push({ type: 'objets', value: 'Épée', label: '⚔️ Épée' });
+            }
+
+            if (epoque === 'Futur' || epoque === 'An 2500') {
+                if (!document.getElementById('decor').value) suggestions.push({ type: 'decor', value: 'Ville', label: '🌆 Ville futuriste' });
+                if (!document.getElementById('vehicule').value) suggestions.push({ type: 'vehicule', value: 'Fusée', label: '🚀 Fusée' });
+            }
+            
+            const suggestionsSection = document.getElementById('suggestions-section');
+            const suggestionsGrid = document.getElementById('suggestions-grid');
+            
+            if (suggestions.length > 0) {
+                suggestionsSection.classList.remove('hidden');
+                suggestionsGrid.innerHTML = '';
+                
+                suggestions.slice(0, 3).forEach(suggestion => {
+                    const chip = document.createElement('button');
+                    chip.className = 'suggestion-chip';
+                    chip.textContent = suggestion.label;
+                    chip.onclick = () => applySuggestion(suggestion);
+                    suggestionsGrid.appendChild(chip);
+                });
+            } else {
+                suggestionsSection.classList.add('hidden');
+            }
+        }
+
+        // Appliquer une suggestion
+        function applySuggestion(suggestion) {
+            document.getElementById(suggestion.type).value = suggestion.value;
+            handleSelectorChange(suggestion.type);
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Générer le prompt
+        function generatePrompt() {
+            const modeCouleur = document.getElementById('modeCouleur').checked;
+            let prompt = "";
+            
+            if (modeCouleur) {
+                prompt = "Illustration colorée pour enfants, couleurs vives et harmonieuses, style cartoon, dessin complet et colorié, adapté pour les enfants. ";
+            } else {
+                prompt = "Page de coloriage, dessin au trait noir et blanc, contours nets, sans ombrage, sans couleurs, fond blanc, adapté pour imprimer et colorier. ";
+            }
+            
+            const titre = document.getElementById('titre').value;
+            if (titre) {
+                prompt += `Titre : "${titre}". `;
+            }
+
+            if (document.getElementById('histoire3cases').checked) {
+                prompt += "Créer une histoire en 3 cases (début, milieu, fin) montrant : ";
+            }
+
+            const elements = [];
+            
+            const personnage = document.getElementById('personnage').value;
+            const personnageCustom = document.getElementById('personnage-custom').value;
+            const personnageValue = personnage === '+ Perso' ? personnageCustom : personnage;
+            if (personnageValue && personnageValue !== '+ Perso') {
+                elements.push(`personnage ${personnageValue}`);
+            }
+            
+            const personnageExtra = document.getElementById('personnageExtra').value;
+            const personnageExtraCustom = document.getElementById('personnageExtra-custom').value;
+            const personnageExtraValue = personnageExtra === '+ Perso' ? personnageExtraCustom : personnageExtra;
+            if (personnageExtraValue && personnageExtraValue !== '+ Perso') {
+                elements.push(`avec ${personnageExtraValue}`);
+            }
+            
+            const action = document.getElementById('action').value;
+            const actionCustom = document.getElementById('action-custom').value;
+            const actionValue = action === '+ Perso' ? actionCustom : action;
+            if (actionValue && actionValue !== '+ Perso') {
+                elements.push(`en train de ${actionValue.toLowerCase()}`);
+            }
+            
+            const decor = document.getElementById('decor').value;
+            const decorCustom = document.getElementById('decor-custom').value;
+            const decorValue = decor === '+ Perso' ? decorCustom : decor;
+            if (decorValue && decorValue !== '+ Perso') {
+                elements.push(`dans un décor de ${decorValue.toLowerCase()}`);
+            }
+            
+            const objets = document.getElementById('objets').value;
+            const objetsCustom = document.getElementById('objets-custom').value;
+            const objetsValue = objets === '+ Perso' ? objetsCustom : objets;
+            if (objetsValue && objetsValue !== '+ Perso') {
+                elements.push(`avec ${objetsValue.toLowerCase()}`);
+            }
+            
+            const personnes = document.getElementById('personnes').value;
+            const personnesCustom = document.getElementById('personnes-custom').value;
+            const personnesValue = personnes === '+ Perso' ? personnesCustom : personnes;
+            if (personnesValue && personnesValue !== '+ Perso') {
+                elements.push(`accompagné de ${personnesValue.toLowerCase()}`);
+            }
+            
+            const meteo = document.getElementById('meteo').value;
+            const meteoCustom = document.getElementById('meteo-custom').value;
+            const meteoValue = meteo === '+ Perso' ? meteoCustom : meteo;
+            if (meteoValue && meteoValue !== '+ Perso') {
+                elements.push(`météo ${meteoValue.toLowerCase()}`);
+            }
+            
+            const heure = document.getElementById('heure').value;
+            const heureCustom = document.getElementById('heure-custom').value;
+            const heureValue = heure === '+ Perso' ? heureCustom : heure;
+            if (heureValue && heureValue !== '+ Perso') {
+                elements.push(`pendant ${heureValue.toLowerCase()}`);
+            }
+            
+            const metier = document.getElementById('metier').value;
+            const metierCustom = document.getElementById('metier-custom').value;
+            const metierValue = metier === '+ Perso' ? metierCustom : metier;
+            if (metierValue && metierValue !== '+ Perso') {
+                elements.push(`en tant que ${metierValue.toLowerCase()}`);
+            }
+            
+            const epoque = document.getElementById('epoque').value;
+            const epoqueCustom = document.getElementById('epoque-custom').value;
+            const epoqueValue = epoque === '+ Perso' ? epoqueCustom : epoque;
+            if (epoqueValue && epoqueValue !== '+ Perso') {
+                elements.push(`à l'époque ${epoqueValue.toLowerCase()}`);
+            }
+            
+            const vehicule = document.getElementById('vehicule').value;
+            const vehiculeCustom = document.getElementById('vehicule-custom').value;
+            const vehiculeValue = vehicule === '+ Perso' ? vehiculeCustom : vehicule;
+            if (vehiculeValue && vehiculeValue !== '+ Perso') {
+                elements.push(`avec ${vehiculeValue.toLowerCase()}`);
+            }
+
+            if (elements.length > 0) {
+                prompt += elements.join(', ') + '. ';
+            }
+            
+            const style = document.getElementById('style').value;
+            const styleCustom = document.getElementById('style-custom').value;
+            const styleValue = style === '+ Perso' ? styleCustom : style;
+            if (styleValue && styleValue !== '+ Perso') {
+                prompt += `Style artistique : ${styleValue}. `;
+            }
+            
+            const detail = document.getElementById('detail').value;
+            if (detail === 'Simple (3-5 ans)') {
+                if (modeCouleur) {
+                    prompt += "Dessin simple, formes basiques, couleurs vives et simples, parfait pour jeunes enfants. ";
+                } else {
+                    prompt += "Traits simples, grandes zones, détails minimaux, parfait pour jeunes enfants. ";
+                }
+            } else if (detail === 'Moyen (6-10 ans)') {
+                if (modeCouleur) {
+                    prompt += "Niveau de détail modéré, palette de couleurs équilibrée, complexité adaptée. ";
+                } else {
+                    prompt += "Niveau de détail modéré, complexité équilibrée. ";
+                }
+            } else if (detail === 'Complexe (adultes)') {
+                if (modeCouleur) {
+                    prompt += "Détails complexes, palette de couleurs riche et nuancée, motifs élaborés, adapté aux adultes. ";
+                } else {
+                    prompt += "Détails complexes, motifs élaborés, adapté aux adultes. ";
+                }
+            }
+
+            const formatSpecial = document.getElementById('formatSpecial').value;
+            const formatSpecialCustom = document.getElementById('formatSpecial-custom').value;
+            const formatSpecialValue = formatSpecial === '+ Perso' ? formatSpecialCustom : formatSpecial;
+            if (formatSpecialValue && formatSpecialValue !== 'Standard' && formatSpecialValue !== '+ Perso') {
+                prompt += `Format : ${formatSpecialValue}. `;
+            }
+
+            const format = document.getElementById('format').value;
+            prompt += `Ratio d'aspect : ${format}. `;
+            
+            if (!modeCouleur && document.getElementById('modeContour').checked) {
+                prompt += "Uniquement les contours, traits noirs fins et nets sur fond blanc, pas de remplissage, parfait pour colorier. ";
+            }
+            
+            if (modeCouleur) {
+                prompt += "Couleurs harmonieuses et cohérentes, rendu professionnel, illustration complète. ";
+            }
+
+            generatedPrompt = prompt.trim();
+            
+            // Prompt négatif adapté selon le mode
+            if (modeCouleur) {
+                negativePrompt = "blurry, low quality, distorted, messy, unclear, watermarks, text, signatures, photograph, realistic photo, 3D render, ugly colors, muddy colors, desaturated, grayscale";
+            } else {
+                negativePrompt = "colors, colored, shading, gradients, gray tones, shadows, watermarks, text, signatures, blurry, low quality, distorted lines, messy, unclear outlines, filled areas, painting, photograph, realistic rendering, 3D render";
+            }
+            
+            document.getElementById('positive-prompt').textContent = generatedPrompt;
+            document.getElementById('negative-prompt').textContent = negativePrompt;
+            document.getElementById('preview-section').classList.add('show');
+        }
+
+        // Variante
+        function generateVariant() {
+            generatePrompt();
+        }
+
+        // Copier dans le presse-papier
+        function copyPrompt(type) {
+            let text = '';
+            
+            if (type === 'positive') {
+                text = `PROMPT POSITIF:\n${generatedPrompt}`;
+            } else if (type === 'negative') {
+                text = `PROMPT NÉGATIF:\n${negativePrompt}`;
+            } else {
+                text = `PROMPT POSITIF:\n${generatedPrompt}\n\n---\n\nPROMPT NÉGATIF:\n${negativePrompt}`;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copié dans le presse-papier !');
+            });
+        }
+
+        // Ajouter à la galerie
+        function addToGallery() {
+            if (!generatedPrompt) return;
+            
+            const item = {
+                id: Date.now(),
+                titre: document.getElementById('titre').value || `Coloriage #${gallery.length + 1}`,
+                prompt: generatedPrompt,
+                negative: negativePrompt,
+                config: getCurrentConfig(),
+                date: new Date().toLocaleString('fr-FR')
+            };
+            
+            gallery.unshift(item);
+            updateGalleryDisplay();
+        }
+
+        // Obtenir la configuration actuelle
+        function getCurrentConfig() {
+            const config = {};
+            const fields = ['personnage', 'personnageExtra', 'decor', 'action', 'objets', 'personnes', 'meteo', 'heure', 'metier', 'epoque', 'vehicule', 'format', 'style', 'detail', 'formatSpecial', 'titre'];
+            
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                if (el) config[field] = el.value;
+            });
+            
+            config.histoire3cases = document.getElementById('histoire3cases').checked;
+            config.modeContour = document.getElementById('modeContour').checked;
+            config.modeCouleur = document.getElementById('modeCouleur').checked;
+            
+            // Sauvegarder les inputs personnalisés
+            fields.forEach(field => {
+                const customEl = document.getElementById(field + '-custom');
+                if (customEl && customEl.value) {
+                    config[field + '_custom'] = customEl.value;
+                }
+            });
+            
+            return config;
+        }
+
+        // Mettre à jour l'affichage de la galerie
+        function updateGalleryDisplay() {
+            const gallerySection = document.getElementById('gallery-section');
+            const galleryGrid = document.getElementById('gallery-grid');
+            const galleryCount = document.getElementById('gallery-count');
+            
+            if (gallery.length > 0) {
+                gallerySection.classList.add('show');
+                galleryCount.textContent = gallery.length;
+                galleryGrid.innerHTML = '';
+                
+                gallery.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'gallery-card';
+                    card.innerHTML = `
+                        <div class="gallery-card-header">
+                            <h4 class="gallery-title">${item.titre}</h4>
+                            <span class="gallery-date">${item.date}</span>
+                        </div>
+                        <p class="gallery-preview">${item.prompt.substring(0, 100)}...</p>
+                        <div class="gallery-actions">
+                            <button onclick="loadFromGallery(${index})" class="btn btn-tiny">Charger</button>
+                            <button onclick="removeFromGallery(${index})" class="btn btn-tiny btn-danger">Supprimer</button>
+                        </div>
+                    `;
+                    galleryGrid.appendChild(card);
+                });
+            } else {
+                gallerySection.classList.remove('show');
+            }
+        }
+
+        // Charger depuis la galerie
+        function loadFromGallery(index) {
+            const item = gallery[index];
+            if (!item) return;
+            
+            // Charger la configuration
+            Object.keys(item.config).forEach(key => {
+                if (key.endsWith('_custom')) {
+                    const baseKey = key.replace('_custom', '');
+                    const customEl = document.getElementById(baseKey + '-custom');
+                    if (customEl) {
+                        customEl.value = item.config[key];
+                        customEl.classList.add('show');
+                    }
+                } else {
+                    const el = document.getElementById(key);
+                    if (el) {
+                        if (el.type === 'checkbox') {
+                            el.checked = item.config[key];
+                        } else {
+                            el.value = item.config[key];
+                        }
+                    }
+                }
+            });
+            
+            generatedPrompt = item.prompt;
+            negativePrompt = item.negative;
+            
+            document.getElementById('positive-prompt').textContent = generatedPrompt;
+            document.getElementById('negative-prompt').textContent = negativePrompt;
+            document.getElementById('preview-section').classList.add('show');
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Supprimer de la galerie
+        function removeFromGallery(index) {
+            gallery.splice(index, 1);
+            updateGalleryDisplay();
+        }
+
+        // Randomiser
+        function randomize() {
+            const selects = ['personnage', 'personnageExtra', 'decor', 'action', 'objets', 'personnes', 'meteo', 'heure', 'metier', 'epoque', 'vehicule', 'style', 'formatSpecial'];
+            
+            selects.forEach(name => {
+                const select = document.getElementById(name);
+                const options = Array.from(select.options).filter(opt => opt.value !== '' && opt.value !== '+ Perso');
+                if (options.length > 0) {
+                    const randomOption = options[Math.floor(Math.random() * options.length)];
+                    select.value = randomOption.value;
+                }
+                
+                const customInput = document.getElementById(name + '-custom');
+                if (customInput) {
+                    customInput.value = '';
+                    customInput.classList.remove('show');
+                }
+            });
+            
+            document.getElementById('histoire3cases').checked = Math.random() > 0.7;
+            document.getElementById('titre').value = '';
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Mode découverte
+        function discoveryMode() {
+            const selects = ['personnage', 'decor', 'action', 'objets', 'personnes', 'meteo', 'heure', 'metier', 'epoque', 'vehicule', 'style'];
+            const numToRandomize = Math.floor(Math.random() * 3) + 2;
+            
+            for (let i = 0; i < numToRandomize; i++) {
+                const randomSelect = selects[Math.floor(Math.random() * selects.length)];
+                const select = document.getElementById(randomSelect);
+                const options = Array.from(select.options).filter(opt => opt.value !== '' && opt.value !== '+ Perso');
+                
+                if (options.length > 0) {
+                    const randomOption = options[Math.floor(Math.random() * options.length)];
+                    select.value = randomOption.value;
+                }
+            }
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Reset
+        function reset() {
+            // Réinitialiser le select des thèmes
+            const themeSelect = document.getElementById('theme-select');
+            if (themeSelect) {
+                themeSelect.value = '';
+            }
+            
+            const selects = document.querySelectorAll('.selector');
+            selects.forEach(select => {
+                select.value = '';
+            });
+            
+            const customInputs = document.querySelectorAll('.custom-input');
+            customInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('show');
+            });
+            
+            document.getElementById('titre').value = '';
+            document.getElementById('histoire3cases').checked = false;
+            document.getElementById('modeContour').checked = true;
+            document.getElementById('modeCouleur').checked = false;
+            
+            document.getElementById('preview-section').classList.remove('show');
+            
+            generatedPrompt = '';
+            negativePrompt = '';
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Appliquer un thème
+        function applyTheme(value) {
+            // Si la valeur est vide ou "custom", ne rien faire
+            if (!value || value === '' || value === 'custom') {
+                if (value === 'custom') {
+                    reset();
+                }
+                return;
+            }
+            
+            const index = parseInt(value);
+            const theme = themes[index];
+            if (!theme) return;
+            
+            reset();
+            
+            Object.keys(theme.config).forEach(key => {
+                const select = document.getElementById(key);
+                if (select) {
+                    select.value = theme.config[key];
+                }
+            });
+            
+            updateComplexity();
+            updateSuggestions();
+        }
+
+        // Export JSON
+        function exportJSON() {
+            const data = {
+                titre: document.getElementById('titre').value || 'Sans titre',
+                config: getCurrentConfig(),
+                prompt: generatedPrompt,
+                negativePrompt: negativePrompt,
+                date: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `coloriage-${data.titre.replace(/[^a-z0-9]/gi, '-')}-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import JSON
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.config) {
+                        Object.keys(data.config).forEach(key => {
+                            if (key.endsWith('_custom')) {
+                                const baseKey = key.replace('_custom', '');
+                                const customEl = document.getElementById(baseKey + '-custom');
+                                if (customEl) {
+                                    customEl.value = data.config[key];
+                                    customEl.classList.add('show');
+                                }
+                            } else {
+                                const el = document.getElementById(key);
+                                if (el) {
+                                    if (el.type === 'checkbox') {
+                                        el.checked = data.config[key];
+                                    } else {
+                                        el.value = data.config[key];
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (data.prompt) {
+                        generatedPrompt = data.prompt;
+                        document.getElementById('positive-prompt').textContent = generatedPrompt;
+                    }
+                    
+                    if (data.negativePrompt) {
+                        negativePrompt = data.negativePrompt;
+                        document.getElementById('negative-prompt').textContent = negativePrompt;
+                    }
+                    
+                    if (data.prompt) {
+                        document.getElementById('preview-section').classList.add('show');
+                    }
+                    
+                    updateComplexity();
+                    updateSuggestions();
+                    
+                    alert('Configuration chargée avec succès !');
+                } catch (error) {
+                    alert('Erreur lors du chargement du fichier JSON');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // Initialisation
+        updateComplexity();
+    </script>
+</body>
+</html>
