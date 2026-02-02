@@ -15,9 +15,34 @@
         .detail-block { background: #1a1a1a; padding: 20px; border-radius: 5px; border: 1px solid #333; margin-top: 20px; }
         strong { color: #e63946; }
         .tattoo-link { color: #a8dadc; font-style: italic; }
+        .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
 <div class="container">
     <h1>Récapitulatif de la Calligraphie</h1>
     <p style="text-align:center; font-style:italic;">Un parallèle au tatouage : art des traits fluides, symbolique profond et évolution historique.</p>
@@ -228,4 +253,5 @@
     </div>
 </div>
 </body>
+
 </html>
