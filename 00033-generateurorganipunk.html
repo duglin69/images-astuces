@@ -19,9 +19,34 @@
         .custom-input { display: none; margin-top: 0.5rem; }
         .weight-input { width: 60px; text-align: center; font-weight: bold; color: #e63946 !important; }
         .notice-box { background: rgba(197, 160, 89, 0.1); border-left: 4px solid #c5a059; }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body class="p-4 md:p-8">
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
     <div class="max-w-7xl mx-auto">
         <header class="text-center mb-8">
             <h1 class="text-5xl md:text-7xl mb-4 uppercase tracking-widest">Studio Organi-Punk</h1>
@@ -480,4 +505,5 @@ if (mixB && parseFloat(w3) > 0) prompt += `Subtle influence of ${mixB} (weight: 
         }
     </script>
 </body>
+
 </html>
