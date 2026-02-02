@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Forge Artistique - v1.2 Équilibre & Précision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+        body { background-color: #050505; color: #e5e7eb; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%); }
+        .art-nouveau-border { border: 2px solid #c5a059; position: relative; background: rgba(20, 20, 20, 0.8); transition: all 0.3s ease; }
+        .art-nouveau-border:hover { border-color: #e63946; box-shadow: 0 0 15px rgba(230, 57, 70, 0.3); }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: #c5a059; }
+        select, input, textarea { background: #111 !important; border: 1px solid #333 !important; color: #ddd !important; }
+        select:focus, input:focus { border-color: #e63946 !important; outline: none; }
+        .btn-forge { background: linear-gradient(135deg, #e63946 0%, #b91c1c 100%); transition: transform 0.2s; }
+        .btn-forge:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-reset { background: #333; }
+        .custom-input { display: none; margin-top: 0.5rem; }
+        .weight-input { width: 60px; text-align: center; font-weight: bold; color: #e63946 !important; }
+        .notice-box { background: rgba(197, 160, 89, 0.1); border-left: 4px solid #c5a059; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-5xl md:text-7xl mb-4 uppercase tracking-widest">Studio Organi-Punk</h1>
+            <p class="text-gray-400 italic">"L'intégrale : 40 Maîtres, 15 Atmosphères, Fusion Totale"</p>
+        </header>
+
+        <div class="notice-box p-4 mb-8 rounded-r-xl text-sm italic text-gray-300">
+            <h4 class="font-bold text-[#c5a059] mb-1">⚖️ Règle de l'Équilibre Artistique</h4>
+            Pour une fusion esthétique : le Style Maître doit dominer (0.4 à 1.0). 
+            En Duo, le total est limité à 1.0. En Trio, le total est limité à 1.2.
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4 flex justify-between">🏛️ 1. Style Maître <input type="number" id="w1" value="1.0" step="0.1" min="0.4" max="1.0" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    <select id="mainStyle" class="w-full p-2 rounded-lg mb-4">
+                        <option value="">-- Choisir le Pilier --</option>
+                        <option value="Steampunk aesthetic, industrial revolution, gears and brass">Steampunk</option>
+                        <option value="Biomechanical art, fusion of flesh and machine, H.R. Giger style">Biomécanique</option>
+                        <option value="Bio-organic, natural growth, cellular and root structures">Bio-organique</option>
+                        <option value="Bio-art and Biopunk, laboratory grown organisms">Bio-Art / Biopunk</option>
+                        <option value="Trash Polka, high contrast black and red, chaotic collage">Trash Polka</option>
+                    </select>
+
+                    <h3 class="text-lg font-bold mb-2 flex justify-between text-gray-400">🌀 Mix A (Optionnel) <input type="number" id="w2" value="0.0" step="0.1" min="0" max="0.6" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    <select id="mixA" class="w-full p-2 rounded-lg mb-4" onchange="validateWeights()">
+                        <option value="">-- Aucun mélange --</option>
+                        <option value="Deep Black, extreme chiaroscuro">Deep Black</option>
+                        <option value="Icy Blue, clinical lighting">Icy Blue</option>
+                        <option value="Art Folk Modern, repeating tribal patterns">Art Folk Moderne</option>
+                        <option value="Art Deco, symmetrical luxury">Art Deco</option>
+                        <option value="Bauhaus, functionalist forms">Bauhaus</option>
+                        <option value="Kintsugi, golden cracks">Kintsugi</option>
+                        <option value="Ukiyo-e Blackwood texture">Ukiyo-e Blackwood</option>
+                        <option value="Brutalist Architecture, raw concrete">Brutalisme</option>
+                        <option value="Solar-Folk, sunny pagan joy">Solar-Folk</option>
+                        <option value="Gothic Horror, dark fantasy">Gothic Horror</option>
+                        <option value="Retro-Synth, vaporwave neon">Retro-Synth</option>
+                        <option value="Surrealist Collage, chaotic fragments">Surrealist Collage</option>
+                        <option value="Ethereal Watercolor, soft bleeding edges">Ethereal Watercolor</option>
+                        <option value="Claymation style, stop-motion animation aesthetic, hand-molded plasticine">Pâte à modeler / Claymation</option>
+                    </select>
+
+                    <h3 class="text-lg font-bold mb-2 flex justify-between text-gray-400">🌀 Mix B (Optionnel) <input type="number" id="w3" value="0.0" step="0.1" min="0" max="0.4" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    <select id="mixB" class="w-full p-2 rounded-lg" onchange="validateWeights()">
+                        <option value="">-- Aucun mélange --</option>
+                        <option value="Deep Black">Deep Black</option>
+                        <option value="Icy Blue">Icy Blue</option>
+                        <option value="Art Folk Modern">Art Folk Moderne</option>
+                        <option value="Art Deco">Art Deco</option>
+                        <option value="Bauhaus">Bauhaus</option>
+                        <option value="Kintsugi">Kintsugi</option>
+                        <option value="Ukiyo-e Blackwood">Ukiyo-e Blackwood</option>
+                        <option value="Brutalist Architecture">Brutalisme</option>
+                        <option value="Solar-Folk">Solar-Folk</option>
+                        <option value="Gothic Horror">Gothic Horror</option>
+                        <option value="Retro-Synth">Retro-Synth</option>
+                        <option value="Surrealist Collage">Surrealist Collage</option>
+                        <option value="Ethereal Watercolor">Ethereal Watercolor</option>
+                        <option value="Claymation style, stop-motion animation aesthetic, hand-molded plasticine">Pâte à modeler / Claymation</option>
+                    </select>
+                    <div id="weightAlert" class="text-red-500 text-xs mt-2 hidden font-bold">⚠️ Somme des poids trop élevée !</div>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🎭 Influence Artiste</h3>
+                    <select id="artist" onchange="checkCustom(this)" class="w-full p-2 rounded-lg">
+                        <option value="">Choisir...</option>
+                        <optgroup label="Viscéral & Abyssal">
+                            <option value="H.R. Giger">H.R. Giger</option>
+                            <option value="Zdzisław Beksiński">Zdzisław Beksiński</option>
+                            <option value="Francis Bacon">Francis Bacon</option>
+                            <option value="Hieronymus Bosch">Hieronymus Bosch</option>
+                            <option value="Max Ernst">Max Ernst</option>
+                            <option value="Chet Zar">Chet Zar</option>
+                        </optgroup>
+                        <optgroup label="Ligne Claire & BD">
+                            <option value="Moebius">Moebius</option>
+                            <option value="Hergé">Hergé</option>
+                            <option value="Enki Bilal">Enki Bilal</option>
+                            <option value="Katsuhiro Otomo">Katsuhiro Otomo</option>
+                            <option value="André Franquin">André Franquin</option>
+                            <option value="Masamune Shirow">Masamune Shirow</option>
+                        </optgroup>
+                        <optgroup label="Ornemental & Luxe">
+                            <option value="Gustav Klimt">Gustav Klimt</option>
+                            <option value="Alphonse Mucha">Alphonse Mucha</option>
+                            <option value="Tamara de Lempicka">Tamara de Lempicka</option>
+                            <option value="Aubrey Beardsley">Aubrey Beardsley</option>
+                            <option value="Yoshitaka Amano">Yoshitaka Amano</option>
+                        </optgroup>
+                        <optgroup label="Géométrie & Bauhaus">
+                            <option value="Piet Mondrian">Piet Mondrian</option>
+                            <option value="Kazimir Malevich">Kazimir Malevich</option>
+                            <option value="Zaha Hadid">Zaha Hadid</option>
+                            <option value="Vassily Kandinsky">Vassily Kandinsky</option>
+                            <option value="Philippe Starck">Philippe Starck</option>
+                        </optgroup>
+                        <optgroup label="Lumière & Geste">
+                            <option value="Claude Monet">Claude Monet</option>
+                            <option value="Vincent van Gogh">Vincent van Gogh</option>
+                            <option value="J.M.W. Turner">J.M.W. Turner</option>
+                            <option value="Edward Hopper">Edward Hopper</option>
+                            <option value="René Magritte">René Magritte</option>
+                        </optgroup>
+                        <optgroup label="Gravure & Tradition">
+                            <option value="Katsushika Hokusai">Hokusai</option>
+                            <option value="Utagawa Kuniyoshi">Kuniyoshi</option>
+                            <option value="Albrecht Dürer">Dürer</option>
+                            <option value="Piranesi">Piranesi</option>
+                        </optgroup>
+                        <optgroup label="Futurisme Moderne">
+                            <option value="Hajime Sorayama">Hajime Sorayama</option>
+                            <option value="Guy Aitchison">Guy Aitchison</option>
+                            <option value="Syd Mead">Syd Mead</option>
+                            <option value="Max Hooper Schneider">Max Hooper Schneider</option>
+                            <option value="Dorit Levinstein">Dorit Levinstein</option>
+                            <option value="Banksy">Banksy</option>
+                            <option value="Basquiat">Basquiat</option>
+                            <option value="Wes Anderson">Wes Anderson</option>
+                        </optgroup>
+                        <option value="custom">-- Personnaliser --</option>
+                    </select>
+                    <input type="text" id="artist_custom" class="custom-input w-full p-2 rounded" placeholder="Nom de l'artiste...">
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">👤 Sujet & Actions</h3>
+                    <select id="char" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-2">
+                        <option value="">Personnage...</option>
+                        <option value="Albert Einstein">Albert Einstein</option>
+                        <option value="A majestic griffin">Griffon Royal</option>
+                        <option value="A Valkyrie with cyber wings">Valkyrie Cyber</option>
+                        <option value="Icarus with solar wings">Icare Solaire</option>
+                        <option value="Anubis in a business suit">Anubis Moderne</option>
+                        <option value="Medusa with stylized serpents">Méduse Stylisée</option>
+                        <option value="A pensive Minotaur">Minotaure Pensif</option>
+                        <option value="A lonely astronaut vintage">Astronaute Vintage</option>
+                        <option value="custom">-- Perso --</option>
+                    </select>
+                    <input type="text" id="char_custom" class="custom-input w-full p-2 rounded mb-2" placeholder="Sujet (anglais)...">
+                    <select id="comp" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-2">
+                        <option value="">Compagnon...</option>
+                        <option value="with a small playful dragon">Petit Dragon</option>
+                        <option value="with a mechanical owl">Chouette Mécanique</option>
+                        <option value="with a high-tech drone">Drone Futuriste</option>
+                        <option value="with a stylized unicorn">Licorne AFM</option>
+                        <option value="with a vintage gramophone">Gramophone</option>
+                        <option value="with a vintage ping-pong table">Table Ping-pong</option>
+                        <option value="custom">-- Perso --</option>
+                    </select>
+                    <input type="text" id="comp_custom" class="custom-input w-full p-2 rounded mb-2">
+                    <select id="act" onchange="checkCustom(this)" class="w-full p-2 rounded-lg">
+                        <option value="">Action...</option>
+                        <option value="playing an intense chess match">Jouant aux échecs</option>
+                        <option value="sharing a cup of tea">Partageant un thé</option>
+                        <option value="painting the stars">Peignant les étoiles</option>
+                        <option value="decoding an ancient scroll">Déchiffrant un parchemin</option>
+                        <option value="meditating in silence">Méditant</option>
+                        <option value="taming a wild electric storm">Apprivoisant l'orage</option>
+                        <option value="custom">-- Perso --</option>
+                    </select>
+                    <input type="text" id="act_custom" class="custom-input w-full p-2 rounded">
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🧱 Matériaux & Époque</h3>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <select id="material" onchange="checkCustom(this)" class="p-2 rounded-lg text-sm">
+                            <option value="">Matériau...</option>
+                            <option value="ancient bronze">Bronze antique</option>
+                            <option value="carved obsidian">Obsidienne</option>
+                            <option value="translucent resin">Résine</option>
+                            <option value="golden threads">Fils d'or</option>
+                            <option value="crystal glass">Verre cristal</option>
+                            <option value="dark steel">Acier sombre</option>
+                            <option value="white marble">Marbre blanc</option>
+                            <option value="aged parchment">Parchemin</option>
+                            <option value="liquid silver">Argent liquide</option>
+                            <option value="volcanic rock">Roche volcanique</option>
+                            <option value="molded plasticine, polymer clay texture, fingerprint details">Pâte à modeler (Plasticine)</option>
+                            <option value="custom">-- Perso --</option>
+                        </select>
+                        <select id="finish" onchange="checkCustom(this)" class="p-2 rounded-lg text-sm">
+                            <option value="">Finition...</option>
+                            <option value="matte museum finish">Mat musée</option>
+                            <option value="high-gloss lacquer">Laque brillante</option>
+                            <option value="weathered patina">Patine vieillie</option>
+                            <option value="holographic coating">Holographique</option>
+                            <option value="cracked surface">Craquelée</option>
+                            <option value="brushed metallic">Métal brossé</option>
+                            <option value="oxidized copper">Cuivre oxydé</option>
+                            <option value="porcelain glaze">Porcelaine</option>
+                            <option value="sandstone texture">Grès rugueux</option>
+                            <option value="custom">-- Perso --</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="light" onchange="checkCustom(this)" class="p-2 rounded-lg text-sm">
+                            <option value="">Lumière...</option>
+                            <option value="dramatic chiaroscuro">Clair-obscur</option>
+                            <option value="soft morning light">Matin diffuse</option>
+                            <option value="neon glow">Néon</option>
+                            <option value="candlelight flicker">Chandelle</option>
+                            <option value="golden hour">Heure dorée</option>
+                            <option value="bioluminescent">Bioluminescence</option>
+                            <option value="moonlight rays">Rayons lunaires</option>
+                            <option value="custom">-- Perso --</option>
+                        </select>
+                        <select id="era" onchange="checkCustom(this)" class="p-2 rounded-lg text-sm">
+                            <option value="">Époque...</option>
+                            <option value="Victorian era">Victorien</option>
+                            <option value="Medieval">Médiéval</option>
+                            <option value="Renaissance">Renaissance</option>
+                            <option value="Art Deco 1920">Années 20</option>
+                            <option value="Ancient Egyptian">Égypte</option>
+                            <option value="Feudal Japan">Japon Féodal</option>
+                            <option value="Greco-Roman">Gréco-Romain</option>
+                            <option value="Post-apocalyptic">Post-apo</option>
+                            <option value="Space Age">Space Age</option>
+                            <option value="custom">-- Perso --</option>
+                        </select>
+                    </div>
+                    <input type="text" id="material_custom" class="custom-input w-full p-2 rounded">
+                    <input type="text" id="finish_custom" class="custom-input w-full p-2 rounded">
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">📐 Présentation & Format</h3>
+                    <select id="forgeMode" onchange="updateForgeMode()" class="w-full p-3 rounded-lg mb-4 border-[#c5a059] border-2 font-bold text-[#c5a059]">
+                        <option value="art">Mode : Composition Artistique</option>
+                        <option value="boutique">Mode : Boutique de Collection</option>
+                    </select>
+
+                    <div id="artRatios">
+                        <label class="text-xs uppercase text-gray-500 font-bold">Ratios d'Image</label>
+                        <select id="ratioArt" class="w-full p-2 rounded-lg mt-1">
+                            <option value="1:1">1:1 (Carré)</option>
+                            <option value="4:5">4:5 (Portrait Art)</option>
+                            <option value="2:3">2:3 (Portrait Classique)</option>
+                            <option value="3:2">3:2 (Paysage Photo)</option>
+                            <option value="16:9">16:9 (Cinématique HD)</option>
+                            <option value="21:9">21:9 (Ultra-Panoramique)</option>
+                        </select>
+                    </div>
+
+                    <div id="boutiqueOptions" class="hidden">
+                        <label class="text-xs uppercase text-gray-500 font-bold">Objet Souvenir</label>
+                        <select id="souvenir" class="w-full p-2 rounded-lg mt-1 mb-3">
+                            <option value="as a movie poster parody featuring">Affiche de Film (Poster)</option>
+                            <option value="as a vinyl album cover featuring">Pochette de Disque (Vinyl)</option>
+                            <option value="central design of a bank note featuring">Billet de Banque</option>
+                            <option value="embossed on an ancient gold coin featuring">Pièce d'Or Antique</option>
+                            <option value="collector postage stamp featuring">Timbre Poste</option>
+                            <option value="industrial patent sketch illustrating">Brevet Industriel</option>
+                            <option value="vintage postcard featuring">Carte Postale</option>
+                            <option value="enamel collector pin featuring">Pin's de Collection</option>
+                        </select>
+                        <label class="text-xs uppercase text-gray-500 font-bold">Format Objet</label>
+                        <select id="ratioBoutique" class="w-full p-2 rounded-lg mt-1">
+                            <option value="1:1">1:1 (Pièce / Pin's / Vinyl)</option>
+                            <option value="2:1">2:1 (Billet Standard)</option>
+                            <option value="21:9">21:9 (Billet Long / Bandeau)</option>
+                            <option value="2:3">2:3 (Affiche / Portrait)</option>
+                            <option value="3:2">3:2 (Carte Postale)</option>
+                            <option value="5:4">5:4 (Timbre Classique)</option>
+                            <option value="3:4">3:4 (Étiquette Vin)</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🎨 Finitions Finales</h3>
+                    <select id="colorPalette" class="w-full p-2 rounded-lg mb-2">
+                        <option value="">Palette Chromatique...</option>
+                        <option value="midnight blue and silver">Bleu nuit & argent</option>
+                        <option value="gold and black">Or & noir</option>
+                        <option value="bronze and teal">Bronze & Sarcelle</option>
+                        <option value="white and icy blue">Blanc & bleu glacé</option>
+                        <option value="copper and emerald">Cuivre & émeraude</option>
+                        <option value="warm autumnal palette">Palette Automnale</option>
+                        <option value="vintage sepia">Tons Sépia</option>
+                        <option value="neon pink and cyan">Cyber Néon</option>
+                    </select>
+                    <select id="quality" class="w-full p-2 rounded-lg">
+                        <option value="">Qualité de Rendu...</option>
+                        <option value="Ultra detailed, 8K resolution, masterpiece">Masterpiece 8K</option>
+                        <option value="Cinematic lighting, sharp focus, volumetric light">Cinématique HD</option>
+                        <option value="Fine intricate details, hyper-realistic texture">Détails Hyper-Réalistes</option>
+                        <option value="Professional studio photography, macro detail">Photographie Studio Pro</option>
+                    </select>
+                </section>
+
+                <div class="flex flex-col gap-3">
+                    <button id="forgeBtn" onclick="generatePrompt()" class="btn-forge w-full py-4 rounded-xl font-bold text-xl uppercase tracking-widest shadow-lg">🔥 Forger le Prompt</button>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="surpriseMe()" class="bg-blue-600 hover:bg-blue-700 py-2 rounded-lg font-bold text-sm">🎲 Surprise !</button>
+                        <button onclick="resetForge()" class="btn-reset hover:bg-gray-700 py-2 rounded-lg font-bold text-sm">🧹 Reset Total</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultArea" class="mt-12 hidden">
+            <div class="art-nouveau-border p-6 rounded-xl bg-black">
+                <h2 class="text-xl font-bold mb-4 text-red-500">✨ Prompt Positif Forgé</h2>
+                <textarea id="positivePrompt" class="w-full h-40 p-4 rounded bg-black text-white border-red-900/50 text-sm font-mono" readonly></textarea>
+                <h2 class="text-xl font-bold mt-6 mb-4 text-gray-500">🚫 Prompt Négatif Blindé</h2>
+                <textarea id="negativePrompt" class="w-full h-24 p-4 rounded bg-black text-gray-400 border-gray-800 text-sm font-mono" readonly>deformed, distorted, disfigured, poorly drawn, bad anatomy, extra limbs, mutation, mutated, ugly, disgusting, blurry, low quality, watermark, text, signature, grainy, out of focus, duplicate, mirror image, bad proportions, gross, cut off, out of frame, cartoon, 3d render, anime, illustration.</textarea>
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <button onclick="copyToClipboard()" class="btn-copy py-3 rounded-lg font-bold">📋 Copier dans le presse-papier</button>
+                    <button onclick="exportTxt()" class="bg-green-700 py-3 rounded-lg font-bold">💾 Exporter .txt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkCustom(s) { const i = document.getElementById(s.id + '_custom'); if (i) i.style.display = (s.value === 'custom') ? 'block' : 'none'; }
+        function getVal(id) { const e = document.getElementById(id); return (e.value === 'custom') ? document.getElementById(id + '_custom').value : e.value; }
+
+        function updateForgeMode() {
+            const mode = document.getElementById('forgeMode').value;
+            document.getElementById('artRatios').classList.toggle('hidden', mode === 'boutique');
+            document.getElementById('boutiqueOptions').classList.toggle('hidden', mode === 'art');
+        }
+
+        function validateWeights() {
+    const w1 = parseFloat(document.getElementById('w1').value) || 0;
+    const w2 = parseFloat(document.getElementById('w2').value) || 0;
+    const w3 = parseFloat(document.getElementById('w3').value) || 0;
+    
+    // On vérifie le contenu des sélecteurs pour définir la limite réelle
+    const mixA = document.getElementById('mixA').value;
+    const mixB = document.getElementById('mixB').value;
+    
+    let activeStyles = 1; // Le style maître est toujours là
+    if (mixA && mixA !== "") activeStyles++;
+    if (mixB && mixB !== "") activeStyles++;
+
+    // Correction de la précision flottante (0.4+0.4+0.4 = 1.2)
+    const total = Math.round((w1 + w2 + w3) * 10) / 10;
+    
+    // Définition de la limite selon le nombre de styles réellement choisis
+    const limit = (activeStyles === 3) ? 1.2 : 1.0;
+    
+    const alertBox = document.getElementById('weightAlert');
+    const btn = document.getElementById('forgeBtn');
+
+    if (total > limit) {
+        alertBox.innerText = `⚠️ Somme (${total.toFixed(1)}) dépasse la limite de ${limit} pour ${activeStyles} style(s).`;
+        alertBox.classList.remove('hidden');
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+    } else {
+        alertBox.classList.add('hidden');
+        btn.disabled = false;
+        btn.style.opacity = "1";
+    }
+}
+
+        function generatePrompt() {
+            const mode = document.getElementById('forgeMode').value;
+            const ratio = (mode === 'art') ? getVal('ratioArt') : getVal('ratioBoutique');
+            const souvenir = (mode === 'boutique') ? getVal('souvenir') : "";
+            
+            const char = getVal('char') || 'subject';
+            const comp = getVal('comp');
+            const act = getVal('act');
+            
+            const style1 = getVal('mainStyle');
+            const w1 = document.getElementById('w1').value;
+            const mixA = getVal('mixA');
+            const w2 = document.getElementById('w2').value;
+            const mixB = getVal('mixB');
+            const w3 = document.getElementById('w3').value;
+            
+            const artist = getVal('artist');
+            const mat = getVal('material');
+            const finish = getVal('finish');
+            const era = getVal('era');
+            const light = getVal('light');
+            const color = getVal('colorPalette');
+            const quality = getVal('quality');
+
+            let prompt = `[${ratio}] `;
+            if (mode === 'boutique') {
+                prompt += `Macro photography of ${souvenir} ${char}, isolated on a clean dark studio background. `;
+            } else {
+                prompt += `High detail artistic illustration of ${char}. `;
+            }
+
+            if (comp) prompt += `${comp} `;
+            if (act) prompt += `depicted ${act}. `;
+
+            // Logique de Fusion
+            if (era || light) {
+                prompt += `The composition incorporates ${era || ''} elements and ${light || 'dramatic'} lighting motifs integrated directly into the surface design. `;
+            }
+
+            // Mixologie Triple
+            prompt += `Core style: ${style1} (weight: ${w1}). `;
+            if (mixA && parseFloat(w2) > 0) prompt += `Mixed with ${mixA} (weight: ${w2}). `;
+if (mixB && parseFloat(w3) > 0) prompt += `Subtle influence of ${mixB} (weight: ${w3}). `;
+            
+            if (artist) prompt += `Heavily influenced by the artistic style of ${artist}. `;
+            if (mat || finish) prompt += `Crafted from ${mat || 'premium material'} with a ${finish || 'professional finish'}. `;
+            if (color) prompt += `Color palette: ${color}. `;
+            if (quality) prompt += `${quality}. `;
+
+            prompt += "Photographic rendering, sharp focus, 8k resolution.";
+
+            document.getElementById('positivePrompt').value = prompt.trim();
+            document.getElementById('resultArea').classList.remove('hidden');
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function resetForge() { location.reload(); }
+
+        function surpriseMe() {
+            const selects = document.querySelectorAll('select:not(#forgeMode)');
+            selects.forEach(s => {
+                const opts = Array.from(s.options).filter(o => o.value !== '' && o.value !== 'custom');
+                if (opts.length > 0) s.value = opts[Math.floor(Math.random() * opts.length)].value;
+                checkCustom(s);
+            });
+            // Ajustement aléatoire cohérent des poids
+            document.getElementById('w1').value = (Math.random() * (0.6 - 0.4) + 0.4).toFixed(1);
+            document.getElementById('w2').value = (Math.random() * 0.4).toFixed(1);
+            document.getElementById('w3').value = (Math.random() * 0.2).toFixed(1);
+            validateWeights();
+            generatePrompt();
+        }
+
+        function copyToClipboard() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            navigator.clipboard.writeText(pos + "\n\nNEG:\n" + neg).then(() => alert("✅ Prompt Complet Copié !"));
+        }
+
+        function exportTxt() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            const text = `--- FORGE ARTISTIQUE v1.2 ---\n\nPOSITIVE PROMPT:\n${pos}\n\nNEGATIVE PROMPT:\n${neg}`;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const anchor = document.createElement('a');
+            anchor.download = "forge_prompt_" + Date.now() + ".txt";
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.click();
+        }
+    </script>
+</body>
+</html>
