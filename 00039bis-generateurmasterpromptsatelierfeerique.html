@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Le Petit Atelier Magique de Belle-Maman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #fdf2f8; font-family: 'Segoe UI', Tahoma, sans-serif; color: #334155; }
+        .card { background: white; border: 2px solid #fbcfe8; box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1); }
+        h1 { color: #db2777; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+        label { color: #be185d; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; display: block; }
+        select, input { border: 1.5px solid #f9a8d4 !important; background: #fff1f2 !important; border-radius: 12px !important; padding: 0.75rem !important; }
+        select:focus, input:focus { border-color: #db2777 !important; outline: none; ring: 2px solid #fbcfe8; }
+        button#magicBtn { background: linear-gradient(to right, #ec4899, #f43f5e); transition: all 0.3s ease; }
+        .section-title { border-bottom: 1px solid #fce7f3; padding-bottom: 0.5rem; margin-bottom: 1rem; color: #9d174d; font-size: 1rem; font-weight: bold; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-3xl mx-auto card p-6 md:p-10 rounded-3xl">
+        <h1 class="text-4xl font-extrabold text-center mb-2">✨ L'Atelier Magique ✨</h1>
+        <p class="text-center text-pink-500 mb-8 italic text-lg">Créez des images féeriques et élégantes en un clic.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="section-title">🌸 La Scène</div>
+                
+                <div>
+                    <label>Quel personnage ?</label>
+                    <select id="subject" class="w-full">
+                        <option value="a beautiful tiny fairy with sparkling wings">Une jolie petite Fée</option>
+                        <option value="a cute fluffy baby kitten">Un petit Chaton tout doux</option>
+                        <option value="an adorable baby deer with white spots">Un petit Faon (Bambi)</option>
+                        <option value="a chubby honey-colored teddy bear">Un Nounours couleur miel</option>
+                        <option value="a sweet little girl with pigtails in a princess dress">Une petite Princesse</option>
+                        <option value="a tiny glowing butterfly pixie">Une petite Fée-Papillon</option>
+                        <option value="a majestic white unicorn with a rainbow mane">Une Licorne Arc-en-ciel</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Quel décor ?</label>
+                    <select id="decor" class="w-full">
+                        <option value="an enchanted forest with glowing mushrooms">La Forêt Enchantée</option>
+                        <option value="a magical garden with giant flowers">Un Jardin Géant</option>
+                        <option value="a castle made of clouds and rainbows">Un Nuage Arc-en-ciel</option>
+                        <option value="a cozy bedroom with soft pillows">Une chambre douillette</option>
+                        <option value="a sparkling underwater coral reef">L'Océan Magique</option>
+                        <option value="a field of glowing lavender under the stars">Un champ de lavande étoilé</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Quel style artistique ? (Master Prompts)</label>
+                    <select id="masterStyle" class="w-full border-2 border-pink-400">
+                        <optgroup label="✨ Les Incontournables">
+                            <option value="A heartwarming children's book illustration in a watercolor and colored pencil style, showing [SUJET] in [DECOR]. Whimsical and delicate.">Aquarelle Conte de Fées</option>
+                            <option value="A magical bioluminescent scene featuring [SUJET] glowing with soft neon light in [DECOR]. Enchanted atmosphere, floating particles.">Féérie Lumineuse</option>
+                            <option value="A stunning macro photograph of [SUJET] made entirely of encrusted diamonds and pearls. Crystalline texture, luxurious.">Bijoux & Cristaux</option>
+                            <option value="An adorable, ultra-fluffy plush toy version of [SUJET] in [DECOR]. Warm golden hour lighting, very soft fur texture.">Peluche & Douceur</option>
+                            <option value="A high-end 3D render of a cute, doll-like [SUJET] with porcelain skin and glittery details, located in [DECOR]. Sparkling highlights.">3D Scintillant & Poupée</option>
+                        </optgroup>
+                        <optgroup label="🌈 Douceur & Miniature">
+                            <option value="A whimsical world made entirely of candy, showing [SUJET] made of treats in [DECOR] constructed from gingerbread. Glossy textures.">Monde de Bonbons</option>
+                            <option value="A soft pastel chalk drawing on textured paper showing [SUJET] in [DECOR]. Gentle gradients, smudged edges, dreamy style.">Craie Pastel Douce</option>
+                            <option value="A miniature diorama photograph of a tiny [SUJET] located in a tiny [DECOR]. Tilt-shift effect, macro details.">Diorama Miniature</option>
+                            <option value="A magical golden hour photograph featuring [SUJET] in [DECOR]. Intense warm sunlight with lens flares, golden glow.">Lumière Dorée Magique</option>
+                            <option value="A kawaii chibi animation illustration of cute [SUJET] in [DECOR]. Oversized eyes, simple shapes, vibrant joyful colors.">Animation Chibi Kawaii</option>
+                        </optgroup>
+                        <optgroup label="🧵 Matières & Féérie">
+                            <option value="A charming handmade illustration of [SUJET] in [DECOR]. Style is colorful patchwork fabric craft with button eyes and embroidery.">Patchwork & Couture</option>
+                            <option value="A nostalgic storybook scene of [SUJET] in [DECOR]. Vintage porcelain doll aesthetic with delicate lace and smooth textures.">Poupée Vintage & Dentelle</option>
+                            <option value="An elegant artistic composition of [SUJET] in [DECOR], made entirely of intricate seashell and pearl mosaic. Iridescent nacre.">Mosaïque de Nacre & Perles</option>
+                            <option value="A transcendent and majestic portrait of [SUJET] in [DECOR]. Ethereal golden light rays, shimmering fabrics, divine atmosphere.">Éclat Éthéré</option>
+                            <option value="A magical micro-perspective scene showing tiny [SUJET] in a giant [DECOR]. Whimsical scale, sparkling dewdrops.">Micro-monde Féérique</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="section-title">✍️ Personnaliser le texte</div>
+                
+                <div>
+                    <label>Votre message (Optionnel)</label>
+                    <input type="text" id="userText" placeholder="Ex: Bonne nuit, Bisous..." class="w-full">
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label>Style de l'écriture</label>
+                        <select id="textStyle" class="w-full">
+                            <option value="vibrant glittering text, bold joyful script font, with a thick black outline and heavy shadow">✨ Festif & Paillettes</option>
+                            <option value="clean elegant white text with a soft ethereal outer glow, modern serif font">⚪ Sobre & Lumineux (Blanc)</option>
+                            <option value="fine charcoal grey hand-written ink, artistic signature style, minimalist">🌑 Discret & Élégant (Gris)</option>
+                            <option value="shimmering golden calligraphy, luxury metallic finish, delicate swirls">👑 Or Royal & Calligraphie</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Taille et Position</label>
+                        <select id="textPos" class="w-full">
+                            <option value="discreetly placed in the bottom right corner, small size">Petit (Bas à droite)</option>
+                            <option value="centered at the bottom, medium size">Moyen (Bas au centre)</option>
+                            <option value="elegantly placed at the very top, medium size">Moyen (En haut au centre)</option>
+                            <option value="subtle watermark style in the bottom left, very small">Filigrane (Très petit, bas gauche)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-pink-50 rounded-xl text-xs text-pink-700 italic">
+                    Note : Pour un rendu plus élégant, choisissez le style "Discret" ou "Sobre" si l'image est déjà très colorée. [cite: 81-83]
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10">
+            <button id="magicBtn" onclick="generate()" class="w-full py-5 text-white font-bold text-2xl rounded-2xl shadow-xl transform transition hover:scale-105 active:scale-95 flex items-center justify-center">
+                ✨ Créer la Formule Magique ✨
+            </button>
+        </div>
+
+        <div id="result" class="mt-10 hidden animate-fade-in">
+            <div class="p-6 bg-green-50 rounded-3xl border-2 border-green-200 shadow-inner">
+                <label class="text-green-700 font-bold mb-2 flex items-center">
+                    <span class="mr-2">✅</span> Formule prête à être collée :
+                </label>
+                <textarea id="output" class="w-full p-4 text-sm border-none bg-white rounded-xl shadow-sm text-gray-700 font-mono" rows="6" readonly></textarea>
+                <button onclick="copy()" class="mt-4 w-full py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-black transition flex items-center justify-center">
+                    📋 Copier le texte pour l'IA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generate() {
+            const subject = document.getElementById('subject').value;
+            const decor = document.getElementById('decor').value;
+            const master = document.getElementById('masterStyle').value;
+            const userText = document.getElementById('userText').value;
+            const textStyle = document.getElementById('textStyle').value;
+            const textPos = document.getElementById('textPos').value;
+
+            // Remplacement automatique dans le Master Prompt 
+            let prompt = master.replace('[SUJET]', subject).replace('[DECOR]', decor);
+
+            // Intégration du texte personnalisé avec position et style 
+            if (userText.trim() !== "") {
+                prompt += `, featuring the text '${userText.trim()}' ${textPos}, styled in ${textStyle}`;
+            }
+
+            // Paramètres de qualité finale [cite: 157]
+            prompt += `. [1:1], highly detailed, whimsical atmosphere, cinematic lighting, masterpiece, 8k.`;
+
+            document.getElementById('output').value = prompt;
+            const resultArea = document.getElementById('result');
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copy() {
+            const copyText = document.getElementById("output");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("✨ Formule magique copiée ! Vous pouvez maintenant la coller dans votre générateur d'images.");
+        }
+    </script>
+</body>
+</html>
