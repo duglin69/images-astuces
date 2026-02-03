@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Portrait - Générateur Artistique v1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cormorant+Garamond:wght@300;400;600&display=swap');
+        body { background-color: #050505; color: #e5e7eb; font-family: 'Cormorant Garamond', serif; background-image: radial-gradient(circle at 50% 50%, #1a1410 0%, #050505 100%); }
+        .art-nouveau-border { border: 2px solid #d4a574; position: relative; background: rgba(26, 20, 16, 0.8); transition: all 0.3s ease; }
+        .art-nouveau-border:hover { border-color: #6b2737; box-shadow: 0 0 15px rgba(107, 39, 55, 0.3); }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: #d4a574; }
+        select, input, textarea { background: #111 !important; border: 1px solid #333 !important; color: #ddd !important; }
+        select:focus, input:focus, textarea:focus { border-color: #6b2737 !important; outline: none; }
+        .btn-forge { background: linear-gradient(135deg, #6b2737 0%, #4a1a25 100%); transition: transform 0.2s; color: #d4a574; font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+        .btn-forge:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-reset { background: #333; }
+        .custom-input { display: none; margin-top: 0.5rem; }
+        .weight-input { width: 60px; text-align: center; font-weight: bold; color: #6b2737 !important; }
+        .notice-box { background: rgba(212, 165, 116, 0.1); border-left: 4px solid #d4a574; }
+        .ornament { width: 60px; height: 3px; background: linear-gradient(90deg, transparent, #d4a574, transparent); margin: 1rem auto; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-5xl md:text-7xl mb-4 uppercase tracking-widest">ATELIER PORTRAIT</h1>
+            <div class="ornament"></div>
+            <p class="text-gray-400 italic">"Célébrer la Féminité & la Masculinité dans toute leur Diversité"</p>
+        </header>
+
+        <div class="notice-box p-4 mb-8 rounded-r-xl text-sm italic text-gray-300">
+            <h4 class="font-bold text-[#d4a574] mb-1">⚖️ Règle de l'Équilibre Artistique</h4>
+            Style Principal (0.4-1.0) doit dominer. Duo: max 1.0 total. Trio: max 1.2 total.
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">👤 Personnage Principal</h3>
+                    
+                    <label class="text-sm">Genre</label>
+                    <select id="gender" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="woman">Femme</option>
+                        <option value="man">Homme</option>
+                    </select>
+
+                    <label class="text-sm">Nationalité/Origine</label>
+                    <select id="nationality" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <optgroup label="🌍 Afrique">
+                            <option value="Nigerian">Nigériane</option>
+                            <option value="South African">Sud-Africaine</option>
+                            <option value="Ethiopian">Éthiopienne</option>
+                            <option value="Moroccan">Marocaine</option>
+                            <option value="Egyptian">Égyptienne</option>
+                            <option value="Kenyan">Kenyane</option>
+                            <option value="Senegalese">Sénégalaise</option>
+                        </optgroup>
+                        <optgroup label="🌏 Asie">
+                            <option value="Japanese">Japonaise</option>
+                            <option value="Chinese">Chinoise</option>
+                            <option value="Korean">Coréenne</option>
+                            <option value="Indian">Indienne</option>
+                            <option value="Thai">Thaïlandaise</option>
+                            <option value="Vietnamese">Vietnamienne</option>
+                            <option value="Filipino">Philippino</option>
+                            <option value="Indonesian">Indonésienne</option>
+                        </optgroup>
+                        <optgroup label="🌎 Amériques">
+                            <option value="American">Américaine</option>
+                            <option value="Brazilian">Brésilienne</option>
+                            <option value="Mexican">Mexicaine</option>
+                            <option value="Canadian">Canadienne</option>
+                            <option value="Argentinian">Argentine</option>
+                            <option value="Colombian">Colombienne</option>
+                            <option value="Cuban">Cubaine</option>
+                            <option value="Jamaican">Jamaïcaine</option>
+                            <option value="Native American">Amérindienne</option>
+                        </optgroup>
+                        <optgroup label="🌍 Europe">
+                            <option value="French">Française</option>
+                            <option value="Italian">Italienne</option>
+                            <option value="Spanish">Espagnole</option>
+                            <option value="German">Allemande</option>
+                            <option value="British">Britannique</option>
+                            <option value="Russian">Russe</option>
+                            <option value="Polish">Polonaise</option>
+                            <option value="Greek">Grecque</option>
+                            <option value="Portuguese">Portugaise</option>
+                            <option value="Dutch">Néerlandaise</option>
+                            <option value="Swedish">Suédoise</option>
+                            <option value="Irish">Irlandaise</option>
+                        </optgroup>
+                        <optgroup label="🌏 Moyen-Orient">
+                            <option value="Turkish">Turque</option>
+                            <option value="Iranian">Iranienne</option>
+                            <option value="Israeli">Israélienne</option>
+                            <option value="Lebanese">Libanaise</option>
+                            <option value="Saudi Arabian">Saoudienne</option>
+                        </optgroup>
+                        <optgroup label="🌊 Océanie">
+                            <option value="Australian">Australienne</option>
+                            <option value="New Zealander">Néo-Zélandaise</option>
+                            <option value="Polynesian">Polynésienne</option>
+                            <option value="Hawaiian">Hawaïenne</option>
+                        </optgroup>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="nationality_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Précisez...">
+
+                    <label class="text-sm">Âge</label>
+                    <select id="age" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="young adult, 20-25 years">Jeune adulte (20-25)</option>
+                        <option value="adult, 25-35 years">Adulte (25-35)</option>
+                        <option value="mature adult, 35-45 years">Adulte mature (35-45)</option>
+                        <option value="middle-aged, 45-60 years">Âge mûr (45-60)</option>
+                        <option value="mature, 60+ years">Mature (60+)</option>
+                    </select>
+
+                    <label class="text-sm">Teint de peau</label>
+                    <select id="skinTone" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="very fair porcelain skin">Très clair (porcelaine)</option>
+                        <option value="fair skin">Clair</option>
+                        <option value="light skin">Peau légère</option>
+                        <option value="medium skin">Moyen</option>
+                        <option value="olive skin">Olive</option>
+                        <option value="tan skin">Bronzé</option>
+                        <option value="brown skin">Brun</option>
+                        <option value="dark brown skin">Brun foncé</option>
+                        <option value="ebony skin">Ébène</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Yeux</label>
+                    <select id="eyes" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="brown eyes">Marron</option>
+                        <option value="blue eyes">Bleu</option>
+                        <option value="green eyes">Vert</option>
+                        <option value="hazel eyes">Noisette</option>
+                        <option value="gray eyes">Gris</option>
+                        <option value="amber eyes">Ambre</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Cheveux (couleur + style)</label>
+                    <select id="hair" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="long black hair, flowing">Longs cheveux noirs</option>
+                        <option value="short blonde hair, pixie cut">Courts blonds (pixie)</option>
+                        <option value="curly brown hair, shoulder-length">Bouclés bruns mi-longs</option>
+                        <option value="wavy red hair, long">Ondulés roux longs</option>
+                        <option value="straight platinum hair">Raides platine</option>
+                        <option value="afro hairstyle, natural">Afro naturel</option>
+                        <option value="dreadlocks">Dreadlocks</option>
+                        <option value="braids">Tresses</option>
+                        <option value="bald, shaved">Rasé/Chauve</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="hair_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Ex: courts auburn ondulés...">
+
+                    <label class="text-sm">Morphologie</label>
+                    <select id="body" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="petite, delicate frame">Petite, délicate</option>
+                        <option value="slender, slim">Mince, svelte</option>
+                        <option value="athletic, toned">Athlétique, tonique</option>
+                        <option value="curvy, hourglass">Pulpeuse, sablier</option>
+                        <option value="voluptuous">Voluptueuse</option>
+                        <option value="tall, statuesque">Grande, statuesque</option>
+                        <option value="muscular, strong">Musclée, forte</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">👥 Personnages Supplémentaires</h3>
+                    <select id="extraChars" class="w-full p-2 rounded-lg mb-3">
+                        <option value="0">Aucun (solo)</option>
+                        <option value="1">+1 personne (duo)</option>
+                        <option value="2">+2 personnes (trio)</option>
+                    </select>
+                    <p class="text-xs text-gray-400 mt-2">Les personnages supplémentaires seront ajoutés avec "standing beside, friend" dans le prompt</p>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">👗 Tenue & Apparence</h3>
+                    
+                    <label class="text-sm">Catégorie de tenue</label>
+                    <select id="outfitCat" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="lingerie">Lingerie/Sous-vêtements</option>
+                        <option value="swimwear">Maillots de bain</option>
+                        <option value="casual">Décontractée</option>
+                        <option value="formal">Formelle</option>
+                        <option value="athletic">Sportive</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Détails tenue</label>
+                    <select id="outfit" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="lace bra and panties">Ensemble dentelle</option>
+                        <option value="silk teddy">Teddy soie</option>
+                        <option value="bikini swimsuit">Bikini</option>
+                        <option value="one-piece swimsuit">Maillot 1 pièce</option>
+                        <option value="white t-shirt and jeans">T-shirt & jean</option>
+                        <option value="elegant evening gown">Robe soirée</option>
+                        <option value="sports bra and leggings">Brassière & legging</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="outfit_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Décrivez la tenue...">
+
+                    <label class="text-sm">Accessoires</label>
+                    <select id="accessories" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Aucun</option>
+                        <option value="elegant sunglasses">Lunettes soleil</option>
+                        <option value="delicate necklace">Collier délicat</option>
+                        <option value="statement earrings">Boucles imposantes</option>
+                        <option value="vintage hat">Chapeau vintage</option>
+                        <option value="silk scarf">Foulard soie</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="accessories_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Décrivez...">
+
+                    <label class="text-sm">Maquillage</label>
+                    <select id="makeup" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Naturel/Aucun</option>
+                        <option value="natural makeup">Naturel</option>
+                        <option value="glamorous makeup, red lips">Glamour (lèvres rouges)</option>
+                        <option value="smokey eye">Smokey eyes</option>
+                        <option value="artistic makeup">Artistique</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Tatouages</label>
+                    <select id="tattoos" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Aucun</option>
+                        <option value="small tattoo on wrist">Petit (poignet)</option>
+                        <option value="sleeve tattoo">Manche (bras)</option>
+                        <option value="back tattoo">Dans le dos</option>
+                        <option value="multiple tattoos">Plusieurs tatouages</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Expression</label>
+                    <select id="expression" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Naturelle</option>
+                        <option value="gentle smile">Sourire doux</option>
+                        <option value="serious gaze">Regard sérieux</option>
+                        <option value="mysterious smile">Sourire mystérieux</option>
+                        <option value="joyful laugh">Rire joyeux</option>
+                        <option value="seductive gaze">Regard séducteur</option>
+                        <option value="confident">Confiante</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">📸 Pose & Cadrage</h3>
+                    
+                    <label class="text-sm">Pose</label>
+                    <select id="pose" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="standing elegantly">Debout élégamment</option>
+                        <option value="sitting gracefully">Assise gracieusement</option>
+                        <option value="reclining, relaxed">Allongée, détendue</option>
+                        <option value="leaning against wall">Appuyée contre mur</option>
+                        <option value="walking confidently">Marchant avec confiance</option>
+                        <option value="dancing">Dansant</option>
+                        <option value="looking over shoulder">Regard par-dessus épaule</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="pose_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Décrivez la pose...">
+
+                    <label class="text-sm">Action</label>
+                    <select id="action" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Aucune</option>
+                        <option value="adjusting outfit">Ajustant sa tenue</option>
+                        <option value="reading book">Lisant un livre</option>
+                        <option value="sipping coffee">Sirotant café</option>
+                        <option value="fashion runway walk">Défilé mode</option>
+                        <option value="looking in mirror">Devant miroir</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="action_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Décrivez l'action...">
+
+                    <label class="text-sm">Angle de vue</label>
+                    <select id="angle" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Eye level</option>
+                        <option value="front view">De face</option>
+                        <option value="side profile">Profil</option>
+                        <option value="three-quarter view">Trois-quarts</option>
+                        <option value="back view">De dos</option>
+                        <option value="high angle">Plongée</option>
+                        <option value="low angle">Contre-plongée</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Cadrage</label>
+                    <select id="framing" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Standard</option>
+                        <option value="close-up portrait">Gros plan</option>
+                        <option value="head and shoulders">Plan rapproché</option>
+                        <option value="waist up">Plan américain</option>
+                        <option value="full body">Corps entier</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🌍 Environnement</h3>
+                    
+                    <label class="text-sm">Lieu</label>
+                    <select id="location" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Choisir...</option>
+                        <option value="bedroom, intimate">Chambre intime</option>
+                        <option value="photo studio">Studio photo</option>
+                        <option value="fashion runway">Défilé mode</option>
+                        <option value="tropical beach">Plage tropicale</option>
+                        <option value="urban rooftop">Toit urbain</option>
+                        <option value="garden">Jardin</option>
+                        <option value="café">Café</option>
+                        <option value="gym">Salle sport</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="location_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Décrivez le lieu...">
+
+                    <label class="text-sm">Époque</label>
+                    <select id="era" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Moderne</option>
+                        <option value="2000s aesthetic">Années 2000</option>
+                        <option value="1990s aesthetic">Années 90</option>
+                        <option value="1980s aesthetic">Années 80</option>
+                        <option value="1970s disco">Années 70 disco</option>
+                        <option value="1960s mod">Années 60 mod</option>
+                        <option value="1950s pin-up">Années 50 pin-up</option>
+                        <option value="1920s Art Deco">Années 20 Gatsby</option>
+                        <option value="Renaissance">Renaissance</option>
+                        <option value="Ancient Egypt">Ancienne Égypte</option>
+                        <option value="Prehistoric Times">Préhistoire</option>
+                        <option value="Middle-Ages">Moyen-Âge</option>
+                        <option value="Distant Future">Futur lointain</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Moment</label>
+                    <select id="time" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Non spécifié</option>
+                        <option value="golden hour">Golden hour</option>
+                        <option value="midday sunlight">Midi (soleil)</option>
+                        <option value="dusk, blue hour">Crépuscule</option>
+                        <option value="night, neon lights">Nuit (néons)</option>
+                        <option value="morning">Matin</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Ambiance</label>
+                    <select id="mood" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Neutre</option>
+                        <option value="romantic atmosphere">Romantique</option>
+                        <option value="dramatic mood">Dramatique</option>
+                        <option value="dreamy ethereal">Rêveuse, éthérée</option>
+                        <option value="mysterious dark">Mystérieuse, sombre</option>
+                        <option value="joyful vibrant">Joyeuse, vibrante</option>
+                        <option value="luxurious opulent">Luxueuse, opulente</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4 flex justify-between">🎨 Style Principal <input type="number" id="w1" value="1.0" step="0.1" min="0.4" max="1.0" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    
+                    <select id="mainStyle" class="w-full p-2 rounded-lg mb-4">
+                        <option value="">-- Style Maître --</option>
+                        <optgroup label="📸 Réalisme">
+                            <option value="photographic HD, DSLR, 85mm">Photographique HD</option>
+                            <option value="hyperrealistic portrait, ultra detailed">Hyperréaliste</option>
+                            <option value="cinematic, dramatic lighting">Cinématique</option>
+                            <option value="film grain, analog, 35mm">Grain argentique</option>
+                            <option value="polaroid photograph">Polaroid vintage</option>
+                        </optgroup>
+                        <optgroup label="🎌 Anime">
+                            <option value="Studio Ghibli style">Studio Ghibli</option>
+                            <option value="modern anime, detailed eyes">Anime moderne</option>
+                            <option value="manga style">Manga</option>
+                        </optgroup>
+                        <optgroup label="🌈 Rétro-Futuriste">
+                            <option value="vaporwave, pastel pink cyan">Vaporwave</option>
+                            <option value="synthwave, neon grid, 1980s">Synthwave</option>
+                            <option value="cyberpunk, neon lights">Cyberpunk</option>
+                            <option value="steampunk, brass gears">Steampunk</option>
+                        </optgroup>
+                        <optgroup label="🎭 Artistique">
+                            <option value="Art Nouveau, flowing lines, Mucha">Art Nouveau</option>
+                            <option value="Art Deco, geometric, 1920s">Art Déco</option>
+                            <option value="Pop Art, bold colors">Pop Art</option>
+                        </optgroup>
+<optgroup label="🎨 Illustration & Graphisme">
+    <option value="caricature, exaggerated features, whimsical illustration">Caricature</option>
+    <option value="vector art, flat design, Adobe Illustrator style">Dessin Vectoriel</option>
+    <option value="ultra-detailed geometric portrait art, sacred geometry">Portrait Géométrique</option>
+    <option value="Ukiyo-e style, Japanese woodblock print, traditional colors">Ukiyo-e</option>
+    <option value="Modern Folk Art, vibrant patterns, decorative motifs">Art Folk Moderne</option>
+</optgroup>
+                        <optgroup label="🔬 Expérimental">
+                            <option value="bio-art, organic growth">Bio-Art</option>
+                            <option value="biomechanical, H.R. Giger">Bio-mécanique (Giger)</option>
+                            <option value="deep black, extreme chiaroscuro">Deep Black</option>
+                            <option value="glitch art, digital corruption">Glitch Art</option>
+                            <option value="holographic, iridescent">Holographique</option>
+<option value="afrohemian style, bohemian aesthetics with african influence">Afrohemian</option>
+<option value="hygge style, cozy scandinavian atmosphere, warm and comfortable">Hygge</option>
+<option value="absureal style, absurd surrealism, dreamlike illogical elements">Absureal</option>
+                        </optgroup>
+                        <optgroup label="🖌️ Peinture">
+                            <option value="impressionism, Monet style">Impressionnisme</option>
+                            <option value="watercolor, soft edges">Aquarelle</option>
+                            <option value="oil painting, impasto">Huile</option>
+                        </optgroup>
+                        <optgroup label="📚 BD">
+                            <option value="ligne claire, Hergé">Ligne claire</option>
+                            <option value="comic book, American style">Comics</option>
+                            <option value="claymation, stop-motion">Claymation</option>
+                        </optgroup>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <h3 class="text-lg font-bold mb-2 flex justify-between text-gray-400">🌀 Mix A <input type="number" id="w2" value="0.0" step="0.1" min="0" max="0.6" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    <select id="mixA" class="w-full p-2 rounded-lg mb-4" onchange="validateWeights()">
+                        <option value="">-- Aucun --</option>
+                        <option value="deep black">Deep Black</option>
+                        <option value="icy blue">Icy Blue</option>
+                        <option value="Art Deco">Art Déco</option>
+                        <option value="Kintsugi, golden cracks">Kintsugi</option>
+                        <option value="Gothic Horror">Gothic Horror</option>
+                        <option value="Vaporwave">Vaporwave</option>
+                        <option value="Bio-organic">Bio-organique</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <h3 class="text-lg font-bold mb-2 flex justify-between text-gray-400">🌀 Mix B <input type="number" id="w3" value="0.0" step="0.1" min="0" max="0.4" class="weight-input rounded" onchange="validateWeights()"></h3>
+                    <select id="mixB" class="w-full p-2 rounded-lg" onchange="validateWeights()">
+                        <option value="">-- Aucun --</option>
+                        <option value="deep black">Deep Black</option>
+                        <option value="icy blue">Icy Blue</option>
+                        <option value="Glitch art">Glitch</option>
+                        <option value="Holographic">Holographique</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <div id="weightAlert" class="text-red-500 text-xs mt-2 hidden font-bold">⚠️ Poids trop élevés !</div>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">💡 Technique</h3>
+                    
+                    <label class="text-sm">Photographe</label>
+                    <select id="photographer" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Aucun</option>
+                        <option value="Helmut Newton style">Helmut Newton</option>
+                        <option value="Richard Avedon style">Richard Avedon</option>
+                        <option value="Annie Leibovitz style">Annie Leibovitz</option>
+                        <option value="Ellen von Unwerth style">Ellen von Unwerth</option>
+                        <option value="Peter Lindbergh style">Peter Lindbergh</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                    <input type="text" id="photographer_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Nom ou style...">
+
+                    <label class="text-sm">Éclairage</label>
+                    <select id="lighting" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Standard</option>
+                        <option value="natural window light">Lumière naturelle</option>
+                        <option value="studio lighting, three-point">Studio 3 points</option>
+                        <option value="golden hour">Golden hour</option>
+                        <option value="neon lighting">Néons</option>
+                        <option value="dramatic lighting">Dramatique</option>
+                        <option value="soft box">Softbox</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+
+                    <label class="text-sm">Palette</label>
+                    <select id="palette" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Naturelle</option>
+                        <option value="warm tones, golden amber">Tons chauds</option>
+                        <option value="cool tones, blue silver">Tons froids</option>
+                        <option value="pastel colors">Pastels</option>
+                        <option value="neon vibrant">Néons</option>
+                        <option value="monochrome">Monochrome</option>
+                        <option value="high saturation">Haute saturation</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+
+                <section class="art-nouveau-border p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🎯 Format Sortie</h3>
+                    
+                    <label class="text-sm">Mode</label>
+                    <select id="outputMode" onchange="toggleBoutique()" class="w-full p-2 rounded-lg mb-3">
+                        <option value="pure">Photo Artistique Pure</option>
+                        <option value="boutique">Format Boutique Souvenir</option>
+                    </select>
+
+                    <div id="boutiqueSection" class="hidden">
+                        <label class="text-sm">Format souvenir</label>
+                        <select id="souvenir" onchange="checkCustom(this)" class="w-full p-2 rounded-lg mb-3">
+                            <option value="">Choisir...</option>
+                            <option value="as a movie poster parody featuring">Affiche de Film (Poster)</option>
+                            <option value="as a vinyl album cover featuring">Pochette de Disque (Vinyl)</option>
+                            <option value="central design of a bank note featuring">Billet de Banque</option>
+                            <option value="embossed on an ancient gold coin featuring">Pièce d'Or Antique</option>
+                            <option value="collector postage stamp featuring">Timbre Poste</option>
+                            <option value="industrial patent sketch illustrating">Brevet Industriel</option>
+                            <option value="vintage postcard featuring">Carte Postale</option>
+                            <option value="enamel collector pin featuring">Pin's de Collection</option>
+                            <option value="custom">✏️ Personnaliser...</option>
+                        </select>
+                        <input type="text" id="souvenir_custom" class="custom-input w-full p-2 rounded-lg" placeholder="Format perso...">
+                    </div>
+
+                    <label class="text-sm">Ratio</label>
+                    <select id="ratio" class="w-full p-2 rounded-lg mb-3">
+    <option value="1:1">1:1 (Carré)</option>
+    <option value="2:3">2:3 (Portrait Standard)</option>
+    <option value="3:2">3:2 (Paysage Standard)</option>
+    <option value="3:4">3:4 (Portrait)</option>
+    <option value="5:4">5:4 (Portrait Large)</option>
+    <option value="4:3">4:3 (Photo Classique)</option>
+    <option value="16:9">16:9 (Cinéma Horizontal)</option>
+    <option value="9:16">9:16 (Portrait Vertical)</option>
+    <option value="21:9">21:9 (Panoramique)</option>
+</select>
+
+                    <label class="text-sm">Qualité</label>
+                    <select id="quality" class="w-full p-2 rounded-lg mb-3">
+                        <option value="">Standard</option>
+                        <option value="8K resolution, ultra detail">8K Ultra</option>
+                        <option value="4K HD">4K HD</option>
+                        <option value="masterpiece, best quality">Chef-d'œuvre</option>
+                        <option value="award-winning">Primée</option>
+                        <option value="octane render">Rendu octane</option>
+                        <option value="custom">✏️ Personnaliser...</option>
+                    </select>
+                </section>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4 justify-center mt-12">
+            <button onclick="generatePrompt()" id="forgeBtn" class="btn-forge px-8 py-4 rounded-lg text-lg border-2 border-[#d4a574]">
+                ✨ Générer Prompt
+            </button>
+            <button onclick="surpriseMe()" class="btn-forge btn-reset px-8 py-4 rounded-lg text-lg border-2 border-[#d4a574]">
+                🎲 Surprise !
+            </button>
+            <button onclick="resetAll()" class="btn-forge btn-reset px-6 py-4 rounded-lg border-2 border-[#d4a574]">
+                🔄 Reset
+            </button>
+        </div>
+
+        <div id="resultArea" class="hidden mt-12">
+            <div class="art-nouveau-border p-8 rounded-xl">
+                <h2 class="text-3xl font-bold mb-6 text-center">📝 Prompts Générés</h2>
+                
+                <label class="block mb-2 text-lg font-bold text-green-400">✅ PROMPT POSITIF</label>
+                <textarea id="positivePrompt" class="w-full p-4 rounded-lg mb-6" rows="8"></textarea>
+
+                <label class="block mb-2 text-lg font-bold text-red-400">⛔ PROMPT NÉGATIF</label>
+                <textarea id="negativePrompt" class="w-full p-4 rounded-lg mb-6" rows="6"></textarea>
+
+                <div class="flex gap-4 justify-center flex-wrap">
+                    <button onclick="copyPrompts()" class="btn-forge px-6 py-3 rounded-lg border-2 border-[#d4a574]">
+                        📋 Copier en 1 Clic
+                    </button>
+                    <button onclick="exportTxt()" class="btn-forge px-6 py-3 rounded-lg border-2 border-[#d4a574]">
+                        💾 Export .txt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-500 text-sm">
+            <div class="ornament mb-4"></div>
+            <p>Atelier Portrait v1.0 - Créé avec ❤️ pour les artistes</p>
+        </footer>
+    </div>
+
+    <script>
+        function checkCustom(el) {
+            const custom = document.getElementById(el.id + '_custom');
+            if (custom) custom.style.display = (el.value === 'custom') ? 'block' : 'none';
+        }
+
+        function toggleBoutique() {
+            const mode = document.getElementById('outputMode').value;
+            document.getElementById('boutiqueSection').classList.toggle('hidden', mode !== 'boutique');
+        }
+
+        function validateWeights() {
+            const w1 = parseFloat(document.getElementById('w1').value) || 0;
+            const w2 = parseFloat(document.getElementById('w2').value) || 0;
+            const w3 = parseFloat(document.getElementById('w3').value) || 0;
+            const mixA = document.getElementById('mixA').value;
+            const mixB = document.getElementById('mixB').value;
+            
+            let active = 1;
+            if (mixA) active++;
+            if (mixB) active++;
+            const total = Math.round((w1 + w2 + w3) * 10) / 10;
+            const limit = (active === 3) ? 1.2 : 1.0;
+            
+            const alert = document.getElementById('weightAlert');
+            const btn = document.getElementById('forgeBtn');
+            if (total > limit) {
+                alert.textContent = `⚠️ Somme (${total}) > limite (${limit}) pour ${active} style(s)`;
+                alert.classList.remove('hidden');
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+            } else {
+                alert.classList.add('hidden');
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+
+        function getVal(id) {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            if (el.value === 'custom') {
+                const custom = document.getElementById(id + '_custom');
+                return custom ? custom.value : '';
+            }
+            return el.value;
+        }
+
+        function generatePrompt() {
+            const gender = getVal('gender') || 'person';
+            const nationality = getVal('nationality');
+            const age = getVal('age');
+            const skinTone = getVal('skinTone');
+            const eyes = getVal('eyes');
+            const hair = getVal('hair');
+            const body = getVal('body');
+            
+            const extraChars = parseInt(document.getElementById('extraChars').value);
+            const outfit = getVal('outfit');
+            const accessories = getVal('accessories');
+            const makeup = getVal('makeup');
+            const tattoos = getVal('tattoos');
+            const expression = getVal('expression');
+            
+            const pose = getVal('pose');
+            const action = getVal('action');
+            const angle = getVal('angle');
+            const framing = getVal('framing');
+            
+            const location = getVal('location');
+            const era = getVal('era');
+            const time = getVal('time');
+            const mood = getVal('mood');
+            
+            const mainStyle = getVal('mainStyle');
+            const w1 = document.getElementById('w1').value;
+            const mixA = getVal('mixA');
+            const w2 = document.getElementById('w2').value;
+            const mixB = getVal('mixB');
+            const w3 = document.getElementById('w3').value;
+            
+            const photographer = getVal('photographer');
+            const lighting = getVal('lighting');
+            const palette = getVal('palette');
+            const outputMode = getVal('outputMode');
+            const souvenir = getVal('souvenir');
+            const ratio = getVal('ratio');
+            const quality = getVal('quality');
+            let prompt = `[${ratio}] `;
+            
+            if (outputMode === 'boutique' && souvenir) {
+                prompt += `Professional product photography of ${souvenir} featuring `;
+            }
+            
+            prompt += `${nationality ? nationality + ' ' : ''}${gender}`;
+            if (age) prompt += `, ${age}`;
+            if (skinTone) prompt += `, ${skinTone}`;
+            if (eyes) prompt += `, ${eyes}`;
+            if (hair) prompt += `, ${hair}`;
+            if (body) prompt += `, ${body}`;
+            if (extraChars >= 1) prompt += `, with ${extraChars} companion${extraChars > 1 ? 's' : ''} standing beside`;
+            if (outfit) prompt += `, wearing ${outfit}`;
+            if (accessories) prompt += `, with ${accessories}`;
+            if (makeup) prompt += `, ${makeup}`;
+            if (tattoos) prompt += `, ${tattoos}`;
+            if (expression) prompt += `, ${expression}`;
+            
+            if (pose) prompt += `, ${pose}`;
+            if (action) prompt += `, ${action}`;
+            if (location) prompt += `, in ${location}`;
+            if (era) prompt += `, ${era}`;
+            if (time) prompt += `, ${time}`;
+            if (mood) prompt += `, ${mood}`;
+            
+            if (angle) prompt += `, ${angle}`;
+            if (framing) prompt += `, ${framing}`;
+            
+            if (mainStyle) {
+                prompt += `. Art style: ${mainStyle} (weight: ${w1})`;
+                if (mixA && parseFloat(w2) > 0) prompt += `, mixed with ${mixA} (weight: ${w2})`;
+                if (mixB && parseFloat(w3) > 0) prompt += `, subtle ${mixB} (weight: ${w3})`;
+            }
+            
+            if (photographer) prompt += `, inspired by ${photographer}`;
+            if (lighting) prompt += `, ${lighting}`;
+            if (palette) prompt += `, ${palette}`;
+            if (quality) prompt += `, ${quality}`;
+            if (outputMode === 'boutique') {
+                prompt += `, isolated on clean dark studio background, product shot`;
+            }
+            
+            prompt += `. Sharp focus, professional, highly detailed, 8k.`;
+            
+            let negative = 'deformed, blurry, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck, low quality, worst quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, mutation, bad anatomy';
+            if (outfit.includes('lingerie') || outfit.includes('swimwear') || outfit.includes('bikini')) {
+                negative += ', explicit nudity, nsfw, inappropriate, pornographic';
+            }
+            
+           // --- REMPLACE TON BLOC ACTUEL PAR CELUI-CI ---
+
+// On définit les mots-clés qui font qu'un style est "réaliste"
+const isRealisticKeywords = ['realistic', 'photographic', 'cinematic', 'film grain', 'polaroid', '85mm'];
+
+// On vérifie si le style choisi contient un de ces mots-clés
+const isRealistic = mainStyle && isRealisticKeywords.some(keyword => mainStyle.includes(keyword));
+
+if (isRealistic) {
+    // 1. CAS RÉALISTE : On interdit toutes les techniques de dessin/peinture
+    negative += ', cartoon, anime, illustration, painting, drawing, vector, art, 3d render, sketch, watercolor, claymation';
+} else if (mainStyle) {
+    // 2. TOUS LES AUTRES CAS (Aquarelle, Vectoriel, Afrohemian, etc.) : On interdit le photo-réalisme
+    // Comme ce n'est pas réaliste, c'est forcément artistique. Ça couvre tout, même tes futurs ajouts.
+    negative += ', photographic, realistic photo, dslr, soft skin, 3d render, sharp focus, hyperrealistic';
+}
+
+// 3. Exclusions permanentes
+negative += ', watermark, signature, text, logo';
+// ---------------------------------------------
+            document.getElementById('positivePrompt').value = prompt.trim();
+            document.getElementById('negativePrompt').value = negative.trim();
+            document.getElementById('resultArea').classList.remove('hidden');
+            document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function surpriseMe() {
+            document.querySelectorAll('select:not(#extraChars)').forEach(s => {
+                const opts = Array.from(s.options).filter(o => o.value && o.value !== 'custom');
+                if (opts.length > 0) s.value = opts[Math.floor(Math.random() * opts.length)].value;
+            });
+            document.getElementById('w1').value = (Math.random() * 0.6 + 0.4).toFixed(1);
+            document.getElementById('w2').value = (Math.random() * 0.4).toFixed(1);
+            document.getElementById('w3').value = (Math.random() * 0.2).toFixed(1);
+            
+            validateWeights();
+            setTimeout(generatePrompt, 500);
+        }
+
+        function resetAll() {
+            if (confirm('⚠️ Tout réinitialiser ?')) location.reload();
+        }
+
+        function copyPrompts() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            navigator.clipboard.writeText(`POSITIVE:\n${pos}\n\nNEGATIVE:\n${neg}`)
+                .then(() => alert('✅ Copié !'))
+                .catch(err => alert('Erreur: ' + err));
+        }
+
+        function exportTxt() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            const timestamp = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+            
+            const content = `===================================
+ATELIER PORTRAIT - Générateur v1.0
+===================================
+
+Date: ${new Date().toLocaleString('fr-FR')}
+
+PROMPT POSITIF:
+${pos}
+
+PROMPT NÉGATIF:
+${neg}
+
+===================================
+Bonne création !
+✨
+===================================`;
+            
+            const blob = new Blob([content], {type: 'text/plain'});
+            const a = document.createElement('a');
+            a.download = `portrait-${timestamp}.txt`;
+            a.href = URL.createObjectURL(blob);
+            a.click();
+        }
+    </script>
+</body>
+</html>

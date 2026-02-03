@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Atelier des Rêves - Générateur Onirique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ambiance plus douce et colorée */
+        body { background-color: #f0f4f8; background-image: linear-gradient(to bottom right, #f0f4f8, #e2e8f0); color: #334155; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .container { max-width: 1024px; }
+        h1 { color: #4c1d95; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        h2 { color: #6d28d9; border-bottom: 2px solid #ddd6fe; padding-bottom: 0.5rem; }
+        label { color: #5b21b6; font-weight: 600; }
+        /* Boutons avec des couleurs plus douces */
+        button#forgeBtn { background: linear-gradient(to right, #8b5cf6, #d946ef); }
+        button#forgeBtn:hover { background: linear-gradient(to right, #7c3aed, #c026d3); }
+        button[onclick="surpriseMe()"] { background: linear-gradient(to right, #0ea5e9, #6366f1); }
+        button[onclick="surpriseMe()"]:hover { background: linear-gradient(to right, #0284c7, #4f46e5); }
+        .bg-gray-800 { background-color: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .text-white { color: #334155; }
+        select, input, textarea { background-color: #f8fafc; border: 1px solid #cbd5e1; color: #334155; }
+        select:focus, input:focus, textarea:focus { border-color: #a855f7; ring: 2px solid #d8b4fe; }
+        optgroup { color: #6d28d9; font-weight: bold; }
+    </style>
+</head>
+<body class="p-4 bg-gray-100 text-gray-800">
+    <div class="container mx-auto bg-white p-6 rounded-xl shadow-lg">
+        <h1 class="text-4xl font-extrabold text-center mb-6">✨ L'Atelier des Rêves ✨</h1>
+        <p class="text-center text-gray-600 mb-8 text-lg">Générateur de portraits oniriques, féériques et pleins de douceur.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                <h2 class="text-xl font-bold mb-4 flex items-center"><span class="mr-2">🧚</span>Le Personnage Principal</h2>
+                
+                <div class="mb-4 p-3 bg-white rounded-md border border-indigo-200">
+                    <label class="block text-sm mb-2">✨ Concept Magique (Optionnel)</label>
+                    <select id="magicConcept" class="w-full p-2 rounded-lg mb-2 text-sm">
+                        <option value="">-- Scène Classique --</option>
+                        <optgroup label="Fenêtres sur un monde imaginaire">
+                            <option value="crystal_heart">À l'intérieur d'un Cœur de Cristal géant</option>
+                            <option value="snow_globe">Dans une Boule à Neige magique</option>
+                            <option value="pocket_watch">Dans une Montre à Gousset ancienne ouverte</option>
+                            <option value="dew_drop">Reflété dans une Goutte de Rosée géante</option>
+                            <option value="locket">À l'intérieur d'un Médaillon ancien ouvert</option>
+                            <option value="giant_eye">Dans la pupille 'galaxie' d'un Œil géant</option>
+                        </optgroup>
+                    </select>
+
+                    <label class="block text-sm mb-2">💖 Message Scintillant (Texte court)</label>
+                    <input type="text" id="glitterText" placeholder="Ex: Bonne nuit, Joyeux Anniversaire..." class="w-full p-2 rounded-lg text-sm">
+                </div>
+
+                <label for="gender" class="block text-sm mb-2">Qui est le sujet ? *</label>
+                <select id="gender" class="w-full p-2 rounded-lg mb-3 border-2 border-indigo-300">
+                    <option value="">-- Choisir le Personnage --</option>
+
+<optgroup label="✨ Créatures Féériques">
+    <option value="beautiful fairy with sparkling wings and a glittering dress" selected>Belle Fée aux ailes scintillantes</option>
+    <option value="tiny glowing pixie fairy with translucent wings (Tinkerbell style)">Petite Fée Pixie lumineuse</option>
+    <option value="fairy queen wearing a crown of glowing flowers">Reine des Fées couronnée de fleurs</option>
+    <option value="delicate woodland elf with pointed ears">Elfe des bois délicat</option>
+    <option value="gentle guardian angel with large soft feathery wings">Ange Gardien aux grandes ailes douces</option>
+    <option value="beautiful mermaid sitting on a pearlescent rock">Sirène sur un rocher nacré</option>
+    <option value="cute baby dragon with large expressive eyes">Bébé Dragon mignon aux grands yeux</option>
+    <option value="magical white unicorn with a rainbow mane">Licorne Blanche à crinière arc-en-ciel</option>
+</optgroup>
+
+<optgroup label="🧸 Peluches & Jouets Vivants">
+    <option value="adorable living baby tree creature with large expressive eyes and a small smile (Groot style)">Adorable créature bébé-arbre vivante</option>
+    <option value="chubby honey-colored teddy bear wearing a small red t-shirt (Winnie style)">Ours en peluche joufflu couleur miel</option>
+    <option value="melancholic blue-grey stuffed donkey with a pink bow on its tail (Eeyore style)">Âne en peluche mélancolique avec un nœud</option>
+    <option value="well-loved vintage teddy bear, worn and cute">Nounours ancien aimé et usé</option>
+    <option value="smiling ragdoll with yarn hair">Poupée de chiffon souriante</option>
+    <option value="cute small robot with big sad eyes">Petit Robot mignon aux grands yeux</option>
+</optgroup>
+
+<optgroup label="🐾 Animaux Adorables">
+    <option value="fluffy baby kitten with wide eyes and a ribbon">Bébé Chaton aux yeux écarquillés</option>
+    <option value="golden retriever puppy sitting in a basket">Chiot Golden Retriever dans un panier</option>
+    <option value="soft white baby bunny">Petit Lapin blanc tout doux</option>
+    <option value="baby fawn with white spots">Bébé Faon avec des taches</option>
+    <option value="family of cute hedgehogs">Famille de Hérissons mignons</option>
+    <option value="squirrel holding a giant hazelnut">Écureuil avec une noisette géante</option>
+    <option value="fluffy lamb wearing a small bell">Agneau tout doux avec une clochette</option>
+    <option value="baby panda playing with a flower">Bébé Panda jouant avec une fleur</option>
+</optgroup>
+
+<optgroup label="📺 Dessins Animés & Légendes">
+        <option value="Nounours, the large friendly brown bear from 'Bonne Nuit les Petits', appearing with Nicolas and Pimprenelle in their nightgowns, soft fur, gentle face">Nounours (avec Nicolas et Pimprenelle)</option>
+        <option value="Tom Sawyer, the adventurous young boy with his straw hat and overalls, smiling, 19th-century style">Tom Sawyer</option>
+        <option value="Huckleberry Finn, the carefree boy in tattered clothes and an old hat, Tom Sawyer's best friend">Huckleberry Finn</option>
+        <option value="Tante Polly, the stern but kind elderly woman in a Victorian dress, looking from her wooden porch">Tante Polly</option>
+        <option value="Joe l'Indien, a tall mysterious man with long black hair, piercing golden eyes, olive skin">Joe l'Indien</option>
+        <option value="Martine, the famous little girl with brown hair and a headband, classic storybook style">Martine</option>
+        <option value="Bouba, the little brown bear cub from the forest, with a sweet face and round ears">Bouba le petit ourson</option>
+        <option value="The Barbapapa family, colorful shapeshifting blob-like characters, with their distinctive round eyes and smiles">Les Barbapapa</option>
+        <option value="Tom-Tom and Nana Dubouchon, the two mischievous siblings, Tom-Tom with his spiky hair and Nana with her red ribbons">Tom-Tom et Nana</option>
+        <option value="Ariol, the little blue donkey with large glasses, in his schoolboy outfit">Ariol</option>
+        <option value="Colargol, the small singing bear with his little blue hat and backpack">Colargol</option>
+        <option value="Pollux, the shaggy English dog with a red nose from 'Le Manège Enchanté'">Pollux</option>
+        <option value="Wattoo Wattoo, the black and white space bird with its unique whistling sound and multiplying abilities">Wattoo Wattoo</option>
+        <option value="Chapi and Chapo, the two small characters with giant red and blue hats living in a world of cubes">Chapi Chapo</option>
+        <option value="Hong Kong Phooey (Hong Kong Fu Fu), the clumsy dog karate master in his red outfit">Hong Kong Fu Fu</option>
+        <option value="Dick Dastardly and Muttley (Satanas et Diabolo) from 'Wacky Races', in their Mean Machine car">Les Fous du Volant (Satanas & Diabolo)</option>
+        <option value="Mr. Magoo, the short, nearly blind elderly man getting into hilarious trouble">Mr. Magoo</option>
+        <option value="Casimir, the large friendly orange dinosaur with red and yellow spots">Casimir</option>
+        <option value="Hippolyte, the green dinosaur, Casimir's cousin">Hippolyte</option>
+        <option value="Julie from 'L'Île aux Enfants', the kind woman with brown hair, often seen with Casimir and Hippolyte">Julie (L'Île aux Enfants)</option>
+        <option value="Bibifoc, the white seal pup with big blue eyes, on an ice floe, cute and friendly">Bibifoc</option>
+<option value="The Minipouss (The Littles), tiny people with tails and pointed ears, living in the walls of a house">Les Minipouss</option>
+        <option value="Strawberry Shortcake, the original 1980s character with her red hat and freckles">Charlotte aux Fraises</option>
+        <option value="Inspector Gadget, with his grey trench coat and mechanical arms coming out of his hat">Inspecteur Gadget</option>
+        <option value="Maya the Bee and Willy, the cute yellow and black bees in a field of flowers">Maya l'Abeille</option>
+        <option value="Wickie the Viking, the small clever boy with a blue and white tunic and winged helmet">Vic le Viking</option>
+        <option value="Remi, the young orphan boy from 'Sans Famille' with his dog Capi and monkey Joli-Coeur">Rémi sans Famille</option>
+    </optgroup>
+
+    <optgroup label="🚀 Odyssée & Espace (Dessin animé)">
+        <option value="Ulysses, the legendary space captain with a majestic brown beard, wearing a white and blue futuristic suit and a brown cape">Ulysse (Ulysse 31)</option>
+        <option value="Nono, the small red round robot with yellow eyes, from 'Ulysses 31', holding a small metallic nut">Nono (Le petit robot)</option>
+        <option value="Télémaque, a young boy with golden-blonde hair in a white and blue Greek tunic, from 'Ulysses 31'">Télémaque (Ulysse 31)</option>
+        <option value="Thémis, the blue-skinned Zotra girl with large white eyes and white hair, from 'Ulysses 31'">Thémis (Ulysse 31)</option>
+        <option value="Captain Flam (Capitaine Futur), the tall athletic hero with red hair, in his iconic white and orange futuristic suit">Capitaine Flam (Seul)</option>
+        <option value="The Crew: Craig (metallic robot), Mala (shapeshifter), and Joan (blonde woman) from Captain Flam">L'équipage Flam (Trio)</option>
+        <option value="Captain Harlock (Albator), the space pirate with a scar on his face, long black cape, and skull emblem">Albator (Harlock)</option>
+        <option value="Esteban, Zia, and Tao from 'The Mysterious Cities of Gold', adventurous children in pre-Columbian settings">Esteban, Zia et Tao</option>
+        <option value="Cobra, the space pirate with the Psychogun in his left arm and blonde hair">Cobra</option>
+    </optgroup>
+
+    <optgroup label="🤖 Goldorak (Dessin animé)">
+        <option value="Actarus (Duke Fleed) in his iconic red and black pilot suit with helmet">Actarus (Pilote)</option>
+        <option value="Goldorak, the legendary giant robot, metallic finish, horns glowing">Goldorak (Le Robot)</option>
+        <option value="Alcor, the energetic pilot in his yellow flight suit">Alcor</option>
+        <option value="Vénusia and Phénicia, the brave heroines of the White Birch ranch in their pilot suits">Vénusia & Phénicia</option>
+        <option value="Rigel, the small energetic older rancher with his cowboy hat">Rigel</option>
+        <option value="Professor Procyon, the wise scientist with a white beard and lab coat">Professeur Procyon</option>
+        <option value="Minos and Minas, the iconic villains of the Vega empire">Minos et Minas</option>
+    </optgroup>
+
+    <optgroup label="🎀 Univers Shojo & Sport (Dessin animé)">
+        <option value="Candy Candy, the blonde girl with pigtails, green eyes, and Victorian dress">Candy Candy</option>
+        <option value="Kyoko Otonashi (Juliette), the beautiful manager with long dark hair, wearing her signature yellow apron with a chick on it">Juliette (Juliette je t'aime)</option>
+        <option value="Yusaku Godai (Hugo), the young clumsy student with messy brown hair and a kind expression">Hugo (Juliette je t'aime)</option>
+               <option value="Lucile (from Amour et Rock'n'Roll), with her short hair and yellow cat Romeo">Lucile (Amour et Rock'n'Roll)</option>
+        <option value="Jeanne Hazuki (You Hazuki), the energetic volleyball player with short orange hair and white sports uniform">Jeanne (Jeanne et Serge)</option>
+        <option value="Serge (Shiro Tachiki), the tall handsome volleyball player with blue hair and sports jersey">Serge (Jeanne et Serge)</option>
+        <option value="Olive (Tsubasa Ozora) and Tom Misaki, the legendary football duo in their white and blue Newteam kits">Olive et Tom</option>
+        <option value="The three Cats Eye sisters (Hitomi, Rui, and Ai) in their tight colorful athletic bodysuits">Les 3 Cats Eye</option>
+        <option value="Nicky Larson (Ryo Saeba), the charismatic detective with dark hair, light blue jacket, and red t-shirt">Nicky Larson</option>
+               <option value="Princess Sarah, the poor orphan girl in her Victorian dress">Princesse Sarah</option>
+        <option value="Gigi (Minky Momo) and Creamy Mami, the magical girls with their wands and colorful hair">Gigi & Creamy</option>
+    </optgroup>
+
+    <optgroup label="🦸 Super-Héros & Comédie (Live Action)">
+        <option value="The vintage 1970s Spiderman, from the classic live-action TV series, with the slightly baggy suit">Le vieux Spiderman (70s)</option>
+        <option value="The classic 1950s/70s Superman, with the vintage bright blue suit and large 'S' emblem">Le vieux Superman (Retro)</option>
+        <option value="Mr. Bean, the quirky man in his tweed jacket, making a funny confused face">Mr. Bean</option>
+    </optgroup>
+
+    <optgroup label="🎭 Présentateurs TV & Icônes">
+        <option value="host Jacques Martin, a smiling middle-aged man in a formal 1980s suit, sitting on a high wooden stool, 80s TV broadcast style">Jacques Martin (L'École des Fans)</option>
+    <option value="host Michel Drucker in the 1980s, charismatic with a gentle face, wearing a sharp suit and sitting on a plush white luxury sofa">Michel Drucker (Champs-Élysées)</option>
+    <option value="host Jean-Pierre Foucault, welcoming smile, 1980s hairstyle, wearing a dark tuxedo, variety show atmosphere">Jean-Pierre Foucault (Sacrée Soirée)</option>
+    <option value="host Dorothée, energetic young woman with long blonde hair, bright smile, wearing a colorful 1980s casual outfit">Dorothée (Club Do' / Récré A2)</option>
+    <option value="host Julien Lepers, very energetic, expressive face, holding cards (fiches) and leaning over a podium">Julien Lepers (Questions pour un Champion)</option>
+    <option value="host Évelyne Leclercq, smiling woman with perfect 80s blonde blow-dried hair, wearing an elegant evening dress">Évelyne Leclercq (Tournez Manège)</option>
+    <option value="host Jean-Pierre Descombes, enthusiastic man in a casual suit, holding a large silver vintage microphone">Jean-Pierre Descombes (Les Jeux de 20H)</option>
+    <option value="an elegant 1970s TV speakerine, smiling woman with a perfect coiffure, sitting at a small desk with a bouquet of flowers">Une Speakerine (Denise Fabre / Soizic Corne)</option>
+    </optgroup>
+
+    <optgroup label="👩🧑 (Classiques)">
+    <option value="woman">Femme</option>
+    <option value="man">Homme</option>
+<option value="old man">Vieil Homme</option>
+    <option value="young woman">Jeune Femme</option>
+    <option value="mature woman">Femme Mûre</option>
+<option value="girl">Une Petite Fille</option>
+        <option value="boy">Un Petit Garçon</option>
+        <option value="baby">Un Bébé</option>
+    <option value="cute little girl wearing a princess dress">Petite Fille en robe de princesse</option>
+    <option value="cute little boy dressed as a knight">Petit Garçon déguisé en chevalier</option>
+    <option value="laughing baby">Bébé rieur</option>
+                <option value="cute magical creature">Une Créature Magique</option>
+    </optgroup>
+
+    <option value="custom" class="font-bold text-pink-600">✨ Autre Personnage...</option>
+</select>
+
+<optgroup label="💎 Concepts Abstraits">
+    <option value="glowing magical crystal heart">Cœur de Cristal Magique</option>
+    <option value="giant magical dew drop reflecting a world">Goutte de Rosée Géante</option>
+    <option value="antique open pocket watch showing a scene">Montre à Gousset Ancienne</option>
+</optgroup>
+
+<option value="custom" class="font-bold text-indigo-600">✨ Autre (Personnaliser)...</option>
+                </select>
+
+                <label for="nationality" class="block text-sm mb-2">Origine / Type (Simplifié)</label>
+                <select id="nationality" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Universel / Aucune --</option>
+                    <optgroup label="Europe">
+                        <option value="French">Française</option>
+                        <option value="Italian">Italienne</option>
+                        <option value="British">Britannique</option>
+                        <option value="Russian">Russe (Slave)</option>
+                    </optgroup>
+                    <optgroup label="Asie & Océanie">
+                        <option value="Japanese">Japonaise</option>
+                        <option value="Chinese">Chinoise</option>
+                        <option value="Indian">Indienne</option>
+                    </optgroup>
+                    <optgroup label="Amériques">
+                        <option value="American">Américaine</option>
+                        <option value="Brazilian">Brésilienne</option>
+                    </optgroup>
+                     <optgroup label="Afrique & Moyen-Orient">
+                        <option value="Kenyan">Kényane</option>
+                        <option value="Moroccan">Marocaine</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-indigo-600">✨ Autre (Personnaliser)...</option>
+                </select>
+                <input type="text" id="nationality_custom" placeholder="Ex: Elfique, Martienne, Polonaise..." class="w-full p-2 rounded-lg mb-3 hidden border-indigo-300">
+
+                <label for="age" class="block text-sm mb-2">Âge Apparent</label>
+                <select id="age" class="w-full p-2 rounded-lg mb-3">
+                    <option value="">-- Non spécifié --</option>
+                    <option value="baby, infant">Bébé</option>
+                    <option value="toddler, 2-4 years">Tout-petit (2-4 ans)</option>
+                    <option value="child, 5-10 years">Enfant (5-10 ans)</option>
+                    <option value="teenager">Adolescent(e)</option>
+                    <option value="young adult, 20s">Jeune Adulte (20-30)</option>
+                    <option value="adult, 30s-40s">Adulte (30-50)</option>
+                    <option value="mature adult, 50s-60s">Mâture (50-60)</option>
+                    <option value="elderly, 70+">Âgé(e) (70+)</option>
+                </select>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                <h2 class="text-xl font-bold mb-4 flex items-center"><span class="mr-2">🎨</span>L'Apparence</h2>
+                
+                <label for="skinTone" class="block text-sm mb-2">Teint / Peau</label>
+                <select id="skinTone" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Par défaut --</option>
+                    <option value="porcelain skin">Porcelaine</option>
+                    <option value="fair skin">Clair</option>
+                    <option value="rosy cheeks">Joues roses</option>
+                    <option value="olive skin">Mat / Olive</option>
+                    <option value="tan skin">Hâlé</option>
+                    <option value="dark skin">Foncé</option>
+                    <option value="freckles">Taches de rousseur</option>
+                    <option value="custom" class="font-bold text-purple-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="skinTone_custom" placeholder="Votre description..." class="w-full p-2 rounded-lg mb-3 hidden border-purple-300">
+
+                <label for="eyes" class="block text-sm mb-2">Yeux</label>
+                <select id="eyes" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Par défaut --</option>
+                    <optgroup label="Couleurs Naturelles">
+                        <option value="blue eyes">Bleus</option>
+                        <option value="green eyes">Verts</option>
+                        <option value="brown eyes">Marrons</option>
+                        <option value="hazel eyes">Noisette</option>
+                    </optgroup>
+                    <optgroup label="✨ Yeux Magiques">
+                        <option value="large expressive eyes">Grands yeux expressifs (Mignon)</option>
+                        <option value="sparkling eyes">Yeux pétillants</option>
+                        <option value="glowing eyes">Yeux lumineux</option>
+                        <option value="violet eyes">Violets</option>
+                        <option value="golden eyes">Dorés</option>
+                        <option value="eyes reflecting stars">Reflétant des étoiles</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-purple-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="eyes_custom" placeholder="Votre description..." class="w-full p-2 rounded-lg mb-3 hidden border-purple-300">
+
+                <label for="hair" class="block text-sm mb-2">Cheveux / Pelage</label>
+                <select id="hair" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Par défaut --</option>
+                    <optgroup label="Styles Doux">
+                        <option value="long wavy hair">Longs et ondulés</option>
+                        <option value="curly hair">Bouclés</option>
+                        <option value="braided hair with flowers">Tressés avec des fleurs</option>
+                    </optgroup>
+                    <optgroup label="✨ Couleurs Fantaisie">
+                        <option value="pastel pink hair">Rose pastel</option>
+                        <option value="baby blue hair">Bleu bébé</option>
+                        <option value="lavender hair">Lavande</option>
+                        <option value="rainbow hair">Arc-en-ciel</option>
+                        <option value="silver hair">Argentés</option>
+                        <option value="golden blonde hair">Blond doré</option>
+                         <option value="red hair">Roux flamboyant</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-purple-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="hair_custom" placeholder="Votre description..." class="w-full p-2 rounded-lg mb-3 hidden border-purple-300">
+
+                <label for="outfit" class="block text-sm mb-2">Tenue / Costume</label>
+                <select id="outfit" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Par défaut --</option>
+                     <optgroup label="✨ Féérique & Princesse">
+                        <option value="a flowing ballgown with glitter">Robe de bal scintillante</option>
+                        <option value="a fairy dress made of petals and leaves">Robe de fée en pétales</option>
+                        <option value="a vintage lace dress">Robe en dentelle ancienne</option>
+                        <option value="a knight's shining armor (cute sized)">Armure de chevalier brillante (taille enfant)</option>
+                    </optgroup>
+                    <optgroup label="🧸 Cocooning & Mignon">
+                         <option value="a fluffy animal onesie (kigurumi)">Pyjama combinaison animal (Kigurumi)</option>
+                         <option value="cozy oversized knitted sweater">Gros pull en maille confortable</option>
+                         <option value="cute overalls">Salopette mignonne</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-purple-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="outfit_custom" placeholder="Votre description..." class="w-full p-2 rounded-lg mb-3 hidden border-purple-300">
+
+                 <label for="accessories" class="block text-sm mb-2">Compagnons & Accessoires Magiques</label>
+                <select id="accessories" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Aucun --</option>
+                    <optgroup label="✨ Petits Compagnons">
+                        <option value="a group of joyful little pixies flying around">Groupe de petits lutins joyeux</option>
+                        <option value="glowing butterflies and dragonflies">Papillons et libellules lumineux</option>
+                        <option value="giant lucky ladybugs">Coccinelles géantes porte-bonheur</option>
+                        <option value="singing bluebirds">Oiseaux bleus chanteurs</option>
+                        <option value="curious little bunnies">Petits lapins curieux</option>
+                    </optgroup>
+                    <optgroup label="🪄 Objets & Effets">
+                        <option value="a sparkling magic wand">Baguette magique étincelante</option>
+                        <option value="a crown of glowing flowers">Couronne de fleurs lumineuses</option>
+                        <option value="giant iridescent soap bubbles">Bulles de savon géantes irisées</option>
+                        <option value="floating glitter dust and stars">Poussière d'étoiles et paillettes flottantes</option>
+                        <option value="a giant rainbow in the background">Arc-en-ciel géant en arrière-plan</option>
+                        <option value="holding a heart-shaped balloon">Tenant un ballon en forme de cœur</option>
+                        <option value="holding a giant lollipop">Tenant une sucette géante</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-purple-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="accessories_custom" placeholder="Votre description..." class="w-full p-2 rounded-lg mb-3 hidden border-purple-300">
+            </div>
+
+            <div class="bg-pink-50 p-4 rounded-lg border border-pink-100">
+                <h2 class="text-xl font-bold mb-4 flex items-center"><span class="mr-2">🎨</span>Ambiance & Style Artistique</h2>
+                
+                <label for="mainStyle" class="block text-sm mb-2">Style Principal * (Définit le rendu)</label>
+                <select id="mainStyle" class="w-full p-2 rounded-lg mb-3 border-2 border-pink-300" onchange="checkCustom(this)">
+                    <option value="">-- Choisir un style --</option>
+<optgroup label="📺 Nostalgie & Rendu TV">
+    <option value="Jean-Michel Folon style, watercolor textures, blue flying man silhouettes in a dreamy sky (Antenne 2 style)">Style FOLON (Antenne 2)</option>
+    <option value="vintage 80s TV broadcast aesthetic, scan lines, CRT screen effect, saturated colors">Rendu Télévision 80s (Scanlines)</option>
+    <option value="vintage 1970s film grain, soft warm lighting, classic TV studio aesthetic">Rendu Plateau 70s (Grain Pellicule)</option>
+</optgroup>
+                    <optgroup label="✨ Esthétiques Féériques & Douces (Recommandé)">
+                        <option value="children's book illustration style, watercolor and colored pencils, soft textures, heartwarming cute aesthetic" selected>Illustration Livre d'Enfant (Doux & Mignon)</option>
+                        <option value="dreamy fairytale photograph, soft focus, magical atmosphere, whimsical glitter and pastel colors">Photo Féérique Onirique (Flou & Paillettes)</option>
+                        <option value="kawaii pastel aesthetic, cute rounded shapes, candy colors, joyful">Style Kawaii Pastel (Couleurs bonbon)</option>
+                        <option value="romantic Victorian oil painting style, soft brushstrokes, vintage greeting card aesthetic">Peinture Romantique Victorienne (Rétro)</option>
+                        <option value="Thomas Kinkade style painting, idyllic, glowing light, cozy cottage feel">Style Thomas Kinkade (Lumière chaleureuse)</option>
+                        <option value="Lisa Frank aesthetic, vibrant saturated colors, rainbows, stickers effect">Esthétique "Lisa Frank" (Vibrant & Arc-en-ciels)</option>
+                         <option value="Anne Geddes style photograph, baby in whimsical setting, soft lighting">Photo style Anne Geddes (Bébés & Fleurs)</option>
+                         <option value="fantasy bioluminescent forest style, glowing plants, magical night">Forêt Bioluminescente (Tout brille dans le noir)</option>
+                         <option value="airbrush art style, retro 80s fantasy, pastel clouds and stars">Style Airbrush Rétro (Nuages & Étoiles)</option>
+                    </optgroup>
+
+                    <optgroup label="📸 Styles Photographiques (Réalistes)">
+                        <option value="cinematic film still, Kodak Portra 400">Cinéma Argentique (Kodak Portra)</option>
+                        <option value="analog film photograph, natural grain">Photo Argentique Naturelle</option>
+                        <option value="editorial fashion photograph, magazine style">Mode Éditoriale (Magazine)</option>
+                        <option value="documentary photograph, raw realism">Documentaire Brut</option>
+                        <option value="vintage polaroid, faded colors">Polaroid Vintage</option>
+                    </optgroup>
+                    <optgroup label="🎨 Styles Artistiques (Non-réalistes)">
+                         <option value="watercolor painting, soft edges">Aquarelle (Doux)</option>
+                        <option value="oil painting, impasto brushwork">Peinture à l'huile (Texturé)</option>
+                         <option value="afrohemian style, bohemian aesthetics with african influence, earthy tones, natural textures">Afrohemian (Bohème chic)</option>
+                        <option value="hygge style, cozy, comfortable, warm lighting, natural materials, soft textures">Hygge (Cocooning chaleureux)</option>
+                         <option value="vector art, flat design, clean lines">Vectoriel (Plat & Moderne)</option>
+                         <option value="ligne claire style, clear line drawing (Hergé style)">Ligne Claire (Hergé)</option>
+                         <option value="Art Nouveau, intricate patterns, organic forms">Art Nouveau (Mucha)</option>
+                    </optgroup>
+                    <option value="custom" class="font-bold text-pink-600">✨ Autre Style...</option>
+                </select>
+                <input type="text" id="mainStyle_custom" placeholder="Décrivez le style..." class="w-full p-2 rounded-lg mb-3 hidden border-pink-300">
+
+                 <label for="mood" class="block text-sm mb-2">Ambiance Émotionnelle</label>
+                <select id="mood" class="w-full p-2 rounded-lg mb-3">
+                    <option value="">-- Neutre --</option>
+                    <optgroup label="✨ Positif & Doux">
+                        <option value="joyful, happy, vibrant">Joyeuse & Vibrante</option>
+                        <option value="dreamy, ethereal, soft">Rêveuse & Aérienne</option>
+                        <option value="romantic, tender, affectionate">Romantique & Tendre</option>
+                        <option value="peaceful, serene, calm">Paisible & Sereine</option>
+                        <option value="whimsical, playful, quirky">Fantaisiste & Ludique</option>
+                        <option value="nostalgic, sentimental, warm">Nostalgique & Chaleureuse</option>
+                         <option value="cozy, comfortable, safe">Cocooning & Réconfortante</option>
+                    </optgroup>
+                    <optgroup label="Autres">
+                         <option value="mysterious, enigmatic">Mystérieuse</option>
+                         <option value="melancholic, poetic">Mélancolique & Poétique</option>
+                    </optgroup>
+                </select>
+
+                <label for="location" class="block text-sm mb-2">Lieu Magique</label>
+<select id="location" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+    <option value="">-- Non spécifié --</option>
+    <optgroup label="✨ Lieux Enchantés">
+        <option value="enchanted forest with glowing mushrooms">Forêt Enchantée</option>
+        <option value="magical garden filled with giant flowers">Jardin Magique</option>
+        <option value="castle in the clouds">Château dans les nuages</option>
+        <option value="candy land made of sweets and pastel colors">Monde de Bonbons</option>
+ <option value="starry night sky">Ciel étoilé</option>
+    </optgroup>
+    <optgroup label="📺 Plateaux TV & Nostalgie">
+        <option value="on the set of 'Club Dorothée' on TF1, with bright primary colors and 90s decor">Plateau 'Club Dorothée' (TF1)</option>
+        <option value="on the set of 'Le Juste Prix', featuring the giant colorful spinning wheel">Plateau 'Le Juste Prix'</option>
+        <option value="on the set of 'Champs-Élysées', with the white luxury sofa and neon lights">Plateau 'Champs-Élysées'</option>
+        <option value="on the set of 'Tournez Manège', with the motorized carousel and hearts">Plateau 'Tournez Manège'</option>
+        <option value="in a vintage 1970s TV studio, with a massive bouquet of flowers">Studio Speakerine (70s)</option>
+    </optgroup>
+    <optgroup label="🌍 Lieux Classiques">
+        <option value="Parisian cafe terrace">Terrasse de café parisien</option>
+        <option value="blooming flower field">Champ de fleurs</option>
+    </optgroup>
+    <option value="custom" class="font-bold text-pink-600">✨ Autre Lieu...</option>
+</select>
+<input type="text" id="location_custom" placeholder="Votre lieu..." class="w-full p-2 rounded-lg mb-3 hidden border-pink-300">
+
+                <label for="lighting" class="block text-sm mb-2">Lumière Féérique</label>
+                <select id="lighting" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                    <option value="">-- Naturelle --</option>
+                    <optgroup label="✨ Lumières Magiques">
+                        <option value="golden hour light, warm and glowing">Heure Dorée (Chaude & Brillante)</option>
+                        <option value="soft pastel lighting">Lumière Pastel Douce</option>
+                        <option value="bioluminescent glow from plants and environment">Lueur Bioluminescente (Magique)</option>
+                        <option value="twinkling fairy lights bokeh">Guirlandes féériques scintillantes (Bokeh)</option>
+                        <option value="moonlight and starlight">Clair de lune et lumière des étoiles</option>
+                    </optgroup>
+<optgroup label="📺 Plateaux Télé Mythiques">
+    <option value="on the set of the 1980s show 'Tournez Manège', featuring the iconic motorized rotating carousel and the famous large partition wall decorated with heart motifs">Plateau 'Tournez Manège' (Le manège et la paroi aux cœurs)</option>
+    <option value="on the stage of 'L'École des Fans', featuring the famous small wooden stool, a large red velvet curtain background, and a grand piano">Plateau 'L'École des Fans' (Le tabouret et le rideau rouge)</option>
+    <option value="on the glamorous set of 'Champs-Élysées', featuring a grand illuminated staircase, bright neon stage lights, and a white sofa">Plateau 'Champs-Élysées' (L'escalier et les néons)</option>
+    <option value="on the warm-lit TV studio set of 'Sacrée Soirée', with a huge live audience, glittering gold decor, and soft variety lighting">Plateau 'Sacrée Soirée' (Paillettes et grand public)</option>
+    <option value="on the colorful set of 'Club Dorothée' on TF1, with bright primary colors, dynamic 90s geometric decor, and studio spotlights">Plateau 'Club Dorothée' (TF1 - Flashy et coloré)</option>
+    <option value="on the workshop set of 'Les Visiteurs du Mercredi', a creative mess filled with toys, puppets, and drawings pinned to the walls">L'Atelier des 'Visiteurs du Mercredi' (Bric-à-brac)</option>
+    <option value="in a festive French village square, with a mobile TV broadcast unit, a crowd of local people, and colorful banners">Place de Village 'Les Jeux de 20 Heures'</option>
+    <option value="on the high-tension set of 'Questions pour un Champion', with the four iconic illuminated yellow podiums and a dark blue background">Plateau 'Questions pour un Champion' (Les 4 pupitres)</option>
+    <option value="on the flashy set of 'Le Juste Prix', featuring the giant colorful spinning wheel, price podiums, and bright flashing lights">Plateau 'Le Juste Prix' (La roue géante)</option>
+    <option value="at a vintage 1970s speakerine desk, featuring a massive bouquet of seasonal flowers and a neutral draped studio background">Le Bureau de la Speakerine (Le bouquet de fleurs)</option>
+</optgroup>
+                    <option value="custom" class="font-bold text-pink-600">✨ Autre...</option>
+                </select>
+                <input type="text" id="lighting_custom" placeholder="Votre lumière..." class="w-full p-2 rounded-lg mb-3 hidden border-pink-300">
+
+                <details class="mb-3">
+                    <summary class="text-sm text-pink-600 cursor-pointer">Plus d'options (Cadrage, Action, Météo...)</summary>
+                    <div class="mt-3 p-3 bg-white rounded-lg border border-pink-200">
+                         <label for="ratio" class="block text-sm mb-2">Format d'image</label>
+                        <select id="ratio" class="w-full p-2 rounded-lg mb-3">
+                            <option value="1:1">1:1 (Carré)</option>
+                            <option value="2:3">2:3 (Portrait Standard)</option>
+                            <option value="3:4">3:4 (Portrait)</option>
+                            <option value="4:5" selected>4:5 (Portrait Instagram)</option>
+                            <option value="3:2">3:2 (Paysage Standard)</option>
+                            <option value="16:9">16:9 (Paysage Large)</option>
+                        </select>
+
+                        <label for="framing" class="block text-sm mb-2">Cadrage</label>
+                        <select id="framing" class="w-full p-2 rounded-lg mb-3">
+                            <option value="">-- Par défaut --</option>
+                            <option value="close-up portrait">Gros plan (Visage)</option>
+                            <option value="medium shot, waist up">Plan moyen (Taille)</option>
+                            <option value="full body shot">Plan large (Entier)</option>
+                        </select>
+
+                        <label for="action" class="block text-sm mb-2">Action</label>
+                        <select id="action" class="w-full p-2 rounded-lg mb-3" onchange="checkCustom(this)">
+                            <option value="">-- Pose statique --</option>
+                            <option value="smiling gently">Souriant doucement</option>
+                            <option value="laughing joyfully">Riant joyeusement</option>
+                            <option value="sleeping peacefully">Dormant paisiblement</option>
+                            <option value="hugging a plush toy">Câlinant une peluche</option>
+                            <option value="smelling a flower">Sentant une fleur</option>
+                            <option value="looking at the stars">Regardant les étoiles</option>
+                            <option value="blowing bubbles">Soufflant des bulles</option>
+                            <option value="dancing gracefully">Dansant gracieusement</option>
+                            <option value="custom" class="font-bold text-pink-600">✨ Autre...</option>
+                        </select>
+                        <input type="text" id="action_custom" placeholder="Votre action..." class="w-full p-2 rounded-lg mb-3 hidden border-pink-300">
+                         <label for="weather" class="block text-sm mb-2">Météo</label>
+                        <select id="weather" class="w-full p-2 rounded-lg mb-3">
+                            <option value="">-- Neutre --</option>
+                            <option value="sunny day">Ensoleillé</option>
+                            <option value="cloudy soft day">Nuageux doux</option>
+                            <option value="rainy cozy day">Pluvieux cocooning</option>
+                            <option value="snowing gently">Neigeant doucement</option>
+                        </select>
+                    </div>
+                </details>
+
+                <select id="outputMode" class="hidden">
+                    <option value="portrait" selected>Portrait d'Art</option>
+                </select>
+                <input type="text" id="souvenir" class="hidden">
+            </div>
+        </div>
+
+        <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+            <button id="forgeBtn" onclick="generatePrompt()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-full hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 shadow-lg text-lg">
+                ✨ Créer la Magie ✨
+            </button>
+            <button onclick="surpriseMe()" class="bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-bold py-4 px-8 rounded-full hover:from-blue-500 hover:to-indigo-600 transition transform hover:scale-105 shadow-lg text-lg">
+                🎲 Surprise Féérique !
+            </button>
+             <button onclick="resetAll()" class="bg-gray-200 text-gray-700 font-bold py-4 px-8 rounded-full hover:bg-gray-300 transition shadow-lg text-lg">
+                🔄 Recommencer
+            </button>
+        </div>
+
+        <div id="resultArea" class="mt-8 hidden bg-white p-6 rounded-xl border-2 border-purple-200 shadow-xl">
+            <h2 class="text-2xl font-bold mb-4 text-purple-800">Votre Formule Magique</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-bold text-green-600 mb-2">PROMPT POSITIF (À copier)</label>
+                <textarea id="positivePrompt" rows="6" class="w-full p-3 rounded-lg border-green-300 focus:ring-green-200 bg-green-50" readonly></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-red-600 mb-2">PROMPT NÉGATIF (À copier)</label>
+                <textarea id="negativePrompt" rows="4" class="w-full p-3 rounded-lg border-red-300 focus:ring-red-200 bg-red-50" readonly></textarea>
+            </div>
+            
+            <div class="flex justify-center gap-4">
+                <button onclick="copyPrompts()" class="bg-purple-600 text-white font-bold py-3 px-6 rounded-full hover:bg-purple-700 transition shadow-md flex items-center">
+                    📋 Copier Tout
+                </button>
+                <button onclick="exportTxt()" class="bg-pink-500 text-white font-bold py-3 px-6 rounded-full hover:bg-pink-600 transition shadow-md flex items-center">
+                    💾 Sauvegarder (TXT)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour afficher les champs personnalisés "Autre..."
+        function checkCustom(el) {
+            const custom = document.getElementById(el.id + '_custom');
+            if (custom) custom.style.display = (el.value === 'custom') ? 'block' : 'none';
+        }
+
+        // Fonction utilitaire pour récupérer les valeurs (y compris les customs)
+        function getVal(id) {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            if (el.value === 'custom') {
+                const custom = document.getElementById(id + '_custom');
+                return custom ? custom.value : '';
+            }
+            return el.value;
+        }
+
+        // Fonction pour tirer des valeurs aléatoires (adaptée pour l'univers féérique)
+        function randomizeInputs() {
+            // On exclut 'magicConcept' de l'aléatoire auto pour éviter des résultats trop bizarres trop souvent
+            const selects = ['gender', 'nationality', 'age', 'skinTone', 'eyes', 'hair', 'outfit', 'accessories', 'mainStyle', 'mood', 'location', 'lighting', 'ratio', 'framing', 'action', 'weather'];
+            
+            selects.forEach(id => {
+                const selectElement = document.getElementById(id);
+                if (selectElement) {
+                    // On ne prend que les options qui ont une valeur et qui ne sont pas des titres de groupe
+                    const options = Array.from(selectElement.querySelectorAll('option')).filter(opt => opt.value && !opt.disabled && opt.parentElement.tagName !== 'OPTGROUP' || (opt.parentElement.tagName === 'OPTGROUP' && opt.value !== 'custom'));
+
+                    // 80% de chance de choisir une option (sauf style et ratio qui sont forcés)
+                    if (id === 'ratio' || id === 'mainStyle' || id === 'gender' || Math.random() > 0.2) {
+                         if (options.length > 0) {
+                             const randomOption = options[Math.floor(Math.random() * options.length)];
+                             selectElement.value = randomOption.value;
+                             checkCustom(selectElement); // Met à jour l'affichage des champs custom
+                         }
+                    } else {
+                        selectElement.value = "";
+                         checkCustom(selectElement);
+                    }
+                }
+            });
+
+            // On relance la génération pour afficher le résultat
+            setTimeout(generatePrompt, 200);
+        }
+
+        
+        // LA FONCTION PRINCIPALE DE GÉNÉRATION (VERSION FINALE SÉCURISÉE)
+        function generatePrompt() {
+    // 1. Récupération des valeurs
+    const magicConcept = getVal('magicConcept');
+    const glitterText = document.getElementById('glitterText').value;
+    
+    // On récupère le nom du groupe (optgroup) pour l'automatisation
+    const genderSelect = document.getElementById('gender');
+    const selectedOption = genderSelect.options[genderSelect.selectedIndex];
+    const parentGroup = (selectedOption && selectedOption.parentElement) ? selectedOption.parentElement.label : "";
+    
+    const gender = getVal('gender') || 'magical subject'; 
+    const nationality = getVal('nationality');
+    const age = getVal('age');
+    const skinTone = getVal('skinTone');
+    const eyes = getVal('eyes');
+    const hair = getVal('hair');
+    const outfit = getVal('outfit');
+    const accessories = getVal('accessories');
+    const action = getVal('action');
+    const mood = getVal('mood');
+    const location = getVal('location');
+    const lighting = getVal('lighting');
+    const weather = getVal('weather');
+    const framing = getVal('framing');
+    const ratio = getVal('ratio');
+    const mainStyle = getVal('mainStyle');
+
+    // 2. Construction du Prompt Positif
+    let prompt = `[${ratio}] `;
+
+    // Gestion du Concept Magique
+    if (magicConcept) {
+        if (magicConcept.includes('revealing')) {
+            prompt += `A magical close-up photograph of a ${magicConcept} `;
+        } else {
+            prompt += `A magical close-up photograph of a ${magicConcept}, revealing inside it a miniature world showing `;
+        }
+    }
+
+    // AUTOMATISATION DU STYLE ANIMÉ
+    const isAnimated = parentGroup.includes("Dessin") || parentGroup.includes("Goldorak") || parentGroup.includes("Shojo");
+    
+    let subjectPart = "";
+    const isHuman = ['woman', 'man', 'person', 'girl', 'boy', 'baby'].some(h => gender.includes(h));
+    if (isHuman && nationality) subjectPart += `${nationality} `;
+    subjectPart += gender;
+
+    if (isAnimated) {
+        // Force le look 2D original du dessin animé
+        prompt += `the original 2D hand-drawn animation character ${subjectPart} (classic cel-shaded style)`;
+    } else {
+        prompt += subjectPart;
+    }
+
+    // Ajout des détails physiques et environnementaux
+    if (age) prompt += `, ${age}`;
+    if (skinTone) prompt += `, ${skinTone}`;
+    if (eyes) prompt += `, ${eyes}`;
+    if (hair) prompt += `, ${hair}`;
+    if (outfit) prompt += `, wearing ${outfit}`;
+    if (accessories) prompt += `, with ${accessories}`;
+    if (action) prompt += `, ${action}`;
+    if (mood) prompt += `, ${mood} mood`;
+    if (location) prompt += `, in ${location}`;
+    if (weather) prompt += `, ${weather}`;
+    if (lighting) prompt += `, ${lighting}`;
+    if (framing) prompt += `, ${framing}`;
+
+    // Message Scintillant (Glitter) avec correction de lisibilité
+    if (glitterText) {
+        prompt += `, with a vibrant glittering ornamental text overlay that says '${glitterText}', bold joyful script font, with a thick black outline and heavy dark drop shadow for readability, sparkling`;
+    }
+
+    // Style Artistique
+    if (mainStyle) {
+        prompt += `. Art style: ${mainStyle}`;
+    }
+    
+    prompt += `. Highly detailed, whimsical, magical atmosphere, best quality, 8k.`;
+
+    // 3. TON CODE NÉGATIF ROBUSTE (Strictement inchangé)
+    let negative = 'deformed, blurry, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck, low quality, worst quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, mutation, bad anatomy';
+    
+    if (outfit && (outfit.includes('lingerie') || outfit.includes('swimwear') || outfit.includes('bikini'))) {
+        negative += ', explicit nudity, nsfw, inappropriate, pornographic';
+    }
+    
+    const isRealisticKeywords = ['realistic', 'photographic', 'cinematic', 'film grain', 'polaroid', '85mm', 'editorial', 'documentary'];
+    const isRealistic = mainStyle && isRealisticKeywords.some(keyword => mainStyle.includes(keyword));
+
+    if (isRealistic) {
+        negative += ', cartoon, anime, 3d render, sketch, claymation';
+    } else if (mainStyle) {
+        negative += ', photographic, realistic photo, dslr, soft skin, 3d render, sharp focus, hyperrealistic, harsh shadows';
+    }
+    negative += ', watermark, signature, text, logo, watermark, username';
+
+    // 4. Affichage des résultats
+    document.getElementById('positivePrompt').value = prompt.trim();
+    document.getElementById('negativePrompt').value = negative.trim();
+    document.getElementById('resultArea').classList.remove('hidden');
+    document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+}
+        function surpriseMe() {
+            randomizeInputs();
+        }
+
+        function resetAll() {
+            // Liste de tous les IDs à remettre à zéro
+            const ids = ['magicConcept', 'glitterText', 'gender', 'nationality', 'age', 'skinTone', 'eyes', 'hair', 'outfit', 'accessories', 'action', 'mood', 'location', 'lighting', 'weather', 'framing', 'mainStyle', 'ratio'];
+            
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'SELECT') {
+                        el.selectedIndex = 0; // Remet au premier choix (le placeholder)
+                    } else {
+                        el.value = ''; // Vide le champ texte (glitter)
+                    }
+                }
+            });
+
+            // On vide les résultats
+            document.getElementById('positivePrompt').value = '';
+            document.getElementById('negativePrompt').value = '';
+            document.getElementById('resultArea').classList.add('hidden');
+            
+            // On remonte en haut de page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyPrompts() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            navigator.clipboard.writeText(`POSITIVE:\n${pos}\n\nNEGATIVE:\n${neg}`)
+                .then(() => alert('✅ Formule magique copiée dans le presse-papier !'))
+                .catch(err => alert('Erreur lors de la copie : ' + err));
+        }
+
+        function exportTxt() {
+            const pos = document.getElementById('positivePrompt').value;
+            const neg = document.getElementById('negativePrompt').value;
+            const timestamp = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+            
+            const content = `===================================
+L'ATELIER DES RÊVES - Création Féérique
+===================================
+
+Date: ${new Date().toLocaleString('fr-FR')}
+
+✨ FORMULE POSITIVE :
+${pos}
+
+🚫 FORMULE NÉGATIVE :
+${neg}
+
+===================================
+Que la magie opère ! ✨
+===================================`;
+            
+            const blob = new Blob([content], {type: 'text/plain'});
+            const a = document.createElement('a');
+            a.download = `creation-feerique-${timestamp}.txt`;
+            a.href = URL.createObjectURL(blob);
+            a.click();
+        }
+    </script>
+</body>
+</html>
