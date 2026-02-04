@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Atelier QQ - Version 4.2 Intégrale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #fdf2f8; font-family: 'Segoe UI', sans-serif; color: #334155; }
+        .card { background: white; border: 1px solid #fbcfe8; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .section-title { color: #be185d; border-bottom: 2px solid #fce7f3; margin-bottom: 1rem; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        label { color: #9d174d; font-weight: 700; font-size: 0.75rem; margin-bottom: 2px; display: block; }
+        select, input { border: 1px solid #f9a8d4 !important; background: #fff1f2 !important; border-radius: 10px !important; font-size: 0.85rem !important; }
+        .custom-input { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-magic { background: linear-gradient(to right, #db2777, #f43f5e); transition: all 0.2s; cursor: pointer; color: white; font-weight: 900; }
+        .btn-random { background-color: #8e44ad; color: white; border-radius: 12px; font-weight: 700; transition: all 0.3s ease; cursor: pointer; }
+        .btn-reset { background: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
+        .btn-reset:hover { background: #e2e8f0; color: #ef4444; }
+        .btn-export { background-color: #059669; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s; cursor: pointer; }
+        .output-box { background: #f8fafc; border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 0.85rem; border: 1px solid #e2e8f0; min-height: 60px; margin-bottom: 1rem; white-space: pre-wrap; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto card p-6 md:p-10 rounded-[2rem]">
+        <h1 class="text-3xl font-black text-center text-pink-600 mb-8">✨ L'Atelier QQ : Liberté & Asie ✨</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="space-y-4">
+                <div class="section-title">👤 Personnage & Pose</div>
+                <div>
+                    <label>Sujet Principal</label>
+                    <select id="subject" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">(Neutre)</option>
+                        <option value="a beautiful tiny fairy with translucent wings">La petite Fée</option>
+                        <option value="an adorable baby deer with white spots">Bambi (Le Faon)</option>
+                        <option value="a chubby honey-colored teddy bear">Le Nounours Miel</option>
+                        <option value="A young curly-haired girl in a vintage dark lace dress and black boots">Petite Fille Aventurière</option>
+                        <option value="A young person with headphones and futuristic mechanical gear, hugging a cat">Enfant Cyberpunk & Chat</option>
+                        <option value="A majestic forest queen with vibrant green hair, adorned with emerald jewelry and crystal flowers">Reine Émeraude</option>
+                        <option value="A glamorous woman wearing a massive couture hat decorated with purple flowers and golden feathers">Dame au Chapeau Fleuri</option>
+                        <optgroup label="🌙 MYSTÈRES CÉLESTES & NATURE">
+                            <option value="A mystical Celestial Moon Woman, her profile merging with a glowing crescent moon and starry night clouds. Ethereal and surreal.">Femme Lune Céleste</option>
+                            <option value="A magnificent translucent dragonfly with iridescent wings covered in tiny sparkling raindrops, perched on a glowing golden surface.">Libellule de Cristal & Pluie</option>
+                            <option value="A giant goddess face rising from the ocean, integrated with golden filigree patterns, tropical islands, and a massive sun.">Déesse des Archipels</option>
+                        </optgroup>
+                        <optgroup label="👩 PORTRAITS & ÉPOQUES">
+                            <option value="A charming 18th-century cook in period clothing, smiling in a rustic kitchen">Cuisinière d'Antan</option>
+                            <option value="A cool modern elf girl with iridescent wings, wearing a denim jacket and a cap">Elfe Urbaine & Néons</option>
+                            <option value="A hyper-detailed female face constructed entirely from flat grey and brown stone slabs">Visage de Pierre Sculptée</option>
+                            <option value="A dreamy young girl with starry eyes surrounded by a world of rainbows and unicorns">Rêveuse des Mondes</option>
+                            <option value="Three cheerful women sharing red wine and laughing at a large weaving loom">Amies au Métier à Tisser</option>
+                            <option value="A stylish maid character with short black hair and red highlights, holding a tray">Hôtesse Stylisée (Anime-Chic)</option>
+                        </optgroup>
+                        <optgroup label="❤️ ROMANCE & COUPLES">
+                            <option value="A deeply in love couple, the man kissing the woman's forehead while sitting on a park bench">Couple sur un Banc</option>
+                            <option value="A stylish couple in red and black outfits, holding a bunch of red heart-shaped balloons in the city">Romance aux Ballons Cœurs</option>
+                            <option value="A wartime couple in military and vintage uniforms, sharing an emotional and dramatic kiss amidst a collage of ships and planes">Baiser de Guerre Épique</option>
+                            <option value="A glamorous couple in elegant evening wear (tuxedo and silk gown), standing on a luxury ship deck at night">Soirée de Gala sur le Pont</option>
+                        </optgroup>
+                        <optgroup label="🧚 PEUPLE DES FÉES">
+                            <option value="A group of industrious forest fairies with sparkling wings, engaged in creative crafts and pottery.">Fées Artisanes</option>
+                            <option value="A pair of kitchen fairies with vibrant hair, stirring a large magical glowing cauldron in a cozy treehouse.">Fées Cuisinières</option>
+                            <option value="A mystical zodiac fairy with ornate horns, holding a glowing orb of light, accompanied by a symbolic spirit animal.">Fée du Zodiaque</option>
+                            <option value="A celestial fairy witch in a dark gown and pointed hat, blowing magical stardust under a giant moon.">Fée Sorcière des Étoiles</option>
+                        </optgroup>
+                        <optgroup label="🌸 BOTANIQUE & CÉLÉBRATIONS">
+                            <option value="A heart-shaped bouquet of delicate white snowdrops tied with a red silk ribbon on a mossy branch">Cœur de Perce-neige</option>
+                            <option value="Vibrant pink flowers with beautiful pink and brown butterflies resting on the petals">Fleurs aux Papillons</option>
+                            <option value="A cluster of elegant blue poppies arranged in a sparkling crystal vase by the water">Vase de Coquelicots Bleus</option>
+                            <option value="A festive celebration scene with pink roses, two champagne glasses, and glowing crystal hearts among bubbles">Champagne & Roses de Fête</option>
+                        </optgroup>
+                        <optgroup label="📖 RÉCITS & ASTRES">
+                            <option value="An ancient open book where a magical landscape of waterfalls and palm trees grows out of the pages into 3D reality">Livre-Monde Fantastique</option>
+                            <option value="A majestic colorful jester woman in an ornate mask and vibrant costume">Bouffon Impérial & Masqué</option>
+                            <option value="A colossal, detailed moon showing its craters and glowing with a soft blue mystical light">Lune de Cristal Géante</option>
+                        </optgroup>
+                        <optgroup label="🎠 FÊTE FORAINE & ÉLÉGANCE">
+                            <option value="A beautifully ornate vintage carousel with painted horses, golden mirrors, and warm glowing lights.">Carrousel Vintage Doré</option>
+                            <option value="A whimsical fairground merry-go-round featuring fantastical creatures like winged dragons and unicorns.">Manège Féerique aux Créatures</option>
+                            <option value="A super cute, fluffy baby animal with big sparkling eyes, in a charming chibi art style.">Bébé Animal Mignon (Chibi)</option>
+                            <option value="A charming little whimsical character with rosy cheeks and a friendly smile, holding a tiny flower.">Petit Personnage de Conte</option>
+                            <option value="An elegant cut-crystal perfume bottle with an ornate stopper and a delicate pink tassel.">Flacon de Parfum en Cristal</option>
+                            <option value="A vintage-style glass perfume atomizer bottle surrounded by scattered silk flower petals.">Vaporisateur Vintage & Pétales</option>
+                        </optgroup>
+                        <optgroup label="🧸 TENDRESSE & CURIOSITÉS">
+                            <option value="A vintage brown teddy bear sitting at a small wooden table, enjoying a steaming cup of tea">Nounours au Goûter</option>
+                            <option value="A fluffy teddy bear holding two glowing red hearts in a soft snowy landscape">Nounours aux Cœurs Lumineux</option>
+                            <option value="An exotic flower made of delicate white and blue feathers, glowing with ethereal light">Fleur de Plumes Célestes</option>
+                            <option value="A cup of coffee with a magical splash forming a perfect 3D heart made of liquid bubbles">Café au Cœur de Bulles</option>
+                            <option value="A hyper-detailed 3D splash of coffee and milk forming intricate wings and dynamic shapes">Explosion de Latte Art</option>
+                        </optgroup>
+                        <optgroup label="🎬 PORTRAITS CULTES & TRANSPARENCE">
+                            <option value="A cute small humanoid tree creature made of textured bark and green moss, with big soulful eyes">Petit Être d'Écorce (Groot)</option>
+                            <option value="A classic fairytale princess in a blue and yellow vintage dress, holding a glowing red apple in a dark forest">Princesse à la Pomme (Blanche-Neige)</option>
+                            <option value="A minimalist composition of empty transparent crystal glasses, showing complex light refractions and caustic patterns">Verres en Cristal (Transparence)</option>
+                        </optgroup>
+<optgroup label="🌟 INSPIRATIONS BELLE-MAMAN">
+    <option value="A tiny kitten sleeping inside a glowing vintage lantern with magical sparks">Chaton dans une lanterne</option>
+    <option value="A majestic owl whose wings are made of vibrant autumn leaves">Chouette aux ailes de feuilles</option>
+    <option value="A miniature fairytale village nestled inside a giant cracked walnut shell">Village dans une noix</option>
+    <option value="A young girl whispering secrets to a giant fluffy red fox">Fille et le grand renard roux</option>
+    <option value="A baby dragon made of crystal, breathing soft iridescent smoke">Bébé dragon de cristal</option>
+    <option value="A round hedgehog covered in colorful flowers instead of quills">Hérisson fleuri</option>
+</optgroup>
+<optgroup label="🧸 LA COLLECTION NOUNOURS">
+    <option value="A mystical teddy bear made of soft fluffy white clouds, floating in a pastel sunset sky">L'Ours-Nuage (Cotton-cloud)</option>
+    <option value="An adorable hand-knitted wool teddy bear with intricate stitch patterns and vintage buttons">L'Ours en Laine (Tricoté main)</option>
+    <option value="A vintage teddy bear with large soulful glass eyes, wearing a crown of dried wildflowers">L'Ours aux Yeux de Verre & Fleurs</option>
+    <option value="A tiny teddy bear sleeping inside a transparent crystal ball surrounded by golden dust">L'Ours en Boule de Cristal</option>
+    <option value="A chubby teddy bear made of colorful felt pieces, looking like a whimsical patchwork toy">L'Ours Patchwork Féerique</option>
+</optgroup>
+                        <option value="custom">✨ Personnaliser le sujet...</option>
+                    </select>
+                    <input type="text" id="subject_custom" placeholder="Personnaliser..." class="w-full mt-2 p-2 hidden custom-input">
+                </div>
+                <div>
+                    <label>Interaction (Action)</label>
+                    <select id="interaction" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">(Neutre)</option>
+                        <option value="sharing a secret whisper">Chuchotant un secret</option>
+                        <option value="giving a warm and gentle hug">Faisant un câlin</option>
+                        <option value="walking slowly with hands gently clasped in front">Marchant doucement</option>
+                        <option value="custom">✨ Personnaliser l'interaction...</option>
+                    </select>
+                    <input type="text" id="interaction_custom" placeholder="Ex: Tenant un ballon..." class="w-full mt-2 p-2 hidden custom-input">
+                </div>
+                <div>
+                    <label>Posture (Le Pinceau)</label>
+                    <select id="pose" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">(Neutre)</option>
+                        <optgroup label="✨ Classiques">
+                            <option value="sitting peacefully on a soft mossy rock">Assis(e) sur la mousse</option>
+                            <option value="looking up at the stars with wide wonder-filled eyes">Regard vers le ciel</option>
+                            <option value="curled up and sleeping inside a giant flower">Endormi(e) dans une fleur</option>
+                        </optgroup>
+                        <optgroup label="💃 Postures Asie">
+                            <option value="standing gracefully, holding out a finger for a delicate butterfly to land">L'Appel du Papillon</option>
+                            <option value="gazing up with wonder at the glowing lanterns">Admiration des Lanternes</option>
+                        </optgroup>
+                        <optgroup label="🤸 Mouvements & Magie">
+                            <option value="huddled together on a thin branch, looking curiously at the camera">Perchés sur une branche</option>
+                            <option value="cradling a small fluffy creature close to the face with a gentle expression">Câlin Protecteur</option>
+                            <option value="jumping mid-air with paws outstretched and fur flying">Saut Dynamique</option>
+                            <option value="standing balanced on a wooden floating object like a surfboard">Équilibre sur l'eau</option>
+                            <option value="sleeping peacefully on a bed of sharp nails balanced on a ladder">Sommeil sur clous (Insolite)</option>
+                        </optgroup>
+                        <optgroup label="💃 POSTURES ÉLÉGANTES">
+                            <option value="standing tall and graceful, seen from behind, looking out at a stunning night horizon">Majesté (de dos)</option>
+                            <option value="a close-up portrait featuring intricate jewelry on the face and glowing eyes">Visage Orné (Bijoux)</option>
+                            <option value="standing with large feathered wings spread wide, looking towards the light">Ange Déployé</option>
+                        </optgroup>
+                        <optgroup label="✨ EFFETS VISUELS">
+                            <option value="dissolving into a cloud of colorful glowing bubbles and rose petals">Dissolution en Bulles</option>
+                            <option value="emerging from the darkness, illuminated only by thousands of tiny colorful sparkles">Émergence Lumineuse</option>
+                        </optgroup>
+                        <optgroup label="💝 SYMBOLES D'AMOUR">
+                            <option value="holding a bunch of glowing heart-shaped balloons, silhouette against a soft bokeh background">Ballons Cœurs Lumineux</option>
+                            <option value="two hearts intertwined and leaning against each other on a textured green wooden surface">Cœurs Enlacés (Duo)</option>
+                            <option value="exploding into a symmetrical spray of colorful paint swirls and golden sparkles">Symphonie de Couleurs</option>
+                            <option value="shaped like a giant butterfly with jeweled wings and emerald accents">Papillon Majestueux</option>
+                        </optgroup>
+                        <optgroup label="🎭 PLACEMENT MAGIQUE">
+                            <option value="emerging gracefully from a portal of golden light and swirling clouds">Sortie de Portail de Lumière</option>
+                            <option value="resting inside a giant heart-shaped CAMEO frame decorated with roses and sunset landscapes">Dans un Cadre Camée</option>
+                            <option value="floating weightlessly amidst a shower of falling stars and golden dust">Flottant dans les Étoiles</option>
+                        </optgroup>
+                        <optgroup label="🙋 MOUVEMENTS HUMAINS">
+                            <option value="sitting peacefully on a giant root bridge high above a tropical river">Assis sur une Racine Géante</option>
+                            <option value="holding a delicate bouquet and smelling the fragrance with closed eyes">Savourant le Parfum</option>
+                            <option value="tenderly hugging a small cat against their cheek, showing a deep bond">Câlin Tendresse (Chat)</option>
+                            <option value="standing in profile, surrounded by a swirling vortex of gold particles and dust">Tourbillon de Poussière d'Or</option>
+                        </optgroup>
+                        <optgroup label="📸 MOMENTS DE VIE">
+                            <option value="smiling warmly and looking back over the shoulder while cooking">Regard par-dessus l'Épaule</option>
+                            <option value="raising a glass of wine for a toast with friends, laughing happily">Trinquant dans la Joie</option>
+                            <option value="sitting relaxed on a dock, legs dangling, soaking up the summer sun">Détente au Bord de l'Eau</option>
+                            <option value="standing confidently in front of a giant heart-shaped neon sign">Pose devant les Néons</option>
+                        </optgroup>
+                        <optgroup label="💑 GESTES TENDRES">
+                            <option value="sitting together in a round outdoor hot tub, looking at a sunset over the ocean">Détente au Coucher du Soleil</option>
+                            <option value="standing close together, looking into each other's eyes with a city building in the background">Regard Complice en Ville</option>
+                            <option value="embracing tightly while surrounded by floating petals and golden light sparks">Étreinte Passionnée</option>
+                        </optgroup>
+                        <optgroup label="🔮 ACTIONS MAGIQUES">
+                            <option value="focused on shaping a clay pot on a spinning wheel, surrounded by magical tools">En train de faire de la Poterie</option>
+                            <option value="reading a spread of tarot cards on a velvet table, with a glowing crystal ball nearby">Consultant les Cartes de Tarot</option>
+                            <option value="kneeling in the grass and painting delicate patterns on round river stones">Peignant des Pierres Magiques</option>
+                            <option value="nestled comfortably inside a giant pink flower, surrounded by soft glowing frost">Cachée dans une Fleur de Givre</option>
+                        </optgroup>
+                        <optgroup label="🤲 GESTES DÉLICATS">
+                            <option value="gently cupping a single velvet red rose in open palms, showing care and tenderness">Offrande d'une Rose Rouge</option>
+                        </optgroup>
+                        <optgroup label="🌙 POSES LUNAIRES">
+                            <option value="sitting gracefully on a giant glowing crescent moon floating high in the sky">Assis sur un Croissant de Lune</option>
+                            <option value="standing as a silhouette on a lunar island, looking out over a cosmic ocean">Silhouette face à l'Infini</option>
+                        </optgroup>
+                        <optgroup label="🧸 JEUX & DÉTENTE">
+                            <option value="happily riding a painted horse on a spinning carousel, holding onto the pole">Sur un Cheval de Manège</option>
+                            <option value="sitting curled up cozily on a soft, fluffy cloud or blanket">Blotti dans la Douceur</option>
+                            <option value="elegantly displayed on a vanity table amongst jewelry and flowers">Posé sur une Coiffeuse</option>
+                        </optgroup>
+                        <optgroup label="📖 MOMENTS COCON">
+                            <option value="reading an old leather-bound book by the warm glow of a single candle">Lecture à la Bougie</option>
+                            <option value="emerging dynamically from a cup in a swirling vortex of liquid and foam">Éclosion Hors de la Tasse</option>
+                            <option value="resting delicately on a bed of fresh moss and sparkling frost">Posé sur Mousse & Givre</option>
+                        </optgroup>
+                        <optgroup label="🎭 ATTITUDES FINALES">
+                            <option value="tilting head curiously with a sweet smile, showing an innocent expression">Regard Curieux & Penché</option>
+                            <option value="offering a fruit with both hands, surrounded by a magical golden aura">Geste de l'Offrande Magique</option>
+                            <option value="stacked in an artistic pyramid, catching the light from a nearby window">Composition Graphique (Verres)</option>
+                        </optgroup>
+                        <option value="custom">✨ Personnaliser la pose...</option>
+                    </select>
+                    <input type="text" id="pose_custom" placeholder="Personnaliser..." class="w-full mt-2 p-2 hidden custom-input">
+                </div>
+            </div>
+
+            <div class="space-y-4 border-x border-pink-50 px-0 md:px-6">
+                <div class="section-title">🎨 Décor & Style</div>
+                <div>
+                    <label>Lieux</label>
+                    <select id="decor" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">(Neutre)</option>
+                        <optgroup label="LIEUX CLASSIQUES">
+                            <option value="in an enchanted forest with glowing mushrooms">Forêt Enchantée</option>
+                            <option value="on a castle made of soft pink clouds">Nuage-Château</option>
+                            <option value="inside a giant sparkling teacup filled with magical tea">Tasse Géante</option>
+                        </optgroup>
+                        <optgroup label="LIEUX ASIE">
+                            <option value="in a traditional Japanese garden with stone lanterns and sakura trees">Jardin Japonais</option>
+                            <option value="in a festive street filled with glowing red lanterns and sparks">Rue des Lanternes</option>
+                        </optgroup>
+                        <optgroup label="🌍 VOYAGES MAGIQUES">
+                            <option value="in a narrow cobblestone street of a colorful floral village with steep mountains in the background">Ruelle de Positano</option>
+                            <option value="on a dark seashore at night under a giant glowing full moon with light reflecting on the water">Rivage Lunaire</option>
+                            <option value="in a mystical winter forest with golden steeples and snow-covered pines">Givre & Clochers</option>
+                        </optgroup>
+                        <optgroup label="🌌 MONDES COLORÉS">
+                            <option value="in a narrow fairytale street where every building and flower is the same saturated color">Ruelle Monochrome</option>
+                            <option value="on a long desert road stretching towards a vibrant purple and orange nebula galaxy sky">Route Nébuleuse</option>
+                            <option value="inside a majestic kingdom made of sharp blue crystal and frozen light">Palais de Glace</option>
+                        </optgroup>
+                        <optgroup label="☁️ MONDES ONIRIQUES">
+                            <option value="in a lavender sky filled with 3D puffy clouds adorned with golden bows and stars">Nuages & Nœuds d'Or</option>
+                            <option value="inside a vintage heart-shaped frame showing a sunset landscape over a castle and a river">Camée Paysage (Classique)</option>
+                            <option value="on a magical beach at sunset with pink glowing flowers and soft waves">Plage Romantique</option>
+                        </optgroup>
+                        <optgroup label="🌌 NUITS STELLAIRES & LUNES GÉANTES">
+                            <option value="in a mystical violet winter forest under a giant glowing crescent moon and multiple bright stars.">Forêt de Nuit & Lune Géante</option>
+                            <option value="on a peaceful island with a small wooden cabin under a massive golden moon reflecting on calm water.">Cabane de l'Île au Clair de Lune</option>
+                            <option value="floating on a deep blue ocean reflecting a colossal starry moon and celestial nebulae.">Océan des Étoiles</option>
+                        </optgroup>
+                        <optgroup label="✨ SENTIERS & CASCADES ENCHANTÉES">
+                            <option value="on a glowing path of blue light and floating hearts through a dark snowy forest.">Sentier des Cœurs Lumineux</option>
+                            <option value="beside a breathtaking frozen waterfall illuminated by warm paper lanterns and golden fairy lights.">Cascade aux Lanternes</option>
+                            <option value="walking through a vibrant garden of glowing purple flowers and golden sunset light reflecting on a river.">Ruisseau aux Fleurs de Lumière</option>
+                        </optgroup>
+                        <optgroup label="🏠 COCONS & RIVAGES">
+                            <option value="looking out from a cozy window with a burning candle and an open book, while snow falls outside on a quiet village.">Cocon au Coin du Feu</option>
+                            <option value="on a magical beach where the sand is made of sparkling diamonds, under a brilliant sun with long rays of light.">Plage de Cristal au Soleil</option>
+                        </optgroup>
+                        <optgroup label="🌿 MONDES & REFLETS">
+                            <option value="in a lush deep jungle with massive hanging vines and a rocky stream below">Jungle des Racines Géantes</option>
+                            <option value="beside a shimmering reflecting pond with soft water ripples and morning mist">Bassin aux Reflets (Matin)</option>
+                            <option value="against a textured blue weathered city wall in a futuristic urban setting">Cité Futuriste (Murs Bleus)</option>
+                        </optgroup>
+                        <optgroup label="❄️ HORIZONS POLAIRES">
+                            <option value="on a tiny isolated island in the middle of a vast frozen lake, with a cozy wooden cabin covered in fresh snow.">Cabane de l'Île Glacée</option>
+                            <option value="standing on a giant floating crescent moon above a stormy turquoise ocean with crashing waves.">Croissant de Lune sur l'Océan</option>
+                        </optgroup>
+                        <optgroup label="🏡 DÉCORS DE VIE & DE RÊVE">
+                            <option value="in a rustic traditional kitchen with copper pots and golden sunlight streaming through the window">Cuisine aux Cuivres</option>
+                            <option value="at a sunny poolside dock with turquoise water and vibrant summer colors">Piscine & Cocktails (Été)</option>
+                            <option value="inside a magical storybook landscape with rainbows, hot air balloons, and floating castles">Paysage de Conte de Fées</option>
+                            <option value="beside a traditional wooden weaving loom in a brightly lit studio">Atelier de Tissage</option>
+                        </optgroup>
+                        <optgroup label="🏰 ESCAPADES ROMANTIQUES">
+                            <option value="on a beautiful lakeside promenade with a medieval castle on an island and mountains in the distance">Lac au Château Médiéval</option>
+                            <option value="on the wooden deck of a grand ocean liner at night under a full moon, with a classical orchestra playing behind">Pont de Paquebot (Nuit)</option>
+                            <option value="on a balcony overlooking a sunset harbor with a vintage sailing ship anchored nearby">Balcon face au Port Couchant</option>
+                        </optgroup>
+                        <optgroup label="🍄 VILLAGES ENCHANTÉS">
+                            <option value="in front of a colorful mushroom-shaped cottage decorated with crystals and hanging lanterns in a sunny forest.">Maison Champignon Magique</option>
+                            <option value="inside a warm, cluttered treehouse kitchen with wooden shelves, glowing jars, and a stone fireplace.">Intérieur du Grand Arbre</option>
+                            <option value="deep inside a cavern filled with massive glowing quartz crystals and mystical winter light.">Grotte aux Cristaux</option>
+                            <option value="in a snowy violet forest under a moon featuring the face of a majestic lion and glowing astrological symbols.">Forêt du Lion Céleste</option>
+                        </optgroup>
+                        <optgroup label="🌅 HORIZONS FLORAUX">
+                            <option value="beside a mountain lake at twilight, with vibrant rhododendrons in the foreground and a full moon rising over foggy peaks.">Lac de Montagne aux Rhododendrons</option>
+                            <option value="in a lush lakeside garden under a bright blue summer sky with soft white clouds.">Jardin au Bord de l'Eau (Été)</option>
+                        </optgroup>
+                        <optgroup label="🌌 HORIZONS COSMIQUES">
+                            <option value="amidst a dramatic sky filled with golden-rimmed clouds and multiple glowing moon rings at sunset">Ciel aux Anneaux d'Or</option>
+                            <option value="over a calm dark ocean reflecting a massive moon and islands made of floating flowers">Océan des Îles Fleuries</option>
+                            <option value="on a floating island in space with ornate hot air balloons and golden lanterns drifting nearby">Archipel des Montgolfières Dorées</option>
+                        </optgroup>
+                        <optgroup label="🎡 PARCS & BOUDOIRS">
+                            <option value="in a bustling, old-fashioned amusement park at twilight, filled with glowing lights and happy crowds.">Parc d'Attractions au Crépuscule</option>
+                            <option value="in a cozy, magical nursery room filled with soft toys, clouds on the ceiling, and gentle starlight.">Chambre d'Enfant Magique</option>
+                            <option value="on an elegant antique wooden vanity table covered with lace, pearls, and blooming roses.">Boudoir & Coiffeuse Ancienne</option>
+                        </optgroup>
+                        <optgroup label="☕ COINS DOUILLETS & ABSTRAITS">
+                            <option value="in a rustic cottage nook with dark wood textures and soft window light">Coin de Maison Rustique</option>
+                            <option value="inside a dark minimalist space where only the subject is illuminated by a dramatic spotlight">Écrin de Lumière (Abstrait)</option>
+                            <option value="in a mystical garden of blue frozen plants and floating stardust">Jardin de Givre Bleu</option>
+                        </optgroup>
+                        <optgroup label="🏡 LES DERNIÈRES ESCALES">
+                            <option value="in a deep ancient forest with massive roots, fireflies, and sunbeams filtering through leaves">Forêt des Lucioles (Ancienne)</option>
+                            <option value="inside a cozy thatched roof cottage with a stone fireplace and warm candlelight">Chaumière de Blanche-Neige</option>
+                            <option value="on a polished dark marble surface reflecting the bright studio lights">Table de Marbre Lustrée</option>
+                        </optgroup>
+<optgroup label="🌌 HORIZONS ONIRIQUES">
+    <option value="inside a giant glass sphere floating in a lavender field at twilight">Dans une sphère de verre</option>
+    <option value="on a path of glowing light through a misty turquoise forest">Sentier de lumière turquoise</option>
+    <option value="at a magical river made of liquid silver and floating pearls">Rivière d'argent et perles</option>
+    <option value="inside a transparent lightbulb containing a whole miniature forest">Forêt dans une ampoule</option>
+    <option value="on a floating island made of white marble and pink cherry blossoms">Île de marbre et cerisiers</option>
+</optgroup>
+                        <option value="custom">✨ Personnaliser le lieu...</option>
+                    </select>
+                    <input type="text" id="decor_custom" placeholder="Personnaliser..." class="w-full mt-2 p-2 hidden custom-input">
+                </div>
+<div>
+    <label>Ambiance Lumineuse</label>
+    <select id="light" class="w-full p-2 text-xs" onchange="toggleCustom(this)">
+        <option value="">(Neutre)</option>
+        <option value="bathed in golden hour sunlight, warm long shadows">Heure Dorée (Chaud)</option>
+        <option value="under soft mystical moonlight, cool blue tones">Clair de Lune (Mystique)</option>
+        <option value="with vibrant neon glows and cinematic reflections">Néon & Cyber (Électrique)</option>
+        <option value="softly diffused lighting, hazy and ethereal atmosphere">Brumeux & Éthéré (Doux)</option>
+        <option value="dramatic high-contrast lighting, deep shadows">Studio (Dramatique)</option>
+<option value="Illuminated by hundreds of tiny floating bioluminescent specks">Lumière Bioluminescente</option>
+<option value="Warm sunset light filtering through dense magical foliage">Rayons à travers les feuilles</option>
+<option value="Pure ethereal white light with soft heavenly rays from above">Lumière céleste (Rayons blancs)</option>
+<option value="Soft candlelight reflecting on crystal and water surfaces">Reflets de bougies</option>
+        <option value="custom">✨ Personnaliser la lumière...</option>
+    </select>
+    <input type="text" id="light_custom" placeholder="Ex: Sunset purple rays..." class="w-full mt-2 p-2 hidden custom-input">
+</div>
+                <div>
+                    <label>Style Artistique</label>
+                    <select id="masterStyle" class="w-full p-2 border-2 border-pink-200" onchange="toggleCustom(this)">
+                        <option value="">(Neutre)</option>
+                        <optgroup label="✨ Bases">
+                            <option value="A heartwarming children's book illustration in a watercolor style, soft pastel washes.">Aquarelle Conte (Doux)</option>
+                            <option value="A breathtaking bioluminescent scene with glowing particles.">Féérie Lumineuse</option>
+                            <option value="An intricate patchwork fabric craft with button eyes.">Patchwork & Couture</option>
+                        </optgroup>
+                        <optgroup label="🍭 Collection Friandises">
+                            <option value="A whimsical world made entirely of candy, showing [SUJET] in a sparkling underwater coral reef constructed from gingerbread. Glossy textures, [POSE], set in [DECOR].">Récif en Pain d'épices</option>
+                        </optgroup>
+                        <optgroup label="🏮 Collection Asie">
+                            <option value="A breathtakingly elegant scene in a traditional Japanese garden, featuring [SUJET] wearing an intricate silk kimono. Soft cinematic lighting, [POSE], set in [DECOR].">Soie & Sakura (Japon)</option>
+                            <option value="A vibrant festive celebration with [SUJET], surrounded by ornate glowing red and gold lanterns. Warm bioluminescent glow, [POSE], set in [DECOR].">Fête Impériale (Lanternes)</option>
+                            <option value="A surreal fantasy illustration of [SUJET] with ethereal butterfly wings under a giant moon. Purple palette, [POSE], set in [DECOR].">Lune Pourpre (Féérique)</option>
+                        </optgroup>
+                        <optgroup label="✨ Nature & Éclat">
+                            <option value="A magical scene featuring [SUJET] with sparkling fur and gold glitter accents, dark background with warm golden bokeh lights. [POSE], set in [DECOR].">Poussière d'Étoiles (Chats)</option>
+                            <option value="A crisp and bright winter photography style with frosted trees, pure white snow, and a brilliant sun flare. [POSE], set in [DECOR].">Hiver de Cristal (Bambi)</option>
+                            <option value="A cinematic portrait with a soft frosty atmosphere, high-detail fur and hair textures, cool blue tones. [POSE], set in [DECOR].">Souffle de Givre (Fille & Animal)</option>
+                        </optgroup>
+                        <optgroup label="🌊 Surréalisme Aquatique">
+                            <option value="A surreal shot of [SUJET] levitating or splashing above a calm blue sea, misty horizon, hyper-realistic water ripples. [POSE], set in [DECOR].">Lévitation sur l'Eau</option>
+                            <option value="A dramatic action scene with blue electrical lightning strikes and energy sparks around [SUJET] over water. [POSE], set in [DECOR].">Éclairs & Énergie</option>
+                        </optgroup>
+                        <optgroup label="🎨 PEINTURE & TRADITION">
+                            <option value="A vibrant, impressionist oil painting with thick brushstrokes, featuring [SUJET] in a sun-drenched Mediterranean coastal village. Warm color palette, blooming bougainvillea, romantic lighting.">Village Impressionniste</option>
+                        </optgroup>
+                        <optgroup label="💎 GLAMOUR & ÉTOILES">
+                            <option value="A high-glamour fantasy portrait of [SUJET] wearing an intricate silk gown with glowing embroidery and sparkling diamonds. Ethereal lighting, cinematic stars and bokeh.">Fantaisie Stellaire</option>
+                            <option value="A breathtaking digital art piece of [SUJET] as a winter angel, featuring soft fur textures, majestic white wings, and glowing snowflake details. Cool cinematic lighting.">Reine de Givre</option>
+                        </optgroup>
+                        <optgroup label="🌈 ÉCLATS & COULEURS">
+                            <option value="A stunning monochromatic scene with every element in a single vibrant color palette. High contrast, rich textures, [SUJET] blending into the [DECOR].">Monochrome Intense</option>
+                            <option value="A magical world of floating glass bubbles containing rainbow autumn leaves. Prismatic reflections, transparent textures, [POSE], set in [DECOR].">Prisme & Bulles</option>
+                            <option value="A dark and mysterious portrait of [SUJET] wearing a veil of glowing multi-colored fiber optic lights. Sparkling points of light, deep shadows.">Fibre Optique</option>
+                            <option value="A crystalline masterpiece made entirely of neon blue ice and glowing energy. Translucent structures, futuristic and cold atmosphere.">Cristal Électrique</option>
+                        </optgroup>
+                        <optgroup label="💎 BIJOUX & MÉTAUX PRÉCIEUX">
+                            <option value="A stunning [SUJET] crafted from polished silver and chrome with iridescent rainbow reflections, surrounded by swirling metallic ribbons. Hyper-realistic, studio lighting.">Argent Miroir & Arc-en-ciel</option>
+                            <option value="An intricate [SUJET] in antique chiseled silver with fine floral engravings, adorned with small diamonds and a glowing cross. Elegant dark background.">Argent Ciselé & Fleurs</option>
+                            <option value="A luxurious [SUJET] made of translucent ruby glass and liquid light, resting on a white porcelain plate with red roses. Soft reflections, cinematic.">Cœur de Verre Liquide</option>
+                        </optgroup>
+                        <optgroup label="🌿 NATURE & BOTANIQUE">
+                            <option value="A vibrant tropical [SUJET] formed by large purple and blue hibiscus flowers with golden stamens. Detailed teal ornamental background with swirls.">Hibiscus Royal (Tropiques)</option>
+                            <option value="A romantic [SUJET] made of a dense wreath of deep red and pink roses, with falling petals on a dark mystical background. High-detail floral textures.">Couronne de Roses</option>
+                            <option value="A whimsical [SUJET] made of bright green shamrocks and pink hearts, set against a textured yellow and green woven background. Fresh and colorful.">Trèfle & Cœurs Chanceux</option>
+                        </optgroup>
+                        <optgroup label="🧶 ARTISANAT & FOLK ART">
+                            <option value="An extremely intricate [SUJET] made from pink paper quilling and delicate lace, decorated with dried wildflowers. Clean white background, soft shadows.">Dentelle & Quilling (Papier)</option>
+                            <option value="A charming Folk Art illustration of [SUJET] with traditional floral patterns and the word 'LOVE' in decorative typography. Vibrant red and pink tones.">Folk Art Traditionnel</option>
+                            <option value="A cozy [SUJET] with a green and pink plaid (tartan) texture, adorned with silk bows and golden frames. Warm and decorative.">Écossais & Rubans (Plaid)</option>
+                        </optgroup>
+                        <optgroup label="🌈 ÉNERGIES ÉTHÉRÉES">
+                            <option value="A breathtaking [SUJET] emerging from a celestial nebula of purple light and sparkling butterfly wings. Translucent textures and radiant glow.">Nébuleuse aux Papillons</option>
+                            <option value="A magical [SUJET] formed from swirling golden solar flares and cosmic clouds, set against a deep blue sky. High-contrast and majestic.">Éclipse & Souffle Solaire</option>
+                            <option value="An ultra-detailed [SUJET] made of sparkling ice and frost, glowing with intense inner light in a dark ambient setting.">Givre & Éclats de Diamant</option>
+                        </optgroup>
+                        <optgroup label="🖼️ STYLE IMPRESSIONNISTE & HAUTE COUTURE">
+                            <option value="Soft impressionist oil painting style with visible brushstrokes, glowing warm backlighting, and a romantic ethereal atmosphere.">Peinture à l'Huile Impressionniste</option>
+                            <option value="Luxurious dark couture aesthetic, black silk and gold embroidery, floating gold feathers, and cinematic dramatic lighting.">Haute Couture Royale & Or</option>
+                            <option value="Vibrant emerald and teal botanical art, crystal-encrusted textures, radiant gemstones, and lush greenery.">Luxe Émeraude & Cristaux</option>
+                            <option value="Magical disintegration effect, the dress turning into swirling sand, golden dust, and floating pink flower petals.">Matières en Mouvement (Sable & Pétales)</option>
+                        </optgroup>
+                        <optgroup label="✨ SURRÉALISME & MACRO">
+                            <option value="Surreal double-exposure style blending human features with celestial landscapes, ornate gold filigree textures, and dramatic moonlit shadows.">Surréalisme Lunaire & Or</option>
+                            <option value="Extreme macro photography style focusing on hyper-detailed water droplets, prismatic light reflections, and translucent textures.">Macro Gouttelettes Scintillantes</option>
+                            <option value="Dreamy architectural render with frosted glass textures, soft morning light, and a serene arctic atmosphere.">Givre & Sérénité Arctique</option>
+                        </optgroup>
+                        <optgroup label="🎭 MATIÈRES & ATMOSPHÈRES">
+                            <option value="Rustic oil painting style with heavy textures, warm candlelight, and authentic period details.">Peinture à l'Huile Rustique</option>
+                            <option value="Soft vintage watercolor with delicate wisteria flowers, ethereal glowing light, and romantic textures.">Aquarelle Vintage (Glycine)</option>
+                            <option value="Vibrant pop-art neon style, glowing outlines, cinematic night lighting, and playful energy.">Néon Pop & Cyber</option>
+                            <option value="Stone mosaic art style, the entire subject made of interlocking natural stone and slate pieces.">Mosaïque de Roche</option>
+                        </optgroup>
+                        <optgroup label="🎬 CINÉMA & ÉMOTIONS">
+                            <option value="Epic cinematic style with dramatic golden lighting, historical atmosphere, and a collage of action elements in the background.">Cinéma Historique & Épique</option>
+                            <option value="Modern romantic realism, soft natural daylight, vibrant colors, and a clean, high-definition photography look.">Réalisme Romantique Moderne</option>
+                            <option value="Vintage 1920s aesthetic, film grain, soft focus, elegant lighting, and a nostalgic atmosphere of luxury.">Années Folles & Nostalgie</option>
+                        </optgroup>
+                        <optgroup label="✨ POUSSIÈRE D'ÉTOILES">
+                            <option value="Magical 'Fairy Dust' style, overflowing with sparkling gold particles, soft ambient glows, and rich, intricate fantasy details.">Style Poussière d'Étoiles & Magie</option>
+                            <option value="Whimsical storybook illustration style, vibrant warm colors, detailed textures of wood and moss, and a cozy fantasy atmosphere.">Illustration de Conte de Fées</option>
+                            <option value="Mystical candlelit aesthetic, deep shadows contrasted with bright magical light, focused on tarot cards and crystal balls.">Style Grimoire & Divination</option>
+                        </optgroup>
+                        <optgroup label="💧 GOUTTES, VERRE & DRIP ART">
+                            <option value="3D liquid-drip art style, ultra-glossy and thick paint textures, vibrant teal and pink contrasts with high-shine enamel finish.">Style Peinture Dégoulinante (Drip Art)</option>
+                            <option value="Ethereal glass botanical art, translucent blue petals with glowing filaments and internal golden embers.">Fleur de Verre Luminescente</option>
+                            <option value="High-detail macro botanical photography, soft natural bokeh, vivid colors, and crystal-clear dewdrops.">Macro Nature Éclatante</option>
+                        </optgroup>
+                        <optgroup label="✨ ÉCLATS CÉLESTES & LIVRES OUVERTS">
+                            <option value="3D pop-up storybook style, elements emerging from paper with magical depth and vibrant fantasy colors.">Style Livre Pop-Up 3D</option>
+                            <option value="Soft watercolor storybook aesthetic, delicate brushstrokes on textured paper, dreamlike and poetic.">Aquarelle Poétique (Livre)</option>
+                            <option value="Solar eclipse aesthetic with a brilliant glowing ring of light behind dark clouds, high contrast and cinematic.">Éclipse de Lumière Dorée</option>
+                            <option value="Stardust waterfall effect, with thousands of tiny glowing particles flowing from the moon like a river of light.">Cascade de Poussière d'Étoiles</option>
+                        </optgroup>
+                        <optgroup label="✨ NOSTALGIE & ÉCLAT">
+                            <option value="Nostalgic vintage fairground aesthetic with warm, glowing filament bulbs, aged paint textures, and a magical, festive atmosphere.">Fête Foraine Vintage & Magique</option>
+                            <option value="Soft, pastel-colored children's book illustration style with gentle brushstrokes, sweet textures, and a heartwarming feel.">Illustration Douce & Pastel (Livre d'Enfant)</option>
+                            <option value="Luxurious product photography style with sparkling glass refractions, high-key lighting, soft bokeh, and an elegant, high-end finish.">Photographie de Luxe (Verre & Éclats)</option>
+                        </optgroup>
+                        <optgroup label="🧵 MATIÈRES DOUCES & FLUIDES">
+                            <option value="Ultra-soft plush texture with visible fibers, warm indoor lighting, and a cozy nostalgic feel.">Style Peluche Douce & Vintage</option>
+                            <option value="Macro photography of liquid dynamics, high-speed capture of splashes, translucent droplets, and glossy surfaces.">Macro Liquide & Éclaboussures</option>
+                            <option value="Ethereal feather texture, light as air, with soft glowing edges and iridescent crystalline details.">Style Plumes & Givre Éthéré</option>
+                        </optgroup>
+                        <optgroup label="💎 MATIÈRES FINALES">
+                            <option value="Organic wood-bark texture, hyper-detailed moss fibers, and soft dappled forest sunlight.">Style Écorce & Mousses Forestières</option>
+                            <option value="Refractive glass aesthetic, focusing on prismatic light, clear water reflections, and hyper-realistic transparency.">Art de la Réfraction & Pureté</option>
+                            <option value="Classic Storybook Matte Painting, with deep atmospheric shadows and glowing magical highlights.">Rendu Conte de Fées Classique</option>
+                        </optgroup>
+<optgroup label="✨ EFFETS VISUELS QQ">
+    <option value="Vibrant digital masterpiece with glowing outlines and magical particles">Digital Art (Contours brillants)</option>
+    <option value="Ultra-detailed macro photography with soft bokeh and dreamlike focus">Macro féerique (Flou artistique)</option>
+<option value="Hyper-realistic plush texture with visible soft fibers, macro depth of field, warm cozy lighting">Style "Peluches Ultra-Douces"</option>   
+ <option value="Surreal double exposure effect, merging a landscape with a character profile">Double exposition surréaliste</option>
+    <option value="Fantasy oil painting with thick visible brushstrokes and golden highlights">Peinture à l'huile (Reflets d'or)</option>
+</optgroup>
+                        <option value="custom">✨ Personnaliser le style...</option>
+                    </select>
+                    <input type="text" id="masterStyle_custom" placeholder="Personnaliser..." class="w-full mt-2 p-2 hidden custom-input">
+                </div>
+            </div>
+
+           <div class="space-y-4">
+    <div class="section-title">🖋️ Texte & Actions</div>
+
+    <div>
+        <label>Autoriser le texte ?</label>
+        <select id="aiTextControl" class="w-full p-2 text-xs font-bold bg-white mb-2">
+            <option value="no" selected>❌ Non (Garder l'image vierge)</option>
+            <option value="yes">Oui (Ajouter mon message)</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Message à intégrer</label>
+        <input type="text" id="userText" placeholder="Ex: Douce nuit à tous !" class="w-full p-2">
+    </div>
+
+    <div class="space-y-4">
+    <div class="section-title">🖋️ Texte & Actions</div>
+
+    <div>
+        <label>Autoriser le texte ?</label>
+        <select id="aiTextControl" class="w-full p-2 text-xs font-bold bg-white mb-2">
+            <option value="no" selected>❌ Non (Garder l'image vierge)</option>
+            <option value="yes">Oui (Ajouter mon message)</option>
+        </select>
+    </div>
+
+    <div>
+        <label>Message à intégrer</label>
+        <input type="text" id="userText" placeholder="Ex: Douce nuit à tous !" class="w-full p-2">
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+        <div>
+            <label>Position</label>
+            <select id="textPos" class="w-full p-2 text-xs" onchange="toggleCustom(this)">
+                <option value="top center">Haut Milieu</option>
+                <option value="bottom right">Bas Droite</option>
+                <option value="centered at the bottom">Bas Milieu</option>
+                <option value="custom">✨ Personnaliser...</option>
+            </select>
+            <input type="text" id="textPos_custom" placeholder="Position..." class="w-full mt-2 p-2 hidden custom-input">
+        </div>
+        <div>
+            <label>Taille</label>
+            <select id="textSize" class="w-full p-2 text-xs" onchange="toggleCustom(this)">
+                <option value="medium and balanced">Moyen</option>
+                <option value="very small and subtle">Discret</option>
+                <option value="large and prominent">Grand</option>
+                <option value="custom">✨ Personnaliser...</option>
+            </select>
+            <input type="text" id="textSize_custom" placeholder="Taille..." class="w-full mt-2 p-2 hidden custom-input">
+        </div>
+    </div>
+
+    <div>
+        <label>Style de Police / Couleur</label>
+        <select id="textStyle" class="w-full p-2 text-xs" onchange="toggleCustom(this)">
+            <option value="elegant letters">Élégante</option>
+            <option value="cursive calligraphy">Calligraphie</option>
+            <option value="bold modern font">Moderne (Gras)</option>
+            <option value="custom">✨ Personnaliser...</option>
+        </select>
+        <input type="text" id="textStyle_custom" placeholder="Ex: Style néon bleu..." class="w-full mt-2 p-2 hidden custom-input">
+    </div>
+</div>
+
+                <button onclick="randomize()" class="btn-random w-full py-2 mt-4">🎲 SURPRISE ! (Aléatoire)</button>
+                <button onclick="resetAll()" class="btn-reset w-full py-2">🗑️ Reset de l'Atelier</button>
+            </div>
+        </div>
+
+        <button onclick="generate()" class="btn-magic w-full mt-10 py-5 text-2xl rounded-2xl shadow-xl">
+            ✨ CRÉER LA FORMULE MAGIQUE ✨
+        </button>
+
+        <div id="result" class="mt-8 hidden">
+            <div class="p-6 bg-gray-50 rounded-2xl border-2 border-dashed border-pink-200">
+                <textarea id="output" class="output-box w-full mb-4" rows="5" readonly></textarea>
+                <textarea id="output_neg" class="output-box w-full text-red-700 mb-4" rows="3" readonly></textarea>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="copy()" class="py-4 bg-gray-800 text-white rounded-xl font-bold hover:bg-black transition">📋 COPIER</button>
+                    <button onclick="exportTxt()" class="btn-export py-4">💾 EXPORTER .TXT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function toggleCustom(select) {
+        const customInput = document.getElementById(select.id + '_custom');
+        if (customInput) customInput.style.display = (select.value === 'custom') ? 'block' : 'none';
+    }
+
+    function getFinalVal(id) {
+        const select = document.getElementById(id);
+        if (!select) return "";
+        if (select.value === 'custom') {
+            const inp = document.getElementById(id + '_custom');
+            return inp ? inp.value : "";
+        }
+        return select.value;
+    }
+
+    function resetAll() {
+        const menus = ['subject', 'interaction', 'pose', 'decor', 'masterStyle', 'aiTextControl', 'textPos', 'textSize', 'textStyle'];
+        menus.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) { select.selectedIndex = 0; toggleCustom(select); }
+        });
+        const inputs = ['userText', 'subject_custom', 'interaction_custom', 'pose_custom', 'decor_custom', 'masterStyle_custom', 'textPos_custom', 'textSize_custom', 'textStyle_custom'];
+        inputs.forEach(id => { if (document.getElementById(id)) document.getElementById(id).value = ""; });
+        document.getElementById('result').classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function randomize() {
+        const menus = ['subject', 'interaction', 'pose', 'decor', 'masterStyle'];
+        menus.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                const items = select.getElementsByTagName('option');
+                select.selectedIndex = Math.floor(Math.random() * (items.length - 1)) + 1;
+                toggleCustom(select);
+            }
+        });
+        generate();
+    }
+
+function generate() {
+    // 1. Récupération des valeurs
+    const sujet = getFinalVal('subject') || "a beautiful scene";
+    const interaction = getFinalVal('interaction');
+    const pose = getFinalVal('pose');
+    const decor = getFinalVal('decor');
+    let style = getFinalVal('masterStyle');
+    const ambiance = getFinalVal('light');
+
+    const message = document.getElementById('userText').value;
+    const allowText = document.getElementById('aiTextControl').value;
+    const tPos = getFinalVal('textPos');
+    const tSize = getFinalVal('textSize');
+    const tStyle = getFinalVal('textStyle');
+
+    // 2. FILTRE INTELLIGENT : Si texte interdit, on nettoie le style des mots parasites
+    if (allowText === "no") {
+        style = style.replace(/typography|word|text|letters|alphabet|script/gi, "").trim();
+    }
+
+    // 3. Assemblage du "Cœur" (Sujet + Action + Pose)
+    let coreParts = [];
+    if (sujet) coreParts.push(sujet);
+    if (interaction) coreParts.push(interaction);
+    if (pose) coreParts.push(pose);
+    let core = coreParts.join(", ");
+
+    // 4. Construction du Prompt par segments (Séparés par des points pour la clarté)
+    let finalPos = "";
+    if (style.includes("[SUJET]")) {
+        finalPos = style.replace("[SUJET]", core).replace("[POSE]", "").replace("[DECOR]", decor || "");
+    } else {
+        let elements = [];
+        if (style) elements.push(style);
+        elements.push(core);
+        if (decor) elements.push(decor);
+        if (ambiance) elements.push(ambiance);
+        finalPos = elements.join(". ");
+    }
+
+    // 5. Ajout des réglages techniques
+    finalPos += ". [1:1 ratio], 8k resolution, cinematic quality";
+
+    // 6. Gestion du texte et du prompt négatif
+    let neg = "blurry, low quality, deformed, extra limbs, watermark, logo";
+
+    if (allowText === "yes" && message.trim() !== "") {
+        finalPos += `. Text overlay: '${message}', position: ${tPos}, size: ${tSize}, style: ${tStyle}`;
+    } else {
+        finalPos += ". No text, no letters, no words, no signatures";
+        neg += ", text, letters, words, alphabet, script";
+    }
+
+    // 7. NETTOYAGE FINAL : Supprime les doubles virgules, doubles points et espaces inutiles
+    let cleanPos = finalPos
+        .replace(/,\s*\./g, '.')   // Enlève virgule avant un point
+        .replace(/\.\s*[\.,]/g, '.') // Enlève doubles points
+        .replace(/,\s*,/g, ',')    // Enlève doubles virgules
+        .replace(/\s+/g, ' ')      // Enlève doubles espaces
+        .replace(/ \./g, '.')      // Enlève espace avant un point
+        .trim();
+
+    document.getElementById('output').value = cleanPos;
+    document.getElementById('output_neg').value = neg;
+    document.getElementById('result').classList.remove('hidden');
+}
+
+    function copy() {
+        const final = `PROMPT POSITIF :\n${document.getElementById("output").value}\n\nPROMPT NÉGATIF :\n${document.getElementById("output_neg").value}`;
+        navigator.clipboard.writeText(final).then(() => { alert("🪄 Formule complète copiée !"); });
+    }
+
+    function exportTxt() {
+        const final = `PROMPT POSITIF :\n${document.getElementById("output").value}\n\nPROMPT NÉGATIF :\n${document.getElementById("output_neg").value}`;
+        const blob = new Blob([final], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "prompt_atelier_qq.txt";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
+</body>
+</html>
