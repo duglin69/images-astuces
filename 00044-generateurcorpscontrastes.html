@@ -169,37 +169,89 @@
     </select>
     <input type="text" id="mirror_effect_custom" placeholder="Décrire l'effet..." class="w-full mt-2 p-2 hidden">
 </div>
+<div class="mb-4">
+    <label class="block text-blue-400 text-xs uppercase font-bold mb-2">1. Personnaliser (Action / Lieu)</label>
+    <input type="text" id="customSubject" 
+           class="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-600 outline-none" 
+           placeholder="Ex: dans une forêt, en train de lire...">
+</div>
 
-                <div>
-                    <label>Style Artistique</label>
-                    <select id="masterStyle" class="w-full p-2" onchange="toggleCustom(this)">
-                        <option value="">-- Choisir un style --</option>
-                        <optgroup label="🖌️ CLASSIQUE & DOUX">
-                            <option value="A soft watercolor painting with bleeding edges">Aquarelle</option>
-                            <option value="Raw charcoal sketch on textured oil canvas">Fusain sur toile</option>
-                            <option value="Ukiyo-e woodblock print style, bold ink lines">Ukiyo-e (Estampe)</option>
-                        </optgroup>
-                        <optgroup label="🎬 CINÉMATOGRAPHIQUE">
-                            <option value="Film Noir aesthetic, dramatic venetian blind shadows">Film Noir</option>
-                            <option value="Vibrant Blade Runner neon saturation, high contrast">Blade Runner</option>
-                            <option value="Steampunk aesthetic, polished brass and victorian tech">Steampunk</option>
-                            <option value="Gothic dark aesthetic, mysterious and elegant">Gothique</option>
-                        </optgroup>
-                        <optgroup label="🌈 MODERNE & FUN">
-                            <option value="Afrohemian aesthetic, vibrant patterns and natural textures">Afrohemian</option>
-                            <option value="Kawaii aesthetic, soft pastel tones and cute details">Kawaii</option>
-                            <option value="Whimsical cartoon style, colorful and expressive">Cartoon</option>
-                            <option value="Detailed anime art style, cel-shaded">Anime</option>
-                            <option value="Gritty caricature style with exaggerated features">Caricature</option>
-                        </optgroup>
-                        <optgroup label="🧬 SURRÉALISME">
-                            <option value="Bio-organic surrealism, merging flesh with botanical structures">Bio-Organique</option>
-                        </optgroup>
-                        <option value="custom">✨ Autre style...</option>
-                    </select>
-                    <input type="text" id="masterStyle_custom" placeholder="Style artistique libre..." class="w-full p-2 hidden">
-                </div>
-            </div>
+<div class="mb-4">
+    <label class="block text-blue-400 text-xs uppercase font-bold mb-2">2. Propositions & Styles Artistiques</label>
+    <select id="masterStyle" class="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-600 outline-none">
+        <option value="">-- Conserver le sujet libre uniquement --</option>
+
+        <optgroup label="🦸‍♀️ L'HÉROÏNE RÉCURRENTE">
+            <option value="A charismatic adventurer woman style Lara Croft, dark curly hair, slim figure, opulent bust, wearing a very revealing outfit, confident expression, cinematic portrait">01. Portrait Signature (Brune, Bouclée)</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) in a funny dynamic action scene, humorous situation">02. Action Rigolote</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) in a funny and quirky situation, expressive face">03. Scène Drôle / Humour</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) busy preparing a meal in a kitchen, candid daily life">04. Vie Quotidienne : Prépare le repas</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) just stepping out of the shower, water droplets on skin, towel, candid">05. Vie Quotidienne : Sort de la douche</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) sitting on the toilet, humorous and authentic daily life moment">06. Vie Quotidienne : Sur les WC</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) relaxing and watching TV, cozy home atmosphere">07. Vie Quotidienne : Regarde la télé</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) standing in a vast empty landscape, no action, contemplative, scenic">08. Paysage contemplatif</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) working as a writer at a desk with a laptop">09. Travail : Écrivain</option>
+            <option value="The dark curly haired adventurer woman (slim, opulent bust, revealing outfit) working as a nurse or policewoman, professional yet revealing uniform">10. Travail : Infirmière / Policière</option>
+        </optgroup>
+
+        <optgroup label="🧠 FRAGILITÉ & SOLITUDE">
+            <option value="A woman in simple underwear alone in the middle of a megapolis street, feeling of extreme solitude in a dysregulated world">Solitude : Mégalopole</option>
+            <option value="A woman in simple underwear alone on a train station platform, cinematic lighting, fragile silhouette">Solitude : Quai de gare</option>
+            <option value="A woman in simple underwear alone in an airport patio, vast empty space, feeling of isolation">Solitude : Patio d'Aéroport</option>
+            <option value="A woman in simple underwear alone on the Titanic, dramatic historical setting, tragic loneliness">Solitude : Titanic</option>
+            <option value="A woman in simple underwear alone inside a large airplane, cold lighting, modern isolation">Solitude : À bord d'un Avion</option>
+            <option value="A woman in simple underwear floating alone in the cosmic universe, ultimate human solitude against the infinite void">Solitude : Univers / Espace</option>
+            <option value="A group of diverse women (nun, nurse, policewoman) sitting in a psychiatrist's office, the meeting of alter egos, psychological fragility">Le Cabinet du Psy (Final)</option>
+        </optgroup>
+
+        <optgroup label="🎭 IDENTITÉS & ALTER EGOS">
+            <option value="A former woman of easy virtue disguised as a nun, religious habit, complex identity evolution, cinematic portrait">Alter Ego : La Nonne</option>
+            <option value="A woman of easy virtue disguised as a policewoman, professional uniform, theme of the social mask">Alter Ego : La Policière</option>
+            <option value="A woman of easy virtue disguised as a doctor, white lab coat, clinical setting, theme of transformation">Alter Ego : La Doctoresse</option>
+            <option value="A woman dressed as a red ninja, performing martial arts movements with a sword, dynamic action, vibrant red costume">Le Ninja Rouge & Sabre</option>
+            <option value="A woman in black underwear posing in front of a Napoleonic soldier, humorous and quirky juxtaposition">Le Soldat de Napoléon & Humour</option>
+            <option value="Turkish woman in a traditional rural village landscape, painterly style, folk aesthetic">Style Peinture Turque</option>
+        </optgroup>
+
+        <optgroup label="⛈️ IMPACTS & PHÉNOMÈNES">
+            <option value="A woman triggering a massive natural disaster, storm or earthquake, human impact on the world, dramatic destruction">Impact : Catastrophe Naturelle</option>
+            <option value="A woman creating a vibrant rainbow in a surreal landscape, poetic human interaction with nature">Impact : Créatrice d'Arcs-en-ciel</option>
+            <option value="A couple embracing and kissing, romantic cinematic photography, intimate atmosphere">Romance & Couple</option>
+        </optgroup>
+
+        <optgroup label="🗿 NANO BANANA : LA THÈSE">
+            <option value="Nano Banana Mineral: Sculptural monochrome, skin looking like carved marble or stone, geological textures, dramatic shadows">Grain de Peau Minéral</option>
+            <option value="Nano Banana Noir: Deep black void, sharp highlights on skin contours, pure shadows">Noir Profond (Abstrait)</option>
+            <option value="Nano Banana High-Contrast: 35mm Tri-X film grain, gritty analog aesthetic">Contraste Radical (Tri-X)</option>
+            <option value="Nano Banana Intimate: Soft vintage monochrome, evocative play of light and shadow">Intimité Douce</option>
+        </optgroup>
+
+        <optgroup label="🖌️ CLASSIQUE & DOUX">
+            <option value="A soft watercolor painting with bleeding edges">Aquarelle</option>
+            <option value="Raw charcoal sketch on textured oil canvas">Fusain sur toile</option>
+            <option value="Ukiyo-e woodblock print style, bold ink lines">Ukiyo-e (Estampe)</option>
+        </optgroup>
+        <optgroup label="🎬 CINÉMATOGRAPHIQUE">
+            <option value="Film Noir aesthetic, dramatic venetian blind shadows">Film Noir</option>
+            <option value="Vibrant Blade Runner neon saturation, high contrast">Blade Runner</option>
+            <option value="Steampunk aesthetic, polished brass and victorian tech">Steampunk</option>
+            <option value="Gothic dark aesthetic, mysterious and elegant">Gothique</option>
+        </optgroup>
+        <optgroup label="🌈 MODERNE & FUN">
+            <option value="Afrohemian aesthetic, vibrant patterns and natural textures">Afrohemian</option>
+            <option value="Kawaii aesthetic, soft pastel tones and cute details">Kawaii</option>
+            <option value="Whimsical cartoon style, colorful and expressive">Cartoon</option>
+            <option value="Detailed anime art style, cel-shaded">Anime</option>
+            <option value="Gritty caricature style with exaggerated features">Caricature</option>
+        </optgroup>
+        <optgroup label="🧬 SURRÉALISME">
+            <option value="Bio-organic surrealism, merging flesh with botanical structures">Bio-Organique</option>
+        </optgroup>
+        
+        <option value="custom">✨ Autre style...</option>
+    </select>
+    <input type="text" id="masterStyle_custom" placeholder="Style artistique libre..." class="w-full p-2 mt-2 hidden bg-gray-700 text-white rounded">
+</div>
 
             <div class="space-y-6">
                 <div class="section-title">☁️ Ambiance & Technique</div>
@@ -283,82 +335,62 @@
         </div>
     </div>
 
-    <script>
-        function toggleCustom(select) {
-            const input = document.getElementById(select.id + '_custom');
-            if (input) {
-                input.style.display = (select.value === 'custom') ? 'block' : 'none';
-            }
+   <script>
+    // 1. LE MOTEUR : Fabrique le texte final
+    function generatePrompt() {
+        const subject = document.getElementById('customSubject').value.trim();
+        const styleSelect = document.getElementById('masterStyle');
+        const customStyleInput = document.getElementById('masterStyle_custom');
+        const output = document.getElementById('resultOutput');
+
+        // Gérer la petite boîte "Autre style"
+        if (styleSelect.value === 'custom') {
+            customStyleInput.style.display = 'block';
+        } else {
+            customStyleInput.style.display = 'none';
         }
 
-        function getVal(id) {
-            const s = document.getElementById(id);
-            if (!s) return "";
-            if (s.value === 'custom') {
-                return document.getElementById(id + '_custom').value;
-            }
-            return s.value;
+        // Récupérer le style choisi
+        let style = (styleSelect.value === 'custom') ? customStyleInput.value.trim() : styleSelect.value;
+
+        // Fusionner le tout
+        let final = subject;
+        if (style) {
+            final += (final ? ", " : "") + style;
         }
 
-        function resetAll() {
-            location.reload();
+        // Afficher le résultat
+        if (output) output.value = final;
+    }
+
+    // 2. LA FONCTION COPIER : Pour envoyer le texte dans Midjourney
+    function copyPrompt() {
+        const output = document.getElementById('resultOutput');
+        if (!output || output.value === "") return;
+
+        output.select();
+        document.execCommand('copy');
+        alert("Prompt copié !"); // Un petit message pour confirmer à maman
+    }
+
+    // 3. LA FONCTION RESET : Pour tout remettre à zéro
+    function resetForm() {
+        document.getElementById('customSubject').value = "";
+        document.getElementById('masterStyle').value = "";
+        document.getElementById('masterStyle_custom').value = "";
+        document.getElementById('masterStyle_custom').style.display = 'none';
+        document.getElementById('resultOutput').value = "";
+    }
+
+    // Branchements automatiques : pour que ça bouge dès qu'on touche à un truc
+    document.addEventListener('input', function(e) {
+        if (['customSubject', 'masterStyle', 'masterStyle_custom'].includes(e.target.id)) {
+            generatePrompt();
         }
-
-        function randomize() {
-            const ids = ['subject', 'wardrobe', 'companion', 'era', 'location', 'mirror_pose', 'mirror_effect', 'masterStyle', 'lighting', 'weather', 'atmosphere'];
-            ids.forEach(id => {
-                const s = document.getElementById(id);
-                if (s && s.options.length > 1) {
-                    s.selectedIndex = Math.floor(Math.random() * (s.options.length - 1)) + 1;
-                    toggleCustom(s);
-                }
-            });
-            generate();
-        }
-
-        function generate() {
-    // 1. Liste exhaustive de TOUS les IDs (ne pas en oublier !)
-    const ids = [
-        'masterStyle', 
-        'subject', 
-        'wardrobe', 
-        'companion', 
-        'era', 
-        'location', 
-        'mirror_pose',   // Nouveau : Cadrage/Pose
-        'mirror_effect', // Nouveau : Nature du reflet
-        'lighting', 
-        'weather', 
-        'atmosphere'
-    ];
-    
-    // 2. On aspire les valeurs et on filtre les champs vides
-    const values = ids.map(id => getVal(id)).filter(v => v && v.trim() !== "");
-    const ratio = document.getElementById('ratio').value;
-
-    // 3. Construction de la formule finale
-    let prompt = values.join(', ') + ". 8k, highly detailed, artistic composition, cinematic, masterpiece quality, no text, no letters. " + ratio;
-    
-    let finalOutput = "PROMPT POSITIF :\n" + prompt.replace(/\s+/g, ' ').trim();
-    finalOutput += "\n\nPROMPT NÉGATIF :\nblurry, low quality, deformed body, extra limbs, watermark, signature, logo, text, letters, bad anatomy, disfigured, messy lines, words, script";
-
-    // 4. Affichage du résultat
-    document.getElementById('output').value = finalOutput;
-    document.getElementById('result').classList.remove('hidden');
-
-    // 5. LE RETOUR DU SCROLL (La petite touche magique)
-    window.scrollTo({ 
-        top: document.body.scrollHeight, 
-        behavior: 'smooth' 
     });
-}
-
-        function copy() {
-            const text = document.getElementById('output').value;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("🪄 Bloc complet copié pour Maman !");
-            });
-        }
-    </script>
+    document.addEventListener('change', function(e) {
+        if (e.target.id === 'masterStyle') generatePrompt();
+    });
+</script>
 </body>
 </html>
