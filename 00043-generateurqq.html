@@ -19,9 +19,34 @@
         .btn-reset:hover { background: #e2e8f0; color: #ef4444; }
         .btn-export { background-color: #059669; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s; cursor: pointer; }
         .output-box { background: #f8fafc; border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 0.85rem; border: 1px solid #e2e8f0; min-height: 60px; margin-bottom: 1rem; white-space: pre-wrap; }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body class="p-4 md:p-8">
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
     <div class="max-w-6xl mx-auto card p-6 md:p-10 rounded-[2rem]">
         <h1 class="text-3xl font-black text-center text-pink-600 mb-8">✨ L'Atelier QQ : Liberté & Asie ✨</h1>
 
@@ -677,4 +702,5 @@ function generate() {
     }
 </script>
 </body>
+
 </html>
