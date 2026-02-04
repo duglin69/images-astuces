@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Prompts Vectoriels</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .controls-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #f093fb;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .control-group select,
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.95em;
+            background: white;
+            transition: border-color 0.3s;
+        }
+
+        .control-group select:focus,
+        .control-group input[type="text"]:focus {
+            outline: none;
+            border-color: #f093fb;
+        }
+
+        .control-group input[type="text"] {
+            display: none;
+            margin-top: 8px;
+        }
+
+        .control-group input[type="text"].active {
+            display: block;
+        }
+
+        .style-select {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-left-color: #f5576c;
+            border-left-width: 6px;
+        }
+
+        .style-select select {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+
+        .inspired-select {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-left-color: #667eea;
+            border-left-width: 6px;
+        }
+
+        .inspired-select select {
+            font-size: 1.05em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .output-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #f093fb;
+        }
+
+        .output-section h2 {
+            color: #f093fb;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .prompt-output {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #2c3e50;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .prompt-output.empty {
+            color: #adb5bd;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .negative-prompt {
+            margin-top: 15px;
+        }
+
+        .negative-prompt h3 {
+            color: #d9534f;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .negative-output {
+            background: #fff5f5;
+            border: 2px solid #f8d7da;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            color: #721c24;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding: 0 30px 30px 30px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-random {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: white;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .mode-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .mode-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .mode-toggle input {
+            margin-right: 8px;
+        }
+
+        .tech-info {
+            display: none;
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .tech-info.show {
+            display: block;
+        }
+
+        .token-counter {
+            background: #e8f4f8;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #0c5460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .token-counter span {
+            font-weight: bold;
+        }
+
+        .token-count {
+            background: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="mode-toggle">
+                <input type="checkbox" id="expertMode">
+                <label for="expertMode">Mode Expert</label>
+            </div>
+            <h1>🎨 Générateur de Prompts Vectoriels</h1>
+            <p>Créez des prompts professionnels pour illustrations vectorielles</p>
+        </div>
+
+        <div class="main-content">
+            <!-- SECTION CONTRÔLES -->
+            <div class="controls-section">
+                
+                <!-- STYLE VECTORIEL PRINCIPAL -->
+                <div class="control-group style-select">
+                    <label>✨ STYLE VECTORIEL PRINCIPAL</label>
+                    <select id="styleMain">
+                        <option value="">Choisir un style...</option>
+                        <optgroup label="Flat Design">
+                            <option value="Material Design style, Google design language, clean geometric shapes, systematic shadows">Material Design (Google)</option>
+                            <option value="Flat 2.0 style, semi-flat design, subtle shadows, long shadow effect">Flat 2.0 (Semi-flat)</option>
+                            <option value="iOS design language, Apple design aesthetic, minimalist clean">iOS Design Language</option>
+                            <option value="Metro UI style, Modern UI, Microsoft design language, bold typography">Metro/Modern UI</option>
+                            <option value="pure flat design, 100% flat colors, no shadows, no gradients">Pure Flat (100% aplats)</option>
+                        </optgroup>
+                        <optgroup label="Géométrique">
+                            <option value="isometric vector illustration, 2.5d perspective, geometric precision, clean lines">Isométrique (2.5D)</option>
+                            <option value="low poly vector illustration, geometric facets, triangulated design">Low Poly</option>
+                            <option value="geometric abstract vector, mathematical shapes, precision geometry">Geometric Abstract</option>
+                            <option value="Bauhaus style, geometric rationalism, functional design, primary colors">Bauhaus/Constructivisme</option>
+                            <option value="Swiss International style, clean grid-based, Helvetica aesthetic, minimalist">Swiss/International Style</option>
+                        </optgroup>
+                        <optgroup label="Ligne/Tracé">
+                            <option value="line art vector illustration, outline only, monoline style, clean paths">Line Art (Contours)</option>
+                            <option value="one line drawing, continuous line, single stroke illustration">One Line Drawing</option>
+                            <option value="continuous line art, unbroken path, flowing linear design">Continuous Line</option>
+                            <option value="technical drawing style, blueprint aesthetic, precise engineering">Technical Drawing</option>
+                            <option value="blueprint style vector, architectural drawing, technical illustration">Blueprint Style</option>
+                        </optgroup>
+                        <optgroup label="Rétro/Vintage">
+                            <option value="mid-century modern style, 1950s-60s design aesthetic, retro vector">Mid-Century Modern</option>
+                            <option value="art deco vector style, geometric elegance, 1920s-30s aesthetic">Art Deco Vectoriel</option>
+                            <option value="retro futurism vector, atomic age design, vintage sci-fi">Retro Futurism</option>
+                            <option value="70s psychedelic vector, groovy patterns, vibrant colors">70s Psychedelic Vector</option>
+                            <option value="80s Memphis Design, postmodern geometric, bold patterns">80s Memphis Design</option>
+                        </optgroup>
+                        <optgroup label="Organique">
+                            <option value="gradient mesh organic, smooth color transitions, flowing shapes">Gradient Mesh Organic</option>
+                            <option value="fluid shapes vector, liquid design, organic flowing forms">Fluid Shapes</option>
+                            <option value="blob design, liquid vector, amoeba shapes, organic blobs">Blob/Liquid Design</option>
+                            <option value="nature inspired vectors, botanical illustration, organic forms">Nature Inspired Vectors</option>
+                        </optgroup>
+                        <optgroup label="Illustratif">
+                            <option value="editorial illustration vector, magazine style, conceptual design">Editorial Illustration</option>
+                            <option value="children's book vector style, playful illustration, kid-friendly">Children's Book Vector</option>
+                            <option value="infographic style vector, data visualization, clean informative">Infographic Style</option>
+                            <option value="technical illustration vector, cutaway view, exploded diagram">Technical Illustration</option>
+                            <option value="explainer video style, animated illustration aesthetic, simple clear">Explainer Video Style</option>
+                        </optgroup>
+                        <optgroup label="Minimaliste">
+                            <option value="ultra minimal vector, 1-3 colors only, extreme simplification">Ultra Minimal</option>
+                            <option value="negative space design, clever use of empty space, smart simplicity">Negative Space Design</option>
+                            <option value="iconographic style, icon design aesthetic, pictogram simplicity">Iconographic</option>
+                            <option value="pictogram style vector, simple symbolic, universal design">Pictogram Style</option>
+                        </optgroup>
+                        <optgroup label="Texturé Vectoriel">
+                            <option value="halftone vector style, dot pattern texture, print aesthetic">Halftone Vector</option>
+                            <option value="grain texture vector, subtle noise, organic texture">Grain Texture Vector</option>
+                            <option value="risograph print style, vintage print aesthetic, limited colors">Risograph Print Style</option>
+                            <option value="screen print aesthetic, silk screen style, bold graphic">Screen Print Aesthetic</option>
+                        </optgroup>
+                        <optgroup label="Moderne/Tendances">
+                            <option value="neo-brutalism design, raw geometric, bold typography, Balenciaga web style">Neo-Brutalism</option>
+                            <option value="glassmorphism vector, frosted glass effect, translucent layers">Glassmorphism</option>
+                            <option value="claymorphism style, soft 3D vector, tactile design">Claymorphism</option>
+                            <option value="Y2K vector revival, early 2000s aesthetic, chrome effects, nostalgic">Y2K Revival</option>
+                            <option value="gradient renaissance, smooth color transitions, modern gradient usage">Gradient Renaissance</option>
+                        </optgroup>
+                    </select>
+                    <div class="tech-info">Prompt maître - définit le style vectoriel global</div>
+                </div>
+
+                <!-- INSPIRÉ PAR -->
+                <div class="control-group inspired-select">
+                    <label>👨‍🎨 INSPIRÉ PAR (Designer/Studio)</label>
+                    <select id="inspiredBy">
+                        <option value="">Aucune inspiration spécifique</option>
+                        <optgroup label="🎨 Pionniers du Design (1920-1970)">
+                            <option value="Paul Rand style, iconic logo design, geometric abstraction, corporate modernism">Paul Rand</option>
+                            <option value="Saul Bass style, movie poster aesthetic, kinetic typography, minimalist bold">Saul Bass</option>
+                            <option value="Milton Glaser style, psychedelic illustration, I love NY aesthetic, playful bold">Milton Glaser</option>
+                            <option value="Josef Müller-Brockmann style, Swiss design, strict grid system, mathematical precision">Josef Müller-Brockmann</option>
+                            <option value="Massimo Vignelli style, modernist precision, timeless design, systematic approach">Massimo Vignelli</option>
+                            <option value="Otl Aicher style, pictogram system, Munich Olympics 1972, universal symbols">Otl Aicher</option>
+                            <option value="Herb Lubalin style, typographic innovation, experimental lettering">Herb Lubalin</option>
+                            <option value="Armin Hofmann style, Swiss poster design, high contrast, geometric">Armin Hofmann</option>
+                        </optgroup>
+                        <optgroup label="🏛️ Mouvements Artistiques">
+                            <option value="Bauhaus style, geometric rationalism, functional design, primary colors">Bauhaus</option>
+                            <option value="De Stijl style, Mondrian-inspired, primary colors, grid composition, neoplasticism">De Stijl</option>
+                            <option value="Russian Constructivism, El Lissitzky style, revolutionary design, bold geometric">Constructivisme Russe</option>
+                            <option value="Swiss International style, clean grid-based, Helvetica aesthetic, objective design">Style Suisse International</option>
+                            <option value="Memphis Group style, 80s postmodern, geometric patterns, bold colors, playful">Memphis Group (80s)</option>
+                            <option value="Art Nouveau style, organic flowing lines, decorative ornamental, elegant curves">Art Nouveau</option>
+                        </optgroup>
+                        <optgroup label="✨ Illustrateurs Contemporains">
+                            <option value="Malika Favre style, bold minimalist, negative space illustration, sophisticated simple">Malika Favre</option>
+                            <option value="Tom Haugomat style, retro-modern illustration, limited color palette, nostalgic">Tom Haugomat</option>
+                            <option value="Mads Berg style, art deco revival, geometric portraits, dramatic lighting">Mads Berg</option>
+                            <option value="Noma Bar style, negative space master, clever minimal design, conceptual smart">Noma Bar</option>
+                            <option value="Andy Gilmore style, geometric pattern design, kaleidoscope compositions, mathematical">Andy Gilmore</option>
+                            <option value="Olimpia Zagnoli style, playful flat illustration, bold shapes, vibrant joyful">Olimpia Zagnoli</option>
+                            <option value="Ray Oranges style, minimalist geometric illustration, simple sophisticated">Ray Oranges</option>
+                            <option value="Geoff McFetridge style, simple line characters, playful minimalist">Geoff McFetridge</option>
+                        </optgroup>
+                        <optgroup label="🏢 Studios & Agences">
+                            <option value="Pentagram design style, sophisticated systematic approach, professional refined">Pentagram</option>
+                            <option value="Sagmeister & Walsh style, experimental bold typography, conceptual design">Sagmeister & Walsh</option>
+                            <option value="Hey Studio style, playful geometric illustration, vibrant colors, fun energetic">Hey Studio</option>
+                            <option value="MUTI studio style, bold South African vector aesthetic, vibrant detailed">MUTI</option>
+                            <option value="Invisible Creature style, detailed line art, badge design, intricate ornamental">Invisible Creature</option>
+                            <option value="Studio Dumbar style, Dutch graphic design, experimental systematic">Studio Dumbar</option>
+                            <option value="Base Design style, contemporary minimalism, clean sophisticated">Base Design</option>
+                        </optgroup>
+                        <optgroup label="⚡ Techniques Spécialisées">
+                            <option value="Christoph Niemann style, conceptual line illustration, clever simplicity, witty">Christoph Niemann (Line Art)</option>
+                            <option value="Matt Anderson style, detailed isometric city illustrations, architectural precision">Matt Anderson (Isométrique)</option>
+                            <option value="Magdiel Lopez style, gradient mesh portraits, smooth transitions, photorealistic vector">Magdiel Lopez (Gradient Mesh)</option>
+                            <option value="Aaron Draplin style, badge design, Americana thick lines, bold simple">Aaron Draplin (Badges)</option>
+                            <option value="Peter Carrington style, continuous line portraits, elegant flowing">Peter Carrington (One Line)</option>
+                            <option value="Jessica Hische style, ornamental lettering, decorative typography">Jessica Hische (Lettering)</option>
+                        </optgroup>
+                        <optgroup label="💼 Corporate/Tech Style">
+                            <option value="Stripe illustration style, modern geometric, tech startup aesthetic, clean professional">Stripe</option>
+                            <option value="Dropbox illustration system, playful organic shapes, friendly approachable">Dropbox</option>
+                            <option value="Airbnb design language, friendly geometric, travel aesthetic, welcoming">Airbnb</option>
+                            <option value="Google Material Design, clean systematic, shadow depth, colorful organized">Google Material</option>
+                            <option value="Apple design language, minimalist precise, iOS aesthetic, elegant refined">Apple Design</option>
+                        </optgroup>
+                        <optgroup label="📰 Editorial Style">
+                            <option value="New Yorker cover style, conceptual editorial illustration, sophisticated witty">New Yorker</option>
+                            <option value="Bloomberg Businessweek style, bold experimental graphics, data-driven design">Bloomberg Businessweek</option>
+                            <option value="New York Times Op-Ed style, political illustration, conceptual smart">NYT Op-Ed</option>
+                            <option value="Wired Magazine style, tech-forward illustration, futuristic clean">Wired Magazine</option>
+                        </optgroup>
+                        <optgroup label="🌊 Mouvements Récents (2010-2024)">
+                            <option value="Flat Design 2.0, Material Design evolution, subtle shadows, modern clean">Flat Design 2.0</option>
+                            <option value="Memphis revival style, Yinka Ilori aesthetic, bold patterns, contemporary playful">Memphis Revival</option>
+                            <option value="gradient renaissance, Stripe rebrand style, smooth color transitions, modern sophisticated">Gradient Renaissance</option>
+                            <option value="neo-brutalism design, raw geometric, Balenciaga web style, bold unconventional">Neo-Brutalism</option>
+                            <option value="claymorphism style, soft 3D vector, iOS design language, tactile friendly">Claymorphism</option>
+                            <option value="glassmorphism, frosted glass effect, Apple design language, translucent layered">Glassmorphism</option>
+                            <option value="Y2K vector revival, early 2000s aesthetic, chrome effects, nostalgic digital">Y2K Revival</option>
+                        </optgroup>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="inspiredByCustom" placeholder="Décrivez l'inspiration...">
+                    <div class="tech-info">Référence à un designer, studio ou mouvement spécifique</div>
+                </div>
+
+                <!-- TRAITEMENT VECTORIEL -->
+                <div class="control-group">
+                    <label>🖌️ Traitement Vectoriel</label>
+                    <select id="vectorTreatment">
+                        <option value="">Choisir...</option>
+                        <option value="flat color blocks, solid fills, no gradients">Aplats de couleur (Flat)</option>
+                        <option value="linear gradient fills, smooth color transitions">Dégradés linéaires</option>
+                        <option value="radial gradient fills, circular color transitions">Dégradés radiaux</option>
+                        <option value="gradient mesh, complex color blending, photorealistic shading">Gradient Mesh (Complexe)</option>
+                        <option value="conical gradient, angular color transitions">Dégradé conique</option>
+                        <option value="geometric shapes only, pure vector forms">Formes géométriques pures</option>
+                        <option value="organic curves, bezier paths, flowing forms">Courbes organiques</option>
+                        <option value="pattern fills, repeating textures, tiled design">Motifs répétés (Patterns)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="vectorTreatmentCustom" placeholder="Décrivez le traitement...">
+                    <div class="tech-info">Technique de remplissage et rendu vectoriel</div>
+                </div>
+
+                <!-- COMPLEXITÉ GÉOMÉTRIQUE -->
+                <div class="control-group">
+                    <label>📐 Complexité Géométrique</label>
+                    <select id="geometricComplexity">
+                        <option value="">Choisir...</option>
+                        <option value="ultra simple, 3-5 shapes only, extreme minimalism">Ultra Simple (3-5 formes)</option>
+                        <option value="simple geometric, 5-10 shapes, clean minimalist">Simple (5-10 formes)</option>
+                        <option value="moderate complexity, 10-30 shapes, balanced detail">Modérée (10-30 formes)</option>
+                        <option value="detailed geometric, 30-50 shapes, rich composition">Détaillée (30-50 formes)</option>
+                        <option value="complex geometric, 50-100 shapes, intricate design">Complexe (50-100 formes)</option>
+                        <option value="highly complex, 100+ shapes, very detailed illustration">Très Complexe (100+ formes)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="geometricComplexityCustom" placeholder="Décrivez la complexité...">
+                    <div class="tech-info">Nombre approximatif de formes vectorielles</div>
+                </div>
+
+                <!-- TYPE DE TRACÉ -->
+                <div class="control-group">
+                    <label>✏️ Type de Tracé</label>
+                    <select id="strokeType">
+                        <option value="">Choisir...</option>
+                        <option value="no stroke, fills only, outline-free design">Sans trait (Fills only)</option>
+                        <option value="thin stroke, delicate outline, fine lines">Trait fin</option>
+                        <option value="medium stroke, balanced outline weight">Trait moyen</option>
+                        <option value="thick stroke, bold outline, heavy lines">Trait épais</option>
+                        <option value="variable stroke width, dynamic line weight">Trait variable (dynamique)</option>
+                        <option value="geometric precise stroke, sharp angles">Trait géométrique précis</option>
+                        <option value="organic flowing stroke, curved smooth lines">Trait organique fluide</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="strokeTypeCustom" placeholder="Décrivez le tracé...">
+                    <div class="tech-info">Épaisseur et style du contour</div>
+                </div>
+
+                <!-- SYSTÈME DE GRILLE -->
+                <div class="control-group">
+                    <label>🔲 Système de Grille</label>
+                    <select id="gridSystem">
+                        <option value="">Aucun</option>
+                        <option value="strict grid system, mathematical precision, Swiss design grid">Grille stricte</option>
+                        <option value="isometric grid, 30-degree angles, 2.5d perspective">Grille isométrique</option>
+                        <option value="perspective grid, vanishing point, 3d illusion">Grille en perspective</option>
+                        <option value="modular grid, repeated units, systematic layout">Grille modulaire</option>
+                        <option value="golden ratio grid, fibonacci sequence, harmonic proportions">Grille nombre d'or</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="gridSystemCustom" placeholder="Décrivez la grille...">
+                    <div class="tech-info">Structure de composition géométrique</div>
+                </div>
+
+                <!-- SYMÉTRIE -->
+                <div class="control-group">
+                    <label>🔄 Symétrie</label>
+                    <select id="symmetry">
+                        <option value="">Choisir...</option>
+                        <option value="asymmetric composition, unbalanced dynamic">Asymétrique</option>
+                        <option value="vertical symmetry, mirror reflection, balanced">Symétrie verticale</option>
+                        <option value="horizontal symmetry, top-bottom mirror">Symétrie horizontale</option>
+                        <option value="radial symmetry, circular pattern, mandala-like">Symétrie radiale</option>
+                        <option value="bilateral symmetry, perfect mirror balance">Symétrie bilatérale</option>
+                        <option value="kaleidoscope symmetry, multiple reflections, complex pattern">Kaleidoscope</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="symmetryCustom" placeholder="Décrivez la symétrie...">
+                    <div class="tech-info">Type de symétrie compositionnelle</div>
+                </div>
+
+                <!-- NIVEAU DE DÉTAIL -->
+                <div class="control-group">
+                    <label>🎚️ Niveau de Détail</label>
+                    <select id="detailLevel">
+                        <option value="">Choisir...</option>
+                        <option value="iconic minimal, extreme simplification, pictogram level">Iconique minimal</option>
+                        <option value="simplified stylized, reduced detail, clean shapes">Simplifié stylisé</option>
+                        <option value="balanced detail, moderate complexity, readable clear">Détail équilibré</option>
+                        <option value="detailed illustration, rich textures, complex forms">Détaillé</option>
+                        <option value="highly detailed, intricate patterns, maximum complexity">Très détaillé</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="detailLevelCustom" placeholder="Décrivez le niveau...">
+                    <div class="tech-info">Quantité de détails visuels</div>
+                </div>
+
+                <!-- NOMBRE DE COULEURS -->
+                <div class="control-group">
+                    <label>🎨 Nombre de Couleurs</label>
+                    <select id="colorCount">
+                        <option value="">Choisir...</option>
+                        <option value="monochrome, single color, one hue only">1 couleur (Monochrome)</option>
+                        <option value="duotone, two colors, limited palette">2 couleurs (Duotone)</option>
+                        <option value="3-5 colors, restrained palette, selective color">3-5 couleurs</option>
+                        <option value="6-10 colors, diverse palette, colorful balanced">6-10 couleurs</option>
+                        <option value="11+ colors, rich palette, full spectrum">11+ couleurs</option>
+                        <option value="unlimited colors, full spectrum, maximum variety">Palette complète</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="colorCountCustom" placeholder="Décrivez le nombre...">
+                    <div class="tech-info">Limitation de la palette chromatique</div>
+                </div>
+
+                <!-- HARMONIE CHROMATIQUE -->
+                <div class="control-group">
+                    <label>🌈 Harmonie Chromatique</label>
+                    <select id="colorHarmony">
+                        <option value="">Choisir...</option>
+                        <option value="monochromatic harmony, single hue variations, tonal">Monochromatique</option>
+                        <option value="analogous color harmony, adjacent hues, smooth transitions">Analogique</option>
+                        <option value="complementary color harmony, opposite hues, high contrast">Complémentaire</option>
+                        <option value="split complementary, three colors, balanced contrast">Complémentaire divisée</option>
+                        <option value="triadic color harmony, three equally spaced hues">Triadique</option>
+                        <option value="tetradic color harmony, four colors, double complementary">Tétradique</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="colorHarmonyCustom" placeholder="Décrivez l'harmonie...">
+                    <div class="tech-info">Relation théorique entre les couleurs</div>
+                </div>
+
+                <!-- PALETTE PRÉDÉFINIE -->
+                <div class="control-group">
+                    <label>🎨 Palette Prédéfinie</label>
+                    <select id="colorPalette">
+                        <option value="">Style par défaut</option>
+                        <option value="corporate professional palette, blue grey sophisticated">Corporate/Professionnel</option>
+                        <option value="pastel soft palette, gentle muted colors">Pastel doux</option>
+                        <option value="vibrant bright palette, saturated energetic colors">Vive/Saturée</option>
+                        <option value="neon electric palette, fluorescent glowing colors">Néon/Électrique</option>
+                        <option value="vintage retro palette, muted nostalgic colors">Vintage/Rétro</option>
+                        <option value="earth tone palette, natural browns greens">Tons naturels/Terreux</option>
+                        <option value="primary colors palette, red blue yellow bold">Couleurs primaires</option>
+                        <option value="black and white, grayscale only, monochrome">Noir et blanc</option>
+                        <option value="warm palette, oranges reds yellows, hot colors">Palette chaude</option>
+                        <option value="cool palette, blues greens purples, cold colors">Palette froide</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="colorPaletteCustom" placeholder="Décrivez la palette...">
+                    <div class="tech-info">Gamme de couleurs thématique</div>
+                </div>
+
+                <!-- OMBRES/PROFONDEUR -->
+                <div class="control-group">
+                    <label>💡 Ombres/Profondeur</label>
+                    <select id="shadowDepth">
+                        <option value="">Choisir...</option>
+                        <option value="flat 2D, no shadows, completely flat design">Flat 2D (sans ombres)</option>
+                        <option value="subtle shadow, minimal depth, light drop shadow">Ombre subtile</option>
+                        <option value="long shadow, extended shadow effect, trendy flat">Long Shadow</option>
+                        <option value="isometric shadow, 2.5d depth, geometric shading">Ombre isométrique</option>
+                        <option value="layered depth, stacked elements, paper cut effect">Profondeur en couches</option>
+                        <option value="3D vector depth, pseudo-realistic shading, volumetric">Profondeur 3D vectorielle</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="shadowDepthCustom" placeholder="Décrivez les ombres...">
+                    <div class="tech-info">Traitement de la profondeur et des ombres</div>
+                </div>
+
+                <!-- SUJET PRINCIPAL -->
+                <div class="control-group">
+                    <label>👤 Sujet Principal</label>
+                    <select id="subjectMain">
+                        <option value="">Choisir...</option>
+                        <option value="vector character illustration, person">Personnage vectoriel</option>
+                        <option value="vector portrait, face illustration">Portrait vectoriel</option>
+                        <option value="abstract vector composition, non-representational">Composition abstraite</option>
+                        <option value="vector object illustration, product design">Objet vectoriel</option>
+                        <option value="vector landscape, scenic illustration">Paysage vectoriel</option>
+                        <option value="typographic design, text-based composition">Typographie</option>
+                        <option value="geometric pattern, repeating design">Motif géométrique</option>
+                        <option value="logo mark, brand symbol">Logo/Symbole</option>
+                        <option value="icon set, pictogram collection">Set d'icônes</option>
+                        <option value="infographic elements, data visualization">Éléments infographiques</option>
+                        <option value="vector mascot, brand character">Mascotte</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="subjectMainCustom" placeholder="Décrivez le sujet...">
+                    <div class="tech-info">Élément central de l'illustration</div>
+                </div>
+
+                <!-- STYLE DE PERSONNAGE -->
+                <div class="control-group">
+                    <label>🎭 Style de Personnage</label>
+                    <select id="characterStyle">
+                        <option value="">Aucun/Non applicable</option>
+                        <option value="stick figure, minimal character, simple lines">Stick Figure (bonhomme bâton)</option>
+                        <option value="chibi vector, cute simplified character">Chibi vectoriel</option>
+                        <option value="realistic vector portrait, detailed human features">Portrait réaliste vectoriel</option>
+                        <option value="mascot character, brand representative, friendly">Mascotte</option>
+                        <option value="geometric character, angular stylized person">Personnage géométrique</option>
+                        <option value="silhouette character, filled shape only">Silhouette</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="characterStyleCustom" placeholder="Décrivez le style...">
+                    <div class="tech-info">Style de représentation du personnage</div>
+                </div>
+
+                <!-- CATÉGORIE DE DESIGN -->
+                <div class="control-group">
+                    <label>🏢 Catégorie de Design</label>
+                    <select id="designCategory">
+                        <option value="">Choisir...</option>
+                        <option value="logo design, brand identity mark">Logo</option>
+                        <option value="vector illustration, editorial artwork">Illustration</option>
+                        <option value="infographic design, data visualization">Infographie</option>
+                        <option value="UI UX design, interface elements">UI/UX</option>
+                        <option value="icon design, pictogram set">Icônes</option>
+                        <option value="poster design, promotional artwork">Affiche/Poster</option>
+                        <option value="pattern design, textile surface">Pattern/Motif</option>
+                        <option value="packaging design, product wrapper">Packaging</option>
+                        <option value="web graphic, digital illustration">Graphique web</option>
+                        <option value="print design, editorial layout">Design print</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="designCategoryCustom" placeholder="Décrivez la catégorie...">
+                    <div class="tech-info">Type de production graphique</div>
+                </div>
+
+                <!-- CONCEPT/USAGE -->
+                <div class="control-group">
+                    <label>🎯 Concept/Usage</label>
+                    <select id="conceptUsage">
+                        <option value="">Choisir...</option>
+                        <option value="branding identity, corporate image">Branding/Identité</option>
+                        <option value="marketing campaign, promotional material">Campagne marketing</option>
+                        <option value="app interface, mobile design">Interface app</option>
+                        <option value="website hero image, web header">Image hero web</option>
+                        <option value="social media graphic, Instagram post">Social media</option>
+                        <option value="print advertisement, magazine ad">Publicité print</option>
+                        <option value="editorial illustration, article header">Illustration éditoriale</option>
+                        <option value="product packaging, box design">Packaging produit</option>
+                        <option value="presentation slide, PowerPoint graphic">Slide présentation</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="conceptUsageCustom" placeholder="Décrivez l'usage...">
+                    <div class="tech-info">Destination et utilisation finale</div>
+                </div>
+
+                <!-- OBJETS/ÉLÉMENTS -->
+                <div class="control-group">
+                    <label>📦 Objets/Éléments</label>
+                    <select id="objects">
+                        <option value="">Aucun</option>
+                        <option value="geometric shapes, circles squares triangles">Formes géométriques de base</option>
+                        <option value="vector icons, simple pictograms">Icônes vectorielles</option>
+                        <option value="badges ribbons, award elements">Badges/Ribbons</option>
+                        <option value="abstract shapes, organic blobs">Formes abstraites</option>
+                        <option value="botanical elements, leaves flowers">Éléments botaniques</option>
+                        <option value="tech elements, circuits digital">Éléments tech/digitaux</option>
+                        <option value="arrows pointers, directional elements">Flèches/Pointeurs</option>
+                        <option value="stars sparkles, decorative elements">Étoiles/Paillettes</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="objectsCustom" placeholder="Décrivez les objets...">
+                    <div class="tech-info">Éléments graphiques additionnels</div>
+                </div>
+
+                <!-- COMPOSITION -->
+                <div class="control-group">
+                    <label>📐 Composition</label>
+                    <select id="composition">
+                        <option value="">Par défaut</option>
+                        <option value="rule of thirds composition, balanced placement">Règle des tiers</option>
+                        <option value="golden ratio composition, fibonacci spiral">Nombre d'or</option>
+                        <option value="centered symmetrical composition, perfect balance">Centré symétrique</option>
+                        <option value="dynamic diagonal composition, energetic angles">Diagonales dynamiques</option>
+                        <option value="radial composition, circular flow">Composition radiale</option>
+                        <option value="grid-based composition, systematic layout">Basé sur grille</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="compositionCustom" placeholder="Décrivez la composition...">
+                    <div class="tech-info">Structure compositionnelle</div>
+                </div>
+
+                <!-- LAYOUT STRUCTURE -->
+                <div class="control-group">
+                    <label>🔲 Layout Structure</label>
+                    <select id="layoutStructure">
+                        <option value="">Choisir...</option>
+                        <option value="grid-based layout, modular systematic">Basé sur grille</option>
+                        <option value="organic flow layout, natural arrangement">Flux organique</option>
+                        <option value="centered layout, symmetrical balance">Centré</option>
+                        <option value="asymmetric layout, dynamic unbalanced">Asymétrique</option>
+                        <option value="vertical layout, top-to-bottom flow">Layout vertical</option>
+                        <option value="horizontal layout, left-to-right flow">Layout horizontal</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="layoutStructureCustom" placeholder="Décrivez le layout...">
+                    <div class="tech-info">Organisation spatiale globale</div>
+                </div>
+
+                <!-- AMBIANCE GRAPHIQUE -->
+                <div class="control-group">
+                    <label>🎨 Ambiance Graphique</label>
+                    <select id="graphicMood">
+                        <option value="">Par défaut</option>
+                        <option value="corporate professional, business formal">Corporate/Professionnel</option>
+                        <option value="playful fun, energetic joyful">Ludique/Amusant</option>
+                        <option value="elegant sophisticated, refined classy">Élégant/Sophistiqué</option>
+                        <option value="retro vintage, nostalgic classic">Rétro/Vintage</option>
+                        <option value="modern contemporary, cutting-edge fresh">Moderne/Contemporain</option>
+                        <option value="minimal clean, simple pure">Minimal/Épuré</option>
+                        <option value="bold dramatic, strong impactful">Audacieux/Dramatique</option>
+                        <option value="friendly approachable, warm welcoming">Amical/Accueillant</option>
+                        <option value="tech futuristic, digital innovative">Tech/Futuriste</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="graphicMoodCustom" placeholder="Décrivez l'ambiance...">
+                    <div class="tech-info">Ton émotionnel du design</div>
+                </div>
+
+                <!-- ARRIÈRE-PLAN -->
+                <div class="control-group">
+                    <label>🏞️ Arrière-plan</label>
+                    <select id="background">
+                        <option value="">Choisir...</option>
+                        <option value="solid color background, single flat color">Couleur unie</option>
+                        <option value="gradient background, smooth color transition">Dégradé</option>
+                        <option value="pattern background, repeating texture">Motif/Pattern</option>
+                        <option value="transparent background, no background">Transparent</option>
+                        <option value="white background, clean blank">Fond blanc</option>
+                        <option value="complex scene background, detailed environment">Scène complexe</option>
+                        <option value="geometric shapes background, abstract forms">Formes géométriques</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="backgroundCustom" placeholder="Décrivez l'arrière-plan...">
+                    <div class="tech-info">Traitement de l'arrière-plan</div>
+                </div>
+
+                <!-- ÉLÉMENTS DÉCORATIFS -->
+                <div class="control-group">
+                    <label>🌟 Éléments Décoratifs</label>
+                    <select id="decorativeElements">
+                        <option value="">Aucun</option>
+                        <option value="geometric shapes decoration, abstract forms">Formes géométriques</option>
+                        <option value="dots decoration, circular elements">Points/Dots</option>
+                        <option value="lines decoration, linear elements">Lignes décoratives</option>
+                        <option value="stars decoration, celestial elements">Étoiles</option>
+                        <option value="botanical decoration, plant elements">Éléments botaniques</option>
+                        <option value="sparkles glitter, light effects">Paillettes/Sparkles</option>
+                        <option value="frame border, decorative edge">Cadre/Bordure</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="decorativeElementsCustom" placeholder="Décrivez les éléments...">
+                    <div class="tech-info">Ornements et décorations additionnels</div>
+                </div>
+
+                <!-- TYPOGRAPHIE -->
+                <div class="control-group">
+                    <label>🔤 Inclusion Typographie</label>
+                    <select id="typography">
+                        <option value="">Sans texte</option>
+                        <option value="with title text, headline typography">Avec titre</option>
+                        <option value="with body text, paragraph typography">Avec texte de corps</option>
+                        <option value="text-heavy design, typography-focused">Riche en texte</option>
+                        <option value="typographic design, text as main element">Typographie dominante</option>
+                        <option value="minimal text, subtle lettering">Texte minimal</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="typographyCustom" placeholder="Décrivez la typo...">
+                    <div class="tech-info">Présence et rôle du texte</div>
+                </div>
+
+                <!-- STYLE TYPOGRAPHIQUE -->
+                <div class="control-group">
+                    <label>📝 Style Typographique</label>
+                    <select id="typographicStyle">
+                        <option value="">Aucun/Non applicable</option>
+                        <option value="serif typography, traditional elegant">Serif</option>
+                        <option value="sans-serif typography, modern clean">Sans-serif</option>
+                        <option value="display typography, decorative bold">Display</option>
+                        <option value="handwritten vector typography, script style">Handwritten vectoriel</option>
+                        <option value="geometric typography, mathematical precise">Géométrique</option>
+                        <option value="monospace typography, code-like">Monospace</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="typographicStyleCustom" placeholder="Décrivez le style...">
+                    <div class="tech-info">Famille et style de police</div>
+                </div>
+
+                <!-- STYLE D'IMPRESSION -->
+                <div class="control-group">
+                    <label>🖨️ Style d'Impression</label>
+                    <select id="printStyle">
+                        <option value="">Aucun effet d'impression</option>
+                        <option value="screen print style, silkscreen aesthetic">Sérigraphie (Screen print)</option>
+                        <option value="risograph print style, vintage duplicator">Risograph</option>
+                        <option value="offset print style, commercial printing">Offset</option>
+                        <option value="digital print style, modern clean">Impression digitale</option>
+                        <option value="letterpress style, embossed effect">Letterpress</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="printStyleCustom" placeholder="Décrivez le style...">
+                    <div class="tech-info">Esthétique de technique d'impression</div>
+                </div>
+
+                <!-- FORMAT DE SORTIE -->
+                <div class="control-group">
+                    <label>📐 Format de Sortie</label>
+                    <select id="outputFormat">
+                        <option value="">Standard</option>
+                        <option value="logo SVG format, scalable symbol">Logo SVG</option>
+                        <option value="illustration for print, high detail artwork">Illustration print</option>
+                        <option value="web graphic, optimized digital">Graphique web</option>
+                        <option value="app icon, mobile application symbol">Icône app</option>
+                        <option value="social media graphic, Instagram optimized">Social media</option>
+                        <option value="presentation graphic, slide-ready">Graphique présentation</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="outputFormatCustom" placeholder="Décrivez le format...">
+                    <div class="tech-info">Destination technique finale</div>
+                </div>
+
+                <!-- QUALITY BOOSTERS -->
+                <div class="control-group">
+                    <label>⭐ Boosts Qualité</label>
+                    <select id="qualityBoost">
+                        <option value="">Standard</option>
+                        <option value="professional vector, clean paths">Professional + Clean Paths</option>
+                        <option value="professional vector, clean paths, optimized">+ Optimized</option>
+                        <option value="professional vector, clean paths, optimized, print-ready">+ Print-Ready</option>
+                        <option value="professional vector, clean paths, optimized, print-ready, award-winning design">+ Award-Winning</option>
+                    </select>
+                    <div class="tech-info">Termes pour améliorer la qualité vectorielle</div>
+                </div>
+
+                <!-- RATIO -->
+                <div class="control-group">
+                    <label>📐 Ratio d'Image</label>
+                    <select id="aspectRatio">
+                        <option value="--ar 1:1">1:1 (Carré - Instagram/Logo)</option>
+                        <option value="--ar 4:5">4:5 (Portrait - Instagram)</option>
+                        <option value="--ar 2:3">2:3 (Portrait classique)</option>
+                        <option value="--ar 3:2">3:2 (Paysage classique)</option>
+                        <option value="--ar 16:9">16:9 (Paysage - HD)</option>
+                        <option value="--ar 21:9">21:9 (Cinématique)</option>
+                        <option value="--ar 9:16">9:16 (Vertical - Mobile)</option>
+                        <option value="--ar 3:4">3:4 (Portrait standard)</option>
+                        <option value="--ar 4:3">4:3 (Paysage standard)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="aspectRatioCustom" placeholder="Ex: --ar 5:4">
+                    <div class="tech-info">Format et proportions de l'image</div>
+                </div>
+
+                <!-- COMPLEXITÉ GLOBALE -->
+                <div class="control-group">
+                    <label>🎚️ Complexité Globale</label>
+                    <select id="globalComplexity">
+                        <option value="">Balanced (Équilibré)</option>
+                        <option value="minimal simplicity, extreme reduction">Minimal</option>
+                        <option value="detailed complex, rich visual">Détaillé</option>
+                        <option value="intricate elaborate, maximum detail">Complexe/Élaboré</option>
+                    </select>
+                    <div class="tech-info">Niveau de complexité d'ensemble</div>
+                </div>
+
+            </div>
+
+            <!-- SECTION OUTPUT -->
+            <div class="output-section">
+                <h2>📝 Prompt Généré</h2>
+                <div class="prompt-output empty" id="promptOutput">
+                    Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"
+                </div>
+                
+                <div class="token-counter">
+                    <span>Tokens estimés:</span>
+                    <div class="token-count" id="tokenCount">0</div>
+                </div>
+
+                <div class="negative-prompt">
+                    <h3>🚫 Prompt Négatif</h3>
+                    
+                    <div style="background: #fff5f5; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 2px solid #f8d7da;">
+                        <div style="margin-bottom: 10px; font-weight: bold; color: #721c24;">Options de filtrage :</div>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockRaster" checked style="margin-right: 8px;">
+                            Bloquer rendu raster/pixelisé
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockPhoto" checked style="margin-right: 8px;">
+                            Bloquer effets photographiques
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockComplexGradients" style="margin-right: 8px;">
+                            Bloquer dégradés complexes (pour pure flat)
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockRealisticShadows" style="margin-right: 8px;">
+                            Bloquer ombres réalistes
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockBitmapTextures" checked style="margin-right: 8px;">
+                            Bloquer textures bitmap
+                        </label>
+                    </div>
+                    
+                    <div class="negative-output" id="negativeOutput">
+raster, pixelated, bitmap texture, photorealistic effects, photo filter, noise texture, film grain, jpeg artifacts, low resolution, blurry edges, anti-aliasing artifacts, rasterized, hand-drawn sketch, pencil texture, watercolor, oil painting, depth of field, bokeh, lens effects, camera artifacts, poorly drawn, distorted shapes, messy paths, overlapping anchor points
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOUTONS D'ACTION -->
+        <div class="button-container">
+            <button class="btn btn-generate" onclick="generatePrompt()">
+                ⚡ GÉNÉRER LE PROMPT
+            </button>
+            <button class="btn btn-copy" onclick="copyPrompt()">
+                📋 COPIER PROMPT COMPLET
+            </button>
+            <button class="btn btn-reset" onclick="resetAll()">
+                🔄 RESET 100%
+            </button>
+            <button class="btn btn-random" onclick="randomPrompt()">
+                🎲 PROMPT ALÉATOIRE
+            </button>
+            <button class="btn btn-export" onclick="exportPrompt()">
+                💾 EXPORTER EN .TXT
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Mise à jour du prompt négatif selon les toggles
+        function updateNegativePrompt() {
+            const negativeBase = [];
+            
+            // Bloquer raster
+            if (document.getElementById('blockRaster').checked) {
+                negativeBase.push('raster, pixelated, bitmap texture, low resolution, jpeg artifacts, anti-aliasing artifacts, rasterized');
+            }
+            
+            // Bloquer photo
+            if (document.getElementById('blockPhoto').checked) {
+                negativeBase.push('photorealistic effects, photo filter, depth of field, bokeh, lens effects, camera artifacts, photography');
+            }
+            
+            // Bloquer dégradés complexes
+            if (document.getElementById('blockComplexGradients').checked) {
+                negativeBase.push('complex gradients, gradient mesh, photorealistic shading');
+            }
+            
+            // Bloquer ombres réalistes
+            if (document.getElementById('blockRealisticShadows').checked) {
+                negativeBase.push('realistic shadows, 3d render shadows, photorealistic depth');
+            }
+            
+            // Bloquer textures bitmap
+            if (document.getElementById('blockBitmapTextures').checked) {
+                negativeBase.push('noise texture, film grain, hand-drawn sketch, pencil texture, watercolor, oil painting, canvas texture');
+            }
+            
+            // Toujours inclure les défauts de qualité vectorielle
+            negativeBase.push('blurry edges, poorly drawn, distorted shapes, messy paths, overlapping anchor points, bad vector quality, amateur vector, sloppy design');
+            
+            const finalNegative = negativeBase.join(', ');
+            document.getElementById('negativeOutput').textContent = finalNegative;
+        }
+
+        // Listener pour les toggles
+        ['blockRaster', 'blockPhoto', 'blockComplexGradients', 'blockRealisticShadows', 'blockBitmapTextures'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updateNegativePrompt);
+        });
+
+        // Initialiser le prompt négatif
+        updateNegativePrompt();
+
+        // Gestion des champs personnalisés
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                const customInput = document.getElementById(this.id + 'Custom');
+                if (customInput) {
+                    if (this.value === 'custom') {
+                        customInput.classList.add('active');
+                    } else {
+                        customInput.classList.remove('active');
+                        customInput.value = '';
+                    }
+                }
+            });
+        });
+
+        // Mode Expert
+        document.getElementById('expertMode').addEventListener('change', function() {
+            const techInfos = document.querySelectorAll('.tech-info');
+            techInfos.forEach(info => {
+                if (this.checked) {
+                    info.classList.add('show');
+                } else {
+                    info.classList.remove('show');
+                }
+            });
+        });
+
+        // Notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fonction pour obtenir la valeur (custom ou select)
+        function getValue(selectId) {
+            const select = document.getElementById(selectId);
+            const customInput = document.getElementById(selectId + 'Custom');
+            
+            if (select.value === 'custom' && customInput && customInput.value.trim()) {
+                return customInput.value.trim();
+            }
+            return select.value;
+        }
+
+        // Générateur de prompt
+        function generatePrompt() {
+            const parts = [];
+            
+            // Quality Boosters (en tout premier si sélectionné)
+            const qualityBoost = getValue('qualityBoost');
+            if (qualityBoost) {
+                parts.push(qualityBoost);
+            }
+
+            // Style principal (doit être en premier après quality)
+            const styleMain = getValue('styleMain');
+            if (styleMain) {
+                parts.push(styleMain);
+            }
+
+            // Inspiré par (très important pour le style)
+            const inspiredBy = getValue('inspiredBy');
+            if (inspiredBy) {
+                parts.push(inspiredBy);
+            }
+
+            // Traitement vectoriel
+            const vectorTreatment = getValue('vectorTreatment');
+            if (vectorTreatment) {
+                parts.push(vectorTreatment);
+            }
+
+            // Complexité géométrique
+            const geometricComplexity = getValue('geometricComplexity');
+            if (geometricComplexity) {
+                parts.push(geometricComplexity);
+            }
+
+            // Type de tracé
+            const strokeType = getValue('strokeType');
+            if (strokeType) {
+                parts.push(strokeType);
+            }
+
+            // Système de grille
+            const gridSystem = getValue('gridSystem');
+            if (gridSystem) {
+                parts.push(gridSystem);
+            }
+
+            // Symétrie
+            const symmetry = getValue('symmetry');
+            if (symmetry) {
+                parts.push(symmetry);
+            }
+
+            // Niveau de détail
+            const detailLevel = getValue('detailLevel');
+            if (detailLevel) {
+                parts.push(detailLevel);
+            }
+
+            // Sujet principal
+            const subjectMain = getValue('subjectMain');
+            if (subjectMain) {
+                parts.push(subjectMain);
+            }
+
+            // Style de personnage
+            const characterStyle = getValue('characterStyle');
+            if (characterStyle) {
+                parts.push(characterStyle);
+            }
+
+            // Catégorie de design
+            const designCategory = getValue('designCategory');
+            if (designCategory) {
+                parts.push(designCategory);
+            }
+
+            // Concept/Usage
+            const conceptUsage = getValue('conceptUsage');
+            if (conceptUsage) {
+                parts.push(conceptUsage);
+            }
+
+            // Objets
+            const objects = getValue('objects');
+            if (objects) {
+                parts.push(objects);
+            }
+
+            // Nombre de couleurs
+            const colorCount = getValue('colorCount');
+            if (colorCount) {
+                parts.push(colorCount);
+            }
+
+            // Harmonie chromatique
+            const colorHarmony = getValue('colorHarmony');
+            if (colorHarmony) {
+                parts.push(colorHarmony);
+            }
+
+            // Palette prédéfinie
+            const colorPalette = getValue('colorPalette');
+            if (colorPalette) {
+                parts.push(colorPalette);
+            }
+
+            // Ombres/Profondeur
+            const shadowDepth = getValue('shadowDepth');
+            if (shadowDepth) {
+                parts.push(shadowDepth);
+            }
+
+            // Composition
+            const composition = getValue('composition');
+            if (composition) {
+                parts.push(composition);
+            }
+
+            // Layout structure
+            const layoutStructure = getValue('layoutStructure');
+            if (layoutStructure) {
+                parts.push(layoutStructure);
+            }
+
+            // Ambiance graphique
+            const graphicMood = getValue('graphicMood');
+            if (graphicMood) {
+                parts.push(graphicMood);
+            }
+
+            // Arrière-plan
+            const background = getValue('background');
+            if (background) {
+                parts.push(background);
+            }
+
+            // Éléments décoratifs
+            const decorativeElements = getValue('decorativeElements');
+            if (decorativeElements) {
+                parts.push(decorativeElements);
+            }
+
+            // Typographie
+            const typography = getValue('typography');
+            if (typography) {
+                parts.push(typography);
+            }
+
+            // Style typographique
+            const typographicStyle = getValue('typographicStyle');
+            if (typographicStyle) {
+                parts.push(typographicStyle);
+            }
+
+            // Style d'impression
+            const printStyle = getValue('printStyle');
+            if (printStyle) {
+                parts.push(printStyle);
+            }
+
+            // Format de sortie
+            const outputFormat = getValue('outputFormat');
+            if (outputFormat) {
+                parts.push(outputFormat);
+            }
+
+            // Complexité globale
+            const globalComplexity = getValue('globalComplexity');
+            if (globalComplexity) {
+                parts.push(globalComplexity);
+            }
+
+            // Ratio (à la fin)
+            const aspectRatio = getValue('aspectRatio');
+            let ratioText = '';
+            if (aspectRatio) {
+                ratioText = ' ' + aspectRatio;
+            }
+
+            // Construction du prompt final
+            let finalPrompt = parts.join(', ') + ratioText;
+
+            if (!finalPrompt.trim()) {
+                finalPrompt = 'Veuillez sélectionner au moins un paramètre';
+            }
+
+            // Affichage
+            const promptOutput = document.getElementById('promptOutput');
+            promptOutput.textContent = finalPrompt;
+            promptOutput.classList.remove('empty');
+
+            // Estimation tokens
+            const tokenCount = Math.ceil(finalPrompt.split(/[\s,]+/).length * 1.3);
+            document.getElementById('tokenCount').textContent = tokenCount;
+
+            showNotification('✅ Prompt généré !');
+        }
+
+        // Copier le prompt
+        function copyPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            const negativeText = document.getElementById('negativeOutput').textContent;
+            
+            if (promptText === 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"' || 
+                promptText === 'Veuillez sélectionner au moins un paramètre') {
+                showNotification('⚠️ Générez d\'abord un prompt !');
+                return;
+            }
+
+            const fullPrompt = `POSITIVE PROMPT:\n${promptText}\n\nNEGATIVE PROMPT:\n${negativeText}`;
+            
+            navigator.clipboard.writeText(fullPrompt).then(() => {
+                showNotification('✅ Prompt copié dans le presse-papier !');
+            }).catch(err => {
+                showNotification('❌ Erreur lors de la copie');
+            });
+        }
+
+        // Reset
+        function resetAll() {
+            // Reset tous les selects
+            selects.forEach(select => {
+                select.selectedIndex = 0;
+            });
+
+            // Reset tous les inputs custom
+            const customInputs = document.querySelectorAll('input[type="text"]');
+            customInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('active');
+            });
+
+            // Reset output
+            const promptOutput = document.getElementById('promptOutput');
+            promptOutput.textContent = 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"';
+            promptOutput.classList.add('empty');
+            
+            document.getElementById('tokenCount').textContent = '0';
+
+            showNotification('🔄 Tout a été réinitialisé !');
+        }
+
+        // Prompt aléatoire
+        function randomPrompt() {
+            resetAll();
+
+            selects.forEach(select => {
+                // Exclure certains selects du random
+                if (select.id !== 'aspectRatio' && 
+                    select.id !== 'globalComplexity' &&
+                    select.id !== 'qualityBoost' &&
+                    select.id !== 'characterStyle' &&
+                    select.id !== 'typography' &&
+                    select.id !== 'typographicStyle') {
+                    const options = Array.from(select.options).filter(opt => 
+                        opt.value !== '' && opt.value !== 'custom'
+                    );
+                    if (options.length > 0) {
+                        const randomOption = options[Math.floor(Math.random() * options.length)];
+                        select.value = randomOption.value;
+                    }
+                }
+            });
+
+            // Ratio aléatoire
+            const ratioSelect = document.getElementById('aspectRatio');
+            const ratioOptions = Array.from(ratioSelect.options).filter(opt => opt.value !== 'custom');
+            ratioSelect.value = ratioOptions[Math.floor(Math.random() * ratioOptions.length)].value;
+
+            generatePrompt();
+            showNotification('🎲 Prompt aléatoire généré !');
+        }
+
+        // Export TXT
+        function exportPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            const negativeText = document.getElementById('negativeOutput').textContent;
+            
+            if (promptText === 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"' || 
+                promptText === 'Veuillez sélectionner au moins un paramètre') {
+                showNotification('⚠️ Générez d\'abord un prompt !');
+                return;
+            }
+
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            const filename = `vector-prompt-${timestamp}.txt`;
+
+            const content = `VECTOR PROMPT GENERATOR
+Generated: ${new Date().toLocaleString('fr-FR')}
+============================================
+
+POSITIVE PROMPT:
+${promptText}
+
+NEGATIVE PROMPT:
+${negativeText}
+
+============================================
+PARAMETERS USED:
+- Quality Boost: ${document.getElementById('qualityBoost').options[document.getElementById('qualityBoost').selectedIndex]?.text || 'Standard'}
+- Style: ${document.getElementById('styleMain').options[document.getElementById('styleMain').selectedIndex]?.text || 'Non défini'}
+- Inspired By: ${document.getElementById('inspiredBy').options[document.getElementById('inspiredBy').selectedIndex]?.text || 'Aucune inspiration'}
+- Vector Treatment: ${document.getElementById('vectorTreatment').options[document.getElementById('vectorTreatment').selectedIndex]?.text || 'Non défini'}
+- Geometric Complexity: ${document.getElementById('geometricComplexity').options[document.getElementById('geometricComplexity').selectedIndex]?.text || 'Non défini'}
+- Stroke Type: ${document.getElementById('strokeType').options[document.getElementById('strokeType').selectedIndex]?.text || 'Non défini'}
+- Grid System: ${document.getElementById('gridSystem').options[document.getElementById('gridSystem').selectedIndex]?.text || 'Aucun'}
+- Symmetry: ${document.getElementById('symmetry').options[document.getElementById('symmetry').selectedIndex]?.text || 'Non défini'}
+- Detail Level: ${document.getElementById('detailLevel').options[document.getElementById('detailLevel').selectedIndex]?.text || 'Non défini'}
+- Subject: ${document.getElementById('subjectMain').options[document.getElementById('subjectMain').selectedIndex]?.text || 'Non défini'}
+- Character Style: ${document.getElementById('characterStyle').options[document.getElementById('characterStyle').selectedIndex]?.text || 'Non applicable'}
+- Design Category: ${document.getElementById('designCategory').options[document.getElementById('designCategory').selectedIndex]?.text || 'Non défini'}
+- Concept/Usage: ${document.getElementById('conceptUsage').options[document.getElementById('conceptUsage').selectedIndex]?.text || 'Non défini'}
+- Objects: ${document.getElementById('objects').options[document.getElementById('objects').selectedIndex]?.text || 'Aucun'}
+- Color Count: ${document.getElementById('colorCount').options[document.getElementById('colorCount').selectedIndex]?.text || 'Non défini'}
+- Color Harmony: ${document.getElementById('colorHarmony').options[document.getElementById('colorHarmony').selectedIndex]?.text || 'Non défini'}
+- Color Palette: ${document.getElementById('colorPalette').options[document.getElementById('colorPalette').selectedIndex]?.text || 'Style par défaut'}
+- Shadow/Depth: ${document.getElementById('shadowDepth').options[document.getElementById('shadowDepth').selectedIndex]?.text || 'Non défini'}
+- Composition: ${document.getElementById('composition').options[document.getElementById('composition').selectedIndex]?.text || 'Par défaut'}
+- Layout Structure: ${document.getElementById('layoutStructure').options[document.getElementById('layoutStructure').selectedIndex]?.text || 'Non défini'}
+- Graphic Mood: ${document.getElementById('graphicMood').options[document.getElementById('graphicMood').selectedIndex]?.text || 'Par défaut'}
+- Background: ${document.getElementById('background').options[document.getElementById('background').selectedIndex]?.text || 'Non défini'}
+- Decorative Elements: ${document.getElementById('decorativeElements').options[document.getElementById('decorativeElements').selectedIndex]?.text || 'Aucun'}
+- Typography: ${document.getElementById('typography').options[document.getElementById('typography').selectedIndex]?.text || 'Sans texte'}
+- Typographic Style: ${document.getElementById('typographicStyle').options[document.getElementById('typographicStyle').selectedIndex]?.text || 'Non applicable'}
+- Print Style: ${document.getElementById('printStyle').options[document.getElementById('printStyle').selectedIndex]?.text || 'Aucun'}
+- Output Format: ${document.getElementById('outputFormat').options[document.getElementById('outputFormat').selectedIndex]?.text || 'Standard'}
+- Global Complexity: ${document.getElementById('globalComplexity').options[document.getElementById('globalComplexity').selectedIndex]?.text || 'Balanced'}
+- Ratio: ${document.getElementById('aspectRatio').options[document.getElementById('aspectRatio').selectedIndex]?.text || 'Non défini'}
+`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showNotification('💾 Fichier .txt exporté !');
+        }
+    </script>
+</body>
+</html>
