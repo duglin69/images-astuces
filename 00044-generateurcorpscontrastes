@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Thèse : Corps & Contrastes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #f0fdf4; font-family: 'Georgia', serif; color: #166534; }
+        .card { background: white; border: 1px solid #bbf7d0; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .section-title { color: #15803d; border-bottom: 2px solid #dcfce7; margin-bottom: 1.5rem; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        label { color: #166534; font-weight: 600; font-size: 0.75rem; margin-bottom: 4px; display: block; }
+        select, input { border: 1px solid #86efac !important; background: #f9fefb !important; border-radius: 10px !important; font-size: 0.85rem !important; margin-bottom: 8px; }
+        .btn-magic { background: linear-gradient(to right, #15803d, #16a34a); color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+        .btn-magic:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-random { background-color: #4338ca; color: white; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .btn-reset { background: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 800; border-radius: 8px; cursor: pointer; }
+        .output-box { background: #f8fafc; border-radius: 12px; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; border: 1px solid #e2e8f0; min-height: 120px; white-space: pre-wrap; color: #1e293b; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto card p-6 md:p-10 rounded-[2.5rem]">
+        <h1 class="text-4xl font-serif text-center text-green-900 mb-2">Atelier Maman : Corps & Contrastes</h1>
+        <p class="text-center text-green-600 text-sm italic mb-10">Analyse anthropologique et célébration du corps à travers les âges</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            
+            <div class="space-y-6">
+                <div class="section-title">🧬 Identité & Forme</div>
+                
+                <div>
+                    <label>Le Modèle (Sujet principal)</label>
+                    <select id="subject" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir un modèle --</option>
+                        <optgroup label="👥 ÊTRES HUMAINS">
+                            <option value="a beautiful woman with a graceful presence">Féminité Gracieuse</option>
+                            <option value="a muscular man with classical proportions">Masculinité Athlétique</option>
+                            <option value="a diverse group of models in artistic interaction">Groupe en interaction</option>
+                        </optgroup>
+                        <optgroup label="🎎 L'ARTIFICIEL (Corps-Objet)">
+                            <option value="an adorable Chibi version with oversized expressive eyes">Style Chibi (Mignon)</option>
+                            <option value="a handcrafted wooden puppet with visible joints and strings">Marionnette de bois</option>
+                            <option value="a delicate porcelain doll with a fine cracked glaze">Poupée de Porcelaine</option>
+                            <option value="a high-end collectible resin figurine on a pedestal">Figurine de collection</option>
+                        </optgroup>
+                        <option value="custom">✨ Personnaliser le sujet...</option>
+                    </select>
+                    <input type="text" id="subject_custom" placeholder="Décrire le modèle..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Vestiaire (Célébration du corps)</label>
+                    <select id="wardrobe" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir une tenue --</option>
+                        <optgroup label="👙 CÉLÉBRATION (Léger)">
+                            <option value="wearing a minimalist silk monokini">Monokini Soie</option>
+                            <option value="wearing a vintage lace bikini">Bikini Dentelle</option>
+                            <option value="draped in sheer vaporeux fabrics and veils">Voiles Translucides</option>
+                        </optgroup>
+                        <optgroup label="👗 LE QUOTIDIEN (Habillé)">
+                            <option value="wearing an elegant tailored linen suit">Costume de Lin Élégant</option>
+                            <option value="wearing comfortable bohemian lounge wear">Tenue Bohème Relax</option>
+                        </optgroup>
+                        <option value="custom">✨ Autre tenue...</option>
+                    </select>
+                    <input type="text" id="wardrobe_custom" placeholder="Décrire la tenue..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Compagnon ou Objet</label>
+                    <select id="companion" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Aucun compagnon --</option>
+                        <option value="holding a small vintage teddy bear found on a train platform">Le Doudou du Quai</option>
+                        <option value="accompanied by a majestic white wolf">Un Loup Blanc</option>
+                        <option value="surrounded by floating mechanical brass gears and cogs">Rouages Steampunk</option>
+                        <option value="custom">✨ Autre objet...</option>
+                    </select>
+                    <input type="text" id="companion_custom" placeholder="Objet ou compagnon..." class="w-full p-2 hidden">
+                </div>
+            </div>
+
+            <div class="space-y-6 border-x border-green-50 px-0 md:px-8">
+                <div class="section-title">⌛ Époques & Esthétique</div>
+                
+                <div>
+                    <label>Époque (Le Temps)</label>
+                    <select id="era" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir une époque --</option>
+                        <optgroup label="📜 PASSÉ">
+                            <option value="in the prehistoric era">Préhistoire</option>
+                            <option value="during Ancient Egypt times">Antiquité Égyptienne</option>
+                            <option value="during the Roman Empire era">Antiquité Romaine</option>
+                            <option value="in the Renaissance period">Renaissance</option>
+                            <option value="during the Baroque era">Époque Baroque</option>
+                            <option value="in the 1920s roaring twenties style">Années 20</option>
+                            <option value="in the 1950s vintage style">Années 50 (Pin-up)</option>
+                        </optgroup>
+                        <optgroup label="🚀 FUTUR">
+                            <option value="in the near future (2050)">Futur Proche</option>
+                            <option value="in a distant galactic future, year 4000">Futur très lointain</option>
+                        </optgroup>
+                        <option value="in the modern day">Époque Contemporaine</option>
+                        <option value="custom">✨ Autre époque...</option>
+                    </select>
+                    <input type="text" id="era_custom" placeholder="Préciser l'époque..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Lieu & Décor (L'Espace)</label>
+                    <select id="location" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir un lieu --</option>
+                        <optgroup label="🏛️ ARCHITECTURE">
+                            <option value="on a high-fashion runway catwalk">Podium de défilé</option>
+                            <option value="in a grand marble palace hall">Palais de marbre</option>
+                            <option value="in an abandoned industrial warehouse">Hangar industriel</option>
+                            <option value="on a theatrical stage with red velvet curtains">Scène de théâtre</option>
+                        </optgroup>
+                        <optgroup label="🌿 NATURE">
+                            <option value="in a lush tropical jungle near a waterfall">Jungle & Cascade</option>
+                            <option value="on a misty deserted beach">Plage déserte</option>
+                            <option value="in a secret blooming garden">Jardin secret</option>
+                            <option value="in a dark primeval torch-lit cave">Grotte profonde</option>
+                        </optgroup>
+                        <optgroup label="🌀 SURRÉALISTE & SF">
+                            <option value="in a surrealist landscape with floating geometric shapes">Paysage surréaliste</option>
+                            <option value="inside a sleek white spaceship corridor">Vaisseau spatial</option>
+                            <option value="underwater in a coral reef">Sous l'eau (Récif)</option>
+                        </optgroup>
+                        <option value="custom">✨ Autre lieu...</option>
+                    </select>
+                    <input type="text" id="location_custom" placeholder="Décrire le décor..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+    <label>Miroir : Cadrage & Pose</label>
+    <select id="mirror_pose" class="w-full p-2" onchange="toggleCustom(this)">
+        <option value="">-- Pas de pose spécifique --</option>
+        <optgroup label="📸 COMPOSITION">
+            <option value="extreme close-up on the face reflected in the mirror, focus on eyes">Gros plan : Le Visage</option>
+            <option value="full body shot reflected in a large mirror, standing pose">Plein pied : Le Corps entier</option>
+            <option value="shot from behind the model, showing their back and their reflection">Amorce : Dos et Reflet</option>
+        </optgroup>
+        <optgroup label="💃 ATTITUDE">
+            <option value="standing in profile, looking into the mirror with a serious gaze">Profil (Regard direct)</option>
+            <option value="looking at the mirror but turning the head away, an elusive gaze">Regard fuyant (Tête détournée)</option>
+            <option value="leaning close to the mirror, touching the glass with fingertips">Contact (Main sur la vitre)</option>
+        </optgroup>
+        <option value="custom">✨ Autre pose...</option>
+    </select>
+    <input type="text" id="mirror_pose_custom" placeholder="Décrire la pose..." class="w-full mt-2 p-2 hidden">
+</div>
+
+<div>
+    <label>Miroir : Nature du Reflet</label>
+    <select id="mirror_effect" class="w-full p-2" onchange="toggleCustom(this)">
+        <option value="">-- Reflet normal --</option>
+        <optgroup label="🎭 IDENTITÉ">
+            <option value="the mirror reflects the hidden inner soul and essence">Le "Moi" intérieur (L'âme)</option>
+            <option value="the reflection shows a completely different, unknown face">L'autre Visage (Étranger)</option>
+            <option value="the mirror shows a distorted and unsettling version of the subject">Reflet Déformé (Trouble)</option>
+            <option value="the reflection is a handcrafted puppet version of the subject">Double Artificiel (Marionnette)</option>
+        </optgroup>
+        <optgroup label="🌀 DIMENSIONS">
+            <option value="the mirror reflects a different era from the past">Miroir Temporel (Passé)</option>
+            <option value="stepping through a liquid mirror portal">Miroir Portail (Liquide)</option>
+            <option value="surrounded by a kaleidoscope of infinite reflections">Miroirs à l'Infini</option>
+        </optgroup>
+        <option value="custom">✨ Autre effet...</option>
+    </select>
+    <input type="text" id="mirror_effect_custom" placeholder="Décrire l'effet..." class="w-full mt-2 p-2 hidden">
+</div>
+
+                <div>
+                    <label>Style Artistique</label>
+                    <select id="masterStyle" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir un style --</option>
+                        <optgroup label="🖌️ CLASSIQUE & DOUX">
+                            <option value="A soft watercolor painting with bleeding edges">Aquarelle</option>
+                            <option value="Raw charcoal sketch on textured oil canvas">Fusain sur toile</option>
+                            <option value="Ukiyo-e woodblock print style, bold ink lines">Ukiyo-e (Estampe)</option>
+                        </optgroup>
+                        <optgroup label="🎬 CINÉMATOGRAPHIQUE">
+                            <option value="Film Noir aesthetic, dramatic venetian blind shadows">Film Noir</option>
+                            <option value="Vibrant Blade Runner neon saturation, high contrast">Blade Runner</option>
+                            <option value="Steampunk aesthetic, polished brass and victorian tech">Steampunk</option>
+                            <option value="Gothic dark aesthetic, mysterious and elegant">Gothique</option>
+                        </optgroup>
+                        <optgroup label="🌈 MODERNE & FUN">
+                            <option value="Afrohemian aesthetic, vibrant patterns and natural textures">Afrohemian</option>
+                            <option value="Kawaii aesthetic, soft pastel tones and cute details">Kawaii</option>
+                            <option value="Whimsical cartoon style, colorful and expressive">Cartoon</option>
+                            <option value="Detailed anime art style, cel-shaded">Anime</option>
+                            <option value="Gritty caricature style with exaggerated features">Caricature</option>
+                        </optgroup>
+                        <optgroup label="🧬 SURRÉALISME">
+                            <option value="Bio-organic surrealism, merging flesh with botanical structures">Bio-Organique</option>
+                        </optgroup>
+                        <option value="custom">✨ Autre style...</option>
+                    </select>
+                    <input type="text" id="masterStyle_custom" placeholder="Style artistique libre..." class="w-full p-2 hidden">
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="section-title">☁️ Ambiance & Technique</div>
+                
+                <div>
+                    <label>Éclairage & Luminosité</label>
+                    <select id="lighting" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir une lumière --</option>
+                        <optgroup label="🎬 STUDIO & CINÉMA">
+                            <option value="dramatic cinematic lighting with high contrast">Cinématique (Dramatique)</option>
+                            <option value="soft studio lighting, professional photography">Studio (Doux)</option>
+                            <option value="backlit silhouette with a glowing rim light">Contre-jour (Silhouette)</option>
+                            <option value="neon noir lighting, blue and pink hues">Néon Noir (Cyber)</option>
+                        </optgroup>
+                        <optgroup label="☀️ NATUREL">
+                            <option value="golden hour light, warm and ethereal">Golden Hour (Chaud)</option>
+                            <option value="soft moonlight, silver reflections">Clair de lune</option>
+                            <option value="harsh midday sun with sharp shadows">Soleil zénithal</option>
+                        </optgroup>
+                        <option value="custom">✨ Autre éclairage...</option>
+                    </select>
+                    <input type="text" id="lighting_custom" placeholder="Lumière spécifique..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Météo & Interaction Éléments</label>
+                    <select id="weather" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Aucun élément --</option>
+                        <optgroup label="🌧️ EAU">
+                            <option value="heavy rain, wet skin, water droplets falling">Pluie (Peau mouillée)</option>
+                            <option value="underwater shot, bubbles, distorted light">Sous l'eau</option>
+                            <option value="thick mysterious fog, disappearing limbs in mist">Brouillard</option>
+                        </optgroup>
+                        <optgroup label="🌬️ AIR & FROID">
+                            <option value="strong wind blowing hair and fabrics">Vent (Mouvement)</option>
+                            <option value="heavy snowfall, snowflakes on skin, winter frost">Neige (Flocons)</option>
+                            <option value="heat haze, shimmering air, desert heat">Canicule (Vibration)</option>
+                        </optgroup>
+                        <option value="custom">✨ Autre élément...</option>
+                    </select>
+                    <input type="text" id="weather_custom" placeholder="Effet météo..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Ambiance Globale (Couleur)</label>
+                    <select id="atmosphere" class="w-full p-2" onchange="toggleCustom(this)">
+                        <option value="">-- Choisir une ambiance --</option>
+                        <option value="Icy blue atmosphere, shivering in a frozen landscape">Icy Blue (Froid)</option>
+                        <option value="Warm Hygge lighting, soft candlelight and blankets">Hygge (Chaleureux)</option>
+                        <option value="Deep black void with a single dramatic spotlight">Deep Black (Mystère)</option>
+                        <option value="custom">✨ Autre ambiance...</option>
+                    </select>
+                    <input type="text" id="atmosphere_custom" placeholder="Couleur/Ambiance..." class="w-full p-2 hidden">
+                </div>
+
+                <div>
+                    <label>Format de sortie (Aspect Ratio)</label>
+                    <select id="ratio" class="w-full p-2">
+                        <option value="--ar 1:1">Carré (1:1)</option>
+                        <option value="--ar 16:9">Cinéma (16:9)</option>
+                        <option value="--ar 9:16">Portrait / Smartphone (9:16)</option>
+                        <option value="--ar 4:3">Photo Classique (4:3)</option>
+                        <option value="--ar 3:2">Format Reflex (3:2)</option>
+                    </select>
+                </div>
+
+                <div class="pt-8 space-y-3">
+                    <button onclick="generate()" class="w-full p-5 btn-magic rounded-2xl text-xl shadow-xl">GÉNÉRER LA THÈSE</button>
+                    <button onclick="randomize()" class="w-full p-3 btn-random">✨ SURPRISE ALÉATOIRE</button>
+                    <button onclick="resetAll()" class="w-full p-2 btn-reset">RÉINITIALISER L'ATELIER</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="mt-12 pt-10 border-t border-green-100 hidden">
+            <div class="space-y-4">
+                <label class="font-bold text-green-800">VOTRE FORMULE DE RECHERCHE :</label>
+                <textarea id="output" class="w-full output-box focus:outline-none" readonly></textarea>
+                <button onclick="copy()" class="w-full p-5 bg-green-900 text-white rounded-2xl font-bold hover:bg-black transition">🪄 COPIER LE BLOC COMPLET</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCustom(select) {
+            const input = document.getElementById(select.id + '_custom');
+            if (input) {
+                input.style.display = (select.value === 'custom') ? 'block' : 'none';
+            }
+        }
+
+        function getVal(id) {
+            const s = document.getElementById(id);
+            if (!s) return "";
+            if (s.value === 'custom') {
+                return document.getElementById(id + '_custom').value;
+            }
+            return s.value;
+        }
+
+        function resetAll() {
+            location.reload();
+        }
+
+        function randomize() {
+            const ids = ['subject', 'wardrobe', 'companion', 'era', 'location', 'mirror_pose', 'mirror_effect', 'masterStyle', 'lighting', 'weather', 'atmosphere'];
+            ids.forEach(id => {
+                const s = document.getElementById(id);
+                if (s && s.options.length > 1) {
+                    s.selectedIndex = Math.floor(Math.random() * (s.options.length - 1)) + 1;
+                    toggleCustom(s);
+                }
+            });
+            generate();
+        }
+
+        function generate() {
+    // 1. Liste exhaustive de TOUS les IDs (ne pas en oublier !)
+    const ids = [
+        'masterStyle', 
+        'subject', 
+        'wardrobe', 
+        'companion', 
+        'era', 
+        'location', 
+        'mirror_pose',   // Nouveau : Cadrage/Pose
+        'mirror_effect', // Nouveau : Nature du reflet
+        'lighting', 
+        'weather', 
+        'atmosphere'
+    ];
+    
+    // 2. On aspire les valeurs et on filtre les champs vides
+    const values = ids.map(id => getVal(id)).filter(v => v && v.trim() !== "");
+    const ratio = document.getElementById('ratio').value;
+
+    // 3. Construction de la formule finale
+    let prompt = values.join(', ') + ". 8k, highly detailed, artistic composition, cinematic, masterpiece quality, no text, no letters. " + ratio;
+    
+    let finalOutput = "PROMPT POSITIF :\n" + prompt.replace(/\s+/g, ' ').trim();
+    finalOutput += "\n\nPROMPT NÉGATIF :\nblurry, low quality, deformed body, extra limbs, watermark, signature, logo, text, letters, bad anatomy, disfigured, messy lines, words, script";
+
+    // 4. Affichage du résultat
+    document.getElementById('output').value = finalOutput;
+    document.getElementById('result').classList.remove('hidden');
+
+    // 5. LE RETOUR DU SCROLL (La petite touche magique)
+    window.scrollTo({ 
+        top: document.body.scrollHeight, 
+        behavior: 'smooth' 
+    });
+}
+
+        function copy() {
+            const text = document.getElementById('output').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("🪄 Bloc complet copié pour Maman !");
+            });
+        }
+    </script>
+</body>
+</html>
