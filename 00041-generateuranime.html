@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Prompts Anime</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .controls-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .control-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .control-group select,
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.95em;
+            background: white;
+            transition: border-color 0.3s;
+        }
+
+        .control-group select:focus,
+        .control-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .control-group input[type="text"] {
+            display: none;
+            margin-top: 8px;
+        }
+
+        .control-group input[type="text"].active {
+            display: block;
+        }
+
+        .style-select {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0e8f8 100%);
+            border-left-color: #764ba2;
+            border-left-width: 6px;
+        }
+
+        .style-select select {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .output-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #667eea;
+        }
+
+        .output-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .prompt-output {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #2c3e50;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .prompt-output.empty {
+            color: #adb5bd;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .negative-prompt {
+            margin-top: 15px;
+        }
+
+        .negative-prompt h3 {
+            color: #d9534f;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .negative-output {
+            background: #fff5f5;
+            border: 2px solid #f8d7da;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            color: #721c24;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding: 0 30px 30px 30px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-random {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: white;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .mode-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .mode-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .mode-toggle input {
+            margin-right: 8px;
+        }
+
+        .tech-info {
+            display: none;
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .tech-info.show {
+            display: block;
+        }
+
+        .token-counter {
+            background: #e8f4f8;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #0c5460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .token-counter span {
+            font-weight: bold;
+        }
+
+        .token-count {
+            background: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="mode-toggle">
+                <input type="checkbox" id="expertMode">
+                <label for="expertMode">Mode Expert</label>
+            </div>
+            <h1>🎨 Générateur de Prompts Anime</h1>
+            <p>Créez des prompts professionnels pour vos générations d'images</p>
+        </div>
+
+        <div class="main-content">
+            <!-- SECTION CONTRÔLES -->
+            <div class="controls-section">
+                
+                <!-- STYLE PRINCIPAL -->
+                <div class="control-group style-select">
+                    <label>🎭 STYLE ANIME PRINCIPAL</label>
+                    <select id="styleMain">
+                        <option value="">Choisir un style...</option>
+                        <optgroup label="Classic Anime Styles">
+                            <option value="80s 90s retro anime style, vintage anime aesthetic, old school animation">Anime 80s/90s Rétro</option>
+                            <option value="magical girl anime style, sailor moon aesthetic, shoujo sparkles">Magical Girl / Sailor Moon</option>
+                            <option value="mecha anime style, gundam aesthetic, mechanical details, sci-fi anime">Mecha Anime</option>
+                            <option value="retro shoujo manga style, classic shoujo aesthetic, ornate decorative">Shoujo Rétro</option>
+                        </optgroup>
+                        <optgroup label="Modern Anime Styles">
+                            <option value="kyoto animation style, modern moe aesthetic, soft detailed shading">Kyoto Animation</option>
+                            <option value="ufotable anime style, dynamic action aesthetic, detailed effects">Ufotable</option>
+                            <option value="MAPPA anime style, contemporary animation, detailed character design">MAPPA</option>
+                            <option value="studio trigger style, dynamic poses, bold colors, energetic composition">Studio Trigger</option>
+                            <option value="A-1 pictures style, clean modern anime aesthetic">A-1 Pictures</option>
+                            <option value="bones animation style, dynamic action scenes, fluid movement">Bones</option>
+                        </optgroup>
+                        <optgroup label="Studio Ghibli & Artistic">
+                            <option value="studio ghibli style, miyazaki aesthetic, watercolor backgrounds, whimsical">Classic Ghibli</option>
+                            <option value="modern ghibli style, 3d-2d hybrid aesthetic, detailed textures">Modern Ghibli</option>
+                            <option value="makoto shinkai style, hyper detailed backgrounds, dramatic lighting, photorealistic elements">Makoto Shinkai</option>
+                            <option value="satoshi kon style, surreal composition, psychological aesthetic">Satoshi Kon</option>
+                            <option value="masaaki yuasa style, experimental animation, distorted perspectives">Masaaki Yuasa</option>
+                        </optgroup>
+                        <optgroup label="Genre-Specific">
+                            <option value="shonen action anime style, dynamic poses, energy effects, battle scene aesthetic">Shonen Action</option>
+                            <option value="seinen dark anime style, mature aesthetic, detailed realistic elements">Seinen Dark</option>
+                            <option value="slice of life anime style, iyashikei aesthetic, calm peaceful atmosphere">Slice of Life</option>
+                            <option value="romance josei anime style, mature romantic aesthetic, soft lighting">Romance / Josei</option>
+                            <option value="sports anime style, dynamic motion, competitive energy">Sports Anime</option>
+                            <option value="isekai fantasy anime style, rpg game aesthetic, fantasy elements">Isekai Fantasy</option>
+                        </optgroup>
+                        <optgroup label="Technical Styles">
+                            <option value="cell shaded anime, 2-tone shading, flat colors, hard edge shadows">Cell-Shaded 2-tone</option>
+                            <option value="cell shaded anime, 3-tone shading, defined shadows, clean lineart">Cell-Shaded 3-tone</option>
+                            <option value="semi realistic anime style, detailed rendering, soft shading">Semi-realistic Anime</option>
+                            <option value="chibi style, super deformed, cute proportions, simplified features">Chibi / SD</option>
+                            <option value="light novel illustration style, cover art aesthetic, detailed character">Light Novel Illustration</option>
+                            <option value="manga cover style, dramatic composition, bold lineart">Manga Cover Style</option>
+                            <option value="visual novel style, dating sim aesthetic, expressive characters">Visual Novel Style</option>
+                        </optgroup>
+                        <optgroup label="Vintage/Retro">
+                            <option value="WPA poster style illustration, vintage national park poster aesthetic, limited 5-color palette, flat color blocking with hard edges, screenprint aesthetic, 1930s travel poster, retro americana">WPA Poster Style</option>
+                            <option value="ukiyo-e fusion anime, japanese woodblock print aesthetic, traditional meets modern">Ukiyo-e Fusion</option>
+                            <option value="art nouveau anime style, organic flowing lines, decorative ornamental">Art Nouveau Anime</option>
+                            <option value="vaporwave anime aesthetic, retro futurism, pastel neon colors, 80s nostalgia">Vaporwave Anime</option>
+                        </optgroup>
+                    </select>
+                    <div class="tech-info">Prompt maître - définit le style global de l'image</div>
+                </div>
+
+                <!-- SUJET PRINCIPAL -->
+                <div class="control-group">
+                    <label>👤 Sujet Principal</label>
+                    <select id="subjectMain">
+                        <option value="">Choisir...</option>
+                        <option value="young woman age 18-25">Jeune femme (18-25 ans)</option>
+                        <option value="adult woman age 26-40">Femme adulte (26-40 ans)</option>
+                        <option value="young man age 18-25">Jeune homme (18-25 ans)</option>
+                        <option value="adult man age 26-40">Homme adulte (26-40 ans)</option>
+                        <option value="young girl child">Enfant fille</option>
+                        <option value="young boy child">Enfant garçon</option>
+                        <option value="teenage girl">Adolescente</option>
+                        <option value="teenage boy">Adolescent</option>
+                        <option value="elderly person">Personnage âgé</option>
+                        <option value="group of characters">Groupe de personnages</option>
+                        <option value="anthropomorphic animal character">Animal anthropomorphe</option>
+                        <option value="robot mecha character">Robot/Mecha</option>
+                        <option value="fantasy creature">Créature fantastique</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="subjectMainCustom" placeholder="Décrivez votre sujet...">
+                    <div class="tech-info">Définit le personnage ou objet principal</div>
+                </div>
+
+                <!-- COMPAGNON -->
+                <div class="control-group">
+                    <label>🐾 Compagnon</label>
+                    <select id="companion">
+                        <option value="">Aucun</option>
+                        <option value="with pet cat">Avec chat</option>
+                        <option value="with pet dog">Avec chien</option>
+                        <option value="with pet bird">Avec oiseau</option>
+                        <option value="with close friend">Avec ami(e) proche</option>
+                        <option value="with romantic partner">Avec partenaire romantique</option>
+                        <option value="with rival character">Avec rival</option>
+                        <option value="with mentor figure">Avec mentor</option>
+                        <option value="with magical familiar creature">Avec créature magique</option>
+                        <option value="with robot companion">Avec robot compagnon</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="companionCustom" placeholder="Décrivez le compagnon...">
+                    <div class="tech-info">Ajoute un second personnage ou créature</div>
+                </div>
+
+                <!-- LIEU -->
+                <div class="control-group">
+                    <label>📍 Lieu</label>
+                    <select id="location">
+                        <option value="">Choisir...</option>
+                        <option value="in modern kitchen interior">Intérieur maison - Cuisine</option>
+                        <option value="in cozy living room">Intérieur maison - Salon</option>
+                        <option value="in bedroom interior">Intérieur maison - Chambre</option>
+                        <option value="at school classroom">École/Université</option>
+                        <option value="in modern office">Bureau/Lieu de travail</option>
+                        <option value="at cozy cafe">Café/Restaurant</option>
+                        <option value="in public park, outdoor">Parc/Jardin</option>
+                        <option value="at beach, seaside, ocean">Plage/Bord de mer</option>
+                        <option value="on mountain landscape">Montagne</option>
+                        <option value="in forest, woodland">Forêt</option>
+                        <option value="in modern city, urban environment, daytime">Ville moderne (jour)</option>
+                        <option value="in modern city at night, neon lights, urban">Ville moderne (nuit)</option>
+                        <option value="on traditional japanese street">Rue traditionnelle japonaise</option>
+                        <option value="at japanese temple, shrine">Temple/Sanctuaire</option>
+                        <option value="in cyberpunk cityscape, futuristic">Cyberpunk cityscape</option>
+                        <option value="in fantasy realm, magical environment">Fantasy realm</option>
+                        <option value="in spaceship interior, sci-fi">Espace/Vaisseau spatial</option>
+                        <option value="in post-apocalyptic ruins">Post-apocalyptique</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="locationCustom" placeholder="Décrivez le lieu...">
+                    <div class="tech-info">Définit l'environnement et le décor</div>
+                </div>
+
+                <!-- ÉPOQUE -->
+                <div class="control-group">
+                    <label>⏰ Époque</label>
+                    <select id="era">
+                        <option value="">Contemporain (2020s)</option>
+                        <option value="2000s-2010s aesthetic">Années 2000-2010</option>
+                        <option value="1980s-1990s retro aesthetic">Années 1980-1990</option>
+                        <option value="showa era japanese aesthetic">Ère Showa (1926-1989)</option>
+                        <option value="edo period historical japan">Ère Edo</option>
+                        <option value="near future 2050-2100, advanced technology">Futur proche (2050-2100)</option>
+                        <option value="far future, space opera, advanced civilization">Futur lointain</option>
+                        <option value="medieval fantasy setting">Fantasy médiéval</option>
+                        <option value="steampunk victorian era">Steampunk</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="eraCustom" placeholder="Décrivez l'époque...">
+                    <div class="tech-info">Contexte temporel et technologique</div>
+                </div>
+
+                <!-- ACTION/POSE -->
+                <div class="control-group">
+                    <label>💫 Action/Pose</label>
+                    <select id="action">
+                        <option value="">Choisir...</option>
+                        <option value="standing pose, neutral stance">Debout, neutre</option>
+                        <option value="sitting relaxed">Assis(e), détendu(e)</option>
+                        <option value="walking dynamic pose">Marche dynamique</option>
+                        <option value="running, sprinting, motion">Course/Sprint</option>
+                        <option value="combat pose, fighting stance, action">Combat (attaque/défense)</option>
+                        <option value="jumping, acrobatic pose, mid-air">Saut/Acrobatie</option>
+                        <option value="drinking coffee, holding cup">Boire/Manger</option>
+                        <option value="reading book, studying">Lire/Étudier</option>
+                        <option value="using smartphone, looking at phone">Utiliser smartphone</option>
+                        <option value="pointing gesture">Geste de la main (pointer)</option>
+                        <option value="waving hand">Geste de la main (saluer)</option>
+                        <option value="peace sign gesture">Geste de la main (peace sign)</option>
+                        <option value="expressing strong emotion">Expression émotionnelle forte</option>
+                        <option value="heroic dramatic pose">Pose dramatique/héroïque</option>
+                        <option value="cute kawaii pose">Pose mignonne/kawaii</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="actionCustom" placeholder="Décrivez l'action...">
+                    <div class="tech-info">Pose et mouvement du personnage</div>
+                </div>
+
+                <!-- MÉTÉO -->
+                <div class="control-group">
+                    <label>🌤️ Météo/Atmosphère</label>
+                    <select id="weather">
+                        <option value="">Choisir...</option>
+                        <option value="sunny day, clear sky">Ensoleillé, ciel clair</option>
+                        <option value="golden hour sunset, warm lighting">Coucher de soleil (golden hour)</option>
+                        <option value="sunrise, dawn, morning light">Lever de soleil</option>
+                        <option value="starry night sky">Nuit étoilée</option>
+                        <option value="light rain, drizzle">Pluie légère</option>
+                        <option value="heavy rain, stormy weather">Pluie battante/Orage</option>
+                        <option value="falling snow, winter atmosphere">Neige qui tombe</option>
+                        <option value="misty fog, atmospheric">Brouillard/Brume</option>
+                        <option value="dramatic storm clouds">Nuages dramatiques</option>
+                        <option value="rainbow in sky">Arc-en-ciel</option>
+                        <option value="cherry blossom petals falling, sakura">Sakura (pétales qui tombent)</option>
+                        <option value="autumn leaves falling">Feuilles d'automne</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="weatherCustom" placeholder="Décrivez la météo...">
+                    <div class="tech-info">Conditions atmosphériques et ambiance</div>
+                </div>
+
+                <!-- ÉCLAIRAGE -->
+                <div class="control-group">
+                    <label>💡 Éclairage</label>
+                    <select id="lighting">
+                        <option value="">Choisir...</option>
+                        <option value="soft natural lighting">Lumière naturelle douce</option>
+                        <option value="golden hour lighting, warm tones">Golden hour (chaud)</option>
+                        <option value="blue hour lighting, cool tones">Blue hour (froid)</option>
+                        <option value="backlit, contre-jour, rim lighting">Contre-jour/Backlit</option>
+                        <option value="dramatic rim lighting, edge light">Rim lighting dramatique</option>
+                        <option value="studio lighting, three-point lighting">Studio lighting</option>
+                        <option value="colorful neon lights, cyberpunk lighting">Néons colorés (cyberpunk)</option>
+                        <option value="candle light, fire light, warm glow">Bougies/Feu</option>
+                        <option value="moonlight, night lighting">Clair de lune</option>
+                        <option value="volumetric lighting, god rays, light shafts">Éclairage volumétrique</option>
+                        <option value="bioluminescent lighting, glowing">Bioluminescence</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="lightingCustom" placeholder="Décrivez l'éclairage...">
+                    <div class="tech-info">Type et qualité de la lumière</div>
+                </div>
+
+                <!-- CADRAGE -->
+                <div class="control-group">
+                    <label>🎥 Cadrage/Composition</label>
+                    <select id="framing">
+                        <option value="">Choisir...</option>
+                        <option value="close-up portrait, face focus">Portrait serré (visage)</option>
+                        <option value="bust shot, head and shoulders">Buste (tête + épaules)</option>
+                        <option value="medium shot, waist up">Mi-corps (taille haute)</option>
+                        <option value="cowboy shot, from knees up">Plan américain (genoux)</option>
+                        <option value="full body shot, entire character visible">Plein pied (corps entier)</option>
+                        <option value="wide shot, environmental composition">Plan large (environnement)</option>
+                        <option value="view from behind, back view">Vue de dos</option>
+                        <option value="profile view, side angle">Profil</option>
+                        <option value="three-quarter view">Trois-quarts</option>
+                        <option value="high angle, bird's eye view">Vue plongeante</option>
+                        <option value="low angle, worm's eye view">Vue en contre-plongée</option>
+                        <option value="dutch angle, tilted composition">Dutch angle (incliné)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="framingCustom" placeholder="Décrivez le cadrage...">
+                    <div class="tech-info">Angle et distance de vue</div>
+                </div>
+
+                <!-- EXPRESSION FACIALE -->
+                <div class="control-group">
+                    <label>😊 Expression Faciale</label>
+                    <select id="expression">
+                        <option value="">Choisir...</option>
+                        <option value="neutral calm expression">Neutre/Calme</option>
+                        <option value="gentle soft smile">Sourire doux</option>
+                        <option value="big smile, laughing, cheerful">Grand sourire/Rire</option>
+                        <option value="determined serious expression">Déterminé(e)</option>
+                        <option value="sad melancholic expression">Triste/Mélancolique</option>
+                        <option value="angry fierce expression">En colère</option>
+                        <option value="surprised shocked expression">Surpris(e)/Choqué(e)</option>
+                        <option value="embarrassed blushing">Embarrassé(e) (rougissement)</option>
+                        <option value="thoughtful contemplative expression">Pensif/Contemplatif</option>
+                        <option value="mischievous playful smirk">Malicieux/Taquin</option>
+                        <option value="tired exhausted expression">Fatigué(e)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="expressionCustom" placeholder="Décrivez l'expression...">
+                    <div class="tech-info">Émotion et expression du visage</div>
+                </div>
+
+                <!-- PALETTE DE COULEURS -->
+                <div class="control-group">
+                    <label>🎨 Palette de Couleurs</label>
+                    <select id="colorPalette">
+                        <option value="">Style par défaut</option>
+                        <option value="warm color palette, orange red yellow tones">Palette chaude</option>
+                        <option value="cool color palette, blue purple cyan tones">Palette froide</option>
+                        <option value="pastel color palette, soft muted colors">Palette pastel</option>
+                        <option value="vibrant saturated colors, high saturation">Palette saturée/vive</option>
+                        <option value="desaturated washed out colors, muted tones">Palette désaturée</option>
+                        <option value="monochrome with single accent color">Monochrome + accent</option>
+                        <option value="black and white, grayscale">Noir et blanc</option>
+                        <option value="sepia tone, vintage brown">Sépia/Vintage</option>
+                        <option value="neon cyberpunk color palette">Néon/Cyberpunk</option>
+                        <option value="natural earthy color palette">Palette naturelle/terreuse</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="colorPaletteCustom" placeholder="Décrivez la palette...">
+                    <div class="tech-info">Gamme de couleurs dominantes</div>
+                </div>
+
+                <!-- VÊTEMENTS -->
+                <div class="control-group">
+                    <label>👔 Vêtements</label>
+                    <select id="clothing">
+                        <option value="">Choisir...</option>
+                        <option value="casual modern clothes, everyday wear">Vêtements décontractés</option>
+                        <option value="japanese school uniform, sailor uniform">Uniforme scolaire japonais</option>
+                        <option value="traditional kimono">Kimono traditionnel</option>
+                        <option value="traditional yukata">Yukata traditionnel</option>
+                        <option value="sports clothing, athletic wear">Tenue de sport</option>
+                        <option value="business suit, professional attire">Costume/Tailleur professionnel</option>
+                        <option value="elegant dress, formal wear">Robe élégante</option>
+                        <option value="fantasy armor, adventurer outfit">Tenue fantastique/armure</option>
+                        <option value="cyberpunk futuristic clothing">Vêtements cyberpunk/futuristes</option>
+                        <option value="streetwear fashion, urban style">Tenue streetwear</option>
+                        <option value="pajamas, sleepwear, nightgown">Pyjama/Vêtements d'intérieur</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="clothingCustom" placeholder="Décrivez les vêtements...">
+                    <div class="tech-info">Style vestimentaire du personnage</div>
+                </div>
+
+                <!-- EFFETS SPÉCIAUX -->
+                <div class="control-group">
+                    <label>✨ Effets Spéciaux</label>
+                    <select id="effects">
+                        <option value="">Aucun</option>
+                        <option value="light particles, sparkles, glitter">Particules de lumière</option>
+                        <option value="energy aura, power glow">Aura énergétique</option>
+                        <option value="magical effects, magic circles">Effets magiques</option>
+                        <option value="speed lines, motion lines">Speed lines</option>
+                        <option value="bokeh background, blurred lights">Bokeh (flou d'arrière-plan)</option>
+                        <option value="lens flare, light flare">Lens flare</option>
+                        <option value="motion blur, dynamic movement">Motion blur</option>
+                        <option value="shallow depth of field, strong bokeh">Depth of field prononcé</option>
+                        <option value="wind effects, flowing hair and clothes">Effets de vent</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="effectsCustom" placeholder="Décrivez les effets...">
+                    <div class="tech-info">Effets visuels additionnels</div>
+                </div>
+
+                <!-- RATIO -->
+                <div class="control-group">
+                    <label>📐 Ratio d'Image</label>
+                    <select id="aspectRatio">
+                        <option value="--ar 1:1">1:1 (Carré - Instagram)</option>
+                        <option value="--ar 4:5">4:5 (Portrait - Instagram)</option>
+                        <option value="--ar 2:3">2:3 (Portrait classique)</option>
+                        <option value="--ar 3:2">3:2 (Paysage classique)</option>
+                        <option value="--ar 16:9">16:9 (Paysage - HD)</option>
+                        <option value="--ar 21:9">21:9 (Cinématique)</option>
+                        <option value="--ar 9:16">9:16 (Vertical - Mobile)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="aspectRatioCustom" placeholder="Ex: --ar 5:4">
+                    <div class="tech-info">Format et proportions de l'image</div>
+                </div>
+
+                <!-- INTENSITÉ STYLISATION -->
+                <div class="control-group">
+                    <label>🎚️ Intensité de Stylisation</label>
+                    <select id="stylization">
+                        <option value="">Standard (100%)</option>
+                        <option value="subtle anime style, slight stylization">Légère (20%)</option>
+                        <option value="balanced anime style, moderate stylization">Modérée (50%)</option>
+                        <option value="highly stylized anime, intense artistic interpretation">Intense (150%)</option>
+                        <option value="extreme stylization, abstract anime art">Extrême (200%)</option>
+                    </select>
+                    <div class="tech-info">Degré d'éloignement du réalisme</div>
+                </div>
+
+                <!-- TEXTURE DE RENDU -->
+                <div class="control-group">
+                    <label>🖌️ Texture de Rendu</label>
+                    <select id="renderTexture">
+                        <option value="">Par défaut</option>
+                        <option value="watercolor anime style, soft painted texture">Aquarelle</option>
+                        <option value="oil painting anime aesthetic, thick brush strokes">Peinture à l'huile</option>
+                        <option value="pencil sketch anime, hand drawn aesthetic">Croquis au crayon</option>
+                        <option value="digital painting anime, clean brush work">Peinture numérique</option>
+                        <option value="cel animation style, traditional animation">Animation cel traditionnelle</option>
+                        <option value="rough sketch style, loose lineart">Style esquisse brute</option>
+                        <option value="clean crisp lineart, sharp lines">Lineart propre et net</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="renderTextureCustom" placeholder="Décrivez la texture...">
+                    <div class="tech-info">Style de rendu et texture visuelle</div>
+                </div>
+
+                <!-- GRAIN/TEXTURE FILM -->
+                <div class="control-group">
+                    <label>🎞️ Grain/Texture Film</label>
+                    <select id="filmGrain">
+                        <option value="">Aucun</option>
+                        <option value="subtle film grain effect">Grain de film subtil</option>
+                        <option value="analog anime aesthetic, vintage film texture">Esthétique analogique</option>
+                        <option value="VHS tape aesthetic, retro video quality">Esthétique VHS</option>
+                        <option value="clean digital, no grain">Digital propre</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="filmGrainCustom" placeholder="Décrivez le grain...">
+                    <div class="tech-info">Texture et qualité de l'image</div>
+                </div>
+
+                <!-- COULEUR CHEVEUX -->
+                <div class="control-group">
+                    <label>💇 Couleur Cheveux</label>
+                    <select id="hairColor">
+                        <option value="">Par défaut</option>
+                        <option value="black hair">Cheveux noirs</option>
+                        <option value="dark brown hair">Cheveux bruns foncés</option>
+                        <option value="light brown hair">Cheveux bruns clairs</option>
+                        <option value="blonde hair">Cheveux blonds</option>
+                        <option value="platinum blonde hair">Cheveux blond platine</option>
+                        <option value="red hair, ginger">Cheveux roux</option>
+                        <option value="blue hair">Cheveux bleus</option>
+                        <option value="pink hair">Cheveux roses</option>
+                        <option value="purple hair">Cheveux violets</option>
+                        <option value="green hair">Cheveux verts</option>
+                        <option value="white hair, silver hair">Cheveux blancs/argentés</option>
+                        <option value="two-tone hair, multicolored hair">Cheveux bicolores</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="hairColorCustom" placeholder="Décrivez la couleur...">
+                    <div class="tech-info">Couleur de la chevelure</div>
+                </div>
+
+                <!-- LONGUEUR CHEVEUX -->
+                <div class="control-group">
+                    <label>✂️ Longueur Cheveux</label>
+                    <select id="hairLength">
+                        <option value="">Par défaut</option>
+                        <option value="very short hair, pixie cut">Très courts (pixie)</option>
+                        <option value="short hair">Courts</option>
+                        <option value="shoulder length hair">Mi-longs (épaules)</option>
+                        <option value="long hair">Longs</option>
+                        <option value="very long hair, waist length">Très longs (taille)</option>
+                        <option value="extremely long hair, floor length">Extrêmement longs (sol)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="hairLengthCustom" placeholder="Décrivez la longueur...">
+                    <div class="tech-info">Longueur de la chevelure</div>
+                </div>
+
+                <!-- STYLE CHEVEUX -->
+                <div class="control-group">
+                    <label>💆 Style Cheveux</label>
+                    <select id="hairStyle">
+                        <option value="">Par défaut</option>
+                        <option value="straight hair">Raides</option>
+                        <option value="wavy hair">Ondulés</option>
+                        <option value="curly hair">Bouclés</option>
+                        <option value="ponytail hairstyle">Queue de cheval</option>
+                        <option value="twin tails hairstyle">Twin tails</option>
+                        <option value="buns hairstyle">Chignons (buns)</option>
+                        <option value="braided hair">Tressés</option>
+                        <option value="bob cut">Carré (bob)</option>
+                        <option value="messy hair, tousled">Ébouriffés/Décoiffés</option>
+                        <option value="hair with bangs">Avec frange</option>
+                        <option value="side ponytail">Queue de cheval latérale</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="hairStyleCustom" placeholder="Décrivez le style...">
+                    <div class="tech-info">Coiffure et style capillaire</div>
+                </div>
+
+                <!-- COULEUR YEUX -->
+                <div class="control-group">
+                    <label>👁️ Couleur Yeux</label>
+                    <select id="eyeColor">
+                        <option value="">Par défaut</option>
+                        <option value="brown eyes">Yeux marrons</option>
+                        <option value="dark brown eyes, black eyes">Yeux marrons foncés/noirs</option>
+                        <option value="blue eyes">Yeux bleus</option>
+                        <option value="green eyes">Yeux verts</option>
+                        <option value="amber eyes, golden eyes">Yeux ambrés/dorés</option>
+                        <option value="red eyes">Yeux rouges</option>
+                        <option value="purple eyes, violet eyes">Yeux violets</option>
+                        <option value="pink eyes">Yeux roses</option>
+                        <option value="heterochromia, different colored eyes">Hétérochromie (yeux différents)</option>
+                        <option value="glowing eyes, luminous eyes">Yeux lumineux</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="eyeColorCustom" placeholder="Décrivez la couleur...">
+                    <div class="tech-info">Couleur des yeux</div>
+                </div>
+
+                <!-- TYPE DE CORPS -->
+                <div class="control-group">
+                    <label>🏋️ Type de Corps</label>
+                    <select id="bodyType">
+                        <option value="">Par défaut</option>
+                        <option value="slim build, slender">Mince</option>
+                        <option value="athletic build, fit">Athlétique</option>
+                        <option value="muscular build, strong">Musclé</option>
+                        <option value="curvy figure">Formes généreuses</option>
+                        <option value="petite build, small frame">Petite stature</option>
+                        <option value="tall build">Grande stature</option>
+                        <option value="average build">Corpulence moyenne</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="bodyTypeCustom" placeholder="Décrivez le corps...">
+                    <div class="tech-info">Morphologie du personnage</div>
+                </div>
+
+                <!-- ARCHETYPE PERSONNAGE -->
+                <div class="control-group">
+                    <label>🎭 Archétype Personnage</label>
+                    <select id="archetype">
+                        <option value="">Aucun</option>
+                        <option value="tsundere personality">Tsundere</option>
+                        <option value="kuudere personality, cool demeanor">Kuudere</option>
+                        <option value="yandere personality">Yandere</option>
+                        <option value="genki personality, energetic cheerful">Genki</option>
+                        <option value="dandere personality, shy quiet">Dandere</option>
+                        <option value="ojou-sama, noble elegant lady">Ojou-sama</option>
+                        <option value="delinquent character, yankee">Delinquent/Yankee</option>
+                        <option value="salary worker, office professional">Salary man/woman</option>
+                        <option value="NEET character, otaku">NEET/Otaku</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="archetypeCustom" placeholder="Décrivez l'archétype...">
+                    <div class="tech-info">Personnalité type anime</div>
+                </div>
+
+                <!-- GENRE ANIME -->
+                <div class="control-group">
+                    <label>🎬 Genre d'Anime</label>
+                    <select id="animeGenre">
+                        <option value="">Aucun</option>
+                        <option value="romantic comedy anime, romcom aesthetic">Romance Comedy (Romcom)</option>
+                        <option value="action shounen anime, battle aesthetic">Action Shounen</option>
+                        <option value="psychological thriller anime, dark mystery">Psychological Thriller</option>
+                        <option value="horror anime aesthetic, scary atmosphere">Horror Anime</option>
+                        <option value="slice of life healing anime, iyashikei">Slice of Life Healing</option>
+                        <option value="sports drama anime">Sports Drama</option>
+                        <option value="mystery detective anime">Mystery Detective</option>
+                        <option value="mecha sci-fi anime">Mecha Sci-Fi</option>
+                        <option value="magical girl anime">Magical Girl</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="animeGenreCustom" placeholder="Décrivez le genre...">
+                    <div class="tech-info">Genre narratif de l'anime</div>
+                </div>
+
+                <!-- MOOD/TON -->
+                <div class="control-group">
+                    <label>🎨 Mood/Ton Émotionnel</label>
+                    <select id="mood">
+                        <option value="">Par défaut</option>
+                        <option value="melancholic atmosphere, sad mood">Mélancolique</option>
+                        <option value="cheerful uplifting mood, happy atmosphere">Joyeux/Optimiste</option>
+                        <option value="tense dramatic atmosphere">Tendu/Dramatique</option>
+                        <option value="peaceful serene mood, calm">Paisible/Serein</option>
+                        <option value="mysterious ominous atmosphere">Mystérieux/Inquiétant</option>
+                        <option value="romantic dreamy mood">Romantique/Rêveur</option>
+                        <option value="energetic dynamic atmosphere">Énergique/Dynamique</option>
+                        <option value="nostalgic wistful mood">Nostalgique</option>
+                        <option value="dark gloomy atmosphere">Sombre/Lugubre</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="moodCustom" placeholder="Décrivez le mood...">
+                    <div class="tech-info">Ambiance émotionnelle générale</div>
+                </div>
+
+                <!-- PROFONDEUR DE CHAMP -->
+                <div class="control-group">
+                    <label>📷 Profondeur de Champ</label>
+                    <select id="depthOfField">
+                        <option value="">Par défaut</option>
+                        <option value="shallow depth of field, strong bokeh">Faible (bokeh prononcé)</option>
+                        <option value="medium depth of field">Moyenne</option>
+                        <option value="deep focus, everything sharp">Profonde (tout net)</option>
+                        <option value="tilt-shift effect">Effet tilt-shift</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="depthOfFieldCustom" placeholder="Décrivez la profondeur...">
+                    <div class="tech-info">Netteté et flou de l'arrière-plan</div>
+                </div>
+
+                <!-- COMPOSITION AVANCÉE -->
+                <div class="control-group">
+                    <label>📐 Composition Avancée</label>
+                    <select id="composition">
+                        <option value="">Par défaut</option>
+                        <option value="rule of thirds composition">Règle des tiers</option>
+                        <option value="golden ratio composition">Nombre d'or</option>
+                        <option value="centered symmetrical composition">Centré symétrique</option>
+                        <option value="dynamic diagonal composition">Diagonales dynamiques</option>
+                        <option value="leading lines composition">Lignes directrices</option>
+                        <option value="negative space emphasis">Espace négatif</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="compositionCustom" placeholder="Décrivez la composition...">
+                    <div class="tech-info">Règles de composition photographique</div>
+                </div>
+
+                <!-- POST-PROCESSING -->
+                <div class="control-group">
+                    <label>✨ Post-Processing</label>
+                    <select id="postProcessing">
+                        <option value="">Aucun</option>
+                        <option value="bloom glow effect, soft light">Bloom/Glow</option>
+                        <option value="chromatic aberration effect">Aberration chromatique</option>
+                        <option value="vignette effect, darkened edges">Vignette</option>
+                        <option value="warm color grading">Color grading chaud</option>
+                        <option value="cool color grading">Color grading froid</option>
+                        <option value="teal and orange color grading">Color grading teal-orange</option>
+                        <option value="lens distortion effect">Distorsion de lentille</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="postProcessingCustom" placeholder="Décrivez l'effet...">
+                    <div class="tech-info">Effets de post-production</div>
+                </div>
+
+                <!-- SAISON JAPONAISE -->
+                <div class="control-group">
+                    <label>🌸 Saison Japonaise</label>
+                    <select id="season">
+                        <option value="">Aucune</option>
+                        <option value="spring season, cherry blossoms sakura, new beginnings">Printemps (Sakura)</option>
+                        <option value="summer season, festivals matsuri, fireworks hanabi, beach">Été (Festivals)</option>
+                        <option value="autumn season, fall foliage momiji, melancholic">Automne (Momiji)</option>
+                        <option value="winter season, snow, kotatsu, warm indoors">Hiver (Neige)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="seasonCustom" placeholder="Décrivez la saison...">
+                    <div class="tech-info">Atmosphère saisonnière japonaise</div>
+                </div>
+
+                <!-- MOMENT DE LA JOURNÉE PRÉCIS -->
+                <div class="control-group">
+                    <label>⏰ Moment de la Journée</label>
+                    <select id="timeOfDay">
+                        <option value="">Par défaut</option>
+                        <option value="early morning 5-7am, dawn light">Petit matin (5-7h)</option>
+                        <option value="morning 7-10am, fresh daylight">Matin (7-10h)</option>
+                        <option value="midday 10am-2pm, bright overhead sun">Midi (10h-14h)</option>
+                        <option value="afternoon 2-5pm, warm afternoon light">Après-midi (14h-17h)</option>
+                        <option value="golden hour 5-7pm, sunset glow">Golden hour (17h-19h)</option>
+                        <option value="dusk twilight 7-8pm, fading light">Crépuscule (19h-20h)</option>
+                        <option value="night 8pm-midnight, dark evening">Nuit (20h-minuit)</option>
+                        <option value="late night midnight-5am, deep night">Nuit tardive (minuit-5h)</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="timeOfDayCustom" placeholder="Décrivez le moment...">
+                    <div class="tech-info">Heure précise et lumière naturelle</div>
+                </div>
+
+                <!-- PROPS/OBJETS -->
+                <div class="control-group">
+                    <label>🎒 Props/Objets</label>
+                    <select id="props">
+                        <option value="">Aucun</option>
+                        <option value="holding bento box, japanese lunch box">Bento box</option>
+                        <option value="carrying school bag, backpack">Sac d'école</option>
+                        <option value="holding umbrella">Parapluie classique</option>
+                        <option value="holding transparent umbrella">Parapluie transparent</option>
+                        <option value="using smartphone, looking at phone">Smartphone</option>
+                        <option value="wearing headphones, listening to music">Casque audio</option>
+                        <option value="holding musical instrument">Instrument de musique</option>
+                        <option value="with sports equipment">Équipement sportif</option>
+                        <option value="reading book, holding manga">Livre/Manga</option>
+                        <option value="holding coffee cup, tea cup">Tasse de café/thé</option>
+                        <option value="with bicycle">Vélo</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="propsCustom" placeholder="Décrivez l'objet...">
+                    <div class="tech-info">Objets et accessoires</div>
+                </div>
+
+                <!-- LIEUX JAPONAIS TRADITIONNELS -->
+                <div class="control-group">
+                    <label>⛩️ Lieux Japonais Spécifiques</label>
+                    <select id="japaneseLocation">
+                        <option value="">Aucun</option>
+                        <option value="at onsen hot spring, traditional bath">Onsen (source thermale)</option>
+                        <option value="in ryokan traditional inn">Ryokan (auberge)</option>
+                        <option value="at matsuri festival, japanese festival">Festival Matsuri</option>
+                        <option value="at torii gate shrine entrance">Torii gate (entrée sanctuaire)</option>
+                        <option value="in bamboo forest, bamboo grove">Forêt de bambous</option>
+                        <option value="in cherry blossom park, sakura park">Parc de sakura</option>
+                        <option value="in traditional tea house, chashitsu">Maison de thé</option>
+                        <option value="in zen garden, japanese rock garden">Jardin zen</option>
+                        <option value="on temple grounds, buddhist temple">Temple bouddhiste</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="japaneseLocationCustom" placeholder="Décrivez le lieu...">
+                    <div class="tech-info">Lieux culturels japonais</div>
+                </div>
+
+                <!-- LIEUX URBAINS MODERNES -->
+                <div class="control-group">
+                    <label>🏙️ Lieux Urbains Modernes</label>
+                    <select id="urbanLocation">
+                        <option value="">Aucun</option>
+                        <option value="at shibuya crossing, busy intersection">Shibuya crossing</option>
+                        <option value="in akihabara electronics district, otaku culture">Akihabara</option>
+                        <option value="in convenience store konbini, 24-hour store">Konbini (convenience store)</option>
+                        <option value="in karaoke room, singing booth">Salle de karaoke</option>
+                        <option value="in arcade game center, gaming arcade">Arcade/Game center</option>
+                        <option value="on rooftop terrace, building rooftop">Toit-terrasse</option>
+                        <option value="at train station platform, railway station">Quai de gare</option>
+                        <option value="on school rooftop">Toit de l'école</option>
+                        <option value="in ramen shop, noodle restaurant">Restaurant de ramen</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="urbanLocationCustom" placeholder="Décrivez le lieu...">
+                    <div class="tech-info">Lieux urbains japonais modernes</div>
+                </div>
+
+                <!-- STORY MOMENTS -->
+                <div class="control-group">
+                    <label>📖 Moment Narratif</label>
+                    <select id="storyMoment">
+                        <option value="">Aucun</option>
+                        <option value="first meeting scene, initial encounter">Première rencontre</option>
+                        <option value="confession scene, love confession moment">Scène de confession</option>
+                        <option value="battle climax, action peak moment">Climax de combat</option>
+                        <option value="peaceful daily life, slice of life moment">Vie quotidienne paisible</option>
+                        <option value="goodbye farewell scene, parting moment">Adieu/Séparation</option>
+                        <option value="reunion scene, meeting again">Retrouvailles</option>
+                        <option value="training montage, practice scene">Entraînement</option>
+                        <option value="beach episode moment, summer fun">Beach episode</option>
+                        <option value="festival night scene">Scène de festival nocturne</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="storyMomentCustom" placeholder="Décrivez le moment...">
+                    <div class="tech-info">Moment-clé de l'histoire</div>
+                </div>
+
+                <!-- ANIME TROPES VISUELS -->
+                <div class="control-group">
+                    <label>💫 Tropes Visuels Anime</label>
+                    <select id="animeTropes">
+                        <option value="">Aucun</option>
+                        <option value="chibi reaction face, super deformed">Chibi reaction face</option>
+                        <option value="sweat drop, embarrassment mark">Goutte de sueur</option>
+                        <option value="anime blush lines on cheeks">Lignes de rougissement</option>
+                        <option value="shining sparkling eyes">Yeux brillants</option>
+                        <option value="sparkle background, bishie sparkles">Fond scintillant</option>
+                        <option value="action impact frames, dynamic effects">Impact frames d'action</option>
+                        <option value="screen tone patterns, manga texture">Screen tone patterns</option>
+                        <option value="manga panel layout overlay">Layout de panels manga</option>
+                        <option value="speed lines background">Lignes de vitesse</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="animeTropesCustom" placeholder="Décrivez le trope...">
+                    <div class="tech-info">Éléments visuels typiques de l'anime</div>
+                </div>
+
+                <!-- ART MOVEMENT MIX -->
+                <div class="control-group">
+                    <label>🎨 Influence Artistique</label>
+                    <select id="artMovement">
+                        <option value="">Aucune</option>
+                        <option value="impressionism anime style, painted aesthetic">Impressionnisme</option>
+                        <option value="art deco anime, geometric elegant">Art Déco</option>
+                        <option value="pop art anime, bold graphic style">Pop Art</option>
+                        <option value="minimalist anime, simple clean">Minimalisme</option>
+                        <option value="baroque anime, ornate dramatic">Baroque</option>
+                        <option value="surrealism anime, dreamlike strange">Surréalisme</option>
+                        <option value="art nouveau anime, organic flowing">Art Nouveau</option>
+                        <option value="custom">Personnaliser</option>
+                    </select>
+                    <input type="text" id="artMovementCustom" placeholder="Décrivez le mouvement...">
+                    <div class="tech-info">Mélange avec mouvements artistiques</div>
+                </div>
+
+                <!-- QUALITY BOOSTERS -->
+                <div class="control-group">
+                    <label>⭐ Boosts Qualité</label>
+                    <select id="qualityBoost">
+                        <option value="">Standard</option>
+                        <option value="masterpiece, best quality">Masterpiece + Best Quality</option>
+                        <option value="masterpiece, best quality, ultra detailed">+ Ultra Detailed</option>
+                        <option value="masterpiece, best quality, ultra detailed, 8k resolution">+ 8K Resolution</option>
+                        <option value="masterpiece, best quality, ultra detailed, 8k resolution, professional illustration">+ Professional Illustration</option>
+                    </select>
+                    <div class="tech-info">Termes pour améliorer la qualité</div>
+                </div>
+
+            </div>
+
+            <!-- SECTION OUTPUT -->
+            <div class="output-section">
+                <h2>📝 Prompt Généré</h2>
+                <div class="prompt-output empty" id="promptOutput">
+                    Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"
+                </div>
+                
+                <div class="token-counter">
+                    <span>Tokens estimés:</span>
+                    <div class="token-count" id="tokenCount">0</div>
+                </div>
+
+                <div class="negative-prompt">
+                    <h3>🚫 Prompt Négatif</h3>
+                    
+                    <div style="background: #fff5f5; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 2px solid #f8d7da;">
+                        <div style="margin-bottom: 10px; font-weight: bold; color: #721c24;">Options de filtrage :</div>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockNSFW" checked style="margin-right: 8px;">
+                            Bloquer contenu NSFW
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockViolence" checked style="margin-right: 8px;">
+                            Bloquer violence/gore
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockText" checked style="margin-right: 8px;">
+                            Bloquer texte/watermarks
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockRealistic" checked style="margin-right: 8px;">
+                            Bloquer photo réaliste
+                        </label>
+                        <label style="display: block; margin: 8px 0; cursor: pointer; color: #721c24;">
+                            <input type="checkbox" id="blockWestern" checked style="margin-right: 8px;">
+                            Bloquer style cartoon occidental
+                        </label>
+                    </div>
+                    
+                    <div class="negative-output" id="negativeOutput">
+photorealistic, realistic, photograph, 3d render, cgi, real person, live action, western cartoon, Disney style, Pixar style, ugly, deformed, bad anatomy, extra limbs, missing limbs, floating limbs, disconnected limbs, mutation, mutated, disfigured, blurry, out of focus, low quality, worst quality, jpeg artifacts, watermark, signature, text, username, artist name, bad proportions, gross proportions, malformed, asymmetrical eyes, crossed eyes, unnatural pose, stiff pose, awkward hands, too many fingers, missing fingers, fused fingers, extra digits, fewer digits, long neck, bad art, amateur drawing, odd, fat, morphing, skin spots, acnes, skin blemishes, age spot, glans, poorly drawn face, poorly drawn hands, poorly drawn feet, tiling, poorly drawn background
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOUTONS D'ACTION -->
+        <div class="button-container">
+            <button class="btn btn-generate" onclick="generatePrompt()">
+                ⚡ GÉNÉRER LE PROMPT
+            </button>
+            <button class="btn btn-copy" onclick="copyPrompt()">
+                📋 COPIER PROMPT COMPLET
+            </button>
+            <button class="btn btn-reset" onclick="resetAll()">
+                🔄 RESET 100%
+            </button>
+            <button class="btn btn-random" onclick="randomPrompt()">
+                🎲 PROMPT ALÉATOIRE
+            </button>
+            <button class="btn btn-export" onclick="exportPrompt()">
+                💾 EXPORTER EN .TXT
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Mise à jour du prompt négatif selon les toggles
+        function updateNegativePrompt() {
+            const negativeBase = [];
+            
+            // Bloquer photo réaliste
+            if (document.getElementById('blockRealistic').checked) {
+                negativeBase.push('photorealistic, realistic, photograph, 3d render, cgi, real person, live action');
+            }
+            
+            // Bloquer cartoon occidental
+            if (document.getElementById('blockWestern').checked) {
+                negativeBase.push('western cartoon, Disney style, Pixar style');
+            }
+            
+            // Toujours inclure les défauts de qualité
+            negativeBase.push('ugly, deformed, bad anatomy, extra limbs, missing limbs, floating limbs, disconnected limbs, mutation, mutated, disfigured, blurry, out of focus, low quality, worst quality, jpeg artifacts');
+            
+            // Bloquer texte/watermarks
+            if (document.getElementById('blockText').checked) {
+                negativeBase.push('watermark, signature, text, username, artist name');
+            }
+            
+            // Toujours inclure les défauts anatomiques
+            negativeBase.push('bad proportions, gross proportions, malformed, asymmetrical eyes, crossed eyes, unnatural pose, stiff pose, awkward hands, too many fingers, missing fingers, fused fingers, extra digits, fewer digits, long neck, bad art, amateur drawing, odd, fat, morphing');
+            
+            // Toujours inclure les défauts de peau
+            negativeBase.push('skin spots, acnes, skin blemishes, age spot, poorly drawn face, poorly drawn hands, poorly drawn feet, tiling, poorly drawn background');
+            
+            // Bloquer NSFW
+            if (document.getElementById('blockNSFW').checked) {
+                negativeBase.push('nsfw, explicit, nudity, sexual content');
+            }
+            
+            // Bloquer violence
+            if (document.getElementById('blockViolence').checked) {
+                negativeBase.push('gore, blood, violence, graphic violence, disturbing');
+            }
+            
+            const finalNegative = negativeBase.join(', ');
+            document.getElementById('negativeOutput').textContent = finalNegative;
+        }
+
+        // Listener pour les toggles
+        ['blockNSFW', 'blockViolence', 'blockText', 'blockRealistic', 'blockWestern'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updateNegativePrompt);
+        });
+
+        // Initialiser le prompt négatif
+        updateNegativePrompt();
+
+        // Gestion des champs personnalisés
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                const customInput = document.getElementById(this.id + 'Custom');
+                if (customInput) {
+                    if (this.value === 'custom') {
+                        customInput.classList.add('active');
+                    } else {
+                        customInput.classList.remove('active');
+                        customInput.value = '';
+                    }
+                }
+            });
+        });
+
+        // Mode Expert
+        document.getElementById('expertMode').addEventListener('change', function() {
+            const techInfos = document.querySelectorAll('.tech-info');
+            techInfos.forEach(info => {
+                if (this.checked) {
+                    info.classList.add('show');
+                } else {
+                    info.classList.remove('show');
+                }
+            });
+        });
+
+        // Notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fonction pour obtenir la valeur (custom ou select)
+        function getValue(selectId) {
+            const select = document.getElementById(selectId);
+            const customInput = document.getElementById(selectId + 'Custom');
+            
+            if (select.value === 'custom' && customInput && customInput.value.trim()) {
+                return customInput.value.trim();
+            }
+            return select.value;
+        }
+
+        // Générateur de prompt
+        function generatePrompt() {
+            const parts = [];
+            
+            // Quality Boosters (en tout premier si sélectionné)
+            const qualityBoost = getValue('qualityBoost');
+            if (qualityBoost) {
+                parts.push(qualityBoost);
+            }
+
+            // Style principal (doit être en premier après quality)
+            const styleMain = getValue('styleMain');
+            if (styleMain) {
+                parts.push(styleMain);
+            }
+
+            // Genre anime
+            const animeGenre = getValue('animeGenre');
+            if (animeGenre) {
+                parts.push(animeGenre);
+            }
+
+            // Texture de rendu
+            const renderTexture = getValue('renderTexture');
+            if (renderTexture) {
+                parts.push(renderTexture);
+            }
+
+            // Sujet principal
+            const subjectMain = getValue('subjectMain');
+            if (subjectMain) {
+                parts.push(subjectMain);
+            }
+
+            // Archétype personnage
+            const archetype = getValue('archetype');
+            if (archetype) {
+                parts.push(archetype);
+            }
+
+            // Caractéristiques physiques - cheveux
+            const hairColor = getValue('hairColor');
+            if (hairColor) {
+                parts.push(hairColor);
+            }
+            const hairLength = getValue('hairLength');
+            if (hairLength) {
+                parts.push(hairLength);
+            }
+            const hairStyle = getValue('hairStyle');
+            if (hairStyle) {
+                parts.push(hairStyle);
+            }
+
+            // Caractéristiques physiques - yeux et corps
+            const eyeColor = getValue('eyeColor');
+            if (eyeColor) {
+                parts.push(eyeColor);
+            }
+            const bodyType = getValue('bodyType');
+            if (bodyType) {
+                parts.push(bodyType);
+            }
+
+            // Action
+            const action = getValue('action');
+            if (action) {
+                parts.push(action);
+            }
+
+            // Expression
+            const expression = getValue('expression');
+            if (expression) {
+                parts.push(expression);
+            }
+
+            // Vêtements
+            const clothing = getValue('clothing');
+            if (clothing) {
+                parts.push(clothing);
+            }
+
+            // Props/Objets
+            const props = getValue('props');
+            if (props) {
+                parts.push(props);
+            }
+
+            // Compagnon
+            const companion = getValue('companion');
+            if (companion) {
+                parts.push(companion);
+            }
+
+            // Lieu
+            const location = getValue('location');
+            if (location) {
+                parts.push(location);
+            }
+
+            // Lieux japonais spécifiques
+            const japaneseLocation = getValue('japaneseLocation');
+            if (japaneseLocation) {
+                parts.push(japaneseLocation);
+            }
+
+            // Lieux urbains modernes
+            const urbanLocation = getValue('urbanLocation');
+            if (urbanLocation) {
+                parts.push(urbanLocation);
+            }
+
+            // Époque
+            const era = getValue('era');
+            if (era) {
+                parts.push(era);
+            }
+
+            // Saison
+            const season = getValue('season');
+            if (season) {
+                parts.push(season);
+            }
+
+            // Moment narratif
+            const storyMoment = getValue('storyMoment');
+            if (storyMoment) {
+                parts.push(storyMoment);
+            }
+
+            // Météo
+            const weather = getValue('weather');
+            if (weather) {
+                parts.push(weather);
+            }
+
+            // Moment de la journée
+            const timeOfDay = getValue('timeOfDay');
+            if (timeOfDay) {
+                parts.push(timeOfDay);
+            }
+
+            // Éclairage
+            const lighting = getValue('lighting');
+            if (lighting) {
+                parts.push(lighting);
+            }
+
+            // Mood/Ton
+            const mood = getValue('mood');
+            if (mood) {
+                parts.push(mood);
+            }
+
+            // Palette
+            const colorPalette = getValue('colorPalette');
+            if (colorPalette) {
+                parts.push(colorPalette);
+            }
+
+            // Cadrage
+            const framing = getValue('framing');
+            if (framing) {
+                parts.push(framing);
+            }
+
+            // Composition avancée
+            const composition = getValue('composition');
+            if (composition) {
+                parts.push(composition);
+            }
+
+            // Profondeur de champ
+            const depthOfField = getValue('depthOfField');
+            if (depthOfField) {
+                parts.push(depthOfField);
+            }
+
+            // Effets
+            const effects = getValue('effects');
+            if (effects) {
+                parts.push(effects);
+            }
+
+            // Anime tropes visuels
+            const animeTropes = getValue('animeTropes');
+            if (animeTropes) {
+                parts.push(animeTropes);
+            }
+
+            // Post-processing
+            const postProcessing = getValue('postProcessing');
+            if (postProcessing) {
+                parts.push(postProcessing);
+            }
+
+            // Grain de film
+            const filmGrain = getValue('filmGrain');
+            if (filmGrain) {
+                parts.push(filmGrain);
+            }
+
+            // Influence artistique
+            const artMovement = getValue('artMovement');
+            if (artMovement) {
+                parts.push(artMovement);
+            }
+
+            // Stylisation
+            const stylization = getValue('stylization');
+            if (stylization) {
+                parts.push(stylization);
+            }
+
+            // Ratio (à la fin)
+            const aspectRatio = getValue('aspectRatio');
+            let ratioText = '';
+            if (aspectRatio) {
+                ratioText = ' ' + aspectRatio;
+            }
+
+            // Construction du prompt final
+            let finalPrompt = parts.join(', ') + ratioText;
+
+            if (!finalPrompt.trim()) {
+                finalPrompt = 'Veuillez sélectionner au moins un paramètre';
+            }
+
+            // Affichage
+            const promptOutput = document.getElementById('promptOutput');
+            promptOutput.textContent = finalPrompt;
+            promptOutput.classList.remove('empty');
+
+            // Estimation tokens
+            const tokenCount = Math.ceil(finalPrompt.split(/[\s,]+/).length * 1.3);
+            document.getElementById('tokenCount').textContent = tokenCount;
+
+            showNotification('✅ Prompt généré !');
+        }
+
+        // Copier le prompt
+        function copyPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            const negativeText = document.getElementById('negativeOutput').textContent;
+            
+            if (promptText === 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"' || 
+                promptText === 'Veuillez sélectionner au moins un paramètre') {
+                showNotification('⚠️ Générez d\'abord un prompt !');
+                return;
+            }
+
+            const fullPrompt = `POSITIVE PROMPT:\n${promptText}\n\nNEGATIVE PROMPT:\n${negativeText}`;
+            
+            navigator.clipboard.writeText(fullPrompt).then(() => {
+                showNotification('✅ Prompt copié dans le presse-papier !');
+            }).catch(err => {
+                showNotification('❌ Erreur lors de la copie');
+            });
+        }
+
+        // Reset
+        function resetAll() {
+            // Reset tous les selects
+            selects.forEach(select => {
+                select.selectedIndex = 0;
+            });
+
+            // Reset tous les inputs custom
+            const customInputs = document.querySelectorAll('input[type="text"]');
+            customInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('active');
+            });
+
+            // Reset output
+            const promptOutput = document.getElementById('promptOutput');
+            promptOutput.textContent = 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"';
+            promptOutput.classList.add('empty');
+            
+            document.getElementById('tokenCount').textContent = '0';
+
+            showNotification('🔄 Tout a été réinitialisé !');
+        }
+
+        // Prompt aléatoire
+        function randomPrompt() {
+            resetAll();
+
+            selects.forEach(select => {
+                // Exclure certains selects du random
+                if (select.id !== 'aspectRatio' && 
+                    select.id !== 'stylization' && 
+                    select.id !== 'qualityBoost' &&
+                    select.id !== 'filmGrain' &&
+                    select.id !== 'depthOfField' &&
+                    select.id !== 'composition' &&
+                    select.id !== 'postProcessing') {
+                    const options = Array.from(select.options).filter(opt => 
+                        opt.value !== '' && opt.value !== 'custom'
+                    );
+                    if (options.length > 0) {
+                        const randomOption = options[Math.floor(Math.random() * options.length)];
+                        select.value = randomOption.value;
+                    }
+                }
+            });
+
+            // Ratio aléatoire
+            const ratioSelect = document.getElementById('aspectRatio');
+            const ratioOptions = Array.from(ratioSelect.options).filter(opt => opt.value !== 'custom');
+            ratioSelect.value = ratioOptions[Math.floor(Math.random() * ratioOptions.length)].value;
+
+            generatePrompt();
+            showNotification('🎲 Prompt aléatoire généré !');
+        }
+
+        // Export TXT
+        function exportPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            const negativeText = document.getElementById('negativeOutput').textContent;
+            
+            if (promptText === 'Configurez vos paramètres et cliquez sur "GÉNÉRER LE PROMPT"' || 
+                promptText === 'Veuillez sélectionner au moins un paramètre') {
+                showNotification('⚠️ Générez d\'abord un prompt !');
+                return;
+            }
+
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            const filename = `anime-prompt-${timestamp}.txt`;
+
+            const content = `ANIME PROMPT GENERATOR
+Generated: ${new Date().toLocaleString('fr-FR')}
+============================================
+
+POSITIVE PROMPT:
+${promptText}
+
+NEGATIVE PROMPT:
+${negativeText}
+
+============================================
+PARAMETERS USED:
+- Quality Boost: ${document.getElementById('qualityBoost').options[document.getElementById('qualityBoost').selectedIndex]?.text || 'Standard'}
+- Style: ${document.getElementById('styleMain').options[document.getElementById('styleMain').selectedIndex]?.text || 'Non défini'}
+- Genre: ${document.getElementById('animeGenre').options[document.getElementById('animeGenre').selectedIndex]?.text || 'Non défini'}
+- Render Texture: ${document.getElementById('renderTexture').options[document.getElementById('renderTexture').selectedIndex]?.text || 'Par défaut'}
+- Subject: ${document.getElementById('subjectMain').options[document.getElementById('subjectMain').selectedIndex]?.text || 'Non défini'}
+- Archetype: ${document.getElementById('archetype').options[document.getElementById('archetype').selectedIndex]?.text || 'Aucun'}
+- Hair Color: ${document.getElementById('hairColor').options[document.getElementById('hairColor').selectedIndex]?.text || 'Par défaut'}
+- Hair Length: ${document.getElementById('hairLength').options[document.getElementById('hairLength').selectedIndex]?.text || 'Par défaut'}
+- Hair Style: ${document.getElementById('hairStyle').options[document.getElementById('hairStyle').selectedIndex]?.text || 'Par défaut'}
+- Eye Color: ${document.getElementById('eyeColor').options[document.getElementById('eyeColor').selectedIndex]?.text || 'Par défaut'}
+- Body Type: ${document.getElementById('bodyType').options[document.getElementById('bodyType').selectedIndex]?.text || 'Par défaut'}
+- Action: ${document.getElementById('action').options[document.getElementById('action').selectedIndex]?.text || 'Non défini'}
+- Expression: ${document.getElementById('expression').options[document.getElementById('expression').selectedIndex]?.text || 'Non défini'}
+- Clothing: ${document.getElementById('clothing').options[document.getElementById('clothing').selectedIndex]?.text || 'Non défini'}
+- Props: ${document.getElementById('props').options[document.getElementById('props').selectedIndex]?.text || 'Aucun'}
+- Companion: ${document.getElementById('companion').options[document.getElementById('companion').selectedIndex]?.text || 'Aucun'}
+- Location: ${document.getElementById('location').options[document.getElementById('location').selectedIndex]?.text || 'Non défini'}
+- Japanese Location: ${document.getElementById('japaneseLocation').options[document.getElementById('japaneseLocation').selectedIndex]?.text || 'Aucun'}
+- Urban Location: ${document.getElementById('urbanLocation').options[document.getElementById('urbanLocation').selectedIndex]?.text || 'Aucun'}
+- Era: ${document.getElementById('era').options[document.getElementById('era').selectedIndex]?.text || 'Contemporain'}
+- Season: ${document.getElementById('season').options[document.getElementById('season').selectedIndex]?.text || 'Aucune'}
+- Story Moment: ${document.getElementById('storyMoment').options[document.getElementById('storyMoment').selectedIndex]?.text || 'Aucun'}
+- Weather: ${document.getElementById('weather').options[document.getElementById('weather').selectedIndex]?.text || 'Non défini'}
+- Time of Day: ${document.getElementById('timeOfDay').options[document.getElementById('timeOfDay').selectedIndex]?.text || 'Par défaut'}
+- Lighting: ${document.getElementById('lighting').options[document.getElementById('lighting').selectedIndex]?.text || 'Non défini'}
+- Mood: ${document.getElementById('mood').options[document.getElementById('mood').selectedIndex]?.text || 'Par défaut'}
+- Color Palette: ${document.getElementById('colorPalette').options[document.getElementById('colorPalette').selectedIndex]?.text || 'Style par défaut'}
+- Framing: ${document.getElementById('framing').options[document.getElementById('framing').selectedIndex]?.text || 'Non défini'}
+- Composition: ${document.getElementById('composition').options[document.getElementById('composition').selectedIndex]?.text || 'Par défaut'}
+- Depth of Field: ${document.getElementById('depthOfField').options[document.getElementById('depthOfField').selectedIndex]?.text || 'Par défaut'}
+- Effects: ${document.getElementById('effects').options[document.getElementById('effects').selectedIndex]?.text || 'Aucun'}
+- Anime Tropes: ${document.getElementById('animeTropes').options[document.getElementById('animeTropes').selectedIndex]?.text || 'Aucun'}
+- Post-Processing: ${document.getElementById('postProcessing').options[document.getElementById('postProcessing').selectedIndex]?.text || 'Aucun'}
+- Film Grain: ${document.getElementById('filmGrain').options[document.getElementById('filmGrain').selectedIndex]?.text || 'Aucun'}
+- Art Movement: ${document.getElementById('artMovement').options[document.getElementById('artMovement').selectedIndex]?.text || 'Aucune'}
+- Stylization: ${document.getElementById('stylization').options[document.getElementById('stylization').selectedIndex]?.text || 'Standard'}
+- Ratio: ${document.getElementById('aspectRatio').options[document.getElementById('aspectRatio').selectedIndex]?.text || 'Non défini'}
+`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showNotification('💾 Fichier .txt exporté !');
+        }
+    </script>
+</body>
+</html>
