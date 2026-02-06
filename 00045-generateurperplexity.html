@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Générateur de Prompts - Intégralité des Données</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 20px; line-height: 1.4; }
+        .wrapper { max-width: 1000px; margin: 0 auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 1px solid #333; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        h1 { color: #4CAF50; text-align: center; text-transform: uppercase; letter-spacing: 4px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .field-box { background: #222; padding: 15px; border-radius: 10px; border-left: 5px solid #4CAF50; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #888; font-size: 0.85em; }
+        
+        select { width: 100%; padding: 12px; background: #333; color: #fff; border: 1px solid #444; border-radius: 5px; font-size: 0.9em; outline: none; transition: 0.3s; }
+        select:focus { border-color: #4CAF50; }
+        
+        .custom-field { width: 95%; margin-top: 10px; padding: 10px; background: #000; color: #00ff00; border: 1px dashed #4CAF50; border-radius: 5px; display: none; font-family: monospace; }
+
+        .controls { margin-top: 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        button { padding: 15px; font-weight: bold; cursor: pointer; border: none; border-radius: 8px; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
+        
+        .btn-main { background: #4CAF50; color: #fff; grid-column: span 2; font-size: 1.2em; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); }
+        .btn-rnd { background: #9C27B0; color: #fff; }
+        .btn-cpy { background: #2196F3; color: #fff; }
+        .btn-exp { background: #FF9800; color: #fff; }
+        .btn-rst { background: #f44336; color: #fff; }
+        button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .result-container { margin-top: 30px; background: #000; padding: 25px; border-radius: 10px; border: 1px solid #444; }
+        .output-label { color: #4CAF50; font-size: 0.8em; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        #pos-output { color: #fff; font-size: 1.1em; margin-bottom: 20px; word-wrap: break-word; font-style: italic; }
+        #neg-output { color: #ff6b6b; font-size: 0.9em; border-top: 1px solid #333; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>Générateur de Prompts Studio</h1>
+
+    <div class="grid-layout">
+        <div class="field-box">
+            <label>1. Personnage Principal</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Féminin Fantasy & Futuriste">
+                    <option value="Rainbow-winged cyberpunk fairy">Fée futuriste aux ailes arc-en-ciel</option>
+                    <option value="Electric-veined elven fairy in neon city">Elfe féerique électrique en ville néon</option>
+                    <option value="Galactic sorceress facing a blazing star">Sorcière galactique face à un astre enflammé</option>
+                    <option value="Queen of the night in constellation dress">Reine de la nuit en robe constellée</option>
+                    <option value="Ethereal lady seated on crescent moon">Dame éthérée assise sur un croissant de lune</option>
+                    <option value="Lunar muse with flowing white gown">Muse lunaire à la robe blanche vaporeuse</option>
+                </optgroup>
+                <optgroup label="Cyberpunk & Gothique">
+                    <option value="Gothic maid armed with a microphone">Souillon gothique armée d’un micro</option>
+                    <option value="Sepia maid idol on stage">Idole domestique en robe de soubrette sépia</option>
+                    <option value="Cyborg goth girl with umbrella in neon alley">Cyborg gothique au parapluie dans une ruelle néon</option>
+                    <option value="Cyberpunk idol wired to rainy backstreet">Idole cyberpunk câblée dans une ruelle pluvieuse</option>
+                </optgroup>
+                <optgroup label="Réalistes & Pin-up">
+                    <option value="Elegant blonde woman in black dress">Jeune femme blonde élégante en robe noire</option>
+                    <option value="Chic businesswoman with golden jewelry">Femme d’affaires chic aux bijoux dorés</option>
+                    <option value="Cute fiery medusa at breakfast">Méduse mignonne enflammée au petit-déjeuner</option>
+                    <option value="Demonic pin-up serving a flaming brunch">Pin-up démoniaque servant un brunch enflammé</option>
+                </optgroup>
+                <optgroup label="Sombres & Créatures">
+                    <option value="Grim reaper smoking on delayed train platform">Faucheuse fumant sur un quai de train retardé</option>
+                    <option value="Ancient reaper with scythe and hourglass">Ancienne faucheuse avec faux et sablier</option>
+                    <option value="Smoking skeletal death in train station">Mort squelettique fumeuse en gare</option>
+                    <option value="Meditating dragon monk surrounded by candles">Moine dragon méditant entouré de bougies</option>
+                    <option value="Wise draconic sage in ritual cave">Sage draconique dans une grotte rituelle</option>
+                </optgroup>
+                <optgroup label="Ambiances Cosmiques & Marines">
+                    <option value="Silhouette on tropical beach under fiery red volcano moon">Silhouette sur plage tropicale / lune volcanique</option>
+                    <option value="Galloping stallion splashing waves under golden full moon">Étalon dans les vagues / lune dorée</option>
+                    <option value="Prismatic cosmic planet rising over fiery cliffside ocean">Planète prismatique / falaise enflammée</option>
+                    <option value="Neon-ringed exoplanet over palm-fringed turquoise beach">Exoplanète annelée / plage turquoise</option>
+                    <option value="Seagulls dolphins and waves at crimson sunset over ocean">Mouettes dauphins / coucher de soleil écarlate</option>
+                    <option value="Pier leading to golden sun with soaring seagulls">Jetée vers soleil d’or</option>
+                    <option value="Cave opening to yellow moonlit beach and ocean">Grotte sur plage / lune jaune</option>
+                    <option value="Golden autumn trees and river under massive golden moon">Arbres automnaux / lune géante dorée</option>
+                </optgroup>
+                <optgroup label="Styles Graphiques Fantasy & Cyberpunk">
+                    <option value="Hyperrealistic fantasy digital art neon glow">Art fantastique hyperréaliste lueur néon</option>
+                    <option value="Cinematic character portrait dramatic lighting">Portrait cinématographique éclairage dramatique</option>
+                    <option value="3D rendered surreal portrait ethereal effects">Rendu 3D surréaliste effets éthérés</option>
+                    <option value="Anime cyberpunk cybernetic neon noir">Cyberpunk anime cybernétique noir néon</option>
+                    <option value="Glossy digital anime style wet reflections">Style anime numérique brillant reflets humides</option>
+                </optgroup>
+                <optgroup label="Styles Graphiques Réalistes & Cosmiques">
+                    <option value="High fashion photorealistic portrait studio">Portrait studio photoréaliste haute couture</option>
+                    <option value="Chibi Betty Boop style infernal pop art">Style chibi Betty Boop art pop infernal</option>
+                    <option value="Dungeons & Dragons hyperrealistic creature sculpt">Créature style Donjons & Dragons</option>
+                    <option value="Sci-fi surreal landscape digital matte painting">Peinture matte paysage surréaliste sci-fi</option>
+                    <option value="Vaporwave cosmic beach hyperdetailed glow">Plage cosmique vaporwave hyperdétaillée</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Votre sujet spécifique...">
+        </div>
+
+        <div class="field-box">
+            <label>2. Tenue & Vêtements</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Robes Fantasy & Cosmiques">
+                    <option value="Starry navy gown with flowing sleeves">Robe bleu nuit constellée</option>
+                    <option value="Lace white ethereal gown flowing skirt">Robe blanche éthérée en dentelle</option>
+                    <option value="Galaxy embroidered off-shoulder dress">Robe épaules dénudées brodée galaxies</option>
+                    <option value="Constellation embroidered midnight blue gown">Robe bleu minuit brodée constellations</option>
+                </optgroup>
+                <optgroup label="Cyberpunk & Gothique">
+                    <option value="Black latex maid dress with apron and garters">Robe soubrette latex noir</option>
+                    <option value="Cyber corset dress with neon wires and thigh-highs">Corset cybernétiquement câblé</option>
+                    <option value="Glossy black latex gothic lolita maid outfit">Tenue lolita gothique latex brillant</option>
+                    <option value="Neon-lit cyberpunk corset mini-skirt ensemble">Ensemble corset jupe courte néon</option>
+                </optgroup>
+                <optgroup label="Élégantes & Pin-up">
+                    <option value="Off-shoulder black mini-dress with gold chains">Mini-robe noire chaînes dorées</option>
+                    <option value="Form-fitting black tube dress gold necklace">Robe tube moulante noire collier d’or</option>
+                    <option value="Fiery black lingerie-style dress with gloves">Robe lingerie noire enflammée</option>
+                </optgroup>
+                <optgroup label="Manteaux & Capes Sombres">
+                    <option value="Tattered black hooded death cloak">Cape de mort encapuchonnée noire</option>
+                    <option value="Ragged grim reaper hooded robe">Robe encapuchonnée faucheuse déchirée</option>
+                    <option value="Worn dark hooded cloak with frayed edges">Cape sombre bords effilochés</option>
+                </optgroup>
+                <optgroup label="Mystiques & Tribales">
+                    <option value="White linen monk robes with ritual drapery">Robes moine lin blanc drapés rituels</option>
+                    <option value="Draconic shaman loose beige tunic robes">Tunique ample chaman draconique beige</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Détails des vêtements...">
+        </div>
+
+        <div class="field-box">
+            <label>3. Époque & Ére</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Préhistoire & Antiquité">
+                    <option value="Paleolithic cave ritual era">Ère rituelle paléolithique</option>
+                    <option value="Neolithic megalithic age">Âge mégalithique néolithique</option>
+                    <option value="Bronze Age shamanic period">Période chamanique âge du bronze</option>
+                    <option value="Ancient Egyptian dynasty">Dynastie égyptienne antique</option>
+                </optgroup>
+                <optgroup label="Moyen Âge & Renaissance">
+                    <option value="Medieval alchemical era">Ère alchimique médiévale</option>
+                    <option value="Renaissance star-gazing period">Période observation stellaire Renaissance</option>
+                </optgroup>
+                <optgroup label="Époque victorienne & industrielle">
+                    <option value="Victorian steam age">Âge vapeur victorien</option>
+                    <option value="Belle Époque art nouveau">Belle Époque art nouveau</option>
+                </optgroup>
+                <optgroup label="XXe siècle moderne">
+                    <option value="1920s art deco era">Ère art déco années 20</option>
+                    <option value="1950s pin-up atomic age">Âge atomique pin-up 1950s</option>
+                    <option value="1980s neon synthwave">Synthwave néon années 80</option>
+                    <option value="1990s cyberculture dawn">Aube cyberculture années 90</option>
+                </optgroup>
+                <optgroup label="Futur proche">
+                    <option value="2020s augmented reality era">Ère réalité augmentée 2020s</option>
+                    <option value="2040s cyberpunk dystopia">Dystopie cyberpunk 2040s</option>
+                    <option value="2070s neural implant society">Société implants neuronaux 2070s</option>
+                </optgroup>
+                <optgroup label="Futur lointain">
+                    <option value="22nd century interstellar age">Âge interstellaire 22e siècle</option>
+                    <option value="Post-human singularity era">Ère singularité post-humaine</option>
+                    <option value="Quantum consciousness epoch">Époque conscience quantique</option>
+                </optgroup>
+                <optgroup label="Anachronismes temporels">
+                    <option value="Pharaonic smartphone dynasty">Dynastie smartphone pharaonique</option>
+                    <option value="Neolithic hyperloop settlement">Implantation hyperloop néolithique</option>
+                    <option value="Renaissance quantum nexus">Nexus quantique Renaissance</option>
+                    <option value="Victorian nanotech corsetry">Corseterie nanotech victorienne</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Temporalité spécifique...">
+        </div>
+
+        <div class="field-box">
+            <label>4. Lieux & Paysages</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Plages Cosmiques & Lunaires">
+                    <option value="Tropical beach with fiery red volcano moon silhouette">Plage tropicale / lune volcanique</option>
+                    <option value="Moonlit ocean waves with galloping stallion reflection">Vagues lunaire / reflet étalon</option>
+                    <option value="Yellow moonlit beach viewed from glowing cave entrance">Plage lune jaune / vue de grotte</option>
+                    <option value="Golden full moon over autumn trees and winding river">Lune dorée / arbres automnaux</option>
+                </optgroup>
+                <optgroup label="Futuristes & Exoplanètes">
+                    <option value="Prismatic planet rising over fiery cliff ocean waves">Planète prismatique / falaise enflammée</option>
+                    <option value="Neon-ringed exoplanet palm trees turquoise beach sunset">Exoplanète annelée / plage turquoise</option>
+                </optgroup>
+                <optgroup label="Marins & Wildlife">
+                    <option value="Crimson sunset seagulls dolphins crashing waves beach">Coucher écarlate / mouettes / dauphins</option>
+                    <option value="Golden sun pier with soaring seagulls tidal flats">Jetée soleil d’or / mouettes</option>
+                </optgroup>
+                <optgroup label="Urbains & Sombres">
+                    <option value="Delayed train platform foggy neon-lit subway station">Quai train retardé / station brumeuse</option>
+                    <option value="Rainy neon alley cyberpunk backstreet wet pavement">Ruelle pluvieuse néon / pavé mouillé</option>
+                    <option value="Ritual cave with glowing runes draconic meditation">Grotte rituelle runes / méditation</option>
+                </optgroup>
+                <optgroup label="Architectures Fantastiques">
+                    <option value="Futuristic neon spire cyberpunk skyline towers">Skyline cyberpunk / tours néon</option>
+                    <option value="Infernal temple golden breakfast medusa palace">Temple infernal / palais doré</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Environnement précis...">
+        </div>
+
+        <div class="field-box">
+            <label>5. Objets & Compagnons</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Fantasy & Mystique">
+                    <option value="Crystal scrying orb glowing runes staff">Orbe cristal / bâton runes</option>
+                    <option value="Ancient grimoire floating pages lunar sigils">Grimoire ancien / pages flottantes</option>
+                    <option value="Phoenix familiar fiery tail feathers aura">Familier phénix / aura enflammée</option>
+                </optgroup>
+                <optgroup label="Cyberpunk & High-tech">
+                    <option value="Holographic neural interface implant control orb">Interface neurale / orbe contrôle</option>
+                    <option value="Floating data drones neon scanning beams">Drones données / faisceaux néon</option>
+                    <option value="Quantum entanglement communicator wrist device">Communicateur intrication quantique</option>
+                </optgroup>
+                <optgroup label="Animaux Fantastiques">
+                    <option value="Shadow panther glowing eyes stealth companion">Panthère ombre / yeux luminescents</option>
+                    <option value="Crystal-winged raven oracle messenger">Corbeau oracle / ailes cristal</option>
+                    <option value="Lunar moth swarm ethereal light companion">Essaim papillons lunaires</option>
+                </optgroup>
+                <optgroup label="Victoriens & Steampunk">
+                    <option value="Brass phonograph automaton mechanical maid">Phonographe laiton / automate</option>
+                    <option value="Aether-powered umbrella drone surveillance device">Parapluie drone éther</option>
+                    <option value="Pocket chronometer dimensional rift detector">Chronomètre / détecteur failles</option>
+                </optgroup>
+                <optgroup label="Armes & Artefacts">
+                    <option value="Soul-reaping scythe temporal hourglass blade">Faux moisson / lame sablier</option>
+                    <option value="Star-forged sword constellation blade etchings">Épée étoilée / gravures</option>
+                    <option value="Microphone runic amplifier sonic spellcasting">Micro runique / incantations</option>
+                </optgroup>
+                <optgroup label="Cosmiques & Élémentaires">
+                    <option value="Nebula spirit companion starlight tendrils">Esprit nébuleuse / tentacules</option>
+                    <option value="Plasma elemental fiery corona guardian">Élémentaire plasma / gardien</option>
+                    <option value="Void walker shadow companion eclipse aura">Marcheur vide / aura éclipse</option>
+                </optgroup>
+                <optgroup label="Anachroniques & Absurdes">
+                    <option value="Smartphone grimoire app quantum spell launcher">Smartphone grimoire / sorts</option>
+                    <option value="Flint axe wireless microphone prehistoric idol">Micro hache silex / idole</option>
+                    <option value="Hyperloop pocket watch chronal train conductor">Montre gousset hyperloop</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Objet ou animal spécifique...">
+        </div>
+
+        <div class="field-box">
+            <label>6. Éclairage & Lumière</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Lunaires & Nocturnes">
+                    <option value="Golden full moon dramatic rimlight cloud shadows">Pleine lune dorée contre-jour</option>
+                    <option value="Yellow moon cave portal warm glow ocean reflection">Lueur chaude grotte lune jaune</option>
+                    <option value="Neon-ringed planet night bioluminescent beach glow">Plage bioluminescente nuit</option>
+                    <option value="Starry night palm silhouettes exoplanet rings light">Lumière anneaux / palmiers</option>
+                </optgroup>
+                <optgroup label="Solaires">
+                    <option value="Volcanic red sunset rimlight silhouette golden path">Coucher volcanique rouge</option>
+                    <option value="Prismatic planet dawn lens flare cliff glow">Aube exoplanète / flare objectif</option>
+                    <option value="Crimson sunset backlit clouds golden ocean path">Coucher écarlate / chemin doré</option>
+                    <option value="Golden hour pier sunlight volumetric god rays">Heure dorée / rayons divins</option>
+                </optgroup>
+                <optgroup label="Urbains">
+                    <option value="Cyberpunk neon rain wet street reflections bloom">Néon cyberpunk / reflets pluie</option>
+                    <option value="Foggy train station sodium vapor cigarette glow">Gare brumeuse / vapeur sodium</option>
+                </optgroup>
+                <optgroup label="Mystiques">
+                    <option value="Candlelit ritual cave warm rune emissive glow">Grotte bougies / runes émissives</option>
+                    <option value="Infernal hellfire golden breakfast volumetric light">Flammes infernales / lumière dorée</option>
+                </optgroup>
+                <optgroup label="Effets Spéciaux">
+                    <option value="Cosmic lens flare plasma corona god rays">Flare cosmique / corona plasma</option>
+                    <option value="Auroral plasma storm neon atmospheric scattering">Tempête plasma aurorale</option>
+                    <option value="Quantum anomaly chronal light distortion rift glow">Anomalie quantique / distorsion</option>
+                </optgroup>
+                <optgroup label="Contrastes">
+                    <option value="Autumn twilight golden hour volumetric mist">Crépuscule automnal / brume</option>
+                    <option value="Moonrise golden foliage rimlight river reflections">Lever lune / feuillage doré</option>
+                    <option value="High contrast silhouette volcanic moon backlighting">Silhouette contraste / lune volcanique</option>
+                    <option value="Dramatic horse gallop moonlit wave splash rimlight">Galop dramatique contre-jour</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Ambiance lumineuse...">
+        </div>
+
+        <div class="field-box">
+            <label>7. Action & Mouvement</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Magie & Rituels">
+                    <option value="Chanting lunar invocation summoning cosmic energies">Invoquant lune / énergies cosmiques</option>
+                    <option value="Conducting star alignment ritual celestial mapping">Dirigeant rituel stellaire</option>
+                    <option value="Weaving ethereal spell threads galaxy manipulation">Tissant sorts / manipulation galaxie</option>
+                </optgroup>
+                <optgroup label="Performances">
+                    <option value="Microphone sonic spellcasting crowd hypnosis">Incantation sonique micro</option>
+                    <option value="Holographic idol concert neural link performance">Concert idole / lien neuronal</option>
+                    <option value="Neon runway cyber fashion synchronized drone dance">Défilé cyber / danse drones</option>
+                </optgroup>
+                <optgroup label="Exploration">
+                    <option value="Opening dimensional portal chronal rift navigation">Ouvrant portail dimensionnel</option>
+                    <option value="Quantum train boarding delayed hyperloop departure">Embarquant train quantique</option>
+                    <option value="Stellar navigation exoplanet beacon activation">Navigation stellaire / balise</option>
+                </optgroup>
+                <optgroup label="Combat">
+                    <option value="Soul reaping scythe swing temporal slash attack">Faux moisson / coup temporel</option>
+                    <option value="Plasma whip elemental summoning fiery lash strike">Fouet plasma / frappe enflammée</option>
+                    <option value="Shadow panther stealth assassination leap attack">Assassinat furtif / saut panthère</option>
+                </optgroup>
+                <optgroup label="Artisanat">
+                    <option value="Crystal forging anvil cosmic hammer strikes">Forge cristal / marteau cosmique</option>
+                    <option value="Potion brewing cauldron stellar ingredient mixing">Chaudron potions / mélange stellaire</option>
+                    <option value="Rune carving dagger enchanted blade inscription">Gravure runes / dague enchantée</option>
+                </optgroup>
+                <optgroup label="Cosmique">
+                    <option value="Communing nebula spirits telepathic star council">Communion esprits nébuleuse</option>
+                    <option value="Taming plasma elemental fiery corona bond formation">Domptage élémentaire plasma</option>
+                    <option value="Eclipse ritual void walker summoning shadow pact">Rituel éclipse / pacte ombre</option>
+                </optgroup>
+                <optgroup label="Anachronique">
+                    <option value="Smartphone scrolling ancient grimoire app casting">Smartphone grimoire / app</option>
+                    <option value="Prehistoric karaoke flint axe microphone performance">Karaoké préhistorique / micro hache</option>
+                    <option value="Victorian tea party quantum entanglement discussion">Thé victorien / discussion quantique</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Action spécifique...">
+        </div>
+
+        <div class="field-box">
+            <label>8. Sons Visuels (Synesthésie)</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Graves & Cosmiques">
+                    <option value="Deep infrasound visualized as purple void ripples">Ondes violettes (infrasons)</option>
+                    <option value="Pulsar beeps as golden chronal concentric circles">Cercles dorés (bips pulsar)</option>
+                    <option value="Nebula resonance as crimson plasma filament waves">Vagues plasma (résonance nébuleuse)</option>
+                </optgroup>
+                <optgroup label="Aigus & Cristallins">
+                    <option value="Crystal chimes as silver fractal starburst shards">Éclats argentés (carillons cristal)</option>
+                    <option value="Whale harmonics as turquoise bioluminescent bubble spirals">Spirales turquoise (harmoniques baleine)</option>
+                </optgroup>
+                <optgroup label="Urbains">
+                    <option value="Neon hum as electric blue corona discharge arcs">Arcs bleu électrique (néon)</option>
+                    <option value="Distant sirens as red Doppler stretched wavy lines">Lignes Doppler rouges (sirènes)</option>
+                </optgroup>
+                <optgroup label="Mystiques">
+                    <option value="Chanting visualized as golden rune mandala expansion">Mandala rune doré (chant)</option>
+                    <option value="Incense smoke harmonics as violet curling sigil wisps">Sceaux violets (fumée)</option>
+                </optgroup>
+                <optgroup label="Élémentaires">
+                    <option value="Plasma crackle as orange lightning vein fractures">Fissures foudre orange (plasma)</option>
+                    <option value="Ocean pressure as deep blue implosion bubble collapse">Effondrement bulle (pression océan)</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Impression sonore visuelle...">
+        </div>
+
+        <div class="field-box">
+            <label>9. Textures Visuelles</label>
+            <select class="p-select" onchange="toggleC(this)">
+                <option value="">--- Choisir ---</option>
+                <optgroup label="Cosmiques">
+                    <option value="Nébuleuse gazeuse filament plasma tourbillonnant">Filaments plasma tourbillonnants</option>
+                    <option value="Cristal quantique facettes iridescentes fractales">Cristal quantique iridescent</option>
+                    <option value="Vide ondoyant frissons dimensionnels violets">Frissons violets vide dimensionnel</option>
+                </optgroup>
+                <optgroup label="Métalliques">
+                    <option value="Iridium poli veinures nanotech luminescentes">Iridium poli veinures nanotech</option>
+                    <option value="Circuit quantique gravures lumineuses pulsantes">Gravures circuit quantique</option>
+                    <option value="Latex cybernétiique brillant reflets huileux">Latex cybernétique brillant</option>
+                </optgroup>
+                <optgroup label="Organiques">
+                    <option value="Écume bioluminescente bulles phosphorescentes">Écume bioluminescente</option>
+                    <option value="Sable stellaire grains irisés chatoyants">Sable stellaire irisé</option>
+                    <option value="Écorce draconique écailles pétrifiées veinées">Écailles draconiques pétrifiées</option>
+                </optgroup>
+                <optgroup label="Textiles">
+                    <option value="Soie voidwoven franges éthérées flottantes">Soie tissée vide éthérée</option>
+                    <option value="Dentelle runique broderie phosphorescente fine">Dentelle runique phosphorescente</option>
+                    <option value="Velours cosmique velouté étoilé profond">Velours cosmique profond</option>
+                </optgroup>
+                <optgroup label="Fluides">
+                    <option value="Mercure quantique gouttelettes flottantes">Mercure quantique / gouttes</option>
+                    <option value="Lave cosmique bulles incandescentes visqueuses">Lave cosmique incandescente</option>
+                </optgroup>
+                <optgroup label="Minérales">
+                    <option value="Obsidienne volcanique fissures luminescentes">Obsidienne / fissures lumineuses</option>
+                    <option value="Quartz lunaire inclusions étoilées translucides">Quartz lunaire translucide</option>
+                </optgroup>
+                <optgroup label="Plasma">
+                    <option value="Plasma corona filaments électriques crépitants">Corona plasma électrique</option>
+                    <option value="Aura quantique halos interférents chatoyants">Aura quantique interférente</option>
+                </optgroup>
+                <option value="custom">--- Custom (Saisir manuellement) ---</option>
+            </select>
+            <input type="text" class="custom-field" placeholder="Détail de matière...">
+        </div>
+
+       <div class="field-box">
+    <label>10. Style & Atmosphère Néo-noir</label>
+    <select class="p-select" name="style_neonoir" onchange="toggleC(this)">
+        <option value="">--- Choisir ---</option>
+
+        <optgroup label="Palettes de Couleurs & Contraste">
+            <option value="High-contrast monochromatic noir with sharp shadows">Monochrome noir intense (Ombres tranchées)</option>
+            <option value="Cyber-teal and electric-orange dual lighting">Bichromie bleu sarcelle et orange électrique</option>
+            <option value="Deep purple and ultraviolet neon glow shadows">Ombres ultraviolettes et lueurs néon pourpres</option>
+            <option value="Muted sepia tones with sudden crimson accents">Tons sépia sourds et accents rouge sang</option>
+        </optgroup>
+
+        <optgroup label="Atmosphère & Météo Urbaine">
+            <option value="Heavy torrential rain reflecting city lights">Pluie torrentielle (Reflets urbains)</option>
+            <option value="Dense city fog with hazy volumetric light beams">Brouillard urbain épais (Rayons vaporeux)</option>
+            <option value="Rising manhole steam and hazy street exhaust">Vapeur de bouches d’égout et gaz d’échappement</option>
+            <option value="Distant urban haze with blurred light points">Brume urbaine lointaine (Points lumineux flous)</option>
+        </optgroup>
+
+        <optgroup label="Signatures Visuelles Néo-noir">
+            <option value="Venetian blind shadow patterns across face">Ombres de stores vénitiens sur les visages</option>
+            <option value="Silhouette standing in a dark doorway backlighting">Silhouette dans l’entrebâillement d’une porte sombre</option>
+            <option value="Swirling cigarette smoke in dim blue light">Volutes de fumée dans une faible lumière bleue</option>
+            <option value="Wet asphalt texture with neon liquid reflections">Asphalte mouillé (Reflets liquides néon)</option>
+        </optgroup>
+
+        <optgroup label="Intensité du Style & Grain">
+            <option value="Gritty industrial noir with heavy digital noise">Noir industriel brut (Grain numérique prononcé)</option>
+            <option value="Ethereal dream-like neo-noir soft focus">Néo-noir onirique (Mise au point douce)</option>
+            <option value="Ultramodern minimalist noir clean sharp lines">Noir minimaliste ultramoderne (Lignes nettes)</option>
+        </optgroup>
+
+        <option value="custom">--- Custom (Saisir manuellement) ---</option>
+    </select>
+    <input type="text" class="custom-field" placeholder="Ambiance Néo-noir spécifique...">
+</div>
+
+<div class="field-box">
+    <label>11. Optique & Caméra</label>
+    <select class="p-select" onchange="toggleC(this)">
+        <option value="">--- Choisir ---</option>
+        
+        <optgroup label="Focales & Perspectives">
+            <option value="Macro extreme close-up hyper-detailed">Macro (Gros plan extrême détails)</option>
+            <option value="Wide angle perspective expansive view">Grand angle (Perspective large)</option>
+            <option value="Fisheye lens distortion spherical view">Fisheye (Distorsion sphérique)</option>
+            <option value="Telephoto lens compressed background">Téléobjectif (Arrière-plan compressé)</option>
+        </optgroup>
+
+        <optgroup label="Angles de vue">
+            <option value="Low angle shot looking up heroic perspective">Contre-plongée (Vue héroïque)</option>
+            <option value="Bird's eye view from high above">Vue d'oiseau (Surplomb total)</option>
+            <option value="Dutch tilt slanted frame cinematic tension">Angle hollandais (Cadre incliné)</option>
+            <option value="Eye level shot realistic perspective">Hauteur d'homme (Perspective réaliste)</option>
+        </optgroup>
+
+        <optgroup label="Profondeur de champ">
+            <option value="Shallow depth of field blurry bokeh background">Faible profondeur de champ (Bokeh flou)</option>
+            <option value="Deep focus sharp background details">Grande profondeur de champ (Netteté totale)</option>
+            <option value="Tilt-shift effect miniature toy world look">Effet Tilt-shift (Aspect miniature)</option>
+        </optgroup>
+
+        <optgroup label="Styles de pellicule & Capteurs">
+            <option value="35mm film grain vintage cinematic texture">Grain de film 35mm (Texture cinéma)</option>
+            <option value="VHS glitch aesthetic analog video tape">Esthétique VHS (Glitch analogique)</option>
+            <option value="Polaroid instant film soft colors matte finish">Style Polaroid (Couleurs douces)</option>
+            <option value="High-speed photography frozen motion splash">Photographie haute vitesse (Mouvement figé)</option>
+            <option value="Long exposure light trails motion blur">Pose longue (Traînées lumineuses)</option>
+        </optgroup>
+
+        <option value="custom">--- Custom (Saisir manuellement) ---</option>
+    </select>
+    <input type="text" class="custom-field" placeholder="Réglage caméra spécifique...">
+</div>
+
+<div class="field-box">
+    <label>12. Format (Nano Banana)</label>
+    <select name="format_image" class="p-select" onchange="toggleC(this)">
+        <option value="">--- Choisir ---</option>
+
+        <optgroup label="Standards & Carré">
+            <option value="Nano Banana 1:1">Nano Banana 1:1 (Carré parfait)</option>
+            <option value="Nano Banana 4:5">Nano Banana 4:5 (Portrait Social)</option>
+            <option value="Nano Banana 3:4">Nano Banana 3:4 (Portrait Standard)</option>
+            <option value="Nano Banana 2:3">Nano Banana 2:3 (Portrait Photo)</option>
+        </optgroup>
+
+        <optgroup label="Cinématique & Panoramique">
+            <option value="Nano Banana 16:9">Nano Banana 16:9 (Widescreen HD)</option>
+            <option value="Nano Banana 2:1">Nano Banana 2:1 (Séries / Univisium)</option>
+            <option value="Nano Banana 21:9">Nano Banana 21:9 (Bannière / CinémaScope)</option>
+            <option value="Nano Banana 32:9">Nano Banana 32:9 (Super Ultrawide)</option>
+        </optgroup>
+
+        <optgroup label="Verticaux & Édition">
+            <option value="Nano Banana 9:16">Nano Banana 9:16 (Story / TikTok / Reel)</option>
+            <option value="Nano Banana 5:8">Nano Banana 5:8 (Couverture de livre)</option>
+        </optgroup>
+
+        <option value="custom">--- Custom (Saisir manuellement) ---</option>
+    </select>
+    <input type="text" class="custom-field" placeholder="Ex: Nano Banana 10:1...">
+</div>
+
+    </div>
+
+    <div class="controls">
+        <button class="btn-main" onclick="gen()">Génération du Prompt (Positif)</button>
+        <button class="btn-rnd" onclick="surprise()">Prompt Surprise / Aléatoire</button>
+        <button class="btn-cpy" onclick="copy()">Copier (Positif + Négatif)</button>
+        <button class="btn-exp" onclick="exp()">Export .txt</button>
+        <button class="btn-rst" onclick="reset()">RESET 100%</button>
+    </div>
+
+    <div class="result-container">
+        <span class="output-label">Prompt Positif :</span>
+        <div id="pos-output">Prêt pour la création...</div>
+        
+        <span class="output-label">Prompt Négatif Universel :</span>
+        <div id="neg-output">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, out of focus, censorship, ugly, deformed, mutated.</div>
+    </div>
+</div>
+
+<script>
+    // Mots-clés créatifs pour l'injection automatique en mode "Custom" 
+    const bonusWords = [
+        "anamorphic lens flares", "cinematic bokeh", "chiaroscuro lighting", 
+        "volumetric fog", "high-octane color grade", "hyper-detailed textures", 
+        "grainy 35mm film", "subsurface scattering", "ray-traced reflections",
+        "electric atmosphere", "moody urban haze", "dramatic shadows"
+    ];
+
+    // Gère l'affichage dynamique du champ de saisie manuelle
+    function toggleC(sel) {
+        const inp = sel.nextElementSibling;
+        if (inp && inp.classList.contains('custom-field')) {
+            inp.style.display = (sel.value === 'custom') ? 'block' : 'none';
+        }
+    }
+
+    // Génération du prompt positif à partir des 12 rubriques [cite: 21-28, 59-62]
+    function gen() {
+        let prompt = [];
+        document.querySelectorAll('.field-box').forEach(box => {
+            const sel = box.querySelector('select');
+            const inp = box.querySelector('.custom-field');
+            
+            if (sel.value === 'custom' && inp && inp.value.trim() !== '') {
+                prompt.push(inp.value.trim());
+            } else if (sel.value && sel.value !== 'custom') {
+                prompt.push(sel.value);
+            }
+        });
+        
+        const result = prompt.length ? prompt.join(', ') : "Sélectionnez vos options...";
+        document.getElementById('pos-output').innerText = result;
+    }
+
+    // Logique "Surprise" : Aléatoire intelligent sans ID
+    function surprise() {
+        document.querySelectorAll('.p-select').forEach(sel => {
+            // On identifie le menu format par son NAME pour garder la souplesse
+            const isTechnical = (sel.name === 'format_image' || sel.name === 'optique_camera');
+
+            const options = Array.from(sel.querySelectorAll('option')).filter(o => {
+                if (o.value === "") return false; // Ignore "Choisir"
+                if (isTechnical && o.value === "custom") return false; // Bloque le custom pour le format 
+                return true;
+            });
+
+            if (options.length > 0) {
+                const pick = options[Math.floor(Math.random() * options.length)];
+                sel.value = pick.value;
+                
+                const inp = sel.nextElementSibling;
+                if (pick.value === 'custom' && inp) {
+                    // Injecte une idée créative si custom est pioché (hors technique)
+                    inp.value = bonusWords[Math.floor(Math.random() * bonusWords.length)];
+                    inp.style.display = 'block';
+                } else if (inp) {
+                    inp.value = '';
+                    inp.style.display = 'none';
+                }
+            }
+        });
+        gen(); 
+    }
+
+    // Copie le prompt positif et le négatif universel
+    function copy() {
+        const p = document.getElementById('pos-output').innerText;
+        const n = document.getElementById('neg-output').innerText;
+        const text = `PROMPT POSITIF:\n${p}\n\nPROMPT NÉGATIF:\n${n}`;
+        navigator.clipboard.writeText(text).then(() => alert("Prompt copié !"));
+    }
+
+    // Exportation au format .txt pur
+    function exp() {
+        const p = document.getElementById('pos-output').innerText;
+        const n = document.getElementById('neg-output').innerText;
+        const blob = new Blob([`POSITIVE:\n${p}\n\nNEGATIVE:\n${n}`], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'prompt_expert.txt';
+        a.click();
+    }
+
+    // Reset complet de l'interface à 100%
+    function reset() {
+        document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+        document.querySelectorAll('.custom-field').forEach(i => {
+            i.value = '';
+            i.style.display = 'none';
+        });
+        document.getElementById('pos-output').innerText = "Prêt pour la création...";
+    }
+</script>
+</body>
+</html>
