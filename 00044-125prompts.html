@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>125 Prompts IA - Collection Complète</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .category {
+            margin-bottom: 50px;
+        }
+        .category-title {
+            font-size: 1.6em;
+            color: #667eea;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #764ba2;
+            font-weight: bold;
+        }
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .prompt-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .prompt-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .prompt-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .prompt-title {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.05em;
+            flex: 1;
+        }
+        .prompt-text {
+            color: #444;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.87em;
+            flex-grow: 1;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .prompt-text::-webkit-scrollbar { width: 6px; }
+        .prompt-text::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); border-radius: 3px; }
+        .prompt-text::-webkit-scrollbar-thumb { background: #667eea; border-radius: 3px; }
+        .copy-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .copy-btn:active { transform: scale(0.98); }
+        .copy-btn.copied { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        @media (max-width: 768px) {
+            .prompt-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2em; }
+            .container { padding: 20px; }
+            .category-title { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Collection de 125 Prompts IA</h1>
+        <p class="subtitle">Cliquez sur "Copier" pour copier le prompt dans votre presse-papiers</p>
+        <div class="category">
+            <h2 class="category-title">CATEGORY 1: RELATIONSHIP &amp; LOVE (30 Prompts)</h2>
+            <div class="prompt-grid">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">001</span>
+                        <span class="prompt-title">The Perfect Proposal</span>
+                    </div>
+                    <div class="prompt-text">“Generate an ultra-realistic cinematic photo of a romantic proposal on a Santorini cliffside at sunset. A stylish young man (use uploaded reference photo) is down on one knee on white-washed steps overlooking the blue Aegean Sea, holding open a Tiffany blue ring box with a sparkling diamond ring. His face shows genuine emotion - face, skin tone, and hairstyle exactly as in reference photo. A beautiful woman in a flowing white dress stands before him, hands covering her face in shock, tears streaming down. White buildings with blue domes in background, bougainvillea flowers frame the scene. Golden hour lighting with pink and orange skies reflecting on water. Rose petals scattered on steps. Shot with 85mm lens at f/1.4, cinematic romantic color grading.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate an ultra-realistic cinematic photo of a romantic proposal on a Santorini cliffside at sunset. A stylish young man (use uploaded reference photo) is down on one knee on white-washed steps overlooking the blue Aegean Sea, holding open a Tiffany blue ring box with a sparkling diamond ring. His face shows genuine emotion - face, skin tone, and hairstyle exactly as in reference photo. A beautiful woman in a flowing white dress stands before him, hands covering her face in shock, tears streaming down. White buildings with blue domes in background, bougainvillea flowers frame the scene. Golden hour lighting with pink and orange skies reflecting on water. Rose petals scattered on steps. Shot with 85mm lens at f/1.4, cinematic romantic color grading.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">002</span>
+                        <span class="prompt-title">First Dance as Married Couple</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] in a classic black tuxedo with bow tie, slow dancing with his bride in an elegant white wedding gown in a luxurious ballroom. Crystal chandeliers above cast romantic warm light, blurred wedding guests surround them in circle clapping. Fairy lights and floral arrangements create magical atmosphere. Their foreheads touch intimately, both have eyes closed, genuine smiles. Dry ice creates dreamy fog at their feet. Shot with 50mm lens, shallow depth of field, warm golden color grading, bokeh lights in background. Keep facial features 100% accurate to reference photo.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] in a classic black tuxedo with bow tie, slow dancing with his bride in an elegant white wedding gown in a luxurious ballroom. Crystal chandeliers above cast romantic warm light, blurred wedding guests surround them in circle clapping. Fairy lights and floral arrangements create magical atmosphere. Their foreheads touch intimately, both have eyes closed, genuine smiles. Dry ice creates dreamy fog at their feet. Shot with 50mm lens, shallow depth of field, warm golden color grading, bokeh lights in background. Keep facial features 100% accurate to reference photo.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">003</span>
+                        <span class="prompt-title">Coffee Shop Meet Cute</span>
+                    </div>
+                    <div class="prompt-text">“Create an image: Depict me (use my face exactly as in uploaded photo) sitting at a rustic wooden table in a cozy indie coffee shop, two coffee cups in front, engaged in animated conversation with a beautiful girl sitting across from me. We’re both laughing genuinely, leaning in toward each other. I wear a casual burgundy sweater and jeans. Warm Edison bulb lighting, exposed brick walls, plants hanging, barista working in blurred background. Steam rises from coffee cups. Natural candid moment showing chemistry and connection. Shot with 35mm lens at f/2.0, warm color palette with browns and creams, natural depth of field.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create an image: Depict me (use my face exactly as in uploaded photo) sitting at a rustic wooden table in a cozy indie coffee shop, two coffee cups in front, engaged in animated conversation with a beautiful girl sitting across from me. We’re both laughing genuinely, leaning in toward each other. I wear a casual burgundy sweater and jeans. Warm Edison bulb lighting, exposed brick walls, plants hanging, barista working in blurred background. Steam rises from coffee cups. Natural candid moment showing chemistry and connection. Shot with 35mm lens at f/2.0, warm color palette with browns and creams, natural depth of field.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">004</span>
+                        <span class="prompt-title">Beach Sunset Couple Goals</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) and his girlfriend walking hand-in-hand on a pristine Maldives beach at golden hour, waves gently washing over their bare feet. He wears white linen shirt (unbuttoned) and khaki shorts, she wears a flowing pastel pink sundress. Both looking at each other laughing, hair blowing in ocean breeze. Turquoise water, distant overwater bungalows, palm trees swaying. Warm sunset casting golden rim light on their silhouettes. Shot from behind at slight angle showing their faces in profile. 35mm lens, dreamy romantic color grading emphasizing golds, pinks, and turquoise blues.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) and his girlfriend walking hand-in-hand on a pristine Maldives beach at golden hour, waves gently washing over their bare feet. He wears white linen shirt (unbuttoned) and khaki shorts, she wears a flowing pastel pink sundress. Both looking at each other laughing, hair blowing in ocean breeze. Turquoise water, distant overwater bungalows, palm trees swaying. Warm sunset casting golden rim light on their silhouettes. Shot from behind at slight angle showing their faces in profile. 35mm lens, dreamy romantic color grading emphasizing golds, pinks, and turquoise blues.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">005</span>
+                        <span class="prompt-title">Cooking Together in Modern Kitchen</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic candid moment featuring [use uploaded image of the user] and his partner cooking together in a modern luxury kitchen with marble countertops and stainless steel appliances. He’s wearing a casual grey henley, standing behind her with arms wrapped around her waist, both laughing while she stirs a pot. Ingredients scattered on counter, wine glasses, fresh vegetables, warm pendant lighting above. Natural chemistry, domestic bliss vibe. Shot with 35mm lens, warm natural lighting through large windows, shallow focus on the couple, background slightly blurred. Natural color grading emphasizing warm whites and soft greys.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic candid moment featuring [use uploaded image of the user] and his partner cooking together in a modern luxury kitchen with marble countertops and stainless steel appliances. He’s wearing a casual grey henley, standing behind her with arms wrapped around her waist, both laughing while she stirs a pot. Ingredients scattered on counter, wine glasses, fresh vegetables, warm pendant lighting above. Natural chemistry, domestic bliss vibe. Shot with 35mm lens, warm natural lighting through large windows, shallow focus on the couple, background slightly blurred. Natural color grading emphasizing warm whites and soft greys.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">006</span>
+                        <span class="prompt-title">Rainy Day Umbrella Romance</span>
+                    </div>
+                    <div class="prompt-text">“Generate a cinematic photo of a stylish young man (use reference photo - exact features) sharing a red umbrella with a beautiful woman on a rainy Paris street, Eiffel Tower visible in misty background. He wears a black peacoat and scarf, she wears a cream trench coat. They’re standing close under the umbrella, looking into each other’s eyes, rain visible falling around them, puddles reflecting street lights. Wet cobblestone streets, blurred Parisian cafe in background with warm window light. Moody romantic atmosphere. Shot with 50mm lens, cinematic color grading with muted tones except for red umbrella, shallow depth of field, rain streaks visible.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate a cinematic photo of a stylish young man (use reference photo - exact features) sharing a red umbrella with a beautiful woman on a rainy Paris street, Eiffel Tower visible in misty background. He wears a black peacoat and scarf, she wears a cream trench coat. They’re standing close under the umbrella, looking into each other’s eyes, rain visible falling around them, puddles reflecting street lights. Wet cobblestone streets, blurred Parisian cafe in background with warm window light. Moody romantic atmosphere. Shot with 50mm lens, cinematic color grading with muted tones except for red umbrella, shallow depth of field, rain streaks visible.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">007</span>
+                        <span class="prompt-title">Surprise Birthday Celebration</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model on the given photo showing surprise birthday moment. Young man (reference photo) walks into a decorated living room, hands covering face in genuine shock and joy. Beautiful girlfriend stands in front holding a birthday cake with lit candles, balloons and streamers everywhere in his favorite colors. Friends and family visible in background with party hats. Warm ambient lighting, confetti mid-air, genuine candid expressions. Modern apartment setting with string lights. Shot with 24mm wide lens capturing full scene, natural color grading, high energy party atmosphere, focus on his emotional reaction.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model on the given photo showing surprise birthday moment. Young man (reference photo) walks into a decorated living room, hands covering face in genuine shock and joy. Beautiful girlfriend stands in front holding a birthday cake with lit candles, balloons and streamers everywhere in his favorite colors. Friends and family visible in background with party hats. Warm ambient lighting, confetti mid-air, genuine candid expressions. Modern apartment setting with string lights. Shot with 24mm wide lens capturing full scene, natural color grading, high energy party atmosphere, focus on his emotional reaction.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">008</span>
+                        <span class="prompt-title">Long Distance Airport Reunion</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic emotional photo at international airport arrivals terminal. Young man (use uploaded reference photo exactly) lifts his girlfriend off the ground in tight embrace, her legs wrapped around him, both crying happy tears and laughing. He wears casual jeans and hoodie, she has travel backpack still on. Other travelers blur in motion around them. Bright airport lighting creates documentary realism. Luggage cart beside them. Airport arrival signs visible in background. Shot with 35mm lens, natural color grading, slight motion blur emphasizing the emotion, captured in that raw reunion moment. Universal symbol of long-distance love.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic emotional photo at international airport arrivals terminal. Young man (use uploaded reference photo exactly) lifts his girlfriend off the ground in tight embrace, her legs wrapped around him, both crying happy tears and laughing. He wears casual jeans and hoodie, she has travel backpack still on. Other travelers blur in motion around them. Bright airport lighting creates documentary realism. Luggage cart beside them. Airport arrival signs visible in background. Shot with 35mm lens, natural color grading, slight motion blur emphasizing the emotion, captured in that raw reunion moment. Universal symbol of long-distance love.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">009</span>
+                        <span class="prompt-title">Cozy Movie Night at Home</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic cozy scene featuring [use uploaded image of the user] and his girlfriend cuddled under a chunky knit blanket on a modern grey sectional sofa, watching a movie on large TV (screen glow visible on faces). He has arm around her, she’s nestled into his chest with legs tucked up. Bowls of popcorn, candy, drinks on coffee table. Warm string lights behind sofa, candles flickering, dark cozy room. Rain visible through window. Cat sleeping on armrest. Ultra-comfortable domestic intimacy vibe. Shot with 35mm lens, warm ambient lighting mixed with blue TV glow on faces, intimate composition, shallow focus on couple.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic cozy scene featuring [use uploaded image of the user] and his girlfriend cuddled under a chunky knit blanket on a modern grey sectional sofa, watching a movie on large TV (screen glow visible on faces). He has arm around her, she’s nestled into his chest with legs tucked up. Bowls of popcorn, candy, drinks on coffee table. Warm string lights behind sofa, candles flickering, dark cozy room. Rain visible through window. Cat sleeping on armrest. Ultra-comfortable domestic intimacy vibe. Shot with 35mm lens, warm ambient lighting mixed with blue TV glow on faces, intimate composition, shallow focus on couple.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">010</span>
+                        <span class="prompt-title">Picnic in Central Park</span>
+                    </div>
+                    <div class="prompt-text">“Generate an image depicting me (use my face exactly as in uploaded photo) sitting on a classic red and white checkered picnic blanket in Central Park, New York. Beautiful girlfriend sits beside me, we’re feeding each other strawberries and laughing. Wicker picnic basket open with French bread, cheese, wine. Spring setting with cherry blossoms blooming overhead, dappled sunlight through trees. Other couples and people enjoying park in soft focus background. She wears a floral sundress, I wear casual button-down and chinos. Shot with 50mm lens at f/1.8, bright natural daylight, warm spring color palette, bokeh effect on background, romantic and carefree atmosphere.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate an image depicting me (use my face exactly as in uploaded photo) sitting on a classic red and white checkered picnic blanket in Central Park, New York. Beautiful girlfriend sits beside me, we’re feeding each other strawberries and laughing. Wicker picnic basket open with French bread, cheese, wine. Spring setting with cherry blossoms blooming overhead, dappled sunlight through trees. Other couples and people enjoying park in soft focus background. She wears a floral sundress, I wear casual button-down and chinos. Shot with 50mm lens at f/1.8, bright natural daylight, warm spring color palette, bokeh effect on background, romantic and carefree atmosphere.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">011</span>
+                        <span class="prompt-title">Breakfast in Bed Surprise</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic candid photo in modern bedroom with morning sunlight streaming through sheer curtains. Young man (reference photo - exact features) sits on edge of bed holding a wooden breakfast tray with pancakes, coffee, orange juice, and a rose in small vase. His girlfriend is just waking up, stretching with surprised happy expression, messy hair, wearing his oversized shirt. White bedding, minimal modern bedroom, plants on windowsill. Soft golden morning light creates warm glow. Shot with 35mm lens at f/2.0, natural warm lighting, intimate domestic moment, shallow depth of field focusing on their interaction.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic candid photo in modern bedroom with morning sunlight streaming through sheer curtains. Young man (reference photo - exact features) sits on edge of bed holding a wooden breakfast tray with pancakes, coffee, orange juice, and a rose in small vase. His girlfriend is just waking up, stretching with surprised happy expression, messy hair, wearing his oversized shirt. White bedding, minimal modern bedroom, plants on windowsill. Soft golden morning light creates warm glow. Shot with 35mm lens at f/2.0, natural warm lighting, intimate domestic moment, shallow depth of field focusing on their interaction.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">012</span>
+                        <span class="prompt-title">Ice Skating Winter Romance</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] ice skating with beautiful girlfriend at Rockefeller Center ice rink in New York City during winter evening. He’s helping her balance, holding both her hands as they glide on ice, both laughing. Famous golden Prometheus statue and giant Christmas tree lit up in background. They wear stylish winter coats, scarves, and earmuffs. City lights and decorations create magical atmosphere. Other skaters blurred in motion around them. Shot with 35mm lens, evening blue hour lighting mixed with warm holiday lights, romantic winter color grading, bokeh from tree lights, captured mid-movement showing joy and connection.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] ice skating with beautiful girlfriend at Rockefeller Center ice rink in New York City during winter evening. He’s helping her balance, holding both her hands as they glide on ice, both laughing. Famous golden Prometheus statue and giant Christmas tree lit up in background. They wear stylish winter coats, scarves, and earmuffs. City lights and decorations create magical atmosphere. Other skaters blurred in motion around them. Shot with 35mm lens, evening blue hour lighting mixed with warm holiday lights, romantic winter color grading, bokeh from tree lights, captured mid-movement showing joy and connection.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">013</span>
+                        <span class="prompt-title">Rooftop Dinner Date</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing intimate rooftop restaurant dinner. Young man (reference photo) and beautiful date sit across from each other at elegant table with white tablecloth, candles, wine glasses, gourmet meal. They’re holding hands across table, lost in conversation. Stunning city skyline at night with illuminated buildings behind them, string lights overhead. Romantic ambiance with warm candlelight on faces. She wears elegant dress, he wears fitted black button-down shirt. Shot with 50mm lens at f/1.4, warm golden candlelight mixed with cool city lights, bokeh effect on background lights, cinematic romantic color grading, focus on intimate connection.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing intimate rooftop restaurant dinner. Young man (reference photo) and beautiful date sit across from each other at elegant table with white tablecloth, candles, wine glasses, gourmet meal. They’re holding hands across table, lost in conversation. Stunning city skyline at night with illuminated buildings behind them, string lights overhead. Romantic ambiance with warm candlelight on faces. She wears elegant dress, he wears fitted black button-down shirt. Shot with 50mm lens at f/1.4, warm golden candlelight mixed with cool city lights, bokeh effect on background lights, cinematic romantic color grading, focus on intimate connection.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">014</span>
+                        <span class="prompt-title">Couple’s Gym Workout Session</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) spotting his girlfriend at gym during workout. He stands behind her as she does squats with barbell, his hands ready to assist, both focused and motivated. Modern fitness center with equipment, mirrors, motivational quotes on walls. They wear matching athletic wear - he in black tank and shorts, she in sports bra and leggings. Natural gym lighting, showing fitness couple goals. Sweat glistening, determination on faces. Shot with 35mm lens, bright clean lighting, vibrant color grading, sharp focus showing athletic physiques, motivational and aspirational fitness couple aesthetic.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) spotting his girlfriend at gym during workout. He stands behind her as she does squats with barbell, his hands ready to assist, both focused and motivated. Modern fitness center with equipment, mirrors, motivational quotes on walls. They wear matching athletic wear - he in black tank and shorts, she in sports bra and leggings. Natural gym lighting, showing fitness couple goals. Sweat glistening, determination on faces. Shot with 35mm lens, bright clean lighting, vibrant color grading, sharp focus showing athletic physiques, motivational and aspirational fitness couple aesthetic.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">015</span>
+                        <span class="prompt-title">First “I Love You” Moment</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic candid capturing the moment young man (use uploaded reference photo exactly) whispers “I love you” for first time to his girlfriend during sunset on Brooklyn Bridge, New York. She has hand on her heart, tears forming, genuine shock and joy on face. He looks nervous but sincere, holding her other hand. Manhattan skyline and bridge cables in background during golden hour. Pedestrians blurred passing by. Intimate bubble despite public setting. Shot with 85mm lens at f/1.4, warm golden hour color grading, shallow depth of field isolating couple, bokeh on background, captured exact moment of confession, emotional storytelling photography.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic candid capturing the moment young man (use uploaded reference photo exactly) whispers “I love you” for first time to his girlfriend during sunset on Brooklyn Bridge, New York. She has hand on her heart, tears forming, genuine shock and joy on face. He looks nervous but sincere, holding her other hand. Manhattan skyline and bridge cables in background during golden hour. Pedestrians blurred passing by. Intimate bubble despite public setting. Shot with 85mm lens at f/1.4, warm golden hour color grading, shallow depth of field isolating couple, bokeh on background, captured exact moment of confession, emotional storytelling photography.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">016</span>
+                        <span class="prompt-title">Matching Couple Outfits Street Style</span>
+                    </div>
+                    <div class="prompt-text">“Generate ultra-realistic street fashion photo of coordinating couple. Young man (reference photo - exact features) and girlfriend walking hand-in-hand down trendy SoHo NYC street wearing complementary outfits - both in camel/beige tones. He wears tan oversized coat, cream turtleneck, beige pants, white sneakers. She wears beige trench coat, cream dress, white boots. Both wearing sunglasses, looking effortlessly stylish. Brick buildings, boutique storefronts, autumn leaves on ground. Shot from front at slight angle, fashion editorial style. 35mm lens, natural daylight, muted earth tone color palette, sharp focus on couple, slightly blurred background, high-fashion couple goals aesthetic.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate ultra-realistic street fashion photo of coordinating couple. Young man (reference photo - exact features) and girlfriend walking hand-in-hand down trendy SoHo NYC street wearing complementary outfits - both in camel/beige tones. He wears tan oversized coat, cream turtleneck, beige pants, white sneakers. She wears beige trench coat, cream dress, white boots. Both wearing sunglasses, looking effortlessly stylish. Brick buildings, boutique storefronts, autumn leaves on ground. Shot from front at slight angle, fashion editorial style. 35mm lens, natural daylight, muted earth tone color palette, sharp focus on couple, slightly blurred background, high-fashion couple goals aesthetic.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">017</span>
+                        <span class="prompt-title">Polaroid Photo Booth Fun</span>
+                    </div>
+                    <div class="prompt-text">“Create a collage of 4 photo booth style images showing young man (use my face exactly as in uploaded photo) and girlfriend making silly faces and poses in vintage photo booth. Strip of photos shows: 1) Both making funny faces 2) Him kissing her cheek while she smiles 3) Both laughing genuinely 4) Sweet romantic kiss. Classic photo booth aesthetic with curtain background, flash lighting creating slight overexposure. White borders around each photo like real photo booth strips. Spontaneous, genuine fun and chemistry visible. Nostalgic and playful vibe. Shot to look like authentic photo booth prints with slight grain and that classic photo booth look.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a collage of 4 photo booth style images showing young man (use my face exactly as in uploaded photo) and girlfriend making silly faces and poses in vintage photo booth. Strip of photos shows: 1) Both making funny faces 2) Him kissing her cheek while she smiles 3) Both laughing genuinely 4) Sweet romantic kiss. Classic photo booth aesthetic with curtain background, flash lighting creating slight overexposure. White borders around each photo like real photo booth strips. Spontaneous, genuine fun and chemistry visible. Nostalgic and playful vibe. Shot to look like authentic photo booth prints with slight grain and that classic photo booth look.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">018</span>
+                        <span class="prompt-title">Sunset Boat Ride Romance</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) sitting with girlfriend on front of luxury yacht during Mediterranean sunset. He sits behind her with arms wrapped around her, both looking at horizon. She leans back into him. Orange and pink sunset reflects on calm water. They wear elegant casual resort wear - he in white linen shirt, she in flowing summer dress. Champagne glasses beside them. Wind gently blowing hair. Shot with 35mm lens, warm golden hour color grading emphasizing oranges and pinks, natural lighting, romantic composition, yacht details visible, conveying luxury romance and intimate connection.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) sitting with girlfriend on front of luxury yacht during Mediterranean sunset. He sits behind her with arms wrapped around her, both looking at horizon. She leans back into him. Orange and pink sunset reflects on calm water. They wear elegant casual resort wear - he in white linen shirt, she in flowing summer dress. Champagne glasses beside them. Wind gently blowing hair. Shot with 35mm lens, warm golden hour color grading emphasizing oranges and pinks, natural lighting, romantic composition, yacht details visible, conveying luxury romance and intimate connection.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">019</span>
+                        <span class="prompt-title">Halloween Couple Costume Winners</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic photo featuring [use uploaded image of the user] and girlfriend in creative couples Halloween costume as Joker and Harley Quinn at Halloween party. He has Joker makeup and purple suit, she has Harley Quinn pigtails and outfit. Both in character poses looking badass and fun, surrounded by impressed party guests in background. Decorated Halloween venue with jack-o’-lanterns, cobwebs, purple and orange lighting. They’re winning the costume contest, holding trophy together. Shot with 35mm lens, dramatic party lighting with colored gels, sharp focus on couple, energetic party atmosphere, creative and fun vibe.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic photo featuring [use uploaded image of the user] and girlfriend in creative couples Halloween costume as Joker and Harley Quinn at Halloween party. He has Joker makeup and purple suit, she has Harley Quinn pigtails and outfit. Both in character poses looking badass and fun, surrounded by impressed party guests in background. Decorated Halloween venue with jack-o’-lanterns, cobwebs, purple and orange lighting. They’re winning the costume contest, holding trophy together. Shot with 35mm lens, dramatic party lighting with colored gels, sharp focus on couple, energetic party atmosphere, creative and fun vibe.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">020</span>
+                        <span class="prompt-title">First Apartment Together</span>
+                    </div>
+                    <div class="prompt-text">“Generate emotional photo of young couple (use reference photo for male - exact features) standing in doorway of their first apartment together, holding key and lease papers, empty apartment visible behind them. He lifts her slightly off ground in celebration hug, both have huge genuine smiles. Moving boxes stacked inside, sunlight streaming through windows. Excited new chapter energy. Casual clothing - jeans and t-shirts. Shot with 24mm lens capturing both couple and apartment context, natural window lighting, warm hopeful color grading, wide composition showing empty space ready for their life together, milestone moment captured.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate emotional photo of young couple (use reference photo for male - exact features) standing in doorway of their first apartment together, holding key and lease papers, empty apartment visible behind them. He lifts her slightly off ground in celebration hug, both have huge genuine smiles. Moving boxes stacked inside, sunlight streaming through windows. Excited new chapter energy. Casual clothing - jeans and t-shirts. Shot with 24mm lens capturing both couple and apartment context, natural window lighting, warm hopeful color grading, wide composition showing empty space ready for their life together, milestone moment captured.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">021</span>
+                        <span class="prompt-title">Anniversary Dinner Celebration</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing romantic anniversary dinner at upscale restaurant. Young man (reference photo) presenting girlfriend with Cartier gift box across elegant table with roses, candles, champagne. She’s opening it with surprised expression, diamond bracelet visible inside. Both dressed formally - he in black suit, she in red dress. Upscale restaurant background with soft lighting, other couples dining, attentive waiter in background. Shot with 50mm lens at f/1.4, warm ambient restaurant lighting, bokeh on background, focus on gift-giving moment, luxury and romance aesthetic, capturing special anniversary milestone.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing romantic anniversary dinner at upscale restaurant. Young man (reference photo) presenting girlfriend with Cartier gift box across elegant table with roses, candles, champagne. She’s opening it with surprised expression, diamond bracelet visible inside. Both dressed formally - he in black suit, she in red dress. Upscale restaurant background with soft lighting, other couples dining, attentive waiter in background. Shot with 50mm lens at f/1.4, warm ambient restaurant lighting, bokeh on background, focus on gift-giving moment, luxury and romance aesthetic, capturing special anniversary milestone.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">022</span>
+                        <span class="prompt-title">Concert Date Night</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of (as in reference) at outdoor music festival concert with girlfriend on his shoulders, both hands in air enjoying music. Stage lights create colorful atmosphere in blues, purples, pinks. Crowd around them also enjoying show. She wears flower crown and festival outfit, he wears casual band tee. Genuine joy and excitement on faces. Shot with 35mm lens, dramatic concert lighting with lens flares, vibrant color grading emphasizing stage lights, motion and energy captured, wide composition showing festival atmosphere, young love and music festival vibes combined.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of (as in reference) at outdoor music festival concert with girlfriend on his shoulders, both hands in air enjoying music. Stage lights create colorful atmosphere in blues, purples, pinks. Crowd around them also enjoying show. She wears flower crown and festival outfit, he wears casual band tee. Genuine joy and excitement on faces. Shot with 35mm lens, dramatic concert lighting with lens flares, vibrant color grading emphasizing stage lights, motion and energy captured, wide composition showing festival atmosphere, young love and music festival vibes combined.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">023</span>
+                        <span class="prompt-title">Snowy Mountain Cabin Getaway</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic cozy scene featuring [use uploaded image of the user] and girlfriend in front of stone fireplace in luxury mountain cabin. They sit on plush rug with hot cocoa mugs, wrapped in blanket together, fire crackling. Snow visible through large windows behind them, pine trees covered in snow. Rustic cabin interior with wood beams, cozy furniture. She’s reading book, he’s looking at her with adoration. Golden firelight illuminates faces. Shot with 35mm lens at f/2.0, warm firelight color grading contrasting with cool blue snow tones through window, intimate cozy atmosphere, winter romance perfection.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic cozy scene featuring [use uploaded image of the user] and girlfriend in front of stone fireplace in luxury mountain cabin. They sit on plush rug with hot cocoa mugs, wrapped in blanket together, fire crackling. Snow visible through large windows behind them, pine trees covered in snow. Rustic cabin interior with wood beams, cozy furniture. She’s reading book, he’s looking at her with adoration. Golden firelight illuminates faces. Shot with 35mm lens at f/2.0, warm firelight color grading contrasting with cool blue snow tones through window, intimate cozy atmosphere, winter romance perfection.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">024</span>
+                        <span class="prompt-title">Farmers Market Sunday Morning</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) and girlfriend shopping at outdoor farmers market on sunny Sunday morning. We walk together, she carries wicker basket full of fresh flowers and produce, I carry reusable shopping bags. Both wearing casual weekend attire - sundress for her, casual button-down and jeans for me. Colorful market stalls in background, other shoppers, string lights overhead. Candid moment showing domestic partnership and healthy lifestyle. Shot with 35mm lens, bright natural morning light, vibrant color grading emphasizing fresh produce colors, documentary style, genuine relaxed happiness.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) and girlfriend shopping at outdoor farmers market on sunny Sunday morning. We walk together, she carries wicker basket full of fresh flowers and produce, I carry reusable shopping bags. Both wearing casual weekend attire - sundress for her, casual button-down and jeans for me. Colorful market stalls in background, other shoppers, string lights overhead. Candid moment showing domestic partnership and healthy lifestyle. Shot with 35mm lens, bright natural morning light, vibrant color grading emphasizing fresh produce colors, documentary style, genuine relaxed happiness.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">025</span>
+                        <span class="prompt-title">Stargazing Desert Night</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) lying on blanket in desert with girlfriend, both looking up at incredible starry night sky. Milky Way clearly visible above. They’re cuddled close, pointed up at stars. Small campfire beside them providing warm glow on faces. Desert landscape around them, distant mountains silhouetted. Cozy setup with pillows, thermos, telescope nearby. She rests head on his chest. Shot with 14mm wide lens capturing both couple and sky, long exposure showing stars, warm firelight mixed with cool starlight, romantic isolation in nature, contemplative and intimate atmosphere.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) lying on blanket in desert with girlfriend, both looking up at incredible starry night sky. Milky Way clearly visible above. They’re cuddled close, pointed up at stars. Small campfire beside them providing warm glow on faces. Desert landscape around them, distant mountains silhouetted. Cozy setup with pillows, thermos, telescope nearby. She rests head on his chest. Shot with 14mm wide lens capturing both couple and sky, long exposure showing stars, warm firelight mixed with cool starlight, romantic isolation in nature, contemplative and intimate atmosphere.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">026</span>
+                        <span class="prompt-title">Pride Photo Together</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic proud moment photo featuring [use uploaded image of the user] with girlfriend, both dressed sharp at her college graduation ceremony. He holds large bouquet of roses, she wears cap and gown holding diploma, both beaming with pride. University campus background with historic buildings, other graduates and families celebrating. He looks at her with immense pride and support. Late afternoon golden light. Shot with 50mm lens, natural daylight color grading, sharp focus on couple, background slightly blurred, captured genuine pride and partnership milestone, supporting each other’s success theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic proud moment photo featuring [use uploaded image of the user] with girlfriend, both dressed sharp at her college graduation ceremony. He holds large bouquet of roses, she wears cap and gown holding diploma, both beaming with pride. University campus background with historic buildings, other graduates and families celebrating. He looks at her with immense pride and support. Late afternoon golden light. Shot with 50mm lens, natural daylight color grading, sharp focus on couple, background slightly blurred, captured genuine pride and partnership milestone, supporting each other’s success theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">027</span>
+                        <span class="prompt-title">Adventure Couple Hiking</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing adventurous couple at mountain summit. Young man (reference photo - exact features) and girlfriend standing at peak with arms raised in victory, backpacks on, hiking gear visible. Breathtaking mountain range panorama behind them during sunrise, clouds below peak level. Both in athletic hiking clothes, trekking poles, genuinely exhausted but elated. High-five or victory hug pose. Shot with 24mm wide lens capturing both subjects and epic landscape, dramatic morning light with golden rim lighting, vibrant color grading, inspirational adventure couple goals aesthetic, conquering challenges together theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing adventurous couple at mountain summit. Young man (reference photo - exact features) and girlfriend standing at peak with arms raised in victory, backpacks on, hiking gear visible. Breathtaking mountain range panorama behind them during sunrise, clouds below peak level. Both in athletic hiking clothes, trekking poles, genuinely exhausted but elated. High-five or victory hug pose. Shot with 24mm wide lens capturing both subjects and epic landscape, dramatic morning light with golden rim lighting, vibrant color grading, inspirational adventure couple goals aesthetic, conquering challenges together theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">028</span>
+                        <span class="prompt-title">Sunday Breakfast Making Together</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic candid kitchen scene of young man (use uploaded reference photo exactly) making pancakes while girlfriend sits on kitchen counter beside stove, both laughing and tasting batter. Messy kitchen with ingredients everywhere, flour on faces, playful atmosphere. Morning sunlight streams through kitchen window. She wears his oversized sweatshirt, he wears t-shirt and pajama pants. Coffee brewing, fresh fruit on counter. Domestic bliss and comfortable relationship energy. Shot with 35mm lens at f/2.0, warm natural morning light, bright airy color grading, intimate moment, casual and real lifestyle photography.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic candid kitchen scene of young man (use uploaded reference photo exactly) making pancakes while girlfriend sits on kitchen counter beside stove, both laughing and tasting batter. Messy kitchen with ingredients everywhere, flour on faces, playful atmosphere. Morning sunlight streams through kitchen window. She wears his oversized sweatshirt, he wears t-shirt and pajama pants. Coffee brewing, fresh fruit on counter. Domestic bliss and comfortable relationship energy. Shot with 35mm lens at f/2.0, warm natural morning light, bright airy color grading, intimate moment, casual and real lifestyle photography.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">029</span>
+                        <span class="prompt-title">New Year’s Midnight Kiss</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic moment capturing young man (reference photo) and girlfriend’s New Year’s midnight kiss in Times Square NYC, surrounded by confetti falling, crowds celebrating, illuminated ball drop sign visible. They’re in tight embrace, kissing as clock strikes midnight, confetti in hair and on shoulders. Warm winter coats, festive atmosphere, other couples and people celebrating around them in blur. Shot with 35mm lens, mixed lighting from screens and celebration lights, vibrant color grading with emphasis on gold confetti, bokeh effect on background crowd, frozen moment of new beginning together, celebratory romance.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic moment capturing young man (reference photo) and girlfriend’s New Year’s midnight kiss in Times Square NYC, surrounded by confetti falling, crowds celebrating, illuminated ball drop sign visible. They’re in tight embrace, kissing as clock strikes midnight, confetti in hair and on shoulders. Warm winter coats, festive atmosphere, other couples and people celebrating around them in blur. Shot with 35mm lens, mixed lighting from screens and celebration lights, vibrant color grading with emphasis on gold confetti, bokeh effect on background crowd, frozen moment of new beginning together, celebratory romance.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">030</span>
+                        <span class="prompt-title">Lazy Sunday Morning in Bed</span>
+                    </div>
+                    <div class="prompt-text">“Generate intimate photo of couple (use my face exactly as in uploaded photo for male) still in bed on Sunday morning, both on laptops/phones, coffee mugs on nightstands, sunlight streaming through window. Messy sheets, pillows everywhere, completely comfortable and relaxed. She has legs across his lap, he’s scrolling phone, she’s on laptop. Cat sleeping at foot of bed. Plants on windowsill, minimal modern bedroom. Perfect lazy morning vibe. Shot with 35mm lens at f/2.0, soft natural morning window light, warm color grading, intimate domestic life moment, real relationship comfort shown, lifestyle photography aesthetic.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate intimate photo of couple (use my face exactly as in uploaded photo for male) still in bed on Sunday morning, both on laptops/phones, coffee mugs on nightstands, sunlight streaming through window. Messy sheets, pillows everywhere, completely comfortable and relaxed. She has legs across his lap, he’s scrolling phone, she’s on laptop. Cat sleeping at foot of bed. Plants on windowsill, minimal modern bedroom. Perfect lazy morning vibe. Shot with 35mm lens at f/2.0, soft natural morning window light, warm color grading, intimate domestic life moment, real relationship comfort shown, lifestyle photography aesthetic.”`)">📋 Copier</button>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <h2 class="category-title">CATEGORY 2: SUCCESS &amp; WEALTH (30 Prompts)</h2>
+            <div class="prompt-grid">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">031</span>
+                        <span class="prompt-title">First Million Dollar Check</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young entrepreneur (use reference photo - exact features) in modern office holding up large ceremonial check made out to himself for $1,000,000, with huge genuine smile and tears of joy. Wear sharp business casual - fitted button-down, nice jeans, luxury watch visible. Modern startup office with team celebrating in background, confetti, champagne bottles. Motivational quotes on walls, sleek furniture. Natural office lighting mixed with camera flash. Shot with 35mm lens, bright energetic color grading, sharp focus on check and expression, team celebrating blurred background, captured moment dreams became reality, ultimate success milestone.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young entrepreneur (use reference photo - exact features) in modern office holding up large ceremonial check made out to himself for \$1,000,000, with huge genuine smile and tears of joy. Wear sharp business casual - fitted button-down, nice jeans, luxury watch visible. Modern startup office with team celebrating in background, confetti, champagne bottles. Motivational quotes on walls, sleek furniture. Natural office lighting mixed with camera flash. Shot with 35mm lens, bright energetic color grading, sharp focus on check and expression, team celebrating blurred background, captured moment dreams became reality, ultimate success milestone.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">032</span>
+                        <span class="prompt-title">Penthouse Office City View</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] as successful CEO standing in corner penthouse office with floor-to-ceiling windows showing Manhattan skyline. Arms crossed confidently, wearing tailored charcoal suit, designer watch. Large executive desk with multiple monitors, awards on shelves, modern art. Late afternoon golden light through windows. Power pose exuding success and authority. Shot with 24mm lens capturing full office and view, cinematic color grading with teal and orange tones, sharp throughout, aspirational success aesthetic, corner office dream visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] as successful CEO standing in corner penthouse office with floor-to-ceiling windows showing Manhattan skyline. Arms crossed confidently, wearing tailored charcoal suit, designer watch. Large executive desk with multiple monitors, awards on shelves, modern art. Late afternoon golden light through windows. Power pose exuding success and authority. Shot with 24mm lens capturing full office and view, cinematic color grading with teal and orange tones, sharp throughout, aspirational success aesthetic, corner office dream visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">033</span>
+                        <span class="prompt-title">Lamborghini Aventador Delivery Day</span>
+                    </div>
+                    <div class="prompt-text">“Generate ultra-realistic photo of me (use my face exactly as in uploaded photo) taking delivery of brand new matte black Lamborghini Aventador at luxury dealership. Standing beside car with keys in hand, biggest smile, salesperson handing over paperwork. Wear black leather jacket, designer jeans, fresh sneakers. Pristine dealership showroom with luxury cars in background, dramatic showroom lighting. Dream car moment captured. Shot with 35mm lens, dramatic lighting emphasizing car’s lines, vibrant color grading, sharp focus on both person and car, success reward visualization, exotic car dream realized.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate ultra-realistic photo of me (use my face exactly as in uploaded photo) taking delivery of brand new matte black Lamborghini Aventador at luxury dealership. Standing beside car with keys in hand, biggest smile, salesperson handing over paperwork. Wear black leather jacket, designer jeans, fresh sneakers. Pristine dealership showroom with luxury cars in background, dramatic showroom lighting. Dream car moment captured. Shot with 35mm lens, dramatic lighting emphasizing car’s lines, vibrant color grading, sharp focus on both person and car, success reward visualization, exotic car dream realized.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">034</span>
+                        <span class="prompt-title">Forbes 30 Under 30 Photo Shoot</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model for Forbes magazine cover shoot. Young entrepreneur (reference photo - exact features) sitting confidently on modern sculptural chair against white seamless background, wearing designer black turtleneck and tailored pants. Professional lighting setup visible, makeup artist and photographer in blurred background. Text overlay area for “Forbes 30 Under 30”. Confident direct gaze at camera. Shot with 85mm lens at f/2.0, high-key professional editorial lighting, clean bright color grading, sharp focus, magazine cover quality, achievement recognition visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model for Forbes magazine cover shoot. Young entrepreneur (reference photo - exact features) sitting confidently on modern sculptural chair against white seamless background, wearing designer black turtleneck and tailored pants. Professional lighting setup visible, makeup artist and photographer in blurred background. Text overlay area for “Forbes 30 Under 30”. Confident direct gaze at camera. Shot with 85mm lens at f/2.0, high-key professional editorial lighting, clean bright color grading, sharp focus, magazine cover quality, achievement recognition visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">035</span>
+                        <span class="prompt-title">Private Jet First Class Life</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) reclining in luxury private jet leather seat, laptop open working on deals, glass of champagne, feet up. Wear business casual - nice sweater, tailored pants, loafers. Plush cream leather interior, wood accents, window showing clouds. Living the private aviation lifestyle. Confident relaxed expression. Shot with 35mm lens, soft luxury lighting, warm color grading emphasizing creams and golds, shallow depth showing jet interior, aspirational wealth and success visualization, elevated lifestyle captured.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) reclining in luxury private jet leather seat, laptop open working on deals, glass of champagne, feet up. Wear business casual - nice sweater, tailored pants, loafers. Plush cream leather interior, wood accents, window showing clouds. Living the private aviation lifestyle. Confident relaxed expression. Shot with 35mm lens, soft luxury lighting, warm color grading emphasizing creams and golds, shallow depth showing jet interior, aspirational wealth and success visualization, elevated lifestyle captured.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">036</span>
+                        <span class="prompt-title">Real Estate Empire Portfolio</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] standing in modern real estate office in front of wall covered with property photos and “SOLD” stickers showing his sales. Wear sharp blazer, arms crossed proudly. Charts showing upward trends, awards, keys to multiple properties on desk. Professional realtor success story. Shot with 24mm lens capturing wall of success, natural office lighting, professional color grading, focus on achievements wall and confident pose, real estate mogul visualization, commission success theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] standing in modern real estate office in front of wall covered with property photos and “SOLD” stickers showing his sales. Wear sharp blazer, arms crossed proudly. Charts showing upward trends, awards, keys to multiple properties on desk. Professional realtor success story. Shot with 24mm lens capturing wall of success, natural office lighting, professional color grading, focus on achievements wall and confident pose, real estate mogul visualization, commission success theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">037</span>
+                        <span class="prompt-title">Stock Market Trading Floor Win</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) on trading floor with multiple monitors showing green upward charts, fist pump celebration as major trade succeeds. Wear dress shirt with sleeves rolled up, tie loosened. Other traders celebrating in background, high-energy atmosphere. Bloomberg terminals, stock tickers visible. Shot with 35mm lens, bright trading floor fluorescent lighting mixed with monitor glow, energetic color grading emphasizing greens from successful trades, captured moment of winning trade, financial success visualization, wall street dreams.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) on trading floor with multiple monitors showing green upward charts, fist pump celebration as major trade succeeds. Wear dress shirt with sleeves rolled up, tie loosened. Other traders celebrating in background, high-energy atmosphere. Bloomberg terminals, stock tickers visible. Shot with 35mm lens, bright trading floor fluorescent lighting mixed with monitor glow, energetic color grading emphasizing greens from successful trades, captured moment of winning trade, financial success visualization, wall street dreams.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">038</span>
+                        <span class="prompt-title">Luxury Watch Collection Display</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young man (reference photo - exact features) sitting at elegant desk examining rare Patek Philippe watch with jeweler’s loupe, watch collection display case open showing Rolex, AP, Richard Mille. Wear casual luxury style - cashmere sweater, designer jeans. Upscale watch boutique or home office. Warm ambient lighting highlighting watch details. Shot with 50mm macro lens for watch detail, shallow depth of field, rich color grading emphasizing golds and luxury materials, watch collector lifestyle, timepiece investment success theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young man (reference photo - exact features) sitting at elegant desk examining rare Patek Philippe watch with jeweler’s loupe, watch collection display case open showing Rolex, AP, Richard Mille. Wear casual luxury style - cashmere sweater, designer jeans. Upscale watch boutique or home office. Warm ambient lighting highlighting watch details. Shot with 50mm macro lens for watch detail, shallow depth of field, rich color grading emphasizing golds and luxury materials, watch collector lifestyle, timepiece investment success theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">039</span>
+                        <span class="prompt-title">Tech Startup IPO Bell Ringing</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic moment capturing [use uploaded image of the user] ringing opening bell at NASDAQ stock exchange for his tech company’s IPO. Wear sharp navy suit, company t-shirt underneath showing logo. Confetti falling, team around him celebrating, NASDAQ digital displays showing company ticker. Historic milestone captured. Shot with 24mm wide lens getting full scene, bright exchange lighting, vibrant celebratory color grading, confetti mid-air, captured pivotal business success moment, startup exit dream visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic moment capturing [use uploaded image of the user] ringing opening bell at NASDAQ stock exchange for his tech company’s IPO. Wear sharp navy suit, company t-shirt underneath showing logo. Confetti falling, team around him celebrating, NASDAQ digital displays showing company ticker. Historic milestone captured. Shot with 24mm wide lens getting full scene, bright exchange lighting, vibrant celebratory color grading, confetti mid-air, captured pivotal business success moment, startup exit dream visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">040</span>
+                        <span class="prompt-title">Book Deal Signing Event</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing book signing event. Young author (reference photo) sitting at table signing copies of his book, stack of books with his face on cover, long line of people waiting. Wear smart casual - blazer, jeans. Bookstore setting with promotional posters. Shot with 35mm lens, warm bookstore lighting, natural color grading, focus on signing moment with waiting crowd blurred background, published author success, thought leadership visualization. “</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing book signing event. Young author (reference photo) sitting at table signing copies of his book, stack of books with his face on cover, long line of people waiting. Wear smart casual - blazer, jeans. Bookstore setting with promotional posters. Shot with 35mm lens, warm bookstore lighting, natural color grading, focus on signing moment with waiting crowd blurred background, published author success, thought leadership visualization. “`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">041</span>
+                        <span class="prompt-title">Mansion Keys First Day</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) standing in grand foyer of newly purchased mansion, holding house keys, looking around in awe and pride. Wear casual but expensive clothes. Massive chandelier above, marble floors, grand staircase, floor-to-ceiling windows. Sunlight streaming in. Real estate agent shaking hand in background. Shot with 16mm ultra-wide capturing mansion scale, natural lighting, bright luxurious color grading, showing both person and impressive property, homeownership dream, luxury real estate achievement.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) standing in grand foyer of newly purchased mansion, holding house keys, looking around in awe and pride. Wear casual but expensive clothes. Massive chandelier above, marble floors, grand staircase, floor-to-ceiling windows. Sunlight streaming in. Real estate agent shaking hand in background. Shot with 16mm ultra-wide capturing mansion scale, natural lighting, bright luxurious color grading, showing both person and impressive property, homeownership dream, luxury real estate achievement.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">042</span>
+                        <span class="prompt-title">Tesla Showroom Model S Delivery</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] receiving keys to new Tesla Model S Plaid in showroom, standing beside sleek red Tesla. Wear modern tech entrepreneur style - black turtleneck, nice jeans. Tesla delivery specialist presenting keys, digital screen showing car stats. Modern minimalist showroom. Shot with 35mm lens, clean showroom lighting, vibrant color emphasizing Tesla red, sharp focus on both person and vehicle, sustainable luxury visualization, electric vehicle success reward.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] receiving keys to new Tesla Model S Plaid in showroom, standing beside sleek red Tesla. Wear modern tech entrepreneur style - black turtleneck, nice jeans. Tesla delivery specialist presenting keys, digital screen showing car stats. Modern minimalist showroom. Shot with 35mm lens, clean showroom lighting, vibrant color emphasizing Tesla red, sharp focus on both person and vehicle, sustainable luxury visualization, electric vehicle success reward.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">043</span>
+                        <span class="prompt-title">Conference Keynote Speaker Stage</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) giving keynote presentation on big TED-style stage, large screen behind showing presentation graphics, audience of thousands in darkness below. Wear fitted blazer, no tie, modern speaker style. Confident gesture mid-speech, handheld mic or headset. Dramatic stage lighting, spotlight on speaker. Shot with 50mm lens from low angle making speaker appear powerful, dramatic lighting with rim light separation, cinematic color grading, captured commanding stage presence, thought leader visualization, speaking success theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) giving keynote presentation on big TED-style stage, large screen behind showing presentation graphics, audience of thousands in darkness below. Wear fitted blazer, no tie, modern speaker style. Confident gesture mid-speech, handheld mic or headset. Dramatic stage lighting, spotlight on speaker. Shot with 50mm lens from low angle making speaker appear powerful, dramatic lighting with rim light separation, cinematic color grading, captured commanding stage presence, thought leader visualization, speaking success theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">044</span>
+                        <span class="prompt-title">Luxury Car Collection Garage</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young car collector (reference photo - exact features) standing in climate-controlled garage showcasing collection: Ferrari, Porsche, McLaren visible. Wear casual wealthy style - designer hoodie, joggers, expensive sneakers. Polished epoxy floors reflecting cars, LED lighting, car covers, detailing supplies. Arms crossed proudly in front of collection. Shot with 24mm wide lens capturing multiple vehicles, dramatic garage lighting, rich color grading emphasizing automotive paint, sharp focus throughout, car enthusiast success visualization, automotive investment collection.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young car collector (reference photo - exact features) standing in climate-controlled garage showcasing collection: Ferrari, Porsche, McLaren visible. Wear casual wealthy style - designer hoodie, joggers, expensive sneakers. Polished epoxy floors reflecting cars, LED lighting, car covers, detailing supplies. Arms crossed proudly in front of collection. Shot with 24mm wide lens capturing multiple vehicles, dramatic garage lighting, rich color grading emphasizing automotive paint, sharp focus throughout, car enthusiast success visualization, automotive investment collection.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">045</span>
+                        <span class="prompt-title">Magazine Cover Feature Interview</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic editorial photo showing [use uploaded image of the user] being interviewed for Entrepreneur magazine, sitting in modern office being photographed and interviewed. Wear tailored suit, relaxed confident pose. Photographer with camera, journalist with notepad, lighting equipment visible. Shot with 35mm lens, professional editorial lighting, clean modern color grading, behind-the-scenes of magazine feature, media recognition visualization, business success press coverage theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic editorial photo showing [use uploaded image of the user] being interviewed for Entrepreneur magazine, sitting in modern office being photographed and interviewed. Wear tailored suit, relaxed confident pose. Photographer with camera, journalist with notepad, lighting equipment visible. Shot with 35mm lens, professional editorial lighting, clean modern color grading, behind-the-scenes of magazine feature, media recognition visualization, business success press coverage theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">046</span>
+                        <span class="prompt-title">Boardroom Deal Closed Handshake</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model in corporate boardroom during victorious moment. Young executive (reference photo) shaking hands with senior business partner across conference table, both smiling, papers and pens on table. Wear sharp suit. Lawyer and other executives visible at table. City view through windows. Shot with 35mm lens, natural office lighting with window light, professional color grading with teal tones, captured successful negotiation, business deal closed, partnership success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model in corporate boardroom during victorious moment. Young executive (reference photo) shaking hands with senior business partner across conference table, both smiling, papers and pens on table. Wear sharp suit. Lawyer and other executives visible at table. City view through windows. Shot with 35mm lens, natural office lighting with window light, professional color grading with teal tones, captured successful negotiation, business deal closed, partnership success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">047</span>
+                        <span class="prompt-title">Yacht Party Success Celebration</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) hosting party on luxury yacht, champagne bottle popping, friends celebrating success. Wear upscale resort casual - white linen shirt, designer sunglasses. Mediterranean blue water, other yachts, coastal city in background. DJ setup, guests dancing, success celebration energy. Shot with 24mm lens capturing party scene, bright sunny day lighting, vibrant turquoise and white color palette, lifestyle success, celebrating wins with squad, luxury leisure visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) hosting party on luxury yacht, champagne bottle popping, friends celebrating success. Wear upscale resort casual - white linen shirt, designer sunglasses. Mediterranean blue water, other yachts, coastal city in background. DJ setup, guests dancing, success celebration energy. Shot with 24mm lens capturing party scene, bright sunny day lighting, vibrant turquoise and white color palette, lifestyle success, celebrating wins with squad, luxury leisure visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">048</span>
+                        <span class="prompt-title">First Class Emirates A380 Suite</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] relaxing in Emirates A380 First Class private suite, sliding doors closed for privacy. Wear comfortable luxury travel wear. Flat-bed seat, personal mini-bar, large TV screen, gourmet meal service. Window showing clouds. Shot with 35mm lens, soft cabin lighting, warm luxurious color grading, first-class travel lifestyle, international business success, elevated travel standard visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] relaxing in Emirates A380 First Class private suite, sliding doors closed for privacy. Wear comfortable luxury travel wear. Flat-bed seat, personal mini-bar, large TV screen, gourmet meal service. Window showing clouds. Shot with 35mm lens, soft cabin lighting, warm luxurious color grading, first-class travel lifestyle, international business success, elevated travel standard visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">049</span>
+                        <span class="prompt-title">Angel Investor Portfolio Review</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) in modern office reviewing investment portfolio on multiple screens showing startup logos, growth charts, returns. Wear smart casual investor style - quarter-zip sweater, nice pants. Standing with coffee, analyzing investments. Successful angel investor aesthetic. Shot with 35mm lens, natural office lighting, clean professional color grading with blue technology tones, wealth building through investments, startup investor success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) in modern office reviewing investment portfolio on multiple screens showing startup logos, growth charts, returns. Wear smart casual investor style - quarter-zip sweater, nice pants. Standing with coffee, analyzing investments. Successful angel investor aesthetic. Shot with 35mm lens, natural office lighting, clean professional color grading with blue technology tones, wealth building through investments, startup investor success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">050</span>
+                        <span class="prompt-title">Award Ceremony Achievement Recognition</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young entrepreneur (reference photo - exact features) on stage receiving ‘Entrepreneur of the Year’ crystal trophy, shaking hands with award presenter, formal event. Wear tailored tuxedo. Audience clapping in background, stage lighting, large screens showing company achievements. Proud emotional moment. Shot with 50mm lens, dramatic stage lighting with spotlight, warm color grading, captured recognition moment, industry award achievement, peer recognition success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young entrepreneur (reference photo - exact features) on stage receiving ‘Entrepreneur of the Year’ crystal trophy, shaking hands with award presenter, formal event. Wear tailored tuxedo. Audience clapping in background, stage lighting, large screens showing company achievements. Proud emotional moment. Shot with 50mm lens, dramatic stage lighting with spotlight, warm color grading, captured recognition moment, industry award achievement, peer recognition success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">051</span>
+                        <span class="prompt-title">Luxury Penthouse Balcony Morning</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic morning scene featuring [use uploaded image of the user] on penthouse balcony in silk robe, holding coffee mug, overlooking city skyline during sunrise. Modern outdoor furniture, plants, infinity pool visible on terrace. Living the high-rise luxury life. Content success expression. Shot with 35mm lens, golden morning light, warm color grading mixing sunrise oranges with cool building blues, penthouse living visualization, morning routine of success, elevated lifestyle theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic morning scene featuring [use uploaded image of the user] on penthouse balcony in silk robe, holding coffee mug, overlooking city skyline during sunrise. Modern outdoor furniture, plants, infinity pool visible on terrace. Living the high-rise luxury life. Content success expression. Shot with 35mm lens, golden morning light, warm color grading mixing sunrise oranges with cool building blues, penthouse living visualization, morning routine of success, elevated lifestyle theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">052</span>
+                        <span class="prompt-title">Business Class Lounge Executive</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model in premium airline lounge. Young professional (reference photo) working on laptop in plush leather chair, drink on side table, wearing sharp business attire. Modern luxurious lounge with floor-to-ceiling windows showing planes on tarmac. Business travel lifestyle. Shot with 35mm lens, soft lounge lighting, sophisticated color grading with neutral tones, frequent flyer executive life, elevated travel experience visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model in premium airline lounge. Young professional (reference photo) working on laptop in plush leather chair, drink on side table, wearing sharp business attire. Modern luxurious lounge with floor-to-ceiling windows showing planes on tarmac. Business travel lifestyle. Shot with 35mm lens, soft lounge lighting, sophisticated color grading with neutral tones, frequent flyer executive life, elevated travel experience visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">053</span>
+                        <span class="prompt-title">Cryptocurrency Mining Farm Tour</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) walking through cryptocurrency mining facility, rows of mining rigs with glowing lights behind him, wearing casual tech entrepreneur outfit. Hands in pockets, confident smile, massive crypto operation visible. Shot with 24mm lens, dramatic lighting from computer equipment creating blue-green glow, cinematic color grading, tech entrepreneur success, digital currency empire, modern wealth building visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) walking through cryptocurrency mining facility, rows of mining rigs with glowing lights behind him, wearing casual tech entrepreneur outfit. Hands in pockets, confident smile, massive crypto operation visible. Shot with 24mm lens, dramatic lighting from computer equipment creating blue-green glow, cinematic color grading, tech entrepreneur success, digital currency empire, modern wealth building visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">054</span>
+                        <span class="prompt-title">Luxury Watch Advertisement Campaign</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic professional ad shoot featuring [use uploaded image of the user] as face of luxury watch campaign, dramatic close-up showing Rolex Submariner on wrist, wearing tailored suit. Professional photography studio, lighting equipment, fashion photographer directing. Shot with 85mm macro lens, dramatic product photography lighting, rich color grading emphasizing gold watch details, brand ambassador visualization, luxury endorsement success theme.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic professional ad shoot featuring [use uploaded image of the user] as face of luxury watch campaign, dramatic close-up showing Rolex Submariner on wrist, wearing tailored suit. Professional photography studio, lighting equipment, fashion photographer directing. Shot with 85mm macro lens, dramatic product photography lighting, rich color grading emphasizing gold watch details, brand ambassador visualization, luxury endorsement success theme.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">055</span>
+                        <span class="prompt-title">Investment Property Walkthrough</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) walking through luxury investment property with realtor, reviewing details on tablet showing property specs and rental income projections. Wear upscale casual. Modern renovated interior, high ceilings, designer finishes visible. Shot with 24mm lens, bright natural window lighting, clean architectural color grading, real estate investor lifestyle, property portfolio expansion, passive income visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) walking through luxury investment property with realtor, reviewing details on tablet showing property specs and rental income projections. Wear upscale casual. Modern renovated interior, high ceilings, designer finishes visible. Shot with 24mm lens, bright natural window lighting, clean architectural color grading, real estate investor lifestyle, property portfolio expansion, passive income visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">056</span>
+                        <span class="prompt-title">Stock Portfolio Million Dollar Milestone</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young investor (reference photo - exact features) in home office, laptop screen showing stock portfolio crossing $1M total value, hands clasped in victory, emotional moment. Wear comfortable work-from-home clothes. Multiple monitors showing charts, investment books on shelves. Shot with 35mm lens, natural desk lamp lighting, screen glow on face, green from positive charts, investment success achievement, self-made millionaire milestone, financial independence visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young investor (reference photo - exact features) in home office, laptop screen showing stock portfolio crossing \$1M total value, hands clasped in victory, emotional moment. Wear comfortable work-from-home clothes. Multiple monitors showing charts, investment books on shelves. Shot with 35mm lens, natural desk lamp lighting, screen glow on face, green from positive charts, investment success achievement, self-made millionaire milestone, financial independence visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">057</span>
+                        <span class="prompt-title">Startup Acquisition Announcement</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic press conference scene featuring [use uploaded image of the user] announcing acquisition of his startup by major tech company, standing at podium with company logos behind, journalists and cameras. Wear sharp suit, confident expression reading statement. Shot with 50mm lens, bright press conference lighting, professional news color grading, captured major business milestone, exit strategy success, acquisition deal visualization, entrepreneurial achievement.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic press conference scene featuring [use uploaded image of the user] announcing acquisition of his startup by major tech company, standing at podium with company logos behind, journalists and cameras. Wear sharp suit, confident expression reading statement. Shot with 50mm lens, bright press conference lighting, professional news color grading, captured major business milestone, exit strategy success, acquisition deal visualization, entrepreneurial achievement.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">058</span>
+                        <span class="prompt-title">Black Card Concierge Service</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing luxury lifestyle moment. Young man (reference photo) at five-star hotel concierge desk, being handed exclusive black credit card, concierge showing VIP treatment. Wear casual luxury - designer sweater, nice watch. Opulent hotel lobby background. Shot with 35mm lens, warm luxury hotel lighting, rich color grading with golds, elite status visualization, premium service lifestyle, financial success perks.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing luxury lifestyle moment. Young man (reference photo) at five-star hotel concierge desk, being handed exclusive black credit card, concierge showing VIP treatment. Wear casual luxury - designer sweater, nice watch. Opulent hotel lobby background. Shot with 35mm lens, warm luxury hotel lighting, rich color grading with golds, elite status visualization, premium service lifestyle, financial success perks.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">059</span>
+                        <span class="prompt-title">Influencer Brand Deal Signing</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) signing major brand partnership contract at luxury brand headquarters, executives present, photographer capturing moment. Wear smart casual influencer style. Brand products and logos visible. Celebratory atmosphere. Shot with 35mm lens, bright corporate lighting, clean professional color grading, content creator success, brand partnership achievement, influencer business visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) signing major brand partnership contract at luxury brand headquarters, executives present, photographer capturing moment. Wear smart casual influencer style. Brand products and logos visible. Celebratory atmosphere. Shot with 35mm lens, bright corporate lighting, clean professional color grading, content creator success, brand partnership achievement, influencer business visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">060</span>
+                        <span class="prompt-title">Home Office Setup YouTube Studio</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] in professional YouTube studio home office with multiple cameras, ring lights, green screen, editing setup. Sit in gaming chair, facing camera making content. Walls with neon signs, achievement plaques, subscriber milestones. Wear casual creator style - hoodie, headphones. Shot with 24mm lens, dramatic key lighting and fill setup, vibrant color grading, content creator success, digital entrepreneur space, YouTube money visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] in professional YouTube studio home office with multiple cameras, ring lights, green screen, editing setup. Sit in gaming chair, facing camera making content. Walls with neon signs, achievement plaques, subscriber milestones. Wear casual creator style - hoodie, headphones. Shot with 24mm lens, dramatic key lighting and fill setup, vibrant color grading, content creator success, digital entrepreneur space, YouTube money visualization.”`)">📋 Copier</button>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <h2 class="category-title">CATEGORY 3: FAMILY &amp; EMOTIONAL (25 Prompts)</h2>
+            <div class="prompt-grid">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">061</span>
+                        <span class="prompt-title">Giving Mom Keys to New House</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic emotional photo of young man (use reference photo - exact features) standing with elderly mother in front of beautiful suburban house with ‘SOLD’ sign, placing house keys in her hands. She’s crying happy tears, hand over heart, he has arm around her shoulder with proud smile. Wear smart casual. Well-maintained house, flower garden, white picket fence. Golden hour lighting creates warm emotional glow. Shot with 35mm lens, natural soft lighting, warm color grading emphasizing emotional tones, captured life-changing moment, giving back to parents, family success milestone visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic emotional photo of young man (use reference photo - exact features) standing with elderly mother in front of beautiful suburban house with ‘SOLD’ sign, placing house keys in her hands. She’s crying happy tears, hand over heart, he has arm around her shoulder with proud smile. Wear smart casual. Well-maintained house, flower garden, white picket fence. Golden hour lighting creates warm emotional glow. Shot with 35mm lens, natural soft lighting, warm color grading emphasizing emotional tones, captured life-changing moment, giving back to parents, family success milestone visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">062</span>
+                        <span class="prompt-title">Dad’s First Business Class Flight</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] sitting in business class airplane seat next to elderly father who’s examining the fancy pod seat with amazement and childlike wonder. Father in traditional attire or simple clothes, son in casual smart style, one arm around dad’s shoulder, both smiling. Flight attendant bringing champagne. Warm cabin lighting. Shot with 35mm lens, soft available light, warm emotional color grading, focus on father’s amazed expression, giving back moment, parent sacrifice repayment visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] sitting in business class airplane seat next to elderly father who’s examining the fancy pod seat with amazement and childlike wonder. Father in traditional attire or simple clothes, son in casual smart style, one arm around dad’s shoulder, both smiling. Flight attendant bringing champagne. Warm cabin lighting. Shot with 35mm lens, soft available light, warm emotional color grading, focus on father’s amazed expression, giving back moment, parent sacrifice repayment visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">063</span>
+                        <span class="prompt-title">Graduation Family Celebration</span>
+                    </div>
+                    <div class="prompt-text">“Generate ultra-realistic photo of me (use my face exactly as in uploaded photo) in cap and gown at graduation, surrounded by entire family - parents, grandparents, siblings - all wearing proud smiles, some crying happy tears. Everyone dressed up for ceremony. University campus, other graduates in background. Late afternoon lighting. Shot with 24mm lens capturing full family, natural daylight, warm celebratory color grading, milestone achievement, family pride moment, first generation graduate visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate ultra-realistic photo of me (use my face exactly as in uploaded photo) in cap and gown at graduation, surrounded by entire family - parents, grandparents, siblings - all wearing proud smiles, some crying happy tears. Everyone dressed up for ceremony. University campus, other graduates in background. Late afternoon lighting. Shot with 24mm lens capturing full family, natural daylight, warm celebratory color grading, milestone achievement, family pride moment, first generation graduate visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">064</span>
+                        <span class="prompt-title">Newborn Baby First Meeting</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing hospital room moment. New father (reference photo - exact features) holding newborn baby for first time, wearing hospital scrubs over clothes, tears in eyes, looking down at baby with pure love and wonder. Mother in hospital bed smiling in background. Soft hospital room, window light, flowers and balloons. Shot with 50mm lens at f/1.8, soft natural window lighting, gentle color grading with soft pastels, intimate fatherhood moment, life-changing first meeting, new parent visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing hospital room moment. New father (reference photo - exact features) holding newborn baby for first time, wearing hospital scrubs over clothes, tears in eyes, looking down at baby with pure love and wonder. Mother in hospital bed smiling in background. Soft hospital room, window light, flowers and balloons. Shot with 50mm lens at f/1.8, soft natural window lighting, gentle color grading with soft pastels, intimate fatherhood moment, life-changing first meeting, new parent visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">065</span>
+                        <span class="prompt-title">Elderly Parents Anniversary Surprise</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) surprising parents at their 50th anniversary party in decorated banquet hall, presenting them with tropical vacation tickets. Wear suit, parents dressed formally, emotional hug. Guests clapping in background, gold anniversary decorations, photo slideshow of parents’ life. Shot with 35mm lens, warm party lighting, rich color grading with golds, captured generous surprise moment, honoring parents, gratitude expression visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) surprising parents at their 50th anniversary party in decorated banquet hall, presenting them with tropical vacation tickets. Wear suit, parents dressed formally, emotional hug. Guests clapping in background, gold anniversary decorations, photo slideshow of parents’ life. Shot with 35mm lens, warm party lighting, rich color grading with golds, captured generous surprise moment, honoring parents, gratitude expression visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">066</span>
+                        <span class="prompt-title">Family Reunion Beach Portrait</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic large family photo on beach at sunset, young man (use uploaded reference photo exactly) in center with parents, grandparents, siblings, nieces, nephews all wearing coordinated white and beige outfits. Multigenerational, everyone genuinely happy. Ocean waves, golden sand, palm trees. Shot with 24mm lens capturing full group, golden hour lighting, warm color grading, professional family portrait style, family unity, generational success, togetherness visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic large family photo on beach at sunset, young man (use uploaded reference photo exactly) in center with parents, grandparents, siblings, nieces, nephews all wearing coordinated white and beige outfits. Multigenerational, everyone genuinely happy. Ocean waves, golden sand, palm trees. Shot with 24mm lens capturing full group, golden hour lighting, warm color grading, professional family portrait style, family unity, generational success, togetherness visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">067</span>
+                        <span class="prompt-title">Taking Grandma to Dream Restaurant</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) sitting across from elderly grandmother at fancy Michelin-star restaurant, she’s looking at menu amazed, I’m explaining dishes, both dressed nicely. White tablecloth, elegant place settings, sommelier in background. Warm restaurant lighting. Shot with 50mm lens at f/2.0, warm ambient lighting, rich color grading, captured special intergenerational moment, spoiling grandparents, appreciation visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) sitting across from elderly grandmother at fancy Michelin-star restaurant, she’s looking at menu amazed, I’m explaining dishes, both dressed nicely. White tablecloth, elegant place settings, sommelier in background. Warm restaurant lighting. Shot with 50mm lens at f/2.0, warm ambient lighting, rich color grading, captured special intergenerational moment, spoiling grandparents, appreciation visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">068</span>
+                        <span class="prompt-title">Little Brother Proud Moment</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young man (reference photo - exact features) giving younger teenage brother big proud hug at his soccer championship win, holding trophy together. Wear jersey and casual clothes. Soccer field, team celebrating, parents cheering. Late afternoon golden light. Shot with 35mm lens, natural outdoor lighting, vibrant sporty color grading, brother bonding, mentorship, family support visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young man (reference photo - exact features) giving younger teenage brother big proud hug at his soccer championship win, holding trophy together. Wear jersey and casual clothes. Soccer field, team celebrating, parents cheering. Late afternoon golden light. Shot with 35mm lens, natural outdoor lighting, vibrant sporty color grading, brother bonding, mentorship, family support visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">069</span>
+                        <span class="prompt-title">Mom Seeing Wedding Venue First Time</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] and mother entering beautiful wedding venue for first time for his upcoming wedding, her hand over mouth in emotional surprise, him holding her arm. Decorated venue with flowers, chandelier, elegant setup. Wear casual clothes during venue visit. Shot with 24mm lens, natural venue lighting, soft romantic color grading, emotional mother-son moment, wedding planning, life milestone sharing visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] and mother entering beautiful wedding venue for first time for his upcoming wedding, her hand over mouth in emotional surprise, him holding her arm. Decorated venue with flowers, chandelier, elegant setup. Wear casual clothes during venue visit. Shot with 24mm lens, natural venue lighting, soft romantic color grading, emotional mother-son moment, wedding planning, life milestone sharing visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">070</span>
+                        <span class="prompt-title">Teaching Dad to Use Smartphone</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing patient teaching moment. Young man (reference photo) sitting with elderly father on couch, teaching him how to use new smartphone, both smiling, pointing at screen. Casual comfortable clothes, living room setting, natural afternoon light through window. Shot with 35mm lens at f/2.0, warm natural lighting, soft color grading, captured bonding moment, generational tech gap, patient son, quality time visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing patient teaching moment. Young man (reference photo) sitting with elderly father on couch, teaching him how to use new smartphone, both smiling, pointing at screen. Casual comfortable clothes, living room setting, natural afternoon light through window. Shot with 35mm lens at f/2.0, warm natural lighting, soft color grading, captured bonding moment, generational tech gap, patient son, quality time visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">071</span>
+                        <span class="prompt-title">Parents Retirement Party Speech</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) giving emotional speech at parents’ retirement party, holding microphone, parents sitting at head table looking proud and emotional, guests listening. Wear suit, party decorations, photo montage in background. Shot with 35mm lens, warm party lighting, rich color grading, captured public appreciation, honoring parents’ hard work, family celebration visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) giving emotional speech at parents’ retirement party, holding microphone, parents sitting at head table looking proud and emotional, guests listening. Wear suit, party decorations, photo montage in background. Shot with 35mm lens, warm party lighting, rich color grading, captured public appreciation, honoring parents’ hard work, family celebration visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">072</span>
+                        <span class="prompt-title">First Car for Little Sister</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic moment capturing young man (use uploaded reference photo exactly) surprising teenage sister with her first car (small car with big bow), handing her keys, she’s crying and jumping excitedly. Driveway, family home, parents watching from doorway smiling. Wear casual clothes. Shot with 24mm lens, natural daylight, bright happy color grading, captured generous gift moment, sibling love, protective brother visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic moment capturing young man (use uploaded reference photo exactly) surprising teenage sister with her first car (small car with big bow), handing her keys, she’s crying and jumping excitedly. Driveway, family home, parents watching from doorway smiling. Wear casual clothes. Shot with 24mm lens, natural daylight, bright happy color grading, captured generous gift moment, sibling love, protective brother visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">073</span>
+                        <span class="prompt-title">Grandpa’s 80th Birthday Surprise</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting me (use my face exactly as in uploaded photo) revealing surprise 80th birthday party to grandfather entering room, everyone yelling surprise. Balloons, decorations, family hiding then jumping out. His genuine shock and joy captured. Wear smart casual. Shot with 24mm wide lens, natural party lighting, warm color grading, candid surprise moment, honoring elders, multi-generational celebration visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting me (use my face exactly as in uploaded photo) revealing surprise 80th birthday party to grandfather entering room, everyone yelling surprise. Balloons, decorations, family hiding then jumping out. His genuine shock and joy captured. Wear smart casual. Shot with 24mm wide lens, natural party lighting, warm color grading, candid surprise moment, honoring elders, multi-generational celebration visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">074</span>
+                        <span class="prompt-title">Mother’s Day Breakfast in Bed</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young man (reference photo - exact features) presenting breakfast tray to mother in bed on Mother’s Day, flowers in vase, card, perfect breakfast spread. She’s sitting up looking surprised and touched. Morning sunlight through window. Wear casual pajamas/sweats. Shot with 35mm lens, soft morning light, warm color grading, intimate appreciation moment, mother-son bond, thoughtful gesture visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young man (reference photo - exact features) presenting breakfast tray to mother in bed on Mother’s Day, flowers in vase, card, perfect breakfast spread. She’s sitting up looking surprised and touched. Morning sunlight through window. Wear casual pajamas/sweats. Shot with 35mm lens, soft morning light, warm color grading, intimate appreciation moment, mother-son bond, thoughtful gesture visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">075</span>
+                        <span class="prompt-title">Family Home Renovation Reveal</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] revealing completed renovation of parents’ home to them, covering their eyes walking them to renovated living room. Modern updated interior, new furniture, fresh paint. Parents’ emotional reaction of surprise and gratitude. Shot with 24mm lens, bright interior lighting, clean modern color grading, captured gift of improved living space, giving back to family, home improvement visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] revealing completed renovation of parents’ home to them, covering their eyes walking them to renovated living room. Modern updated interior, new furniture, fresh paint. Parents’ emotional reaction of surprise and gratitude. Shot with 24mm lens, bright interior lighting, clean modern color grading, captured gift of improved living space, giving back to family, home improvement visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">076</span>
+                        <span class="prompt-title">Dad Retiring Early Because of My Success</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing office scene. Young entrepreneur (reference photo) surprising father at his workplace with retirement papers and check, “You can retire now, Dad.” Father emotional, coworkers witnessing. Wear business attire. Shot with 35mm lens, natural office lighting, warm emotional color grading, life-changing moment captured, breaking generational cycle, successful son supporting father visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing office scene. Young entrepreneur (reference photo) surprising father at his workplace with retirement papers and check, “You can retire now, Dad.” Father emotional, coworkers witnessing. Wear business attire. Shot with 35mm lens, natural office lighting, warm emotional color grading, life-changing moment captured, breaking generational cycle, successful son supporting father visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">077</span>
+                        <span class="prompt-title">Family Group Chat Video Call</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) on video call with entire family on laptop screen, all family members in different squares waving and smiling, he’s waving back at screen. Cozy home office evening. Warm lamp lighting. Shot with 35mm lens, screen glow on face, warm color grading, modern family connection, staying connected despite distance, technology bringing family together visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) on video call with entire family on laptop screen, all family members in different squares waving and smiling, he’s waving back at screen. Cozy home office evening. Warm lamp lighting. Shot with 35mm lens, screen glow on face, warm color grading, modern family connection, staying connected despite distance, technology bringing family together visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">078</span>
+                        <span class="prompt-title">Walking Mom Down Aisle at Her Second Wedding</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic emotional photo of young man (use uploaded reference photo exactly) walking mother down aisle at her second wedding after being widowed/divorced, both emotional with tears, her in wedding dress, him in suit. Beautiful outdoor wedding venue, guests standing, flowers. Golden hour lighting. Shot with 50mm lens, natural soft lighting, warm romantic color grading, supporting parent, role reversal moment, family milestone visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic emotional photo of young man (use uploaded reference photo exactly) walking mother down aisle at her second wedding after being widowed/divorced, both emotional with tears, her in wedding dress, him in suit. Beautiful outdoor wedding venue, guests standing, flowers. Golden hour lighting. Shot with 50mm lens, natural soft lighting, warm romantic color grading, supporting parent, role reversal moment, family milestone visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">079</span>
+                        <span class="prompt-title">Three Generations Business Photo</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting three generations (use my face exactly for youngest) - grandfather, father, and me - all in suits standing together in family business office. Legacy business photos on wall behind. Arms crossed confidently. Shot with 35mm lens, professional office lighting, rich color grading, family business continuation, generational entrepreneurship, legacy building visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting three generations (use my face exactly for youngest) - grandfather, father, and me - all in suits standing together in family business office. Legacy business photos on wall behind. Arms crossed confidently. Shot with 35mm lens, professional office lighting, rich color grading, family business continuation, generational entrepreneurship, legacy building visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">080</span>
+                        <span class="prompt-title">Sister’s College Drop-Off Day</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young man (reference photo - exact features) helping younger sister move into college dorm, carrying boxes, she’s excited, he’s protective big brother expression. Dorm building, other families moving in, college campus. Wear casual clothes. Shot with 35mm lens, natural daylight, bright hopeful color grading, sibling bond moment, protective brother, life transition support visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young man (reference photo - exact features) helping younger sister move into college dorm, carrying boxes, she’s excited, he’s protective big brother expression. Dorm building, other families moving in, college campus. Wear casual clothes. Shot with 35mm lens, natural daylight, bright hopeful color grading, sibling bond moment, protective brother, life transition support visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">081</span>
+                        <span class="prompt-title">Family Game Night Competition</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic candid capturing [use uploaded image of the user] playing board games with family around dining table, everyone laughing and competitive. Snacks, drinks, game pieces scattered. Casual comfortable clothes. Warm home lighting. Shot with 35mm lens, natural home lighting, warm inviting color grading, quality family time, traditions, togetherness, simple joy visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic candid capturing [use uploaded image of the user] playing board games with family around dining table, everyone laughing and competitive. Snacks, drinks, game pieces scattered. Casual comfortable clothes. Warm home lighting. Shot with 35mm lens, natural home lighting, warm inviting color grading, quality family time, traditions, togetherness, simple joy visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">082</span>
+                        <span class="prompt-title">Parents First Grandchild Announcement</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing emotional reveal. Young couple (reference photo for male) surprising both sets of parents with “We’re pregnant” announcement, handing them ultrasound photos. Grandparents-to-be crying happy tears, hugging. Living room gathering. Shot with 35mm lens, natural home lighting, warm color grading, captured shock and joy, life-changing news, expanding family visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing emotional reveal. Young couple (reference photo for male) surprising both sets of parents with “We’re pregnant” announcement, handing them ultrasound photos. Grandparents-to-be crying happy tears, hugging. Living room gathering. Shot with 35mm lens, natural home lighting, warm color grading, captured shock and joy, life-changing news, expanding family visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">083</span>
+                        <span class="prompt-title">Family Business Grand Opening</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) with family cutting ribbon at grand opening of family restaurant/business, all wearing matching branded shirts, community gathered. Storefront decorated, balloons, “Grand Opening” banner. Proud family achievement moment. Shot with 24mm lens, natural daylight, vibrant celebratory color grading, family entrepreneurship, dream realized together, legacy beginning visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) with family cutting ribbon at grand opening of family restaurant/business, all wearing matching branded shirts, community gathered. Storefront decorated, balloons, “Grand Opening” banner. Proud family achievement moment. Shot with 24mm lens, natural daylight, vibrant celebratory color grading, family entrepreneurship, dream realized together, legacy beginning visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">084</span>
+                        <span class="prompt-title">Taking Parents to Hajj/Dream Pilgrimage</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] with parents at Mecca during Hajj or at significant religious/cultural site they’ve dreamed of visiting. Traditional/religious attire, emotional spiritual moment. Iconic religious architecture in background. Shot with 35mm lens, natural lighting, respectful color grading, fulfilled lifetime dream, religious devotion, honoring parents’ wishes visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] with parents at Mecca during Hajj or at significant religious/cultural site they’ve dreamed of visiting. Traditional/religious attire, emotional spiritual moment. Iconic religious architecture in background. Shot with 35mm lens, natural lighting, respectful color grading, fulfilled lifetime dream, religious devotion, honoring parents’ wishes visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">085</span>
+                        <span class="prompt-title">Family Holiday Card Photo Shoot</span>
+                    </div>
+                    <div class="prompt-text">“Generate image depicting coordinated family (use my face exactly for me) in matching holiday sweaters/outfits for Christmas card photo. Fun poses, Christmas decorations, tree in background. Everyone smiling genuinely. Shot with 35mm lens, warm holiday lighting, festive color grading with reds and greens, family traditions, holiday joy, togetherness visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image depicting coordinated family (use my face exactly for me) in matching holiday sweaters/outfits for Christmas card photo. Fun poses, Christmas decorations, tree in background. Everyone smiling genuinely. Shot with 35mm lens, warm holiday lighting, festive color grading with reds and greens, family traditions, holiday joy, togetherness visualization.”`)">📋 Copier</button>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <h2 class="category-title">CATEGORY 4: TRANSFORMATION &amp; MOTIVATION (25 Prompts)</h2>
+            <div class="prompt-grid">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">086</span>
+                        <span class="prompt-title">2-Year Body Transformation Split</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic dramatic side-by-side comparison photo. LEFT: Young man (use reference photo - exact features) overweight, looking unmotivated in baggy clothes, poor posture, in dimly lit room. RIGHT: Same person completely shredded, six-pack abs, muscular, confident shirtless pose in bright gym, athletic shorts. Same mirror, same location proving real transformation. ‘BEFORE: JANUARY 2023’ vs ‘AFTER: JANUARY 2025’ text. Shot showing dramatic contrast in body, lighting, energy. Motivational transformation visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic dramatic side-by-side comparison photo. LEFT: Young man (use reference photo - exact features) overweight, looking unmotivated in baggy clothes, poor posture, in dimly lit room. RIGHT: Same person completely shredded, six-pack abs, muscular, confident shirtless pose in bright gym, athletic shorts. Same mirror, same location proving real transformation. ‘BEFORE: JANUARY 2023’ vs ‘AFTER: JANUARY 2025’ text. Shot showing dramatic contrast in body, lighting, energy. Motivational transformation visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">087</span>
+                        <span class="prompt-title">From Sleeping in Car to Penthouse</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic split screen showing journey. LEFT SIDE (black and white): Young man (reference photo) sleeping in back seat of old car at night, using jacket as pillow, looking exhausted and defeated. RIGHT SIDE (vivid color): Same person in luxury penthouse in robe, floor-to-ceiling windows with city view, morning coffee, success achieved. Dramatic before/after transformation, rags to riches, never give up visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic split screen showing journey. LEFT SIDE (black and white): Young man (reference photo) sleeping in back seat of old car at night, using jacket as pillow, looking exhausted and defeated. RIGHT SIDE (vivid color): Same person in luxury penthouse in robe, floor-to-ceiling windows with city view, morning coffee, success achieved. Dramatic before/after transformation, rags to riches, never give up visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">088</span>
+                        <span class="prompt-title">Overcoming Depression - Then vs Now</span>
+                    </div>
+                    <div class="prompt-text">“Generate emotional comparison image. TOP: Young man (use my face exactly from uploaded photo) in dark bedroom, unmade bed, closed curtains, looking depressed and hopeless, messy room. BOTTOM: Same person outdoors in nature, hiking, arms spread wide, sunshine, genuine smile, healthy glow, active wear. Mental health recovery journey, from darkness to light, healing transformation visual ization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate emotional comparison image. TOP: Young man (use my face exactly from uploaded photo) in dark bedroom, unmade bed, closed curtains, looking depressed and hopeless, messy room. BOTTOM: Same person outdoors in nature, hiking, arms spread wide, sunshine, genuine smile, healthy glow, active wear. Mental health recovery journey, from darkness to light, healing transformation visual ization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">089</span>
+                        <span class="prompt-title">Quitting Addiction - 5 Years Clean</span>
+                    </div>
+                    <div class="prompt-text">“Create a nano-banana model showing recovery milestone. Young man (reference photo - exact features) holding ‘5 Years Sober’ chip at AA/support group meeting, emotional tears of pride, support group members clapping in background. Wear casual clothes. Simple meeting room. Shot with 35mm lens, natural lighting, hopeful color grading, addiction recovery success, second chances, redemption visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a nano-banana model showing recovery milestone. Young man (reference photo - exact features) holding ‘5 Years Sober’ chip at AA/support group meeting, emotional tears of pride, support group members clapping in background. Wear casual clothes. Simple meeting room. Shot with 35mm lens, natural lighting, hopeful color grading, addiction recovery success, second chances, redemption visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">090</span>
+                        <span class="prompt-title">From Dropout to PhD Graduate</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic comparison. LEFT: Younger version (reference photo) as high school dropout looking lost, teenage style. RIGHT: Same person in doctoral graduation regalia, holding PhD diploma, university campus, proud professor handshake. Education transformation journey, proving doubters wrong, academic comeback visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic comparison. LEFT: Younger version (reference photo) as high school dropout looking lost, teenage style. RIGHT: Same person in doctoral graduation regalia, holding PhD diploma, university campus, proud professor handshake. Education transformation journey, proving doubters wrong, academic comeback visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">091</span>
+                        <span class="prompt-title">Homeless to Homeowner Journey</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic powerful before/after. LEFT (grainy, desaturated): Young man (use uploaded reference photo exactly) sitting on street with belongings in bags, looking defeated. RIGHT (vibrant, sharp): Same person in suit standing in front of his house holding keys and ‘SOLD’ sign. Complete life turnaround, housing security, rebuilding life visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic powerful before/after. LEFT (grainy, desaturated): Young man (use uploaded reference photo exactly) sitting on street with belongings in bags, looking defeated. RIGHT (vibrant, sharp): Same person in suit standing in front of his house holding keys and ‘SOLD’ sign. Complete life turnaround, housing security, rebuilding life visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">092</span>
+                        <span class="prompt-title">Social Anxiety to Public Speaker</span>
+                    </div>
+                    <div class="prompt-text">“Generate image showing growth. TOP: Young man (reference photo) in corner of room alone at party, looking anxious and uncomfortable, protective body language. BOTTOM: Same person confidently giving presentation to large audience on stage, natural gestures, audience engaged. Overcoming social fear, confidence transformation, personal development visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate image showing growth. TOP: Young man (reference photo) in corner of room alone at party, looking anxious and uncomfortable, protective body language. BOTTOM: Same person confidently giving presentation to large audience on stage, natural gestures, audience engaged. Overcoming social fear, confidence transformation, personal development visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">093</span>
+                        <span class="prompt-title">Debt-Free Celebration</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of young man (reference photo - exact features) ripping up final credit card bill, throwing papers in air celebrating, spreadsheet on laptop showing $0 debt balance. Home office, calculator, paid off statements scattered. Pure relief and joy expression. Shot with 35mm lens, natural lighting, bright hopeful color grading, financial freedom achieved, debt eliminated, money management success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of young man (reference photo - exact features) ripping up final credit card bill, throwing papers in air celebrating, spreadsheet on laptop showing \$0 debt balance. Home office, calculator, paid off statements scattered. Pure relief and joy expression. Shot with 35mm lens, natural lighting, bright hopeful color grading, financial freedom achieved, debt eliminated, money management success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">094</span>
+                        <span class="prompt-title">From Bullied to Confident</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing journey. LEFT: Younger (reference photo) being bullied, looking hurt and isolated, school hallway. RIGHT: Present confident version at high school reunion, well-dressed, surrounded by people wanting to talk, confident body language. Overcoming bullying, finding confidence, proving worth visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing journey. LEFT: Younger (reference photo) being bullied, looking hurt and isolated, school hallway. RIGHT: Present confident version at high school reunion, well-dressed, surrounded by people wanting to talk, confident body language. Overcoming bullying, finding confidence, proving worth visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">095</span>
+                        <span class="prompt-title">100 Days of Meditation Progress</span>
+                    </div>
+                    <div class="prompt-text">“Create a collage of 9 photos showing 100-day meditation journey. Young man (use my face exactly from uploaded photo) in same meditation spot at home, peaceful expression developing. Progress photos dated, posture improving, environment getting more serene, facial stress disappearing. Mindfulness practice, mental wellness, spiritual growth visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Create a collage of 9 photos showing 100-day meditation journey. Young man (use my face exactly from uploaded photo) in same meditation spot at home, peaceful expression developing. Progress photos dated, posture improving, environment getting more serene, facial stress disappearing. Mindfulness practice, mental wellness, spiritual growth visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">096</span>
+                        <span class="prompt-title">From Couch to Marathon Runner</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic split showing athletic transformation. LEFT: Young man (reference photo) on couch with junk food, TV remote, looking sedentary and unhealthy. RIGHT: Same person crossing marathon finish line, race bib, medal around neck, arms raised in victory, fit physique. Complete lifestyle change, fitness journey, endurance achievement visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic split showing athletic transformation. LEFT: Young man (reference photo) on couch with junk food, TV remote, looking sedentary and unhealthy. RIGHT: Same person crossing marathon finish line, race bib, medal around neck, arms raised in victory, fit physique. Complete lifestyle change, fitness journey, endurance achievement visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">097</span>
+                        <span class="prompt-title">Overcoming Fear of Heights - Skydiving</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic image featuring [use uploaded image of the user] skydiving, in tandem jump position with instructor, face showing mix of terror and exhilaration, earth far below. Skydiving gear, goggles. Overcoming specific phobia moment. Shot with GoPro wide-angle style, bright daylight from above clouds, vivid color grading, conquering fear visualization, personal breakthrough moment.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic image featuring [use uploaded image of the user] skydiving, in tandem jump position with instructor, face showing mix of terror and exhilaration, earth far below. Skydiving gear, goggles. Overcoming specific phobia moment. Shot with GoPro wide-angle style, bright daylight from above clouds, vivid color grading, conquering fear visualization, personal breakthrough moment.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">098</span>
+                        <span class="prompt-title">From Shy to Social Butterfly</span>
+                    </div>
+                    <div class="prompt-text">“Generate comparison showing personality transformation. LEFT: Young man (reference photo - exact features) sitting alone at lunch table looking lonely and shy. RIGHT: Same person center of friend group at party, telling story, everyone laughing, clearly comfortable and charismatic. Social skill development, confidence growth, personality evolution visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate comparison showing personality transformation. LEFT: Young man (reference photo - exact features) sitting alone at lunch table looking lonely and shy. RIGHT: Same person center of friend group at party, telling story, everyone laughing, clearly comfortable and charismatic. Social skill development, confidence growth, personality evolution visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">099</span>
+                        <span class="prompt-title">Chronic Illness Warrior Strength</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic photo of a (as in reference) in hospital gown mid-chemotherapy treatment, flexing muscle with determined expression, ‘Still Fighting’ written on arm. Medical equipment visible but person showing strength not weakness. Shot with 35mm lens, natural hospital lighting, hopeful color grading despite setting, medical battle, resilience, warrior mentality visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic photo of a (as in reference) in hospital gown mid-chemotherapy treatment, flexing muscle with determined expression, ‘Still Fighting’ written on arm. Medical equipment visible but person showing strength not weakness. Shot with 35mm lens, natural hospital lighting, hopeful color grading despite setting, medical battle, resilience, warrior mentality visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">100</span>
+                        <span class="prompt-title">From Fired to Business Owner</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic before/after comparison. LEFT: Young man (use uploaded reference photo exactly) leaving office building with box of belongings, just fired, looking devastated. RIGHT: Same person standing in front of his own business storefront, grand opening, employees, success achieved. Rejection to reinvention, entrepreneurship born from loss visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic before/after comparison. LEFT: Young man (use uploaded reference photo exactly) leaving office building with box of belongings, just fired, looking devastated. RIGHT: Same person standing in front of his own business storefront, grand opening, employees, success achieved. Rejection to reinvention, entrepreneurship born from loss visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">101</span>
+                        <span class="prompt-title">From Unemployed to CEO</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic split screen showing career transformation. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) at home job searching, looking frustrated, multiple rejection emails on laptop. RIGHT: Same person in corner office, CEO title on door, confident presentation to investors, modern tech startup. Complete career turnaround, professional growth, leadership achievement visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic split screen showing career transformation. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) at home job searching, looking frustrated, multiple rejection emails on laptop. RIGHT: Same person in corner office, CEO title on door, confident presentation to investors, modern tech startup. Complete career turnaround, professional growth, leadership achievement visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">102</span>
+                        <span class="prompt-title">From Student to Millionaire Investor</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing financial journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) in college dorm, studying finance books, looking determined. RIGHT: Same person in luxury office, multiple monitors showing stock charts, portfolio value on screen, confident expression. Investment success transformation, financial independence, wealth building visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing financial journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) in college dorm, studying finance books, looking determined. RIGHT: Same person in luxury office, multiple monitors showing stock charts, portfolio value on screen, confident expression. Investment success transformation, financial independence, wealth building visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">103</span>
+                        <span class="prompt-title">From Rejected to Accepted</span>
+                    </div>
+                    <div class="prompt-text">“Generate emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) receiving rejection letter, looking devastated, sitting alone. BOTTOM: Same person receiving acceptance letter, smiling, holding acceptance envelope, surrounded by supportive friends. Rejection to acceptance journey, perseverance, success after failure visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) receiving rejection letter, looking devastated, sitting alone. BOTTOM: Same person receiving acceptance letter, smiling, holding acceptance envelope, surrounded by supportive friends. Rejection to acceptance journey, perseverance, success after failure visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">104</span>
+                        <span class="prompt-title">From Isolated to Community Leader</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic split showing social transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) sitting alone at community event, looking uncomfortable. RIGHT: Same person leading community meeting, organizing volunteers, respected community leader. Social impact journey, leadership growth, community contribution visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic split showing social transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) sitting alone at community event, looking uncomfortable. RIGHT: Same person leading community meeting, organizing volunteers, respected community leader. Social impact journey, leadership growth, community contribution visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">105</span>
+                        <span class="prompt-title">From Struggling Artist to Gallery Show</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing artistic journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) in small apartment studio, struggling with art, looking uncertain. RIGHT: Same person at art gallery opening, standing beside his paintings on display, gallery guests admiring, proud expression. Artistic success transformation, creative journey, recognition visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing artistic journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) in small apartment studio, struggling with art, looking uncertain. RIGHT: Same person at art gallery opening, standing beside his paintings on display, gallery guests admiring, proud expression. Artistic success transformation, creative journey, recognition visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">106</span>
+                        <span class="prompt-title">From Debt to Financial Freedom</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic split showing financial transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) overwhelmed with bills, looking stressed, multiple credit cards on table. RIGHT: Same person in home office, laptop showing positive bank balance, financial freedom, relaxed confident expression. Debt elimination journey, financial wellness, money management success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic split showing financial transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) overwhelmed with bills, looking stressed, multiple credit cards on table. RIGHT: Same person in home office, laptop showing positive bank balance, financial freedom, relaxed confident expression. Debt elimination journey, financial wellness, money management success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">107</span>
+                        <span class="prompt-title">From Insecure to Self-Love</span>
+                    </div>
+                    <div class="prompt-text">“Generate emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) looking at mirror with negative self-image, self-critical expression. BOTTOM: Same person in mirror with positive self-love, confident smile, healthy lifestyle, self-acceptance. Self-esteem journey, mental health transformation, self-worth visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) looking at mirror with negative self-image, self-critical expression. BOTTOM: Same person in mirror with positive self-love, confident smile, healthy lifestyle, self-acceptance. Self-esteem journey, mental health transformation, self-worth visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">108</span>
+                        <span class="prompt-title">From Failed Business to Success</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing entrepreneurial journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) at failed business, looking defeated, empty storefront. RIGHT: Same person at successful business opening, grand opening, customers, thriving business. Business comeback transformation, resilience, entrepreneurial success visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing entrepreneurial journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) at failed business, looking defeated, empty storefront. RIGHT: Same person at successful business opening, grand opening, customers, thriving business. Business comeback transformation, resilience, entrepreneurial success visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">109</span>
+                        <span class="prompt-title">From Average to Champion</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic split showing athletic transformation. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) at average fitness level, looking unimpressed. RIGHT: Same person on podium winning championship, medal around neck, crowd cheering, champion physique. Athletic achievement journey, peak performance, victory visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic split showing athletic transformation. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) at average fitness level, looking unimpressed. RIGHT: Same person on podium winning championship, medal around neck, crowd cheering, champion physique. Athletic achievement journey, peak performance, victory visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">110</span>
+                        <span class="prompt-title">From Invisible to Influencer</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing digital journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) scrolling on phone, looking lonely and invisible. RIGHT: Same person on stage at conference, speaking to large audience, social media followers, influencer status. Digital influence transformation, online presence, community building visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing digital journey. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) scrolling on phone, looking lonely and invisible. RIGHT: Same person on stage at conference, speaking to large audience, social media followers, influencer status. Digital influence transformation, online presence, community building visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">111</span>
+                        <span class="prompt-title">From Lost to Purpose</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) looking lost and directionless, aimless expression. BOTTOM: Same person volunteering, helping others, purposeful expression, community impact. Life purpose journey, finding meaning, contribution visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic emotional comparison. TOP: Young man (reference photo - short spiky dark hair, East Asian features) looking lost and directionless, aimless expression. BOTTOM: Same person volunteering, helping others, purposeful expression, community impact. Life purpose journey, finding meaning, contribution visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">112</span>
+                        <span class="prompt-title">From Fearful to Fearless</span>
+                    </div>
+                    <div class="prompt-text">“Generate comparison showing courage transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) looking fearful, hesitant expression. RIGHT: Same person facing challenge confidently, determined expression, overcoming fear. Courage journey, bravery transformation, personal growth visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Generate comparison showing courage transformation. LEFT: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) looking fearful, hesitant expression. RIGHT: Same person facing challenge confidently, determined expression, overcoming fear. Courage journey, bravery transformation, personal growth visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">113</span>
+                        <span class="prompt-title">From Small Town to Global Stage</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) in small town, looking ordinary. RIGHT: Same person on global stage, international conference, world audience, respected speaker. Geographic and professional transformation, global impact, achievement visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) in small town, looking ordinary. RIGHT: Same person on global stage, international conference, world audience, respected speaker. Geographic and professional transformation, global impact, achievement visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">114</span>
+                        <span class="prompt-title">From Broken to Whole</span>
+                    </div>
+                    <div class="prompt-text">“Ultra realistic emotional comparison. TOP: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) looking broken, emotional pain, struggling. BOTTOM: Same person healed, peaceful expression, healthy relationships, emotional wholeness. Healing journey, emotional recovery, inner peace visualization.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Ultra realistic emotional comparison. TOP: Young man (use uploaded reference photo exactly - short spiky dark hair, East Asian features) looking broken, emotional pain, struggling. BOTTOM: Same person healed, peaceful expression, healthy relationships, emotional wholeness. Healing journey, emotional recovery, inner peace visualization.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">115</span>
+                        <span class="prompt-title">From Unknown to Icon</span>
+                    </div>
+                    <div class="prompt-text">“Photorealistic comparison capturing fame journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) unknown, looking ordinary. RIGHT: Same person on magazine cover, iconic status, respected figure, global recognition. Fame and recognition transformation, legacy building, icon status visualiza</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Photorealistic comparison capturing fame journey. LEFT: Young man (reference photo - short spiky dark hair, East Asian features) unknown, looking ordinary. RIGHT: Same person on magazine cover, iconic status, respected figure, global recognition. Fame and recognition transformation, legacy building, icon status visualiza`)">📋 Copier</button>
+                </div>
+            </div>
+        </div>
+        <div class="category">
+            <h2 class="category-title">CATEGORY 5 : PORTRAITS &amp; SELFIES (10 Prompts)</h2>
+            <div class="prompt-grid">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">116</span>
+                        <span class="prompt-title">The Paris Runway Moment</span>
+                    </div>
+                    <div class="prompt-text">Create a cinematic high-fashion runway photograph of the person from the uploaded image as a male supermodel at Paris Fashion Week. Captured mid-stride with a powerful, confident walk, intense forward gaze, strong posture, and commanding presence. Wearing avant-garde couture menswear with sculptural tailoring, luxury fabrics, and bold silhouettes. Editorial lighting, dramatic spotlights, blurred audience and flashing cameras, monochrome palette with metallic accents. Ultra-sharp focus, dynamic motion, elite fashion photography style.</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Create a cinematic high-fashion runway photograph of the person from the uploaded image as a male supermodel at Paris Fashion Week. Captured mid-stride with a powerful, confident walk, intense forward gaze, strong posture, and commanding presence. Wearing avant-garde couture menswear with sculptural tailoring, luxury fabrics, and bold silhouettes. Editorial lighting, dramatic spotlights, blurred audience and flashing cameras, monochrome palette with metallic accents. Ultra-sharp focus, dynamic motion, elite fashion photography style.`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">117</span>
+                        <span class="prompt-title">Back to the 70s</span>
+                    </div>
+                    <div class="prompt-text">Create a 1970s family photo style using the uploaded image. Polaroid frame border with white edges and subtle aging. Slightly faded warm colors - browns, oranges, and yellows dominant. Grainy film texture, soft focus typical of vintage cameras. Warm indoor lighting with a golden glow. Subject wearing retro 1970s fashion - bell bottoms, patterned shirts, vintage accessories. Candid pose, natural smiles. Wood-paneled walls or retro furniture in background. Authentic vintage photography aesthetic, nostalgic feel.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Create a 1970s family photo style using the uploaded image. Polaroid frame border with white edges and subtle aging. Slightly faded warm colors - browns, oranges, and yellows dominant. Grainy film texture, soft focus typical of vintage cameras. Warm indoor lighting with a golden glow. Subject wearing retro 1970s fashion - bell bottoms, patterned shirts, vintage accessories. Candid pose, natural smiles. Wood-paneled walls or retro furniture in background. Authentic vintage photography aesthetic, nostalgic feel.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">118</span>
+                        <span class="prompt-title">Folded Into Art</span>
+                    </div>
+                    <div class="prompt-text">“Transform the uploaded image into intricate origami paper art style. Subject should appear to be made entirely of folded paper with visible creases, edges, and folding patterns. Multiple layers of colored paper creating depth and dimension. Geometric origami folds creating facial features and body shape. Clean paper textures - matte finish, crisp edges. Soft shadow casting to show 3D paper structure. Minimalist background. Japanese paper craft aesthetic, delicate and artistic.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `“Transform the uploaded image into intricate origami paper art style. Subject should appear to be made entirely of folded paper with visible creases, edges, and folding patterns. Multiple layers of colored paper creating depth and dimension. Geometric origami folds creating facial features and body shape. Clean paper textures - matte finish, crisp edges. Soft shadow casting to show 3D paper structure. Minimalist background. Japanese paper craft aesthetic, delicate and artistic.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">119</span>
+                        <span class="prompt-title">Checkmate With Elon Musk</span>
+                    </div>
+                    <div class="prompt-text">Generate a hyper-realistic cinematic image of me (use uploaded reference photo) sitting across from Elon Musk at an ornate wooden chess table in a luxurious modern penthouse. Both of us are deeply focused on the chessboard between us. I’m wearing a smart casual black turtleneck and blazer. Elon is in his typical casual attire. Floor-to-ceiling windows show a futuristic cityscape at dusk behind us. Warm ambient lighting from a contemporary chandelier above. The atmosphere is intense but friendly. Shot from a side angle showing both our profiles. Ultra-realistic details, DSLR quality, cinematic color grading, shallow depth of field focusing on the chess pieces and our expressions.</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Generate a hyper-realistic cinematic image of me (use uploaded reference photo) sitting across from Elon Musk at an ornate wooden chess table in a luxurious modern penthouse. Both of us are deeply focused on the chessboard between us. I’m wearing a smart casual black turtleneck and blazer. Elon is in his typical casual attire. Floor-to-ceiling windows show a futuristic cityscape at dusk behind us. Warm ambient lighting from a contemporary chandelier above. The atmosphere is intense but friendly. Shot from a side angle showing both our profiles. Ultra-realistic details, DSLR quality, cinematic color grading, shallow depth of field focusing on the chess pieces and our expressions.`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">120</span>
+                        <span class="prompt-title">Training With The Rock</span>
+                    </div>
+                    <div class="prompt-text">Generate a hyper-realistic image of me (uploaded photo) working out in an intense gym session with Dwayne ‘The Rock’ Johnson. We’re both in athletic gear at a high-end private gym. The Rock is spotting me during a heavy bench press, motivating me with an encouraging expression. Gym equipment, weights, and mirrors in background. Dramatic gym lighting creating strong shadows and highlights. Sweat visible, determination on our faces. Fitness photography style, high contrast, powerful composition, motivational poster aesthetic.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Generate a hyper-realistic image of me (uploaded photo) working out in an intense gym session with Dwayne ‘The Rock’ Johnson. We’re both in athletic gear at a high-end private gym. The Rock is spotting me during a heavy bench press, motivating me with an encouraging expression. Gym equipment, weights, and mirrors in background. Dramatic gym lighting creating strong shadows and highlights. Sweat visible, determination on our faces. Fitness photography style, high contrast, powerful composition, motivational poster aesthetic.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">121</span>
+                        <span class="prompt-title">Tea With The Queen</span>
+                    </div>
+                    <div class="prompt-text">Create a photorealistic image of me (reference image) having afternoon tea with the Queen of England in Buckingham Palace. We’re sitting in an opulent room with gold-trimmed furniture, portraits on walls, and a table set with fine china teacups and a tiered tray of pastries. I’m wearing a formal navy suit. The Queen is in her iconic style with pearls and a colorful outfit. We’re both smiling warmly, engaged in friendly conversation. Two royal corgis rest at our feet. Natural light streaming through tall windows, regal atmosphere, editorial photography quality, soft elegant lighting.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Create a photorealistic image of me (reference image) having afternoon tea with the Queen of England in Buckingham Palace. We’re sitting in an opulent room with gold-trimmed furniture, portraits on walls, and a table set with fine china teacups and a tiered tray of pastries. I’m wearing a formal navy suit. The Queen is in her iconic style with pearls and a colorful outfit. We’re both smiling warmly, engaged in friendly conversation. Two royal corgis rest at our feet. Natural light streaming through tall windows, regal atmosphere, editorial photography quality, soft elegant lighting.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">122</span>
+                        <span class="prompt-title">Lunch With Warren Buffett</span>
+                    </div>
+                    <div class="prompt-text">Generate an ultra-realistic image of me (uploaded reference) sitting at a mahogany boardroom table having lunch with Warren Buffett. Simple meals in front of us - famously modest. We’re in an elegant but understated office with bookshelves and windows showing Omaha cityscape. Warren is in his typical suit and tie, I’m in business formal. He’s sharing wisdom, I’m taking mental notes. The atmosphere is warm and mentorship-focused. Natural window lighting, classic American business photography style, timeless composition, rich wood tones.</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Generate an ultra-realistic image of me (uploaded reference) sitting at a mahogany boardroom table having lunch with Warren Buffett. Simple meals in front of us - famously modest. We’re in an elegant but understated office with bookshelves and windows showing Omaha cityscape. Warren is in his typical suit and tie, I’m in business formal. He’s sharing wisdom, I’m taking mental notes. The atmosphere is warm and mentorship-focused. Natural window lighting, classic American business photography style, timeless composition, rich wood tones.`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">123</span>
+                        <span class="prompt-title">Dinner With Power</span>
+                    </div>
+                    <div class="prompt-text">Generate a photorealistic image of me (uploaded photo) sitting at an ornate dinner table across from Vladimir Putin in an opulent Kremlin dining hall. Long formal table with Russian delicacies and vodka bottles. I’m in a formal suit looking diplomatic but slightly nervous. Putin is in his typical stern expression. Russian military portraits on walls, chandeliers above. The atmosphere is tense but formal. Political photography style, dramatic lighting, rich reds and golds, imposing composition.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Generate a photorealistic image of me (uploaded photo) sitting at an ornate dinner table across from Vladimir Putin in an opulent Kremlin dining hall. Long formal table with Russian delicacies and vodka bottles. I’m in a formal suit looking diplomatic but slightly nervous. Putin is in his typical stern expression. Russian military portraits on walls, chandeliers above. The atmosphere is tense but formal. Political photography style, dramatic lighting, rich reds and golds, imposing composition.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">124</span>
+                        <span class="prompt-title">Man Standing in the heart of Times Square</span>
+                    </div>
+                    <div class="prompt-text">Change the background standing in the heart of Times Square at night in New York City. He wears a black turtleneck, gray wool coat, and white sneakers. His hands are in his pockets, looking confident and relaxed. The wide-angle camera captures the iconic view of Times Square from street level - the glowing billboards, neon signs, and bustling crowds are visible. The camera’s perspective is at eye level, and the fish-eye lens effect creates an immersive cityscape, highlighting the vibrant and electrifying urban atmosphere at night. Bright neon lights, modern and energetic feel, with natural nighttime lighting and ultra-sharp details like a DSLR photo. High resolution, 16:9 cinematic ratio.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Change the background standing in the heart of Times Square at night in New York City. He wears a black turtleneck, gray wool coat, and white sneakers. His hands are in his pockets, looking confident and relaxed. The wide-angle camera captures the iconic view of Times Square from street level - the glowing billboards, neon signs, and bustling crowds are visible. The camera’s perspective is at eye level, and the fish-eye lens effect creates an immersive cityscape, highlighting the vibrant and electrifying urban atmosphere at night. Bright neon lights, modern and energetic feel, with natural nighttime lighting and ultra-sharp details like a DSLR photo. High resolution, 16:9 cinematic ratio.”`)">📋 Copier</button>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-number">125</span>
+                        <span class="prompt-title">Selfie with Elon musk in Safari</span>
+                    </div>
+                    <div class="prompt-text">Photorealistic group selfie featuring [use uploaded image of the user] sitting in an open-top safari jeep during golden hour. Next to him is Elon Musk, and in the background, elephants and giraffes are visible on the African savanna. The user is wearing a khaki safari vest, aviator sunglasses, and a wide-brimmed hat, smiling toward the camera with one hand on the jeep’s roll bar. The selfie has an adventurous, National Geographic vibe, with everyone in the frame looking relaxed. Warm sunset lighting, cinematic quality, natural earthy tones, high detail.”</div>
+                    <button class="copy-btn" onclick="copyPrompt(this, `Photorealistic group selfie featuring [use uploaded image of the user] sitting in an open-top safari jeep during golden hour. Next to him is Elon Musk, and in the background, elephants and giraffes are visible on the African savanna. The user is wearing a khaki safari vest, aviator sunglasses, and a wide-brimmed hat, smiling toward the camera with one hand on the jeep’s roll bar. The selfie has an adventurous, National Geographic vibe, with everyone in the frame looking relaxed. Warm sunset lighting, cinematic quality, natural earthy tones, high detail.”`)">📋 Copier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function copyPrompt(button, text) {
+            navigator.clipboard.writeText(text).then(function() {
+                const originalText = button.textContent;
+                button.textContent = '✓ Copié !';
+                button.classList.add('copied');
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }, function(err) {
+                console.error('Erreur de copie: ', err);
+                alert('Erreur lors de la copie. Veuillez réessayer.');
+            });
+        }
+    </script>
+</body>
+</html>
