@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Petit Atelier QQ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #fdf2f8; font-family: sans-serif; }
+        .mobile-card { background: white; border-top: 5px solid #ec4899; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+        label { color: #be185d; font-weight: 700; font-size: 0.8rem; margin-bottom: 4px; display: block; }
+        select, input { background: #fff1f2 !important; border: 1px solid #f9a8d4 !important; font-size: 16px !important; } /* 16px évite le zoom auto sur iPhone */
+        button#magicBtn { background: linear-gradient(to right, #ec4899, #f43f5e); }
+    </style>
+</head>
+<body class="bg-pink-50 min-h-screen">
+    <div class="max-w-md mx-auto min-h-screen flex flex-col">
+        
+        <div class="p-4 text-center">
+            <h1 class="text-2xl font-black text-pink-600">✨ L'Atelier de Poche</h1>
+            <p class="text-xs text-pink-400 italic">La magie au bout des doigts</p>
+        </div>
+
+        <div class="flex-grow mobile-card rounded-t-3xl p-5 space-y-4">
+            
+            <div>
+                <label>Qui ?</label>
+                <select id="subject" class="w-full p-3 rounded-xl">
+                    <option value="a beautiful tiny fairy with sparkling wings">La petite Fée</option>
+                    <option value="a cute fluffy baby kitten">Le Chaton doux</option>
+                    <option value="an adorable baby deer with white spots">Le petit Faon</option>
+                    <option value="a chubby honey-colored teddy bear">Le Nounours miel</option>
+                    <option value="a sweet little girl in a princess dress">La petite Princesse</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Quel Style ?</label>
+                <select id="masterStyle" class="w-full p-3 rounded-xl border-l-4 border-pink-500">
+                    <optgroup label="✨ Favoris">
+                        <option value="A heartwarming children's book illustration in a watercolor and colored pencil style, showing [SUJET] in [DECOR].">Aquarelle Conte</option>
+                        <option value="A magical bioluminescent scene featuring [SUJET] glowing with soft neon light in [DECOR].">Féérie Lumineuse</option>
+                        <option value="An adorable, ultra-fluffy plush toy version of [SUJET] in [DECOR]. Very soft fur texture.">Peluche Douceur</option>
+                    </optgroup>
+                    <optgroup label="🌈 Matières">
+                        <option value="A whimsical world made entirely of candy, showing [SUJET] in [DECOR] made of gingerbread.">Monde de Bonbons</option>
+                        <option value="A charming patchwork fabric craft of [SUJET] in [DECOR]. Handmade style.">Patchwork & Couture</option>
+                        <option value="An elegant [SUJET] made of intricate seashell and pearl mosaic in [DECOR].">Nacre & Perles</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div>
+                <label>Où ?</label>
+                <select id="decor" class="w-full p-3 rounded-xl">
+                    <option value="an enchanted forest with glowing mushrooms">Forêt Enchantée</option>
+                    <option value="a magical garden with giant flowers">Jardin Géant</option>
+                    <option value="a castle made of clouds and rainbows">Nuage Arc-en-ciel</option>
+                    <option value="a cozy bedroom with soft pillows">Chambre douillette</option>
+                </select>
+            </div>
+
+            <div class="bg-pink-50 p-3 rounded-2xl space-y-3">
+                <label class="mb-0 text-pink-800">✍️ Votre Message</label>
+                <input type="text" id="userText" placeholder="Texte (Optionnel)..." class="w-full p-2 rounded-lg">
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="textStyle" class="text-xs p-2 rounded-lg">
+                        <option value="vibrant glittering gold text">✨ Paillettes</option>
+                        <option value="clean elegant white text">⚪ Blanc Pur</option>
+                        <option value="fine charcoal ink signature">🌑 Encre Fine</option>
+                    </select>
+                    <select id="textPos" class="text-xs p-2 rounded-lg">
+                        <option value="in the bottom right corner">Bas Droit</option>
+                        <option value="centered at the bottom">Bas Milieu</option>
+                        <option value="at the very top">En Haut</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="magicBtn" onclick="generate()" class="w-full py-5 text-white font-black text-xl rounded-2xl shadow-lg active:scale-95 transition">
+                ✨ CRÉER LA MAGIE ✨
+            </button>
+
+            <div id="result" class="hidden animate-pulse">
+                <div class="p-4 bg-gray-900 text-pink-200 rounded-2xl">
+                    <p class="text-[10px] uppercase font-bold text-gray-400 mb-2 text-center italic">Appuyez sur le bouton ci-dessous pour copier</p>
+                    <textarea id="output" class="hidden"></textarea>
+                    <button onclick="copy()" class="w-full py-4 bg-white text-pink-600 rounded-xl font-black text-lg shadow-inner">
+                        📋 COPIER LA FORMULE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generate() {
+            const subject = document.getElementById('subject').value;
+            const decor = document.getElementById('decor').value;
+            const master = document.getElementById('masterStyle').value;
+            const userText = document.getElementById('userText').value;
+            const textStyle = document.getElementById('textStyle').value;
+            const textPos = document.getElementById('textPos').value;
+
+            let prompt = master.replace('[SUJET]', subject).replace('[DECOR]', decor);
+
+            if (userText.trim() !== "") {
+                prompt += `, with the text '${userText.trim()}' ${textPos}, styled in ${textStyle}`;
+            }
+
+            prompt += `. [1:1], highly detailed, whimsical, 8k.`;
+
+            document.getElementById('output').value = prompt;
+            document.getElementById('result').classList.remove('hidden');
+        }
+
+        function copy() {
+            const copyText = document.getElementById("output");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("🪄 Formule copiée ! Collez-la maintenant dans l'IA.");
+        }
+    </script>
+</body>
+</html>
