@@ -22,9 +22,34 @@
         select, input, textarea { background-color: #f8fafc; border: 1px solid #cbd5e1; color: #334155; }
         select:focus, input:focus, textarea:focus { border-color: #a855f7; ring: 2px solid #d8b4fe; }
         optgroup { color: #6d28d9; font-weight: bold; }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body class="p-4 bg-gray-100 text-gray-800">
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
     <div class="container mx-auto bg-white p-6 rounded-xl shadow-lg">
         <h1 class="text-4xl font-extrabold text-center mb-6">✨ L'Atelier des Rêves ✨</h1>
         <p class="text-center text-gray-600 mb-8 text-lg">Générateur de portraits oniriques, féériques et pleins de douceur.</p>
@@ -755,4 +780,5 @@ Que la magie opère ! ✨
         }
     </script>
 </body>
+
 </html>
