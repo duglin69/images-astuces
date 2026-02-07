@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atelier Portrait - Générateur Artistique v1.0</title>
+    <title>Générateur femmes - hommes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cormorant+Garamond:wght@300;400;600&display=swap');
@@ -20,12 +20,37 @@
         .weight-input { width: 60px; text-align: center; font-weight: bold; color: #6b2737 !important; }
         .notice-box { background: rgba(212, 165, 116, 0.1); border-left: 4px solid #d4a574; }
         .ornament { width: 60px; height: 3px; background: linear-gradient(90deg, transparent, #d4a574, transparent); margin: 1rem auto; }
+  .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body class="p-4 md:p-8">
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
     <div class="max-w-7xl mx-auto">
         <header class="text-center mb-8">
-            <h1 class="text-5xl md:text-7xl mb-4 uppercase tracking-widest">ATELIER PORTRAIT</h1>
+            <h1 class="text-5xl md:text-7xl mb-4 uppercase tracking-widest">GÉNÉRATEUR FEMMES - HOMMES</h1>
             <div class="ornament"></div>
             <p class="text-gray-400 italic">"Célébrer la Féminité & la Masculinité dans toute leur Diversité"</p>
         </header>
@@ -812,4 +837,5 @@ Bonne création !
         }
     </script>
 </body>
+
 </html>
