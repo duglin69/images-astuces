@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragons Steampunk - Collection de Prompts</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-main: #c5c6c7;
+            --accent-cyan: #66fcf1;
+            --accent-cyan-dim: #45a29e;
+            --highlight-orange: #ff8c42; /* Pour le contraste bleu/orangé */
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            color: var(--accent-cyan);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(102, 252, 241, 0.3);
+        }
+
+        p.subtitle {
+            color: var(--accent-cyan-dim);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Structure principale */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: var(--text-main);
+            border-bottom: 2px solid var(--accent-cyan-dim);
+            padding-bottom: 10px;
+            margin: 50px 0 30px 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title span {
+            font-size: 0.9em;
+            background: var(--accent-cyan-dim);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Grille des cartes */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        /* Carte Prompt */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(102, 252, 241, 0.1);
+            border-color: var(--accent-cyan-dim);
+        }
+
+        /* Bandeau décoratif Steampunk */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan-dim), var(--accent-cyan));
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .card-content {
+            font-size: 0.95rem;
+            color: #bdc3c7;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            white-space: pre-wrap; /* Conserve les sauts de ligne */
+            font-family: 'Consolas', 'Monaco', monospace; /* Style code */
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 2px solid var(--accent-cyan-dim);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Scrollbar custom pour le contenu */
+        .card-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .card-content::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan-dim);
+            border-radius: 3px;
+        }
+
+        /* Tags spéciaux */
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #888;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tag.blue-orange {
+            color: var(--highlight-orange);
+            border-color: var(--highlight-orange);
+            background: rgba(255, 140, 66, 0.1);
+        }
+
+        /* Bouton Copier */
+        .btn-copy {
+            background: linear-gradient(135deg, var(--accent-cyan-dim), var(--accent-cyan));
+            color: #0b0c10;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: filter 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-copy:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-copy:active {
+            transform: scale(0.98);
+        }
+
+        /* Feedback Toast */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--accent-cyan);
+            color: #000;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* Pied de page */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Dragons Steampunk</h1>
+        <p class="subtitle">Collection de prompts bio-mécaniques haute résolution (Icy Blue & Octane Render 8K)</p>
+    </header>
+
+<!-- DÉBUT DU BLOC À AJOUTER (Juste après </header> et avant <main>) -->
+
+<div style="max-width: 800px; margin: 0 auto 50px auto; padding: 0 20px;">
+    <div style="
+        background: linear-gradient(145deg, #1f2833, #151b22);
+        border: 1px solid var(--accent-cyan-dim);
+        border-radius: 12px;
+        padding: 25px;
+        position: relative;
+        box-shadow: 0 0 20px rgba(102, 252, 241, 0.1);
+    ">
+        <!-- Bandeau décoratif spécial -->
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ff8c42, var(--accent-cyan));
+        "></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <span style="color: #ff8c42; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                ⚙️ Config Universelle
+            </span>
+            <div style="display: flex; gap: 5px;">
+                <span class="tag" style="font-size: 0.7rem; background: rgba(255, 140, 66, 0.1); border-color: #ff8c42; color: #ff8c42;">Obligatoire</span>
+                <span class="tag" style="font-size: 0.7rem; background: rgba(102, 252, 241, 0.1); border-color: var(--accent-cyan); color: var(--accent-cyan);">Anti-Artéfacts</span>
+            </div>
+        </div>
+
+        <h2 style="color: #fff; font-size: 1.4rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+            Prompt Négatif Universel
+        </h2>
+
+        <div id="negative-text" class="card-content" style="
+            font-size: 0.95rem; 
+            color: #ff8c42; 
+            margin-bottom: 20px;
+            white-space: pre-wrap; 
+            font-family: 'Consolas', 'Monaco', monospace; 
+            background: rgba(0, 0, 0, 0.4); 
+            padding: 15px; 
+            border-radius: 6px; 
+            border-left: 3px solid #ff8c42;
+            max-height: 150px;
+            overflow-y: auto;
+        ">text, watermark, signature, low quality, worst quality, bad anatomy, bad hands, missing fingers, extra digits, blurry, out of focus, jpeg artifacts, cartoon, 2d, illustration, sketch, anime, flat lighting, plastic, organic flesh, warm colors, oversaturated.</div>
+
+        <button class="btn-copy" onclick="copyNegative()" style="
+            background: linear-gradient(135deg, #ff8c42, #d66b1e);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: filter 0.2s;
+        ">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copier le Prompt Négatif
+        </button>
+    </div>
+</div>
+
+<script>
+    function copyNegative() {
+        const text = document.getElementById('negative-text').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Prompt Négatif copié !'); // Utilise la fonction toast existante
+        }).catch(err => {
+            console.error('Erreur', err);
+            alert('Erreur lors de la copie.');
+        });
+    }
+</script>
+
+<!-- FIN DU BLOC À AJOUTER (Juste avant <main>) -->
+
+
+
+    <main id="prompt-container">
+        <!-- Le contenu sera injecté ici par JavaScript -->
+    </main>
+
+    <footer>
+        <p>Généré pour la création artistique IA • Rendu Octane 8K</p>
+    </footer>
+
+    <!-- Toast de notification -->
+    <div id="toast" class="toast">Prompt copié dans le presse-papier !</div>
+
+    <script>
+        // Données structurées basées sur le document fourni
+        const promptsData = [
+            // SECTION 1: PROMPTS ORIGINAUX
+            {
+                id: 1,
+                title: "Dragon au-dessus de Paris",
+                category: "Originaux",
+                tags: ["Steampunk", "Nocturne", "Paris"],
+                text: `Un immense dragon bio-mécanique dérive au-dessus de Paris, ses plaques d’écailles mêlant acier brossé, cuivre patiné et segments translucides parcourus de lumière icy blue pulsante. 
+Son corps est constellé de pistons miniatures, de câbles gainés de tissus sombres et de turbines intégrées entre les côtes, exhalant des panaches de vapeur froide qui se dissipent en cristaux de givre dans l’air nocturne. 
+Ses ailes sont des voiles articulées, mélange de membrane organique gélifiée bleutée et d’armature en laiton riveté, traversées par des conduits lumineux qui tracent un réseau de néons cyan dans le ciel. 
+La scène se déroule en fin de nuit hivernale, vue en contre-plongée depuis le pont Alexandre III, avec la Tour Eiffel et les toits haussmanniens noyés dans une brume glacée teintée de lumière bleue. 
+Un éclairage cinématographique de type Octane Render 8K met en valeur les reflets spectrals sur le métal, avec un key light bleu électrique venant de la droite, un rim light blanc froid soulignant la silhouette du dragon, et les lueurs orange chaudes des lampadaires parisiens créant un contraste bleu/orange dramatique. 
+L’ambiance est silencieuse, suspendue, comme si le temps était figé au moment où le dragon incline sa tête bardée d’optiques mécaniques et de lentilles givrées vers la ville endormie, le tout dans un rendu hyper-réaliste, path-traced, qualité 8K, rendu Octane.`
+            },
+            {
+                id: 2,
+                title: "Dragon au-dessus de New York",
+                category: "Originaux",
+                tags: ["Steampunk", "Nocturne", "NY"],
+                text: `Un dragon gigantesque, hybride de titan mécanique et de créature abyssale, survole Manhattan de nuit, son exosquelette composé de plaques de titane sombre, de céramiques glacées et de sections vitrifiées parcourues de vaguelettes de lumière icy blue. 
+Son cou est traversé par une colonne vertébrale apparente faite de segments articulés, où l’on distingue des pistons hydrauliques, des engrenages miniatures et un fluide luminescent bleu cyan circulant dans des tubes transparents. 
+Les ailes du dragon évoquent des ailes d’avion rétro-futuriste : nervures métalliques rivetées, volets articulés, panneaux semi-transparents givrés sur lesquels se reflètent les lumières de Times Square comme sur une glace fissurée. 
+Vue aérienne en légère plongée, la caméra suit le dragon dans un travelling latéral, révélant les gratte-ciel plongés dans une atmosphère de nuit froide, où une lumière bleue artificielle domine, comme un éclairage urbain poussé à l’extrême. 
+Un key light bleu glacé vient du dessus, simulant une lune intensifiée, tandis que des sources secondaires orange et magenta remontent depuis les écrans géants et les fenêtres, créant un contraste chromatique fort sur les surfaces métalliques et les zones organiques du dragon. 
+De fines particules de neige et de pollution gelée flottent dans l’air, captant les reflets spéculaires façon Octane Render, et soulignant chaque bord, chaque rivet, chaque plaque de métal, pour un rendu hyper-réaliste 8K, ultra détaillé, avec profondeur de champ cinématographique.`
+            },
+            {
+                id: 3,
+                title: "Dragon au-dessus des cratères lunaires",
+                category: "Originaux",
+                tags: ["Steampunk", "Espace", "Lune"],
+                text: `Au-dessus d’une vaste plaine lunaire criblée de cratères, un dragon bio-mécanique flotte en silence, sans atmosphère, son corps composé d’anneaux d’alliage clair et de segments organiques translucides parcourus de veines de lumière icy blue. 
+Ses articulations sont protégées par des carters de laiton poli, reliés par des faisceaux de câbles isolés et de conduites cryogéniques qui dégagent un givre cristallin autour de chaque jointure. 
+Les ailes, plus rigides, ressemblent à de larges panneaux solaires steampunk : cadres métalliques, panneaux cristallins bleu profond, lignes de circuits et de micro-turbines qui expulsent de fines traînées de particules gelées dans le vide. 
+La scène est éclairée par un soleil brutal, dur, venant de la droite, projetant des ombres très nettes sur le relief lunaire et sur le dragon, tandis que la face opposée de la créature est rehaussée d’un léger fill light bleuté réfléchi par la surface grise de la Lune. 
+L’angle de vue est en forte contre-plongée depuis le bord d’un cratère, le dragon occupant le ciel noir d’encre, avec en arrière-plan la Terre suspendue, minuscule, dont provient un subtil halo bleuté qui renforce l’esthétique icy blue. 
+Le rendu Octane en 8K met en évidence les micro-détails : micro-rayures dans le métal, grains de poussière lunaire collés aux plaques, givre accumulé sur les conduits, et la réfraction interne de la lumière dans les parties semi-organiques du dragon, pour un hyper-réalisme quasi photographique.`
+            },
+            {
+                id: 4,
+                title: "Dragon au-dessus du Titanic",
+                category: "Originaux",
+                tags: ["Steampunk", "Abyssal", "Titanic"],
+                text: `Un dragon steampunk bio-mécanique émerge des profondeurs, planant juste au-dessus de l’épave du Titanic, dans les ténèbres de l’Atlantique Nord. 
+Sa carapace est faite de plaques corrodées et de métal poli, alternant cuivre oxydé, acier bleuté et incrustations de verre givré, à l’intérieur desquels circulent des pulsations de lumière icy blue rappelant des organismes bioluminescents. 
+Des hublots ronds, des manomètres et de longues tubulures parcourent son torse, expulsant des volutes de bulles et de vapeur froide, créant un nuage fantomatique qui se mêle à la poussière marine en suspension. 
+Les ailes évoquent des voiles de bathyscaphe déchirées, renforcées par une armature métallique articulée, avec des bords dentelés qui dispersent la lumière bleue en rayons diffus, illuminant des fragments de coque, des câbles et des débris reposant sur le fond marin. 
+L’angle de vue est une plongée oblique, comme celle d’un robot sous-marin, avec un faisceau de projecteur principal bleu glacé venant de la caméra, et plusieurs petites sources ponctuelles icy blue intégrées au dragon, découpant sa silhouette sur l’obscurité abyssale. 
+Le rendu Octane 8K accentue les particules en suspension, les micro-bulles et la texture rugueuse de la coque du Titanic, tandis que les reflets spéculaires sur les plaques métalliques du dragon créent un contraste saisissant entre la décrépitude du navire et la précision clinique de la créature hyper-réaliste.`
+            },
+            {
+                id: 5,
+                title: "Dragon au-dessus des pyramides mayas",
+                category: "Originaux",
+                tags: ["Steampunk", "Aube", "Jungle"],
+                text: `Un dragon massif, fusion de jaguar mécanique et de serpent à plumes, survole lentement un site de pyramides mayas perdu dans la jungle, à l’aube.
+Son corps est constitué de segments d’obsidienne polie, de bronze gravé de motifs géométriques et de plaques organiques givrées, dans lesquelles scintillent des circuits lumineux icy blue formant des glyphes animés. 
+Des engrenages apparents, des pistons et des chaînes ornementales ornent son cou et sa queue, tandis que des buses minuscules projettent une fine brume glacée qui descend vers les marches de la pyramide, créant un voile de vapeur bleutée au ras de la végétation. 
+Les ailes, larges et majestueuses, combinent structure métallique rivetée et plumes translucides bleu glacier, chaque plume agissant comme un panneau lumineux spéculaire, reflétant la lumière rasante du soleil levant en éclats cyan. 
+L’angle de vue est une contre-plongée depuis la base d’une pyramide, montrant les marches envahies de racines, la canopée saturée de brume matinale et le dragon qui passe au-dessus, légèrement décentré, dans un ciel encore sombre teinté de bleu profond. 
+Un key light chaud, orangé, vient de l’horizon, tandis qu’un fill light volumétrique icy blue émane du dragon lui-même, générant un contraste chromatique fort sur la pierre humide et la végétation, avec un rendu Octane hyper-réaliste en 8K, textures ultra détaillées et profondeur atmosphérique marquée.`
+            },
+            
+            // SECTION 2: VARIATIONS URBAINES
+            {
+                id: 6,
+                title: "Dragon au-dessus de Tokyo (Nuit Pluvieuse)",
+                category: "Villes",
+                tags: ["Steampunk", "Cyberpunk", "Pluie"],
+                text: `Un colossal dragon steampunk bio-mécanique domine le ciel nocturne de Tokyo, son corps armé de plaques d’acier riveté, de tuyauteries en cuivre givré et de membranes organiques translucides pulsant d’une lumière icy blue intérieure. 
+Ses ailes déployées évoquent des dirigeables victoriens renforcés de câbles tendus et de voiles renforcées par des baleines métalliques, d’où s’échappent des jets de vapeur bleue qui se mêlent à la pluie torrentielle. 
+La tête est ornée de lunettes protectrices, de manomètres et de cornes torsadées intégrant des antennes, avec des évents nasaux expulsant un brouillard cryogénique. 
+Vue en contre-plongée depuis Shibuya Crossing, sous une averse incessante, avec néons roses et bleus des enseignes réfléchis sur l’asphalte mouillé et les tours futuristes noyées dans la brume. 
+Éclairage Octane : key light bleu électrique des néons descendant de face, rim light blanc froid du dragon soulignant ses contours, et accents chauds orange des vitrines créant un contraste vibrant sur les surfaces humides et métalliques. 
+Ambiance cyberpunk glaciale, hyper-réaliste 8K, avec gouttes de pluie perlant sur les écailles, reflets spéculaires intenses et profondeur de champ capturant la foule anonyme en contrebas, rendu Octane path-traced.`
+            },
+            {
+                id: 7,
+                title: "Dragon au-dessus de Tokyo (Aube Brumeuse)",
+                category: "Villes",
+                tags: ["Steampunk", "Aube", "Brume"],
+                text: `Un dragon titanesque steampunk, hybride mécanique et organique, plane au-dessus de Tokyo à l’aube, ses flancs couverts de carénages en laiton patiné, de pistons hydrauliques et de plaques cutanées bleutées givré traversées de fluides lumineux icy blue. 
+Les ailes sont des structures complexes de tringles articulées, de toiles huilées et de sections biomécaniques veinées de cyan, agitant doucement l’air chargé de pollution matinale. 
+Son dos porte des tourelles miniatures avec cheminées fumantes et optiques rotatives, exhalant une vapeur fine qui gèle en cristaux sur les bords. 
+Angle en travelling latéral aérien, surplombant la Tokyo Tower et les gratte-ciel enveloppés d’un brouillard épais, avec le soleil levant perçant faiblement l’horizon. 
+Éclairage : lumière douce orangée de l’aube en fill light de gauche, dominante icy blue du dragon illuminant les structures en dessous, et ombres nettes accentuant les rivets et textures rouillées. 
+Rendu hyper-réaliste Octane 8K, atmosphère mystique et suspendue, avec particules de brume volumétrique, reflets diffus sur les métaux et détails microscopiques sur la peau du dragon.`
+            },
+            {
+                id: 8,
+                title: "Dragon au-dessus de Rome (Crépuscule Antique)",
+                category: "Villes",
+                tags: ["Steampunk", "Crépuscule", "Historique"],
+                text: `Un dragon imposant steampunk bio-mécanique survole Rome au crépuscule, son squelette externe mêlant os métalliques ciselés, engrenages interconnectés et écailles organiques semi-translucides irriguées de lueurs icy blue spectrales. 
+Les ailes ressemblent à des bannières déployées, renforcées par des longerons en fer forgé et des membranes gélifiées bleues, frangées de chaînes tintinnabulantes. 
+La gueule est équipée de mandibules articulées, de tuyères à vapeur et de crocs en acier trempé, avec des yeux composés de lentilles grossissantes. 
+Vue en plongée oblique depuis le Colisée, illuminant le Forum Romain et les coupoles du Vatican dans une lumière rosée du soir, avec une brise légère soulevant la poussière antique. 
+Éclairage Octane : key light chaude du soleil couchant de droite, contrebalancée par un glow icy blue émanant du dragon, créant des halos sur les ruines patinées et des reflets cyan sur les dômes. 
+Ambiance intemporelle et mythique, hyper-réaliste 8K, avec textures granuleuses de pierre millénaire, vapeur condensée en volutes et rendu path-traced capturant chaque détail mécanique.`
+            },
+            {
+                id: 9,
+                title: "Dragon au-dessus de Rome (Nuit Orageuse)",
+                category: "Villes",
+                tags: ["Steampunk", "Orage", "Drame"],
+                text: `Un dragon colossal, fusion steampunk de machine infernale et bête primordiale, domine Rome lors d’un orage nocturne, ses flancs bardés de boilers fumants, de valves cryogéniques et de plaques dermiques bleutées pulsant icy blue sous la pluie battante. 
+Ses ailes massives intègrent des hélices rétractables, des câbles gainés et des sections cutanées givrées qui clapent comme des voiles sous les bourrasques. 
+Le torse révèle une mécanique interne visible : pistons battants, rouages huilés et conduits lumineux diffusant une aura cyan dans l’obscurité. 
+Angle en contre-plongée depuis la Piazza Navona, éclairs zébrant le ciel au-dessus du Panthéon et des fontaines, avec trombes d’eau cascadant sur les pavés. 
+Éclairage : flashes blancs des éclairs en rim light, dominante icy blue du dragon comme phare dans la tempête, et reflets mouillés chauds des réverbères romains. 
+Rendu Octane hyper-réaliste 8K, atmosphère chaotique et électrisante, avec gouttelettes survoltant les surfaces, subsurface scattering sur les parties organiques et détails ultra-précis des rivets corrodés.`
+            },
+            {
+                id: 10,
+                title: "Dragon au-dessus de Londres (Brouillard Victorien)",
+                category: "Villes",
+                tags: ["Steampunk", "Brouillard", "Gothique"],
+                text: `Un dragon steampunk monumental, croisement de golem mécanique et reptile ancestral, émerge du brouillard londonien, son exosquelette composé de fer puddlé riveté, de verre givré et de tissus biomécaniques traversés de filaments icy blue luminescents. 
+Les ailes sont des ensembles d’ailes battantes renforcées par des tiges télescopiques et des toiles imperméables, dégageant une vapeur dense qui épaissit le smog. 
+Sa crête dorsale aligne des cheminées crachotantes, des jauges de pression et des évents qui libèrent des panaches bleutés givrés. 
+Vue aérienne en travelling descendant sur Big Ben et le Parlement, enveloppés d’un brouillard épais à l’heure crépusculaire, avec lampadaires à gaz perçant la brume. 
+Éclairage Octane : lumière diffuse jaune des réverbères en fill, glow icy blue intense du dragon découpant les contours, et ombres douces amplifiant le mystère victorien. 
+Ambiance gothique et oppressante, hyper-réaliste 8K, avec particules de brouillard volumétriques, condensation sur les métaux et rendu path-traced révélant les patines du temps sur la peau et les bâtiments.`
+            },
+
+            // SECTION 3: NOCTURNES (BLEU/ORANGE)
+            {
+                id: 11,
+                title: "Dragon nocturne au-dessus de Paris",
+                category: "Nocturnes Contrastées",
+                tags: ["Steampunk", "Nuit", "Bleu/Orange", "Paris"],
+                text: `Un dragon steampunk bio-mécanique colossal plane au-dessus de Paris de nuit, ses plaques d’acier bleuté et ses tuyauteries givrés pulsant d’une lumière icy blue intérieure qui irradie comme un phare spectral. 
+Ses ailes déployées, armature rivetée et membranes translucides cyan, captent et diffusent les reflets des monuments en contrebas. 
+Vue en contre-plongée depuis la Seine près de Notre-Dame, avec la Tour Eiffel scintillant et les toits sombres enveloppés d’une brume légère. 
+Éclairage Octane contrasté bleu-orangé : key light icy blue intense émanant du dragon de face, rim light orangé chaud des lampadaires et fenêtres haussmanniennes soulignant les contours métalliques, créant un halage chromatique dramatique sur les surfaces humides. 
+Ambiance mystique et figée, hyper-réaliste 8K, avec vapeurs bleues se mêlant à la pollution urbaine, reflets spéculaires orange sur les écailles et profondeur de champ capturant les ombres portées nettes.`
+            },
+            {
+                id: 12,
+                title: "Dragon nocturne au-dessus de New York",
+                category: "Nocturnes Contrastées",
+                tags: ["Steampunk", "Nuit", "Bleu/Orange", "NY"],
+                text: `Un titan dragon steampunk, exosquelette de titane givré et pistons biomécaniques, survole Manhattan de nuit profonde, ses veines icy blue illuminant le ciel comme des néons vivants. 
+Ailes massives aux nervures mécaniques et panneaux semi-organiques bleus, agitant un voile de brume urbaine. 
+Angle aérien latéral sur Midtown, gratte-ciel hérissés de lumières et Empire State Building dominant l’horizon sombre. 
+Éclairage bleu-orangé cinématographique Octane : dominante icy blue froide du dragon en fill light volumétrique, key lights orangés intenses des publicités et fenêtres hautes créant des flares et reflets chauds sur les carénages, contraste pop art accentuant les textures rouillées. 
+Atmosphère cyber-victorienne tendue, rendu hyper-réaliste 8K, avec particules de pollution glowy, subsurface scattering bleu sur la peau et ombres dures orangées modelant la silhouette.`
+            },
+            {
+                id: 13,
+                title: "Dragon nocturne au-dessus de Tokyo",
+                category: "Nocturnes Contrastées",
+                tags: ["Steampunk", "Nuit", "Bleu/Orange", "Tokyo"],
+                text: `Un dragon imposant steampunk bio-mécanique domine Tokyo nocturne, corps bardé de cuivre patiné, valves cryogéniques et sections dermiques icy blue luminescentes pulsant en rythme. 
+Ailes comme dirigeables articulés, toiles huilées et conduits bleus diffusant une aura cyan dans la pluie fine. 
+Contre-plongée depuis Shinjuku, néons criards et tours infinies noyées dans une averse reflétant les couleurs vives. 
+Éclairage Octane bleu-orangé vibrant : glow icy blue principal du dragon descendant en god rays pluvieux, contrepoints orangés-magenta des enseignes saturées générant des reflets irisés sur les plaques mouillées et rivets.
+Ambiance futuriste glaciale, hyper-réaliste 8K, gouttes cascadant sur les métaux, bloom bleu-orangé intense et détails microscopiques des circuits internes.`
+            },
+            {
+                id: 14,
+                title: "Dragon nocturne au-dessus de Rome",
+                category: "Nocturnes Contrastées",
+                tags: ["Steampunk", "Nuit", "Bleu/Orange", "Rome"],
+                text: `Un dragon steampunk mythique, fusion d’os forgés et engrenages organiques, émerge au-dessus de Rome de nuit, ses écailles bleutées givrés et optiques icy blue perçant l’obscurité comme des phares antiques. 
+Ailes frangées de chaînes, membranes gélifiées cyan clapant doucement dans la brise nocturne. 
+Plongée oblique sur le Vatican et la Fontaine de Trevi, coupoles et fontaines illuminées scintillant sous la lune. 
+Éclairage contrasté bleu-orangé Octane : lumière icy blue spectrale du dragon en rim light enveloppante, sources orangées chaudes des projecteurs historiques et réverbères créant des halos dorés sur les pierres patinées et les contours mécaniques. 
+Atmosphère onirique et éternelle, rendu hyper-réaliste 8K, brume légère captant les teintes complémentaires, reflets diffus et textures granuleuses des ruines.`
+            },
+            {
+                id: 15,
+                title: "Dragon nocturne au-dessus de Londres",
+                category: "Nocturnes Contrastées",
+                tags: ["Steampunk", "Nuit", "Bleu/Orange", "Londres"],
+                text: `Un golem-dragon steampunk colossal hante le ciel nocturne de Londres, châssis de fer riveté, boilers fumants et veines biomécaniques icy blue irradiant une lueur fantomatique. 
+Ailes déployées en voilure complexe, longerons télescopiques et panneaux givrés bleus dispersant la vapeur dans le smog. 
+Vue aérienne descendante sur Tower Bridge et la City, ponts et flèches gothiques enveloppés de brouillard dense. 
+Éclairage Octane bleu-orangé gothique : dominante icy blue froide du dragon en key light volumétrique traversant le fog, accents orangés des lampes à gaz et fenêtres victoriennes produisant des flares chauds et reflets cuivrés sur les surfaces oxydées. 
+Ambiance victorienne oppressante, hyper-réaliste 8K, particules de brouillard glowy, condensation givré et profondeur atmosphérique marquée soulignant le contraste chromatique saisissant.`
+            },
+
+            // SECTION 4: NATURE & LIEUX (BLEU/ORANGE + PUR ICY)
+            {
+                id: 16,
+                title: "Dragon au Grand Canyon (Bleu-Orangé)",
+                category: "Nature & Lieux",
+                tags: ["Nature", "Bleu/Orange", "Canyon"],
+                text: `Un dragon steampunk titanesque bio-mécanique survole le Grand Canyon de nuit, son exosquelette de bronze riveté et plaques givrés pulsant d’une lumière icy blue qui découpe les gorges sombres. 
+Ailes vastes aux armatures télescopiques et membranes cyan translucides, agitant des tourbillons de poussière désertique. 
+Contre-plongée depuis le bord sud, falaises rouges plongeant dans l’abîme étoilé, avec la Voie lactée en arrière-plan.
+Éclairage Octane bleu-orangé : key light icy blue spectrale du dragon illuminant les strates rocheuses, rim lights orangés chauds de feux de camp lointains et reflets lunaires créant un contraste dramatique sur les textures érodées. 
+Ambiance épique et solitaire, hyper-réaliste 8K, avec ombres portées nettes, subsurface scattering bleu et détails granuleux des parois.`
+            },
+            {
+                id: 17,
+                title: "Dragon à l'Everest (Bleu-Orangé)",
+                category: "Nature & Lieux",
+                tags: ["Nature", "Bleu/Orange", "Montagne"],
+                text: `Un colosse dragon steampunk, valves cryogéniques et os mécaniques bleutés, plane au-dessus du sommet de l’Everest de nuit, son glow icy blue perçant les tempêtes de neige. 
+Ailes renforcées de chaînes gelées et panneaux biomécaniques cyan, battant contre les vents hurlants. 
+Vue latérale aérienne, flancs enneigés et base du pic noyés dans les nuages, étoiles polaires brillantes. 
+Éclairage bleu-orangé : dominante icy blue du dragon en fill volumétrique sur la glace, accents orangés des tentes d’expédition et lampes au loin réchauffant les contours givrés. 
+Atmosphère himalayenne hostile, rendu 8K avec cristaux de neige glowy et reflets chauds sur les rivets.`
+            },
+            {
+                id: 18,
+                title: "Dragon au Mont Rushmore (Bleu-Orangé)",
+                category: "Nature & Lieux",
+                tags: ["Nature", "Bleu/Orange", "Monument"],
+                text: `Un dragon imposant steampunk bio-mécanique domine le Mont Rushmore nocturne, carapace patinée et conduits icy blue illuminant les visages sculptés des présidents. 
+Ailes déployées en voilure rivetée, membranes bleues captant la lune. 
+Plongée frontale sur les effigies de Washington à Roosevelt, pinacles rocheux sombres. 
+Éclairage Octane : icy blue froid du dragon projetant des ombres bleues sur la pierre, sources orangées de projecteurs commémoratifs et feux créant halos contrastés. 
+Ambiance patriotique fantomatique, hyper-réaliste 8K avec textures granitiques détaillées.`
+            },
+            {
+                id: 19,
+                title: "Dragon à New York (Bleu-Orangé)",
+                category: "Nature & Lieux",
+                tags: ["Ville", "Bleu/Orange", "NY"],
+                text: `Un titan dragon steampunk, pistons givrés et veines cyan, hante Manhattan nocturne, son éclat icy blue rivalisant avec les skylines. 
+Ailes mécaniques huilées diffusant vapeur bleue dans le vent urbain. 
+Travelling latéral sur One World Trade et Brooklyn Bridge illuminés. 
+Éclairage bleu-orangé : glow icy blue dominant en god rays, néons et fenêtres orangés générant reflets pop sur les métaux. 
+Cyber-victorien tendu, 8K avec pollution glowy.`
+            },
+            {
+                id: 20,
+                title: "Dragon à l'Etna (Bleu-Orangé)",
+                category: "Nature & Lieux",
+                tags: ["Nature", "Bleu/Orange", "Volcan"],
+                text: `Un dragon volcanique steampunk bio-mécanique survole l’Etna de nuit, boilers fumants et plaques icy blue contrastant la lave. 
+Ailes aux tuyères expulsant vapeur cyan sur les pentes. 
+Contre-plongée sur cratère fumant, coulées rougeoyantes. 
+Éclairage : icy blue du dragon contre lave orangée explosive, flares intenses Octane. 
+Apocalyptique, 8K avec cendres et reflets.`
+            },
+            
+            // SECTION 5: PUR ICY BLUE (SANS ORANGE)
+            {
+                id: 21,
+                title: "Dragon détaillé au Grand Canyon (Icy Blue)",
+                category: "Pur Icy Blue",
+                tags: ["Nature", "Icy Blue", "Canyon"],
+                text: `Un dragon steampunk bio-mécanique d'une envergure colossale domine le Grand Canyon sous un ciel nocturne étoilé, son corps massif composé de plaques d'armure en acier bleuté martelé, reliées par des rivets massifs et des joints articulés huilés, tandis que des sections dermiques semi-translucides, veinées d'un réseau luminescent icy blue, pulsent comme un cœur mécanique vivant, diffusant une lueur cyan qui projette des ombres spectrales sur les strates rocheuses millénaires en contrebas. 
+Son cou serpentin est orné d'une crinière de tuyaux torsadés et de manomètres à cadran givré, avec des évents nasaux expulsant des volutes de vapeur cryogénique qui se cristallisent instantanément en flocons bleus dans l'air sec du désert, et ses yeux sont des lentilles composées rotatives, cerclées de rouages fins, captant la lumière comme des phares victoriens. 
+Les ailes, déployées sur plus de 100 mètres, forment une structure hybride de longerons télescopiques en laiton poli, de toiles renforcées par des baleines biomécaniques et de panneaux solaires translucides bleus givrés, agitant doucement des courants ascendants qui soulèvent des tourbillons de sable fin luminescent sous l'effet de la lumière bleue. 
+La scène est capturée en contre-plongée dynamique depuis le bord du South Rim, près du point de vue de Mather Point, où les falaises verticales du canyon plongent sur 1,8 km dans l'abîme, les couches sédimentaires rouges et ocre révélant des millions d'années d'érosion, avec la Colorado River invisible mais suggérée par un éclat lointain, et un ciel noir parsemé de la Voie lactée formant un dôme étoilé infini. 
+L'éclairage Octane Render 8K oppose un key light icy blue intense et volumétrique émanant directement des veines internes du dragon, baignant les parois du canyon d'un halo cyan froid et spectral, créant une atmosphère d'une solitude épique et intemporelle, comme si le dragon était un gardien ancestral éveillé dans le silence absolu de la nuit désertique, rendu hyper-réaliste path-traced en 8K.`
+            },
+            {
+                id: 22,
+                title: "Dragon détaillé à l'Everest (Icy Blue)",
+                category: "Pur Icy Blue",
+                tags: ["Nature", "Icy Blue", "Montagne"],
+                text: `Ce dragon steampunk bio-mécanique, une bête himalayenne d'une puissance surhumaine, flotte majestueusement au sommet de l'Everest lors d'une nuit claire et venteuse, son torse blindé de carénages en titane cryogénique et de segments cutanés gélifiés traversés par des artères lumineuses icy blue qui pulsent en rythme avec les bourrasques, projetant une aura cyan qui gèle l'air ambiant en cristaux flottants autour de ses contours massifs. 
+Sa tête massive arbore une couronne d'antennes rotatives, de lunettes protectrices embuées de givre et de cornes torsadées intégrant des turbines miniatures, tandis que sa gueule béante révèle des rangées de crocs en acier trempé reliés à des pistons hydrauliques, exhalant une vapeur bleue dense qui se disperse en traînées luminescentes contre les vents à 8 849 mètres d'altitude. 
+Les ailes, vastes comme des planeurs victoriens modifiés, combinent une ossature de longerons articulés en alliage léger, des volets rétractables et des membranes organiques bleues semi-rigides, chaque battement générant des rafales de neige pulvérisée qui scintille sous la lumière bleue, soulignant les rivets et les câbles gainés visibles sous la peau.
+L'angle de vue est un travelling latéral aérien au niveau du sommet, depuis le flanc sud du pic, révélant les parois verticales enneigées abruptes, les camps de base minuscules comme des points lumineux à 5 000 mètres plus bas, et un ciel noir absolu piqueté d'étoiles polaires, avec des nuages bas accrochés aux contreforts comme un tapis cotonneux. 
+L'éclairage Octane 8K place un key light icy blue froid et directionnel provenant des évents du dragon, illuminant les plaques de glace éternelle d'un éclat spectral et projetant des ombres nettes sur les roches saillantes, évoquant une conquête mythique et impitoyable, où le dragon semble défier les éléments dans un silence hurlant, rendu hyper-réaliste en 8K avec subsurface scattering sur la neige et détails microscopiques des fissures glaciaires.`
+            },
+            {
+                id: 23,
+                title: "Dragon détaillé au Mont Rushmore (Icy Blue)",
+                category: "Pur Icy Blue",
+                tags: ["Nature", "Icy Blue", "Monument"],
+                text: `Un dragon steampunk bio-mécanique monumental, gardien sculptural des âges, plane silencieusement au-dessus du Mont Rushmore sous la voûte nocturne des Black Hills, son corps robuste forgé de plaques de fer puddlé oxydé, de joints biomécaniques flexibles et d'un réseau interne de conduits icy blue qui diffusent une lumière cyan pulsante, illuminant les visages colossaux des présidents comme une révélation spectrale. 
+Sa crête dorsale est un arsenal de tourelles miniatures avec cheminées crachotantes, jauges de pression et optiques rotatives, tandis que les griffes avant, munies de serres rétractables et de pistons, percent l'air avec une précision horlogère, et la queue fouette l'air en laissant une traînée de vapeur givrée bleue. 
+Les ailes immenses adoptent une forme de biplan rétro-futuriste, avec des nervures métalliques gainées de cuir huilé, des ailerons articulés et des sections translucides bleues qui agissent comme des vitraux mécaniques, reflétant la lune en éclats cyan sur les pins environnants. 
+La perspective est une plongée frontale puissante depuis le niveau des yeux des sculptures, cadrant les effigies de George Washington, Thomas Jefferson, Theodore Roosevelt et Abraham Lincoln taillées dans le granit rose, avec leurs regards stoïques tournés vers l'est, les forêts sombres du Dakota du Sud s'étendant à perte de vue et un ciel clair révélant la Grande Ourse. 
+L'éclairage Octane 8K crée une aura de mystère : un fill light icy blue enveloppant et spectral émanant des veines du dragon, sculptant les traits présidentiels d'ombres froides et profondes, dans une atmosphère patriotique et hantée, comme si le dragon invoquait les esprits des fondateurs dans la nuit, rendu hyper-réaliste path-traced en 8K mettant en valeur chaque fissure dans la pierre et chaque patine de rouille sur les rivets.`
+            },
+            {
+                id: 24,
+                title: "Dragon détaillé à New York (Icy Blue)",
+                category: "Pur Icy Blue",
+                tags: ["Ville", "Icy Blue", "NY"],
+                text: `Ce dragon steampunk urbain bio-mécanique, un leviathan victorien cybernétique, domine le cœur de New York nocturne depuis les cieux de Manhattan, son châssis massif alternant acier brossé givré, câbles gainés pulsants et plaques organiques icy blue qui irradient une lumière cyan intense, rivalisant avec le chaos lumineux de la ville qui ne dort jamais en contrebas. 
+La tête est un chef-d'œuvre de précision horlogère : mandibules articulées bordées de tuyères à vapeur, yeux multifacettes en verre grossissant et cornes équipées d'antennes radio crachotant des étincelles bleues, exhalant un brouillard cryogénique qui se mêle à la pollution ambiante. 
+Les ailes, déployées en une envergure équivalente à un bloc entier, intègrent des hélices rétractables, des volets aérodynamiques et des membranes biomécaniques bleues translucides, chaque mouvement générant des remous d'air qui font vaciller les drapeaux sur les toits. 
+L'angle est un travelling fluide latéral à mi-hauteur des gratte-ciel, centré sur One World Trade Center et le pont de Brooklyn illuminé, avec Times Square grouillant de néons au loin, les avenues comme des canyons artificiels remplis de taxis jaunes et de foules anonymes, sous un ciel urbain chargé de nuages bas. 
+L'éclairage Octane 8K est dominé par un key light icy blue froid et directionnel du dragon, projetant des faisceaux cyan volumétriques à travers la brume citadine et sculptant les façades de verre, créant un mélange cyberpunk victorien frénétique et menaçant, rendu hyper-réaliste en 8K révélant les micro-détails des publicités LED, les gouttes sur les écailles du dragon et les textures bétonnées des buildings.`
+            },
+            {
+                id: 25,
+                title: "Dragon détaillé à l'Etna (Icy Blue)",
+                category: "Pur Icy Blue",
+                tags: ["Nature", "Icy Blue", "Volcan"],
+                text: `Un dragon steampunk volcanique bio-mécanique, incarnation de la fureur souterraine, tournoie au-dessus du cratère sommitale de l'Etna lors d'une nuit éruptive, son corps blindé de basalte forgé, de pistons incandescents refroidis et de veines icy blue qui pulsent contre la chaleur interne, diffusant une lumière cyan apaisante sur les pentes fumantes de la plus grande montagne d'Italie. 
+Sa gueule béante est équipée de mandibules renforcées par des rails de glissière, de crocs volcaniques et d'évents principaux crachant une vapeur bleue épaisse qui neutralise partiellement les cendres en suspension, tandis que des antennes thermiques sur le dos mesurent les flux magmatiques. 
+Les ailes massives, conçues comme des ailes de pterodactyle industriel, arborent des membrures en alliage résistant à la chaleur, des clapets anti-cendres et des sections gélifiées bleues qui scintillent en absorbant la lueur rougeoyante, battant pour créer des courants d'air qui dispersent les nuages de poussière. 
+La vue en contre-plongée puissante est prise depuis les flancs de la Valle del Bove, encadrant le cratère central bouillonnant avec des coulées de lave orange vif serpentant sur les pentes escarpées, les villages siciliens minuscules au loin et un ciel nocturne chargé de fumée volcanique occultant partiellement les étoiles. 
+L'éclairage Octane 8K dramatise le chaos avec un fill light icy blue spectral et enveloppant du dragon, refroidissant visuellement les zones environnantes d'un voile cyan froid, dans une atmosphère apocalyptique et primordiale, comme une bataille entre glace mécanique et feu tellurique, rendu hyper-réaliste path-traced en 8K exposant chaque bulles de magma, chaque couche de givre sur les tuyaux et chaque fissure basaltique texturée.`
+            }
+        ];
+
+        // Fonction pour créer les cartes HTML
+        function renderPrompts() {
+            const container = document.getElementById('prompt-container');
+            let lastCategory = '';
+
+            promptsData.forEach((item, index) => {
+                // Ajouter un titre de section si la catégorie change
+                if (item.category !== lastCategory) {
+                    const sectionHeader = document.createElement('div');
+                    sectionHeader.className = 'section-title';
+                    sectionHeader.innerHTML = `<span>${item.category}</span> ${item.category}`;
+                    container.appendChild(sectionHeader);
+                    lastCategory = item.category;
+                }
+
+                // Création de la carte
+                const card = document.createElement('article');
+                card.className = 'card';
+                
+                // Gestion des tags spéciaux (ex: bleu/orange)
+                const tagHtml = item.tags.map(tag => {
+                    const isBlueOrange = tag.toLowerCase().includes('bleu/orange') || tag.toLowerCase().includes('bleu-orange');
+                    const extraClass = isBlueOrange ? 'blue-orange' : '';
+                    return `<span class="tag ${extraClass}">${tag}</span>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-number">#${item.id}</span>
+                    </div>
+                    <h2 class="card-title">${item.title}</h2>
+                    <div class="tags">${tagHtml}</div>
+                    <div class="card-content" id="text-${item.id}">${item.text}</div>
+                    <button class="btn-copy" onclick="copyToClipboard(${item.id})">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copier le prompt
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fonction de copie dans le presse-papier
+        function copyToClipboard(id) {
+            const textContent = document.getElementById(`text-${id}`).innerText;
+            
+            navigator.clipboard.writeText(textContent).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Erreur lors de la copie :', err);
+                alert('Erreur lors de la copie. Veuillez réessayer.');
+            });
+        }
+
+        // Affichage du toast de confirmation
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.className = 'toast show';
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', renderPrompts);
+
+    </script>
+</body>
+</html>
