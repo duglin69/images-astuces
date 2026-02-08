@@ -1,0 +1,195 @@
+<!-- DEBUT DU TABLEAU HTML -->
+<div style="overflow-x: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-radius: 8px; background-color: #fff; color: #333;">
+    
+    <style>
+        table.comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 800px; /* Force le défilement sur mobile */
+        }
+        .comparison-table th {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        .comparison-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .comparison-table tr:hover {
+            background-color: #e9ecef;
+        }
+        .badge-new {
+            background-color: #ff8c42;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .type-3d { color: #2980b9; font-weight: bold; font-size: 0.9em; }
+        .type-art { color: #8e44ad; font-weight: bold; font-size: 0.9em; }
+        .type-tech { color: #27ae60; font-weight: bold; font-size: 0.9em; }
+    </style>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Rendu / Moteur</th>
+                <th style="width: 15%;">Type</th>
+                <th style="width: 35%;">L'Effet Principal (Look)</th>
+                <th style="width: 25%;">Idéal pour...</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- MOTEURS 3D & RENDU -->
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>Arnold</td>
+                <td class="type-3d">Moteur Cinéma</td>
+                <td>Lumière douce, diffusion parfaite de la peau (Subsurface), rendu filmique Pixar/Disney.</td>
+                <td>Créatures organiques, Fourrure, Skins, Animation cinématographique.</td>
+            </tr>
+            <tr>
+                <td>Octane Render</td>
+                <td class="type-3d">Moteur 3D Pro</td>
+                <td>Propre, brillant, verre parfait, éclairage cinématique dramatique et rapide.</td>
+                <td>Sci-Fi, Chrome, Dragons Steampunk, Publicité haut de gamme.</td>
+            </tr>
+            <tr>
+                <td>Unreal Engine 5</td>
+                <td class="type-3d">Moteur de Jeu</td>
+                <td>Ambiance immersive, brouillard volumétrique, graphismes "Next-Gen" (Lumen).</td>
+                <td>Action scènes, Vastes paysages, Ambiance jeu vidéo réaliste.</td>
+            </tr>
+            <tr>
+                <td>V-Ray</td>
+                <td class="type-3d">Moteur 3D Archi</td>
+                <td>Réalisme photographique ultra-précis, lumière douce et naturelle, peu d'artefacts.</td>
+                <td>Architecture, Intérieurs propres, Design produit précis.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>Redshift</td>
+                <td class="type-3d">Rendu GPU</td>
+                <td>Équilibré, rapide, souvent des couleurs légèrement plus saturées et contrastées qu'Octane.</td>
+                <td>Productions lourdes, Sci-Fi dur, Éclairage nocturne néon.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>ZBrush</td>
+                <td class="type-tech">Sculpture</td>
+                <td>Texture argileuse/terreux, détails microscopiques extrêmes, aspect "maquette brute".</td>
+                <td>Concept de monstres, Bijoux complexes, Peau et écailles en détail.</td>
+            </tr>
+            <tr>
+                <td>Blender Cycles</td>
+                <td class="type-3d">Moteur Open</td>
+                <td>Textures organiques riches (Subsurface Scattering), patine réaliste.</td>
+                <td>Créatures vivantes, Peau/Dragon organique, Nature mixte métal.</td>
+            </tr>
+            <tr>
+                <td>Ray Tracing</td>
+                <td class="type-tech">Technologie 3D</td>
+                <td>Reflets ultra-réalistes, rebonds de lumière, ombres géométriquement parfaites.</td>
+                <td>Matériaux complexes (verre, eau, métal), Réalisme pur.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>Marmoset Toolbag</td>
+                <td class="type-tech">Game Asset</td>
+                <td>Rendu temps réel ultra-net, éclairage studio "baked", aspect "objet 3D fini".</td>
+                <td>Présentation d'objets (armes, potions), Assets pour jeux vidéo.</td>
+            </tr>
+            <tr>
+                <td>Cinema 4D</td>
+                <td class="type-3d">Motion Design</td>
+                <td>Aspect "plastique" soigné, couleurs vives, look moderne et géométrique.</td>
+                <td>Art abstrait, Formes géométriques, Animation 3D fluide.</td>
+            </tr>
+            <tr>
+                <td>Stable Diffusion</td>
+                <td class="type-tech">IA / Numérique</td>
+                <td>Style numérique lisse, parfois un peu "rêveur" ou plastique, propre.</td>
+                <td>Portraits IA, Art numérique pur, Expérimentations.</td>
+            </tr>
+            <tr>
+                <td>3D Render</td>
+                <td class="type-3d">3D Général</td>
+                <td>Le look standard de la 3D informatique, géométrie propre, éclairage neutre.</td>
+                <td>Objets abstraits, Prototypes, Scènes 3D simples.</td>
+            </tr>
+
+            <!-- STYLES ARTISTIQUES -->
+            <tr>
+                <td>Oil Painting</td>
+                <td class="type-art">Peinture</td>
+                <td>Traits de pinceau visibles, texture riche, aspect "musée", éclats de couleur.</td>
+                <td>Scènes classiques, Fantasy épique, Atmosphère romantique.</td>
+            </tr>
+            <tr>
+                <td>Sketch oil canvas</td>
+                <td class="type-art">Dessin/Peint.</td>
+                <td>Croquis à l'huile, textu rugueux de toile, aspect esquisse artistique.</td>
+                <td>Etude préparatoire, Portraits artistiques, Texture brute.</td>
+            </tr>
+            <tr>
+                <td>Pencil Sketch</td>
+                <td class="type-art">Dessin</td>
+                <td>Noir et blanc, grain de papier, traits de crayon/gomme, esquisses rapides.</td>
+                <td>Croquis préparatoires, Ambiance Film Noir, Idées rapides.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>Low Poly</td>
+                <td class="type-art">Style 3D</td>
+                <td>Formes géométriques triangulaires simplifiées, pas de texture lisse, esthétique jeu indie.</td>
+                <td>Art abstrait, Icônes, Décorations colorées et minimalistes.</td>
+            </tr>
+            <tr>
+                <td>Vector Art</td>
+                <td class="type-art">Graphisme</td>
+                <td>Lignes géométriques parfaites, aplats de couleurs, sans dégradés bruts.</td>
+                <td>Logos, Icônes, Portraits "Flat Design", Bandes dessinées modernes.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-new">NOUVEAU</span>Pixel Art</td>
+                <td class="type-art">Rétro</td>
+                <td>Pixels carrés visibles, palette limitée de couleurs, style 8-bit/16-bit.</td>
+                <td>Ambiance rétro-gaming (Zelda, Final Fantasy), Art indie.</td>
+            </tr>
+            <tr>
+                <td>Digital Painting</td>
+                <td class="type-art">Numérique</td>
+                <td>Couleurs vibrantes, lignes nettes, look moderne de tablette graphique numérique.</td>
+                <td>Illustrations de livres, Couvertures, Fan-art général.</td>
+            </tr>
+            <tr>
+                <td>Photorealistic</td>
+                <td class="type-art">Photo</td>
+                <td>Fait illusion parfaite d'une photo prise par un appareil photo haute définition.</td>
+                <td>Reconstitution historique, Documentaire fictif, Visages réalistes.</td>
+            </tr>
+            <tr>
+                <td>Matte Painting</td>
+                <td class="type-art">Cinéma</td>
+                <td>Paysages gigantesques, mélange photo/painting pour le cinéma, détails à l'infini.</td>
+                <td>Villes futuristes, Horizons épique, Backdrops de films.</td>
+            </tr>
+            <tr>
+                <td>Concept Art</td>
+                <td class="type-art">Illustration</td>
+                <td>Mélange de croquis et peinture, focus sur la composition et l'idée plutôt que la finition.</td>
+                <td>Design de personnages, Environnements de jeux, Création d'univers.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- FIN DU TABLEAU HTML -->
