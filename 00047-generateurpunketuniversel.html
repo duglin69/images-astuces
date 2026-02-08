@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Prompts Universel</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --panel-bg: #1e1e1e;
+            --input-bg: #2d2d2d;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent: #00d4ff; /* Cyan Icy Blue */
+            --accent-hover: #00a3cc;
+            --border: #444;
+            --focus: #00d4ff;
+            --punk-gradient: linear-gradient(90deg, #ff0055, #ffcc00, #00d4ff);
+        }
+
+        * { box-sizing: border-box; outline: none; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            background: var(--punk-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        /* Grille du générateur */
+        .generator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .control-group {
+            background: var(--panel-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .control-group:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        label.required::after {
+            content: " *";
+            color: #ff4444;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: var(--input-bg);
+            color: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: var(--focus);
+        }
+
+        /* Champ de personnalisation caché par défaut */
+        .custom-input {
+            margin-top: 10px;
+            display: none; /* Caché par défaut */
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid var(--accent);
+            color: #fff;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .custom-input.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Zone de résultat */
+        .result-area {
+            max-width: 1400px;
+            margin: 30px auto;
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+        }
+
+        textarea#prompt-output {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            color: #0f0; /* Matrix style pour le résultat */
+            border: 1px solid #333;
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        /* Boutons d'action */
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-gen {
+            background: var(--accent);
+            color: #000;
+            flex-grow: 1;
+            max-width: 250px;
+        }
+        .btn-gen:hover { background: var(--accent-hover); transform: scale(1.02); }
+
+        .btn-surprise {
+            background: linear-gradient(45deg, #ff0055, #ffcc00);
+            color: #000;
+            max-width: 250px;
+        }
+        .btn-surprise:hover { filter: brightness(1.2); }
+
+        .btn-copy {
+            background: #444;
+            color: white;
+        }
+        .btn-copy:hover { background: #555; }
+
+        .btn-reset {
+            background: #333;
+            color: #888;
+            border: 1px solid #555;
+        }
+        .btn-reset:hover { background: #444; color: #fff; }
+
+        .btn-export {
+            background: #2d4a2d;
+            color: #8f8;
+            border: 1px solid #4a7a4a;
+        }
+        .btn-export:hover { background: #3d5a3d; }
+
+        /* Toast notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--accent);
+            color: #000;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+    </style>
+</head>
+<body>
+  <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
+
+<header>
+    <h1>Générateur de Prompts</h1>
+    <p class="subtitle">Configurez votre scène • Styles Punks & Universels • Format Nano Banana</p>
+</header>
+
+<main class="generator-grid" id="form-container">
+    <!-- Les champs seront générés ici par JavaScript -->
+</main>
+
+<div class="result-area">
+    <label for="prompt-output">Résultat (Prompt Positif + Négatif)</label>
+    <textarea id="prompt-output" readonly placeholder="Votre prompt apparaîtra ici..."></textarea>
+</div>
+
+<div class="action-bar">
+    <button class="btn-gen" onclick="generatePrompt()">
+        ⚡ Générer
+    </button>
+    <button class="btn-surprise" onclick="surprisePrompt()">
+        🎲 Surprise
+    </button>
+    <button class="btn-copy" onclick="copyPrompt()">
+        📋 Copier
+    </button>
+    <button class="btn-export" onclick="exportPrompt()">
+        💾 Export .txt
+    </button>
+    <button class="btn-reset" onclick="resetForm()">
+        🔄 Reset 100%
+    </button>
+</div>
+
+<div id="toast">Notification</div>
+
+<script>
+    // --- DONNÉES DES MENUS ---
+
+    const menuConfig = [
+        {
+            id: 'subject',
+            label: 'Sujet (Personnage)',
+            required: true,
+            options: [
+                "Femme mécanique", "Explorateur perdu", "Robot androïde", "Sorcier cybernétique", "Pirate du ciel",
+                "Citoyen futuriste", "Créature mythique", "Détective privé fatigué", "Alchimiste steampunk", "Soldat d'élite",
+                "Enfant surdoué", "Vieux sage", "Assassin ninja", "Docteur fou", "Gardien de phare",
+                "Pilote de course", "Marchand d'artefacts", "Reine guerrière", "Clone génétique", "IA sentimentale"
+            ]
+        },
+        {
+            id: 'action',
+            label: 'Action',
+            required: true,
+            options: [
+                "Regarde vers l'horizon", "Répare un engin complexe", "Boit un café seul", "Court dans la rue", "Tient un artefact ancien",
+                "Vole au-dessus la ville", "Médite sous la pluie", "Combat un ennemi invisible", "Discute avec un hologramme", "Lit un livre interdit",
+                "Cherche une signature", "Écrit sur un terminal", "Observe un phénomène", "Danse lentement", "Tire au pistolet"
+            ]
+        },
+        {
+            id: 'companion',
+            label: 'Compagnon (Secondaire)',
+            required: false,
+            options: [
+                "Aucun", "Robot animalier", "Perroquet mécanique", "Chat cybernétique", "Famille transparente",
+                "Assistant holographique", "Chien en armure", "Esprit de la forêt", "Alien gracieux", "Ombre vivante",
+                "Petit drone", "Créature de lave", "Poupée de porcelaine", "Serpent robot", "Hibou sage"
+            ]
+        },
+        {
+            id: 'location',
+            label: 'Lieu',
+            required: false,
+            options: [
+                "Ville steampunk", "Forêt solarpunk", "Désert post-apocalyptique", "Laboratoire secret", "Toits de Londres",
+                "Station spatiale", "Marché noir futuriste", "Bibliothèque ancienne", "Désert de glace", "Rue cyberpunk néon",
+                "Usine abandonnée", "Japonais suspendu", "Temple antique", "Station-service routière", "Métro aérien"
+            ]
+        },
+        {
+            id: 'era',
+            label: 'Époque',
+            required: false,
+            options: [
+                "Victorien", "Futur lointain", "Années 1950", "Moyen-âge post-apoc", "Éternel présent",
+                "Antiquité futuriste", "Années 1920 (Gatsby)", "Années 1980 Retro", "Ère Vapeur", "Préhistoire technologique",
+                "Colonial spatial", "Ère Numérique", "Renaissance Cyber", "Ère Glaciaire", "Apocalypse Immédiate"
+            ]
+        },
+        {
+            id: 'style',
+            label: 'Style (Art & Ambiance)',
+            required: true,
+            isStyleList: true,
+            options: [
+                "Atompunk", "Solarpunk", "Cyberpunk", "Dieselpunk", "Steampunk",
+                "Bronzepunk", "Scrap punk", "Raypunk", "Arcanepunk", "Icy blue",
+                "Vaporwave", "Kawaii", "Ghibli", "Anime", "Hygge",
+                "Afrohemian", "Film Noir", "Bio-mechanic", "Black space / Deep space", "Watercolour",
+                "Sketch oil canvas", "Absureal", "Surrealist", "Hyperrealist", "Art Deco",
+                "Bauhaus", "Art gallery", "Digital painting", "1950's retro style", "1960's retro style",
+                "Expressive oil portrait", "Cartoon", "Abstract", "High quality vector", "Hyper-detailed engraved illustration style", "Art Folk modern"
+            ]
+        },
+        {
+            id: 'format',
+            label: 'Format (Ratio)',
+            required: false,
+            isFormat: true, // Flag spécial
+            options: [
+                "1:1", "2:3", "3:2", "3:4", "4:3", "16:9", "9:16", "21:9", "9:21", "5:4", "4:5"
+            ]
+        },
+        {
+            id: 'mood',
+            label: 'Ambiance / Mood',
+            required: false,
+            options: [
+                "Mélancolique", "Joyeuse", "Dangereuse", "Mystérieuse", "Calme",
+                "Chaotique", "Onirique", "Oppressante", "Utopique", "Dystopique",
+                "Romantique", "Horrible", "Épique", "Intime", "Surréaliste"
+            ]
+        },
+        {
+            id: 'weather',
+            label: 'Météo',
+            required: false,
+            options: [
+                "Temps clair", "Pluie battante", "Brouillard épais", "Neige", "Orage violent",
+                "Aube dorée", "Crépuscule violet", "Nuit étoilée", "Poussière de sable", "Cendres volcaniques",
+                "Fumée industrielle", "Nébuleuse", "Averse acide", "Ciel sans nuages", "Brouillard givrant"
+            ]
+        },
+        {
+            id: 'lighting',
+            label: 'Éclairage',
+            required: false,
+            options: [
+                "Cinématographique", "Volumétrique (God rays)", "Néon cyberpunk", "Lumière naturelle", "Bougies et lanternes",
+                "Clair de lune", "Lampe à huile", "Lasers multicolores", "Softbox studio", "Dramatique (Contrasté)",
+                "Basse clef (Chiaroscuro)", "Haute clef", "Bioluminescence", "Aurore boréale", "Lueur d'écran"
+            ]
+        },
+        {
+            id: 'angle',
+            label: 'Angle de vue',
+            required: false,
+            options: [
+                "Niveau des yeux", "Contre-plongée (Héros)", "Vue aérienne (Drone)", "Gros plan (Portrait)", "Plongée (Vu du ciel)",
+                "Vue subjective (POV)", "Latéral", "Dutch angle (Incliné)", "Macro détail", "Plan d'ensemble",
+                "Fish-eye", "Telephoto", "Vue arrière", "Reflet dans miroir", "Silhouette"
+            ]
+        },
+        {
+            id: 'quality',
+            label: 'Qualité',
+            required: false,
+            options: [
+                "8K", "4K", "16K", "Ultra HD", "Masterpiece",
+                "Best Quality", "RAW Photo", "Low Res (Glitch)", "Très détaillé", "Netteté parfaite",
+                "Haute définition", "Photographie Pro", "Cinématique", "Réaliste", "Concept Art"
+            ]
+        },
+        {
+            id: 'render',
+            label: 'Rendu / Moteur',
+            required: false,
+            options: [
+                "Octane Render", "Unreal Engine 5", "V-Ray", "Ray Tracing", "Cinema 4D",
+                "Blender Cycles", "Stable Diffusion", "Digital Art", "Photorealistic", "3D Render",
+                "Oil Painting", "Pencil Sketch", "Matte Painting", "Concept Art", "Vector Art"
+            ]
+        }
+    ];
+
+    const NEGATIVE_PROMPT = "text, watermark, signature, low quality, worst quality, bad anatomy, bad hands, missing fingers, extra digits, blurry, out of focus, jpeg artifacts, cartoon, 2d, illustration, sketch, anime, flat lighting, plastic, organic flesh, warm colors, oversaturated.";
+
+    // --- INITIALISATION DE L'INTERFACE ---
+
+    function initUI() {
+        const container = document.getElementById('form-container');
+        
+        menuConfig.forEach(menu => {
+            const group = document.createElement('div');
+            group.className = 'control-group';
+            
+            const label = document.createElement('label');
+            label.textContent = menu.label;
+            label.htmlFor = menu.id;
+            if (menu.required) label.classList.add('required');
+            
+            const select = document.createElement('select');
+            select.id = menu.id;
+            select.dataset.required = menu.required;
+            select.onchange = (e) => toggleCustomInput(e.target, menu.id + '_custom');
+            
+            // Option par défaut
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.text = "Choisir...";
+            select.appendChild(defaultOption);
+            
+            // Options standard
+            menu.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.text = opt;
+                select.appendChild(option);
+            });
+            
+            // Option Personnaliser
+            const customOption = document.createElement('option');
+            customOption.value = "custom";
+            customOption.text = "🎨 Personnaliser...";
+            select.appendChild(customOption);
+            
+            // Input caché pour personnalisation
+            const customInput = document.createElement('input');
+            customInput.type = "text";
+            customInput.id = menu.id + '_custom';
+            customInput.className = "custom-input";
+            customInput.placeholder = "Entrez votre propre choix...";
+            
+            group.appendChild(label);
+            group.appendChild(select);
+            group.appendChild(customInput);
+            container.appendChild(group);
+        });
+    }
+
+    // --- GESTION DE L'INPUT PERSONNALISÉ ---
+    function toggleCustomInput(selectElement, inputId) {
+        const inputElement = document.getElementById(inputId);
+        if (selectElement.value === "custom") {
+            inputElement.classList.add('active');
+            inputElement.focus();
+        } else {
+            inputElement.classList.remove('active');
+            inputElement.value = "";
+        }
+    }
+
+    // --- GÉNÉRATION DU PROMPT ---
+    function generatePrompt(isSurprise = false) {
+        let formatString = ""; // Pour stocker le format spécifique [ratio : ...]
+        let promptParts = [];
+        let missingRequired = [];
+
+        // Parcourir chaque menu
+        menuConfig.forEach(menu => {
+            const select = document.getElementById(menu.id);
+            const customInput = document.getElementById(menu.id + '_custom');
+            let value = select.value;
+
+            // Si mode surprise
+            if (isSurprise && !value) {
+                // Filtrer : Ignore "", "custom", et "Aucun" (pour le compagnon notamment)
+                const options = Array.from(select.options).filter(o => 
+                    o.value !== "" && 
+                    o.value !== "custom" && 
+                    o.value !== "Aucun"
+                );
+                
+                if (options.length > 0) {
+                    const randomOpt = options[Math.floor(Math.random() * options.length)];
+                    select.value = randomOpt.value;
+                    value = randomOpt.value;
+                } else {
+                    value = ""; // Si aucune option valide (ex: "Aucun" uniquement), on laisse vide
+                }
+            }
+
+            // Récupération valeur finale
+            if (value === "custom") {
+                if (customInput.value.trim() !== "") {
+                    if (menu.isFormat) {
+                        formatString = `[ratio : ${customInput.value.trim()}]`;
+                    } else {
+                        promptParts.push(customInput.value.trim());
+                    }
+                }
+            } else if (value) {
+                // Cas spécial : Format
+                if (menu.isFormat) {
+                    formatString = `[ratio : ${value}]`;
+                } 
+                // Cas normal
+                else {
+                    promptParts.push(value);
+                }
+            } else {
+                if (menu.required) {
+                    missingRequired.push(menu.label);
+                }
+            }
+        });
+
+        if (!isSurprise && missingRequired.length > 0) {
+            showToast(`Obligatoire : ${missingRequired.join(", ")}`);
+            return;
+        }
+
+        // Assemblage final
+        // 1. Format (si présent)
+        let finalPrompt = formatString ? formatString + ", " : "";
+        
+        // 2. Le reste
+        finalPrompt += promptParts.join(", ");
+        
+        // Ajout du négatif
+        let fullOutput = `PROMPT POSITIF:\n${finalPrompt}\n\nPROMPT NÉGATIF:\n${NEGATIVE_PROMPT}`;
+
+        document.getElementById('prompt-output').value = fullOutput;
+        
+        if(!isSurprise) showToast("Prompt généré avec succès !");
+    }
+
+    // --- SURPRISE ---
+    function surprisePrompt() {
+        // Reset d'abord visuellement les customs
+        document.querySelectorAll('.custom-input').forEach(el => el.classList.remove('active'));
+        generatePrompt(true);
+        showToast("🎲 Prompt Surprise généré !");
+    }
+
+    // --- COPIE ---
+    function copyPrompt() {
+        const text = document.getElementById('prompt-output').value;
+        if (!text) {
+            showToast("Rien à copier !");
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("Copié dans le presse-papier !");
+        }).catch(err => {
+            showToast("Erreur de copie");
+        });
+    }
+
+    // --- RESET 100% ---
+    function resetForm() {
+        // Reset selects
+        document.querySelectorAll('select').forEach(s => s.value = "");
+        // Reset custom inputs (valeur + visibilité)
+        document.querySelectorAll('.custom-input').forEach(i => {
+            i.value = "";
+            i.classList.remove('active');
+        });
+        // Clear output
+        document.getElementById('prompt-output').value = "";
+        showToast("Formulaire réinitialisé");
+    }
+
+    // --- EXPORT .TXT ---
+    function exportPrompt() {
+        const text = document.getElementById('prompt-output').value;
+        if (!text) {
+            showToast("Générez un prompt d'abord !");
+            return;
+        }
+        const blob = new Blob([text], { type: "text/plain" });
+        const anchor = document.createElement("a");
+        anchor.download = "prompt_scene_nano_banana.txt";
+        anchor.href = window.URL.createObjectURL(blob);
+        anchor.target = "_blank";
+        anchor.style.display = "none";
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+        showToast("Fichier .txt téléchargé");
+    }
+
+    // --- TOAST ---
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    // Lancer l'init au chargement
+    document.addEventListener('DOMContentLoaded', initUI);
+
+</script>
+
+</body>
+</html>
