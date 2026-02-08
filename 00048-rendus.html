@@ -42,6 +42,27 @@
         .type-3d { color: #2980b9; font-weight: bold; font-size: 0.9em; }
         .type-art { color: #8e44ad; font-weight: bold; font-size: 0.9em; }
         .type-tech { color: #27ae60; font-weight: bold; font-size: 0.9em; }
+   .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
     </style>
 
     <table class="comparison-table">
@@ -54,6 +75,10 @@
             </tr>
         </thead>
         <tbody>
+            <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
             <!-- MOTEURS 3D & RENDU -->
             <tr>
                 <td><span class="badge-new">NOUVEAU</span>Arnold</td>
