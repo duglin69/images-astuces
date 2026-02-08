@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formule Magique Reverse Prompt</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #8b5cf6; /* Violet pour la logique/analyse */
+            --accent-dim: #6d28d9;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Barre décorative */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            font-family: monospace;
+        }
+
+        .intro {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .structure-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .structure-list li {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: baseline; /* Aligne le texte et les chiffres */
+            gap: 15px;
+        }
+
+        .structure-list li:hover {
+            border-color: var(--accent-dim);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(5px);
+        }
+
+        .item-number {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #64748b;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .cat-title {
+            font-weight: bold;
+            color: var(--accent);
+            min-width: 140px;
+            display: block;
+        }
+
+        .cat-desc {
+            color: var(--text-main);
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .footer-constraint {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .constraint-title {
+            color: #ef4444;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .constraint-text {
+            color: var(--text-main);
+        }
+
+        pre {
+            white-space: pre-wrap;
+            font-family: inherit;
+        }
+
+    </STYLE>
+
+.top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+    </style>
+</head>
+<body>
+  <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
+
+    <div class="container">
+        <article class="card">
+            <header>
+                <h1>REVERSE PROMPT - Formule Magique</h1>
+                <div class="date">Feb 6</div>
+            </header>
+
+            <div class="intro">
+                Tu es un analyste expert en décomposition d'images et ingénierie de prompt. Ta mission est d'analyser l'image jointe pour en extraire l'essence technique et narrative.
+            </div>
+
+            <p style="margin-bottom: 20px;">Génère une structure thématique HTML utilisant des <code>&lt;optgroup&gt;</code> et des <code>&lt;option&gt;</code>. Les values doivent être en anglais technique (lexique cinéma/3D/photo pro) et les intitulés en français.</p>
+
+            <ul class="structure-list">
+                <li>
+                    <span class="item-number">01</span>
+                    <div>
+                        <span class="cat-title">Sujet</span>
+                        <span class="cat-desc">Personnage, attributs physiques, texture de peau naturelle</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">02</span>
+                    <div>
+                        <span class="cat-title">Action & Pose</span>
+                        <span class="cat-desc">Dynamique, interaction</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">03</span>
+                    <div>
+                        <span class="cat-title">Objets & Compagnons</span>
+                        <span class="cat-desc">Accessoires, entités secondaires</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">04</span>
+                    <div>
+                        <span class="cat-title">Décor</span>
+                        <span class="cat-desc">Lieu, architecture, environnement</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">05</span>
+                    <div>
+                        <span class="cat-title">Époque & Contexte</span>
+                        <span class="cat-desc">Période, style temporel</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">06</span>
+                    <div>
+                        <span class="cat-title">Météo & Phénomènes</span>
+                        <span class="cat-desc">Conditions atmosphériques, particules</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">07</span>
+                    <div>
+                        <span class="cat-title">Ambiance</span>
+                        <span class="cat-desc">Vibe narrative, humeur</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">08</span>
+                    <div>
+                        <span class="cat-title">Luminosité</span>
+                        <span class="cat-desc">Sources, contrastes, éclairage pro</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">09</span>
+                    <div>
+                        <span class="cat-title">Style Visuel</span>
+                        <span class="cat-desc">Moteurs de rendu type Octane/V-Ray, grain, médium</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">10</span>
+                    <div>
+                        <span class="cat-title">Style Néo-noir</span>
+                        <span class="cat-desc">Contrastes, palettes bichromiques, ombres</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">11</span>
+                    <div>
+                        <span class="cat-title">Optique & Technique</span>
+                        <span class="cat-desc">Type de caméra DSLR/Mirrorless, focale précise, ouverture f-stop, ISO</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item-number">12</span>
+                    <div>
+                        <span class="cat-title">Format & Qualité</span>
+                        <span class="cat-desc">Adapté Nano Banana 16:9, 4:5, etc. + Résolution 8K</span>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="footer-constraint">
+                <span class="constraint-title">Consigne Stricte :</span>
+                <span class="constraint-text">Priorise le réalisme photographique. Décris la texture des matériaux (cuir, peau, métal) et les réglages caméra comme si tu étais sur un plateau de tournage. Pas de paramètres Midjourney (--).</span>
+            </div>
+        </article>
+    </div>
+
+</body>
+</html>
