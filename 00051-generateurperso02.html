@@ -165,20 +165,26 @@
 </div>
 
 <div class="field-box">
-    <label>03. OBJETS & COMPAGNONS</label>
-    <select class="p-select" name="objets_compagnons">
+    <label>03. DÉTAILS, MATIÈRES & OBJETS</label>
+    <select class="p-select" name="objets_matieres">
         <option value="">--- Choisir ---</option>
-        <optgroup label="Artefacts & Mystique">
-            <option value="Massive red-bladed scythe, dark eclipse halo behind head, glowing crescent moon">Faux géante écarlate et halo d'éclipse</option>
-            <option value="Giant floating crystalline shards, prismatic light refraction, sharp geometric glass">Éclats de cristaux flottants (Réfractions prismatiques)</option>
-            <option value="Ornate runic staff, pulsing blue energy, ancient wood and gemstones">Bâton runique (Énergie bleue pulsante)</option>
+        <optgroup label="Matières & Textures (S'applique au sujet)">
+            <option value="liquid metallic chrome skin, mercury-like reflections, fluid shifting shapes, high-gloss finish">Métal liquide / Chrome (Reflets mercure)</option>
+            <option value="wearing luxurious iridescent silk, glowing fabric, soft flowing organza, ethereal shimmer">Soie iridescente (Reflets éthérés)</option>
+            <option value="wearing heavy crimson velvet, deep rich pile texture, opulent fabric folds">Velours cramoisi (Texture profonde)</option>
+            <option value="covered in synthetic fiber-optic weave, glowing internal light, high-tech neon fabric">Fibre optique (Lumière interne)</option>
         </optgroup>
-        <optgroup label="Objets & Accessoires">
-            <option value="Vintage porcelain espresso cup and saucer, ornate bistro furniture, delicate gold jewelry">Tasse en porcelaine vintage et bijoux d'or fins</option>
-            <option value="Thick swirling wisp of cigarette smoke, vintage silver holder, embers glowing">Volutes de fumée de cigarette et braises</option>
-            <option value="Classic leather handbag, designer heels, stack of old newspapers">Sac en cuir classique et journaux anciens</option>
+        <optgroup label="Réalisme Organique (Peau)">
+            <option value="natural skin texture, visible pores and fine lines, unretouched look, hyper-realistic skin">Peau naturelle (Pores visibles)</option>
+            <option value="porcelain skin with subtle freckles, soft matte finish, realistic complexion">Peau de porcelaine & taches de rousseur</option>
+            <option value="highly detailed skin micro-textures, subsurface scattering, realistic sweat beads">Micro-textures & sueur</option>
         </optgroup>
-        <option value="custom">--- Custom ---</option>
+        <optgroup label="Objets & Compagnons">
+            <option value="holding a massive red-bladed scythe, dark eclipse halo behind head">Faux géante & halo d'éclipse</option>
+            <option value="holding a basketball, electric blue sparks, cinematic sports equipment">Ballon de basket & étincelles</option>
+            <option value="holding a vintage golf club, glowing energy trails">Club de golf & traînées d'énergie</option>
+            <option value="with vintage porcelain espresso cup and saucer, ornate bistro furniture">Tasse espresso & mobilier bistro</option>
+        </optgroup>
     </select>
 </div>
 
@@ -394,54 +400,59 @@
     <h3>PROMPT NÉGATIF EXPERT</h3>
     <textarea id="neg-out" readonly></textarea>
 </div>
-
+    
 <script>
-const SUPER_NEGATIVE = "deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, text, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
+// Configuration du "Pare-Signature" et filtres de qualité
+const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
 
-// Initialisation
-document.getElementById('neg-out').value = SUPER_NEGATIVE;
+// Initialisation au chargement
+window.onload = () => {
+    document.getElementById('neg-out').value = SUPER_NEGATIVE;
+};
 
 function genPrompt() {
+    // On récupère tous les menus dans l'ordre du DOM
     const selects = document.querySelectorAll('.p-select');
     let parts = [];
+
     selects.forEach(s => {
-        if(s.value && s.value !== "custom") parts.push(s.value);
+        // On n'ajoute que les options qui ont une valeur et qui ne sont pas "custom"
+        if(s.value && s.value !== "custom") {
+            parts.push(s.value);
+        }
     });
+
+    // On injecte le résultat dans la zone de texte
     document.getElementById('pos-out').value = parts.join(", ");
 }
 
 function surpriseMe() {
     const selects = document.querySelectorAll('.p-select');
     selects.forEach(s => {
+        // On filtre pour ne pas tomber sur le choix vide ou "custom"
         const validOptions = Array.from(s.options).filter(o => o.value !== "" && o.value !== "custom");
         if(validOptions.length > 0) {
             s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
     });
-    genPrompt();
+    genPrompt(); // On génère automatiquement après la surprise
+}
+
+function copyToClipboard() {
+    const pos = document.getElementById('pos-out').value;
+    const neg = document.getElementById('neg-out').value;
+    const fullPrompt = `PROMPT:\n${pos}\n\nNEGATIVE PROMPT:\n${neg}`;
+    
+    navigator.clipboard.writeText(fullPrompt).then(() => {
+        alert("Prompt complet (Positif + Négatif) copié !");
+    });
 }
 
 function resetAll() {
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
     document.getElementById('pos-out').value = "";
 }
-
-function copyToClipboard() {
-    const p = document.getElementById('pos-out').value;
-    const n = SUPER_NEGATIVE;
-    const full = `PROMPT:\n${p}\n\nNEGATIVE PROMPT:\n${n}`;
-    navigator.clipboard.writeText(full).then(() => alert("Copié !"));
-}
-
-function exportPrompt() {
-    const content = `POSITIVE:\n${document.getElementById('pos-out').value}\n\nNEGATIVE:\n${SUPER_NEGATIVE}`;
-    const blob = new Blob([content], {type: 'text/plain'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `prompt_${Date.now()}.txt`;
-    a.click();
-}
 </script>
-
 </body>
 </html>
+
