@@ -470,7 +470,6 @@ body {
     <button onclick="genPrompt()" class="btn-gen">Générer le Prompt</button>
     <button onclick="surpriseMe()" class="btn-surprise">Surprise ✨</button>
     <button onclick="copyToClipboard()" class="btn-copy">Copier Tout 📋</button>
-<button onclick="sendToCloud()" class="btn-notion">🚀 Archiver dans le Cloud</button>
     <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
     <button onclick="exportPrompt()" class="btn-export">Export .txt 💾</button>
 </div>
@@ -545,41 +544,31 @@ function genPrompt() {
 }
 
 function copyToClipboard() {
+    // 1. On récupère les ingrédients de tes menus
+    const sujet = document.getElementsByName('sujet_principal')[0]?.value || "Sans titre";
+    const scenario = document.getElementsByName('scenario')[0]?.value || "Solo";
+    const tags = document.getElementsByName('tags')[0]?.value || ""; 
+    const esthetique = document.getElementsByName('style_visuel')[0]?.value || ""; 
+    const personne = document.getElementsByName('personnages_sup')[0]?.value || ""; 
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const fullPrompt = `PROMPT:\n${pos}\n\nNEGATIVE PROMPT:\n${neg}`;
-    
-    navigator.clipboard.writeText(fullPrompt).then(() => {
-        alert("Prompt complet (Positif + Négatif) copié !");
+
+    // 2. On prépare les 6 colonnes (l'ordre de ta photo Notion)
+    const col_Titre = `${sujet} (${scenario})`; // Titre
+    const col_VF = "Traduction auto..."; // Prompt VF (vide ou texte fixe)
+    const col_Prompt = `${pos}\n\n[NEGATIVE]\n${neg}`; // Prompt (Anglais)
+    const col_Tags = tags; // Tags -> Deviendront des boutons colorés
+    const col_Esthetique = esthetique; // Esthétique -> Boutons colorés
+    const col_Personne = personne; // Personne
+
+    // 3. LA MAGIE : On sépare chaque colonne par une tabulation (\t)
+    const ligneNotion = `${col_Titre}\t${col_VF}\t${col_Prompt}\t${col_Tags}\t${col_Esthetique}\t${col_Personne}`;
+
+    // 4. Copie finale
+    navigator.clipboard.writeText(ligneNotion).then(() => {
+        alert("🚀 Ligne structurée copiée ! Prête pour tes 6 colonnes Notion.");
     });
 }
-
-async function sendToCloud() {
-    const WEBHOOK_URL = "https://hook.eu1.make.com/om4znt9d4ksw6jy591v79qlp5mga18u4"; // <--- TON URL ICI
-    
-    // On récupère les données
-    const data = {
-        date: new Date().toLocaleString('fr-FR'),
-        prompt_pos: document.getElementById('pos-out').value,
-        prompt_neg: document.getElementById('neg-out').value,
-        sujet: document.getElementsByName('sujet_principal')[0].value,
-        scenario: document.getElementsByName('scenario')[0].value || "Solo"
-    };
-
-    try {
-        const response = await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'no-cors', // Important pour éviter les erreurs de sécurité locales
-            body: JSON.stringify(data)
-        });
-        
-        alert("✅ Envoi vers le Cloud réussi !");
-    } catch (error) {
-        alert("❌ Erreur d'envoi. Vérifie ta connexion.");
-    }
-}
-
 function resetAll() {
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
     document.getElementById('pos-out').value = "";
