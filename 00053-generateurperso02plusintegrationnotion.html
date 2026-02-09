@@ -496,6 +496,26 @@ window.onload = () => {
     document.getElementById('neg-out').value = SUPER_NEGATIVE;
 };
 
+    function surpriseMe() {
+    const selects = document.querySelectorAll('.p-select');
+    
+    selects.forEach(s => {
+        // On filtre pour ne pas choisir l'option vide ou le mode "custom"
+        const validOptions = Array.from(s.options).filter(opt => 
+            opt.value !== "" && opt.value !== "custom"
+        );
+        
+        if (validOptions.length > 0) {
+            // On choisit une option au hasard
+            const randomOpt = validOptions[Math.floor(Math.random() * validOptions.length)];
+            s.value = randomOpt.value;
+        }
+    });
+
+    // Une fois que tout est mélangé, on lance la génération automatique du texte
+    genPrompt();
+}
+    
 function genPrompt() {
     const selects = document.querySelectorAll('.p-select');
     const menu01 = document.getElementsByName('sujet_principal')[0];
