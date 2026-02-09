@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Banana - Générateur de Prompts Expert</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --accent-primary: #3b82f6;
+            --accent-surprise: #8b5cf6;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        h1 { margin: 0; color: var(--accent-primary); }
+
+        .generator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .field-box {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .field-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .btn-gen { background: var(--accent-primary); color: white; }
+        .btn-surprise { background: var(--accent-surprise); color: white; }
+        .btn-copy { background: var(--accent-success); color: white; }
+        .btn-reset { background: var(--accent-danger); color: white; }
+        .btn-export { background: #64748b; color: white; }
+
+        button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .output-section {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            margin-top: 10px;
+        }
+
+        h3 { margin-top: 20px; font-size: 1em; color: #94a3b8; }
+    .top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 80px;
+}
+.btn-retour {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+    </style>
+</head>
+<body>
+    <div class="top-right">
+    <a href="index.html" class="btn-retour">🏠 Accueil</a>
+    <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
+</div>
+
+<header>
+    <h1>Générateur personnel 02</h1>
+    <p>Architecture de Direction Artistique en 14 Points</p>
+</header>
+
+<div class="generator-grid">
+<div class="field-box">
+    <label>01. SUJET PRINCIPAL</label>
+    <select class="p-select" name="sujet_principal">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Muses & Silhouettes">
+            <option value="Ethereal woman with strawberry blonde hair, emerald green translucent ruffled gown, intricate lace bodice, high-fashion couture">La Muse Émeraude (Robe vaporeuse)</option>
+            <option value="Ghostly woman in a flowing translucent white gown, ethereal bridal silhouette, haunting beauty">La Mariée Spectrale (Silhouette blanche)</option>
+            <option value="Maid in shiny black latex dress, white apron and garters, high-contrast fetish aesthetic">Soubrette en latex noir (Esthétique fétiche)</option>
+            <option value="Shadowy grim reaper in a tattered black cloak, faceless hooded entity, dark presence">Faucheuse d'ombre (Entité encapuchonnée)</option>
+            <option value="Gritty plumber in blue denim overalls, heavy leather utility belt, holding a large wrench, soot-stained face, cinematic lighting">Le Plombier (Bleu de travail et clé à molette)</option>
+<option value="Astronaut in a vintage 1960s spacesuit, battered copper helmet, carrying a bouquet of wildflowers, surreal presence">L'Astronaute au bouquet (Surréalisme spatial)</option>
+<option value="Delicate ballerina in a glowing fiber-optic tutu, porcelain joints, performing a pirouette in a tattered environment">La Ballerine Cyber-Porcelaine</option>
+<option value="Master chef in a pristine white toque and apron, wearing a tactical gas mask, holding a glowing futuristic fruit">Le Chef au masque à gaz</option>
+<option value="Massive Sumo wrestler in a majestic flowing silk kimono, eyes closed in meditation, surrounded by a faint mystical aura">Le Sumo en méditation (Soie et sérénité)</option>
+<option value="Small Victorian child with a large wind-up key in their back, holding a translucent jellyfish balloon, haunting gaze">L'Enfant à clé (Automate victorien)</option>
+        </optgroup>
+        <optgroup label="Créatures & Personnages">
+            <option value="Mechanical steampunk dragon, brass and copper scales, visible glowing blue pistons, intricate clockwork wings, steam exhaust, majestic pose">Dragon Steampunk Mécanique (Pistons et vapeur)</option>
+<option value="Alice in Wonderland, the White Rabbit, the Mad Hatter & the Queen of Hearts">Alice au pays des merveilles, le lapin blanc, le chapelier fou et le Reine de coeurs</option>
+<option value="Realistic Robin Hood and his sweet Marianne, in love">Robin des Bois et sa douce Marianne (Amoureux)</option>
+<option value="Jesus, Virgin Mary and Judas Iscariot, a mood of suspicion">Jésus, la Vierge Marie et Judas (Ambiance suspicieuse)</option>
+            <option value="Cinematic Santa Claus, weathered face, velvet suit with fur trim, wise expression">Père Noël Cinématique (Le "réel" traditionnel)</option>
+            <option value="Large black panther, sleek muscular build, piercing amber eyes, predator grace">Panthère noire (Grâce sauvage)</option>
+            <option value="Graceful forest doe, glowing crystalline antlers, collar made of blooming wildflowers, ethereal forest spirit">La Biche aux bois de cristal</option>
+<option value="Dapper penguin wearing a miniature black velvet tuxedo and monocle, holding a tiny silver-topped cane, sophisticated posture">Le Pingouin en smoking (Dandy polaire)</option>
+<option value="Human-sized white rabbit in a Victorian red waistcoat, holding a large glowing pocket watch, whimsical but slightly eerie">Le Lapin à la montre (Vibe Alice / Steampunk)</option>
+        </optgroup>
+        <option value="custom">--- Custom (Saisir manuellement) ---</option>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>01bis. SCÉNARIO & COMPOSITION</label>
+    <select class="p-select" name="scenario">
+        <option value="">--- Solo (Par défaut) ---</option>
+        <option value="dynamic_duo">Le Duel (Sujet 1 + 1 invité surprise en face à face)</option>
+        <option value="surreal_trio">Le Trio (Sujet 1 + 2 invités éparpillés)</option>
+        <option value="gothic_chaos">Folie Gothique (Sujet 1 + 3 versions macabres)</option>
+        <option value="crystal_symphony">Symphonie de Cristal (Sujet 1 + 2 entités en verre translucide)</option>
+        <option value="giant_micro">Le Paradoxe (Sujet 1 Géant + 3 sujets miniatures)</option>
+        <option value="hologram_glitch">Réalité Augmentée (Sujet 1 Réel + 2 fantômes holographiques)</option>
+        <option value="statue_museum">Le Musée de Pierre (Sujet 1 vivant au milieu de statues de Sujet 2)</option>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>02. ACTION & POSE</label>
+    <select class="p-select" name="action_pose">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Énergie & Mouvement">
+            <option value="Aggressive scythe swing, dynamic motion blur on red blade, powerful execution pose">Attaque à la faux (Flou de mouvement, pose d'exécution)</option>
+            <option value="Ethereal floating pose, dress fabric caught in wind, dynamic ruffled movement, suspended in air">Lévitation éthérée (Tissu emporté par le vent)</option>
+            <option value="Running through rain, splashing water, sense of urgency, motion blur on limbs">Course sous la pluie (Urgence et éclaboussures)</option>
+        </optgroup>
+        <optgroup label="Statique & Contemplation">
+            <option value="Gazing longingly through a window, lost in thought, elegant profile, melancholic gaze">Regard mélancolique par la fenêtre (Profil élégant)</option>
+            <option value="Standing on a rocky cliff edge, overlooking a dark abyss, stoic witness pose">Stoïque sur une falaise (Dominant l'abîme)</option>
+            <option value="Sitting at a bistro table, leaning on hand, sophisticated boredom, direct eye contact">Assise au café (Ennui sophistiqué, regard caméra)</option>
+        </optgroup>
+        <optgroup label="Comportements Draconiques">
+    <option value="Perched on a rooftop, mechanical tail coiling around a chimney, observing the city with glowing eyes">Perché sur un toit (Observation urbaine)</option>
+    <option value="Majestic takeoff, huge clockwork wings unfolding, steam geysers erupting from back vents">Décollage majestueux (Déploiement d'ailes et vapeur)</option>
+    <option value="Diving through clouds, metallic body sleek and aerodynamic, wind-swept motion blur">Plongée dans les nuages (Aérodynamisme et vitesse)</option>
+    <option value="Breathing blue electric fire, sparking gears, destructive energy blast">Souffle de feu électrique (Énergie destructive)</option>
+</optgroup>
+        <option value="custom">--- Custom ---</option>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>03. DÉTAILS, MATIÈRES & OBJETS</label>
+    <select class="p-select" name="objets_matieres">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Matières & Textures (S'applique au sujet)">
+            <option value="liquid metallic chrome skin, mercury-like reflections, fluid shifting shapes, high-gloss finish">Métal liquide / Chrome (Reflets mercure)</option>
+            <option value="wearing luxurious iridescent silk, glowing fabric, soft flowing organza, ethereal shimmer">Soie iridescente (Reflets éthérés)</option>
+            <option value="wearing heavy crimson velvet, deep rich pile texture, opulent fabric folds">Velours cramoisi (Texture profonde)</option>
+            <option value="covered in synthetic fiber-optic weave, glowing internal light, high-tech neon fabric">Fibre optique (Lumière interne)</option>
+        </optgroup>
+        <optgroup label="Réalisme Organique (Peau)">
+            <option value="natural skin texture, visible pores and fine lines, unretouched look, hyper-realistic skin">Peau naturelle (Pores visibles)</option>
+            <option value="porcelain skin with subtle freckles, soft matte finish, realistic complexion">Peau de porcelaine & taches de rousseur</option>
+            <option value="highly detailed skin micro-textures, subsurface scattering, realistic sweat beads">Micro-textures & sueur</option>
+        </optgroup>
+        <optgroup label="Objets & Compagnons">
+            <option value="holding a massive red-bladed scythe, dark eclipse halo behind head">Faux géante & halo d'éclipse</option>
+            <option value="holding a basketball, electric blue sparks, cinematic sports equipment">Ballon de basket & étincelles</option>
+            <option value="holding a vintage golf club, glowing energy trails">Club de golf & traînées d'énergie</option>
+            <option value="with vintage porcelain espresso cup and saucer, ornate bistro furniture">Tasse espresso & mobilier bistro</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>04. DÉCOR & LIEU</label>
+    <select class="p-select" name="decor_lieu">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Futuriste & Dystopique">
+            <option value="Futuristic neon-lit skyscraper skyline, cyberpunk city towers reflecting on water, dense urban sprawl">Skyline cyberpunk néon (Reflets sur l'eau)</option>
+            <option value="Dark coastal cave entrance, sharp basalt rocks, misty ocean view, crashing waves">Grotte côtière (Basalte noir et océan brumeux)</option>
+            <option value="Industrial warehouse, exposed pipes, rusted metal, dim flickering lights">Entrepôt industriel (Tuyaux exposés et métal rouillé)</option>
+        </optgroup>
+        <optgroup label="Lieux Classiques & Luxe">
+            <option value="Belle Époque Parisian cafe, ornate mahogany wood paneling, sun-drenched bistro window">Café parisien Belle Époque (Lambris d'acajou)</option>
+            <option value="Vintage luxury train carriage, Orient Express aesthetic, velvet seats and brass details">Wagon Orient Express (Velours et laiton)</option>
+            <option value="Grand opera house balcony, gold leaf carvings, heavy red velvet curtains">Balcon d'opéra (Dorures et rideaux de velours)</option>
+        </optgroup>
+        <option value="custom">--- Custom ---</option>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>05. ÉPOQUE & CONTEXTE</label>
+    <select class="p-select" name="epoque_contexte">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Passé & Nostalgie">
+            <option value="Cinematic 1950s glamour, Parisian Fin de Siècle vibe, vintage fashion editorial">Glamour 1950 (Vibe Fin de Siècle)</option>
+            <option value="1920s Art Deco era, roaring twenties aesthetic, Great Gatsby style">Années 1920 (Art Déco et Gatsby)</option>
+            <option value="Ancient Sumerian Era, stone monoliths, primitive high-tech mysticism, ziggurat background">Ère Sumérienne (Mysticisme et Monolithes)</option>
+        </optgroup>
+        <optgroup label="Futur & Fantastique">
+            <option value="90s cyberculture dawn, dystopian futuristic timeline, dark sci-fi fantasy crossover">Aube Cyberculture 90s (Dark Sci-Fi)</option>
+            <option value="Post-apocalyptic wasteland, reclaimed by nature, silent world">Post-apocalyptique (Nature dominante)</option>
+            <option value="Ultramodern minimalist future, sterile white surfaces, clean architectural lines">Futur minimaliste (Lignes blanches épurées)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>06. MÉTÉO & PHÉNOMÈNES</label>
+    <select class="p-select" name="meteo_phenomenes">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Atmosphère & Particules">
+            <option value="Hazy morning mist, swirling indoor cigarette smoke, floating steam particles, soft atmospheric haze">Brume matinale et volutes de fumée</option>
+            <option value="Electric blue corona discharge arcs, shimmering light trails, atmospheric smog, neon sparks">Arcs électriques bleus et smog (Étincelles néon)</option>
+            <option value="Swirling autumn leaves, dust motes dancing in sunlight, floating embers">Feuilles tourbillonnantes et poussière d'or</option>
+        </optgroup>
+        <optgroup label="Météo Forte">
+            <option value="Heavy torrential rain reflecting city lights, wet asphalt sheen, puddles with neon ripples">Pluie torrentielle (Asphalte mouillé et reflets)</option>
+            <option value="Dense city fog with hazy volumetric light beams, limited visibility">Brouillard urbain épais (Rayons volumétriques)</option>
+            <option value="Rising manhole steam and hazy street exhaust, gritty urban atmosphere">Vapeur d'égout et gaz d'échappement (Urbain brute)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>07. AMBIANCE & MOOD</label>
+    <select class="p-select" name="ambiance_mood">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Surréalisme & Mystère">
+            <option value="High-stakes surrealism, ominous cosmic event, high-tech meets dark magic vibe">Surréalisme menaçant (Magie noire & High-Tech)</option>
+            <option value="Dreamy nostalgic vibe, ethereal atmosphere, floating memories, soft focus">Nostalgie onirique (Atmosphère vaporeuse)</option>
+            <option value="Ominous silence, psychological tension, feeling of being watched">Tension psychologique (Silence menaçant)</option>
+        </optgroup>
+        <optgroup label="Humeurs Narratives">
+            <option value="Melancholic cinematic romance, sophisticated solitude, timeless elegance">Romance mélancolique (Élégance intemporelle)</option>
+            <option value="Gritty industrial tension, cold isolation, raw emotional weight">Tension industrielle brute (Isolation froide)</option>
+            <option value="Opulent decadence, lonely luxury, quiet sadness in a grand setting">Décadence opulente (Luxe solitaire)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>08. LUMINOSITÉ</label>
+    <select class="p-select" name="luminosite_eclairage">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Contrastes & Néons">
+            <option value="Intense red neon city glow vs yellow crescent moonlight, electric blue flare accents">Néon rouge vs Lune jaune (Éclairs bleus)</option>
+            <option value="Cinematic chiaroscuro, deep shadows, single dramatic light source, high contrast">Clair-obscur cinématique (Ombres profondes)</option>
+            <option value="Harsh overhead street lighting, long distorted shadows, urban noir light">Éclairage de rue cru (Ombres étirées)</option>
+        </optgroup>
+        <optgroup label="Lumières Douces">
+            <option value="Soft window side-lighting, golden hour interior glow, backlit translucent fabric">Éclairage latéral doux (Heure dorée)</option>
+            <option value="Volumetric sunbeams through dust motes, warm hazy atmosphere">Rayons de soleil volumétriques</option>
+            <option value="Bioluminescent glow, soft teal and purple ambient light, otherworldly luminescence">Lueur bioluminescente (Ambiance mystique)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>09. STYLE VISUEL</label>
+    <select class="p-select" name="style_visuel">
+        <option value="">--- Choisir ---</option>
+
+        <optgroup label="Moteurs de Rendu & CGI">
+            <option value="Octane Render, cinematic 3D realism, physically based materials, Ray-tracing">Octane Render (Matériaux physiques)</option>
+            <option value="Blender Cycles render, path-traced lighting, realistic global illumination">Blender Cycles (Lumière globale)</option>
+            <option value="Unreal Engine 5, Lumen lighting, Nanite detail, photorealistic real-time">Unreal Engine 5 (Lumen & Nanite)</option>
+            <option value="Arnold Render, professional cinematic lighting, movie-quality VFX">Arnold Render (Qualité Cinéma)</option>
+            <option value="V-Ray render, architectural visualization style, clean precise lighting">V-Ray (Précision archi)</option>
+            <option value="Redshift render, high-saturation cinematic look, clean textures">Redshift (Rendu rapide & saturé)</option>
+            <option value="Cinema 4D style, clean motion graphics, sharp 3D geometry">Cinema 4D (Géométrie nette)</option>
+            <option value="Marmoset Toolbag render, PBR materials, real-time lighting highlights">Marmoset Toolbag (PBR Game Art)</option>
+            <option value="Ray Tracing enabled, realistic reflections, accurate light bounce">Ray Tracing (Reflets réels)</option>
+            <option value="Professional 3D Render, high-quality CGI, polished finish">3D Render (Rendu 3D Standard)</option>
+        </optgroup>
+
+        <optgroup label="Photographie & Cinéma (Tes Classiques)">
+            <option value="Analog film photography, 35mm grain, lush color grading, fashion editorial look">Photo Argentique (Grain 35mm & Look mode)</option>
+            <option value="Vintage Kodachrome style, saturated colors, historical film look, 1950s aesthetic">Style Kodachrome (Couleurs saturées vintage)</option>
+            <option value="Photorealistic, hyper-detailed, life-like textures, masterpiece quality">Photorealistic (Ultra-réalisme)</option>
+        </optgroup>
+
+        <optgroup label="Artistique & Médiums">
+            <option value="Masterpiece Oil Painting, rich impasto, textured canvas, classical style">Oil Painting (Peinture à l'huile)</option>
+            <option value="Sketch on oil canvas, visible underdrawing, raw artistic texture">Sketch oil canvas (Esquisse sur toile)</option>
+            <option value="Detailed Pencil Sketch, graphite shading, hand-drawn paper texture">Pencil Sketch (Crayonné détaillé)</option>
+            <option value="Watercolor and ink sketch on textured paper, bleeding colors, artistic looseness">Aquarelle et encre (Couleurs diffuses)</option>
+            <option value="Digital Painting, professional brushwork, vibrant colors, smooth transitions">Digital Painting (Peinture numérique)</option>
+            <option value="Concept Art style, atmospheric storytelling, professional production art">Concept Art (Art de production)</option>
+            <option value="Detailed Matte Painting, epic scale, photorealistic environment composite">Matte Painting (Décors épiques)</option>
+            <option value="ZBrush sculpt, high-detail clay texture, digital carving">ZBrush (Sculpture numérique)</option>
+        </optgroup>
+
+        <optgroup label="Styles Graphiques">
+            <option value="Low Poly art style, sharp edges, flat shaded polygons, minimalist look">Low Poly (Géométrie minimaliste)</option>
+            <option value="Retro Pixel Art, 16-bit aesthetic, limited palette, dithered shading">Pixel Art (Esthétique 16-bit)</option>
+            <option value="Clean Vector Art, flat colors, bold outlines, minimalist design">Vector Art (Design épuré)</option>
+            <option value="Stable Diffusion artistic style, unique AI-generated digital blend">Stable Diffusion (Style IA natif)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>10. STYLE NÉO-NOIR</label>
+    <select class="p-select" name="style_neonoir">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Palettes Iconiques">
+            <option value="Cyber-teal and electric-orange dual lighting, sharp cinematic shadows">Bichromie bleu-sarcelle et orange électrique</option>
+            <option value="Deep purple and ultraviolet neon glow shadows, nocturnal cityscape">Ombres ultraviolettes et lueurs pourpres</option>
+            <option value="Moody emerald and gold noir palette, heavy cigarette smoke, sophisticated decay">Palette noir émeraude et or (Fumée et luxe)</option>
+            <option value="High-contrast monochromatic noir with sharp Venetian blind shadow patterns">Monochrome noir intense (Stores vénitiens)</option>
+        </optgroup>
+        <optgroup label="Signatures Visuelles">
+            <option value="Wet asphalt texture with neon liquid reflections, rainy street aesthetic">Asphalte mouillé (Reflets néons liquides)</option>
+            <option value="Silhouette standing in a dark doorway, intense backlighting, mysterious aura">Silhouette en contre-jour (Entrée d'ombre)</option>
+            <option value="Rising manhole steam and hazy street exhaust, gritty urban noir">Vapeur d'égout et gaz d'échappement (Urbain brut)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>11. OPTIQUE & TECHNIQUE</label>
+    <select class="p-select" name="optique_camera">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Photographie Pro">
+            <option value="Professional DSLR photography, 85mm prime lens, f/1.8 aperture, sharp focus on eyes">Portrait DSLR (85mm, f/1.8, piqué net)</option>
+            <option value="Full-frame mirrorless camera, 35mm wide-angle lens, deep depth of field, sharp edge-to-edge">Mirrorless Plein Format (35mm, netteté totale)</option>
+            <option value="Macro photography, extreme close-up, hyper-detailed textures, narrow focus">Macro (Gros plan extrême, textures détaillées)</option>
+        </optgroup>
+        <optgroup label="Effets Cinéma">
+            <option value="Anamorphic lens flares, shallow depth of field, creamy blurred background, cinematic bokeh">Lens flares anamorphiques (Bokeh crémeux)</option>
+            <option value="35mm film grain, vintage lens character, slight chromatic aberration, nostalgic feel">Grain de film 35mm (Caractère vintage)</option>
+            <option value="Long exposure, light trails, motion blur on fast movements, ethereal streaks">Pose longue (Traînées lumineuses et flou cinétique)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>12. SURRÉALISME & GLITCH</label>
+    <select class="p-select" name="surrealisme_glitch">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Défier la Physique">
+            <option value="Zero gravity environment, floating debris, suspended liquid droplets">Zéro gravité (Débris et gouttes flottantes)</option>
+            <option value="Impossible geometry, Escher-style architecture, non-euclidean spaces">Géométrie impossible (Style Escher)</option>
+            <option value="Objects melting into liquid, surreal distortion, dream-logic physics">Objets fondants et distorsions oniriques</option>
+        </optgroup>
+        <optgroup label="Anomalies Visuelles">
+            <option value="Digital glitch art effects, pixel sorting, chromatic aberration streaks">Effets Glitch (Pixel sorting et traînées)</option>
+            <option value="Double exposure effect, overlapping silhouettes, ghostly transparency">Double exposition (Silhouettes superposées)</option>
+            <option value="Shattered reality, mirror fragments floating in air, fractured view">Réalité brisée (Éclats de miroir flottants)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>13. COMPOSITION & ANGLES</label>
+    <select class="p-select" name="composition_angle">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Angles de Vue">
+            <option value="Low angle shot, looking up, heroic perspective, monumental scale">Contre-plongée (Perspective héroïque)</option>
+            <option value="Bird's eye view, high angle, looking down, miniature effect">Vue de dessus (Plongée totale)</option>
+            <option value="Eye-level shot, intimate perspective, direct engagement">À hauteur d'yeux (Perspective intime)</option>
+            <option value="Dutch angle, tilted frame, sense of unease and disorientation">Angle hollandais (Cadre penché, malaise)</option>
+        </optgroup>
+        <optgroup label="Cadrage & Mise en scène">
+            <option value="Wide cinematic shot, sprawling landscape, tiny subject in vast space">Plan large (Sujet minuscule dans l'immensité)</option>
+            <option value="Extreme close-up, focusing on textures, macro detail, intense focus">Gros plan extrême (Focus textures)</option>
+            <option value="Symmetry, centered composition, Wes Anderson style balance">Symétrie parfaite (Style Wes Anderson)</option>
+            <option value="Rule of thirds composition, dynamic balance, off-center subject">Règle des tiers (Sujet décentré, équilibre)</option>
+        </optgroup>
+    </select>
+</div>
+
+<div class="field-box">
+    <label>14. FORMAT & QUALITÉ</label>
+    <select class="p-select" name="format_image">
+        <option value="">--- Choisir ---</option>
+        <optgroup label="Standards & Carré">
+            <option value="1:1 aspect ratio, ultra-high resolution, 8k professional render">Format 1:1 (Carré parfait, 8K)</option>
+            <option value="4:5 aspect ratio, hyper-detailed textures, 8k mastery">Format 4:5 (Portrait, Détails 8K)</option>
+            <option value="2:3 aspect ratio, classic photography aspect ratio, sharp finish">Format 2:3 (Portrait classique, 8K)</option>
+        </optgroup>
+        <optgroup label="Cinématique">
+            <option value="16:9 aspect ratio, widescreen HD, cinematic depth, ray-traced shadows">Format 16:9 (Widescreen HD, Ray-tracing)</option>
+            <option value="21:9 aspect ratio, ultra-wide cinematic scope, epic landscape scale">Format 21:9 (CinémaScope, Échelle épique)</option>
+            <option value="32:9 aspect ratio, super ultrawide, immersive panoramic view">Format 32:9 (Super Ultrawide, Panoramique)</option>
+        </optgroup>
+        <optgroup label="Verticaux & Réseaux">
+            <option value="9:16 aspect ratio, fashion editorial quality, mobile-optimized scale">Format 9:16 (Story / TikTok / Mode)</option>
+            <option value="5:8 aspect ratio, book cover ratio, artistic vertical composition">Format 5:8 (Couverture de livre, 8K)</option>
+        </optgroup>
+    </select>
+</div>
+
+</div>
+
+<div class="button-group">
+    <button onclick="genPrompt()" class="btn-gen">Générer le Prompt</button>
+    <button onclick="surpriseMe()" class="btn-surprise">Surprise ✨</button>
+    <button onclick="copyToClipboard()" class="btn-copy">Copier Tout 📋</button>
+    <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
+    <button onclick="exportPrompt()" class="btn-export">Export .txt 💾</button>
+</div>
+
+<div class="output-section">
+    <h3>PROMPT POSITIF</h3>
+    <textarea id="pos-out" readonly></textarea>
+    
+    <h3>PROMPT NÉGATIF EXPERT</h3>
+    <textarea id="neg-out" readonly></textarea>
+</div>
+    
+<script>
+// Configuration du "Pare-Signature" et filtres de qualité
+const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
+
+// Initialisation au chargement
+window.onload = () => {
+    document.getElementById('neg-out').value = SUPER_NEGATIVE;
+};
+
+function genPrompt() {
+    const selects = document.querySelectorAll('.p-select');
+    const menu01 = document.getElementsByName('sujet_principal')[0];
+    let parts = [];
+    
+    // On isole le sujet principal pour le manipuler
+    let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
+    
+    // Liste pour le piochage aléatoire
+    const allSubjects = Array.from(menu01.options)
+        .filter(o => o.value !== "" && o.value !== "custom")
+        .map(o => o.value);
+
+    function getRandom() { return allSubjects[Math.floor(Math.random() * allSubjects.length)]; }
+
+    selects.forEach(s => {
+        if(s.value && s.value !== "custom") {
+            if (s.name === "scenario") {
+                // --- LOGIQUE DES SCÉNARIOS ---
+                if (s.value === "dynamic_duo") {
+                    mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off, cinematic tension`;
+                } 
+                else if (s.value === "surreal_trio") {
+                    mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}, surrealist composition`;
+                }
+                else if (s.value === "gothic_chaos") {
+                    mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}, dark macabre vibe`;
+                }
+                else if (s.value === "crystal_symphony") {
+                    mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
+                }
+                else if (s.value === "giant_micro") {
+                    mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandom()} figures`;
+                }
+                else if (s.value === "hologram_glitch") {
+                    mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandom()}`;
+                }
+                else if (s.value === "statue_museum") {
+                    mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandom()}`;
+                }
+            } else if (s.name !== "sujet_principal") {
+                parts.push(s.value);
+            }
+        }
+    });
+
+    // On remet le sujet (potentiellement modifié par le scénario) au tout début
+    if (mainSubject) parts.unshift(mainSubject);
+    
+    document.getElementById('pos-out').value = parts.join(", ");
+}
+
+function copyToClipboard() {
+    const pos = document.getElementById('pos-out').value;
+    const neg = document.getElementById('neg-out').value;
+    const fullPrompt = `PROMPT:\n${pos}\n\nNEGATIVE PROMPT:\n${neg}`;
+    
+    navigator.clipboard.writeText(fullPrompt).then(() => {
+        alert("Prompt complet (Positif + Négatif) copié !");
+    });
+}
+
+function resetAll() {
+    document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
+    document.getElementById('pos-out').value = "";
+}
+</script>
+</body>
+</html>
+
+
+
