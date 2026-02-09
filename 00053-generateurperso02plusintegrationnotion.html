@@ -547,18 +547,20 @@ function copyToClipboard() {
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
 
+    // 1. On prépare les données (on remplace les sauts de ligne par des espaces pour le test)
     const col1 = `${sujet} (${scenario})`;
-    const col2 = ""; // Notes / VF
-    // On entoure le prompt de guillemets pour protéger les sauts de ligne
-    const col3 = `"${pos.replace(/"/g, '""')}\n\n[NEGATIVE]\n${neg.replace(/"/g, '""')}"`;
+    const col2 = ""; 
+    const col3 = `PROMPT: ${pos.replace(/\n/g, " ")} | NEGATIVE: ${neg.replace(/\n/g, " ")}`;
     const col4 = tags;
     const col5 = style;
-    const col6 = ""; // Personne
+    const col6 = ""; 
 
+    // 2. Assemblage avec tabulations
     const ligne = `${col1}\t${col2}\t${col3}\t${col4}\t${col5}\t${col6}`;
 
+    // 3. Copie
     navigator.clipboard.writeText(ligne).then(() => {
-        alert("✅ Prêt pour Notion !\n\nIMPORTANT : Clique UNE SEULE FOIS sur la case Titre (cadre bleu) et fais Ctrl+V.");
+        alert("✅ Copie effectuée !\n\nSur Notion : clique UNE FOIS sur la case Titre (cadre bleu) et fais Ctrl+V.");
     });
 }
 
