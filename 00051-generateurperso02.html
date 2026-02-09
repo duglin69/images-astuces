@@ -314,15 +314,42 @@ body {
     <label>09. STYLE VISUEL</label>
     <select class="p-select" name="style_visuel">
         <option value="">--- Choisir ---</option>
-        <optgroup label="Rendu Digital & 3D">
-            <option value="Octane render, cinematic 3D realism, physically based materials, high-end CGI, Ray-tracing">Octane Render (Réalisme 3D physique)</option>
-            <option value="Digital matte painting style, hyper-detailed environment, sharp foreground vs hazy background">Matte Painting digital (Détails extrêmes)</option>
-            <option value="Unreal Engine 5 nanite render, photorealistic architectural visualization">Rendu Unreal Engine 5 (Architecture pro)</option>
+
+        <optgroup label="Moteurs de Rendu & CGI">
+            <option value="Octane Render, cinematic 3D realism, physically based materials, Ray-tracing">Octane Render (Matériaux physiques)</option>
+            <option value="Blender Cycles render, path-traced lighting, realistic global illumination">Blender Cycles (Lumière globale)</option>
+            <option value="Unreal Engine 5, Lumen lighting, Nanite detail, photorealistic real-time">Unreal Engine 5 (Lumen & Nanite)</option>
+            <option value="Arnold Render, professional cinematic lighting, movie-quality VFX">Arnold Render (Qualité Cinéma)</option>
+            <option value="V-Ray render, architectural visualization style, clean precise lighting">V-Ray (Précision archi)</option>
+            <option value="Redshift render, high-saturation cinematic look, clean textures">Redshift (Rendu rapide & saturé)</option>
+            <option value="Cinema 4D style, clean motion graphics, sharp 3D geometry">Cinema 4D (Géométrie nette)</option>
+            <option value="Marmoset Toolbag render, PBR materials, real-time lighting highlights">Marmoset Toolbag (PBR Game Art)</option>
+            <option value="Ray Tracing enabled, realistic reflections, accurate light bounce">Ray Tracing (Reflets réels)</option>
+            <option value="Professional 3D Render, high-quality CGI, polished finish">3D Render (Rendu 3D Standard)</option>
         </optgroup>
-        <optgroup label="Médiums Traditionnels">
-            <option value="Analog film photography, painterly texture, lush color grading, fashion editorial look">Photo argentique (Texture picturale, look mode)</option>
-            <option value="Vintage Kodachrome style, saturated colors, historical film look">Style Kodachrome vintage (Couleurs saturées)</option>
-            <option value="Fine art oil painting texture, visible brushstrokes, rich impasto">Peinture à l'huile (Coups de pinceau visibles)</option>
+
+        <optgroup label="Photographie & Cinéma (Tes Classiques)">
+            <option value="Analog film photography, 35mm grain, lush color grading, fashion editorial look">Photo Argentique (Grain 35mm & Look mode)</option>
+            <option value="Vintage Kodachrome style, saturated colors, historical film look, 1950s aesthetic">Style Kodachrome (Couleurs saturées vintage)</option>
+            <option value="Photorealistic, hyper-detailed, life-like textures, masterpiece quality">Photorealistic (Ultra-réalisme)</option>
+        </optgroup>
+
+        <optgroup label="Artistique & Médiums">
+            <option value="Masterpiece Oil Painting, rich impasto, textured canvas, classical style">Oil Painting (Peinture à l'huile)</option>
+            <option value="Sketch on oil canvas, visible underdrawing, raw artistic texture">Sketch oil canvas (Esquisse sur toile)</option>
+            <option value="Detailed Pencil Sketch, graphite shading, hand-drawn paper texture">Pencil Sketch (Crayonné détaillé)</option>
+            <option value="Watercolor and ink sketch on textured paper, bleeding colors, artistic looseness">Aquarelle et encre (Couleurs diffuses)</option>
+            <option value="Digital Painting, professional brushwork, vibrant colors, smooth transitions">Digital Painting (Peinture numérique)</option>
+            <option value="Concept Art style, atmospheric storytelling, professional production art">Concept Art (Art de production)</option>
+            <option value="Detailed Matte Painting, epic scale, photorealistic environment composite">Matte Painting (Décors épiques)</option>
+            <option value="ZBrush sculpt, high-detail clay texture, digital carving">ZBrush (Sculpture numérique)</option>
+        </optgroup>
+
+        <optgroup label="Styles Graphiques">
+            <option value="Low Poly art style, sharp edges, flat shaded polygons, minimalist look">Low Poly (Géométrie minimaliste)</option>
+            <option value="Retro Pixel Art, 16-bit aesthetic, limited palette, dithered shading">Pixel Art (Esthétique 16-bit)</option>
+            <option value="Clean Vector Art, flat colors, bold outlines, minimalist design">Vector Art (Design épuré)</option>
+            <option value="Stable Diffusion artistic style, unique AI-generated digital blend">Stable Diffusion (Style IA natif)</option>
         </optgroup>
     </select>
 </div>
@@ -491,6 +518,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
