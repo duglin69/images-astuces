@@ -488,14 +488,13 @@ body {
 </div>
     
 <script>
-// Configuration du "Pare-Signature"
 const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
 
 window.onload = () => {
     document.getElementById('neg-out').value = SUPER_NEGATIVE;
 };
 
-// 1. FONCTION SURPRISE (Réparée)
+// RÉPARATION : Fonction Surprise qui manquait dans ton code
 function surpriseMe() {
     const selects = document.querySelectorAll('.p-select');
     selects.forEach(s => {
@@ -504,16 +503,14 @@ function surpriseMe() {
             s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
     });
-    genPrompt(); // Relance la génération du texte
+    genPrompt();
 }
 
-// 2. GÉNÉRATION DU PROMPT
 function genPrompt() {
     const selects = document.querySelectorAll('.p-select');
     const menu01 = document.getElementsByName('sujet_principal')[0];
     let parts = [];
     let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
-    
     const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
     const getRandom = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
 
@@ -523,43 +520,45 @@ function genPrompt() {
                 if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off`;
                 else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}`;
                 else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}`;
-                // ... (tes autres scénarios)
+                else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
+                else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandom()} figures`;
+                else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandom()}`;
+                else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandom()}`;
             } else if (s.name !== "sujet_principal") {
                 parts.push(s.value);
             }
         }
     });
-
     if (mainSubject) parts.unshift(mainSubject);
     document.getElementById('pos-out').value = parts.join(", ");
 }
 
-// 3. COPIE POUR TES 6 COLONNES NOTION
+// RÉPARATION : Copie qui respecte les 6 colonnes de ta photo
 function copyToClipboard() {
     const getT = (n) => {
         const e = document.getElementsByName(n)[0];
-        return e ? e.options[e.selectedIndex].text : "";
+        return (e && e.selectedIndex > 0) ? e.options[e.selectedIndex].text : "";
     };
 
-    const nomSujet = getT('sujet_principal');
-    const nomScenario = getT('scenario');
-    const nomStyle = getT('style_visuel');
-    const tagsManuels = document.getElementById('tags-libres').value; 
+    const sujet = getT('sujet_principal');
+    const scenario = getT('scenario') || "Solo";
+    const style = getT('style_visuel');
+    const tags = document.getElementById('tags-libres').value;
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
 
-    // Ordre de ta photo : Titre | Prompt VF | Prompt | Tags | Esthétique | Personne
-    const col1 = `${nomSujet} (${nomScenario})`;
-    const col2 = ""; // Laissé vide pour tes notes manuelles (VF)
-    const col3 = `${pos}\n\n[NEGATIVE]\n${neg}`;
-    const col4 = tagsManuels; // Tes tags libres (ex: dragon, feu)
-    const col5 = nomStyle;   // Ton esthétique (ukiyo-e, etc.)
-    const col6 = "";         // Personne (vide)
+    const col1 = `${sujet} (${scenario})`;
+    const col2 = ""; // Notes / VF
+    // On entoure le prompt de guillemets pour protéger les sauts de ligne
+    const col3 = `"${pos.replace(/"/g, '""')}\n\n[NEGATIVE]\n${neg.replace(/"/g, '""')}"`;
+    const col4 = tags;
+    const col5 = style;
+    const col6 = ""; // Personne
 
     const ligne = `${col1}\t${col2}\t${col3}\t${col4}\t${col5}\t${col6}`;
 
     navigator.clipboard.writeText(ligne).then(() => {
-        alert("✅ Prêt pour Notion ! Clique sur la case Titre et fais Ctrl+V.");
+        alert("✅ Prêt pour Notion !\n\nIMPORTANT : Clique UNE SEULE FOIS sur la case Titre (cadre bleu) et fais Ctrl+V.");
     });
 }
 
