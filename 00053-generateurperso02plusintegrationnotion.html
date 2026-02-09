@@ -544,29 +544,35 @@ function genPrompt() {
 }
 
 function copyToClipboard() {
-    // 1. On récupère les ingrédients de tes menus
-    const sujet = document.getElementsByName('sujet_principal')[0]?.value || "Sans titre";
-    const scenario = document.getElementsByName('scenario')[0]?.value || "Solo";
-    const tags = document.getElementsByName('tags')[0]?.value || ""; 
-    const esthetique = document.getElementsByName('style_visuel')[0]?.value || ""; 
-    const personne = document.getElementsByName('personnages_sup')[0]?.value || ""; 
+    // 1. On récupère les éléments qui existent VRAIMENT dans ton code
+    const menuSujet = document.getElementsByName('sujet_principal')[0];
+    const menuScenario = document.getElementsByName('scenario')[0];
+    const menuStyle = document.getElementsByName('style_visuel')[0];
+
+    // On récupère le TEXTE (ex: "Le Plombier") et non le code en anglais
+    const nomSujet = menuSujet.options[menuSujet.selectedIndex].text;
+    const nomScenario = menuScenario.options[menuScenario.selectedIndex].text;
+    const nomStyle = menuStyle.options[menuStyle.selectedIndex].text;
+
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
 
-    // 2. On prépare les 6 colonnes (l'ordre de ta photo Notion)
-    const col_Titre = `${sujet} (${scenario})`; // Titre
-    const col_VF = "Traduction auto..."; // Prompt VF (vide ou texte fixe)
-    const col_Prompt = `${pos}\n\n[NEGATIVE]\n${neg}`; // Prompt (Anglais)
-    const col_Tags = tags; // Tags -> Deviendront des boutons colorés
-    const col_Esthetique = esthetique; // Esthétique -> Boutons colorés
-    const col_Personne = personne; // Personne
+    // 2. On prépare tes 6 colonnes (Ordre : Titre | VF | Prompt | Tags | Esthétique | Personne)
+    const col1_Titre = `${nomSujet} - ${nomScenario}`; 
+    const col2_VF = ""; // VIDE : Pour tes propres notes manuelles dans Notion
+    const col3_Prompt = `${pos}\n\n[NEGATIVE]\n${neg}`;
+    
+    // On utilise le nom du sujet comme "Tag" automatique pour Notion
+    const col4_Tags = nomSujet; 
+    const col5_Esthetique = nomStyle;
+    const col6_Personne = ""; // Laisse vide pour l'instant (ou mets le scénario)
 
-    // 3. LA MAGIE : On sépare chaque colonne par une tabulation (\t)
-    const ligneNotion = `${col_Titre}\t${col_VF}\t${col_Prompt}\t${col_Tags}\t${col_Esthetique}\t${col_Personne}`;
+    // 3. Assemblage pour le "Coller" magique
+    const ligneNotion = `${col1_Titre}\t${col2_VF}\t${col3_Prompt}\t${col4_Tags}\t${col5_Esthetique}\t${col6_Personne}`;
 
     // 4. Copie finale
     navigator.clipboard.writeText(ligneNotion).then(() => {
-        alert("🚀 Ligne structurée copiée ! Prête pour tes 6 colonnes Notion.");
+        alert("✅ Prêt pour Notion ! Sélectionne la case 'Titre' et fais Ctrl+V.");
     });
 }
 function resetAll() {
