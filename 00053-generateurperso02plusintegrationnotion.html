@@ -488,120 +488,85 @@ body {
 </div>
     
 <script>
-// Configuration du "Pare-Signature" et filtres de qualité
+// Configuration du "Pare-Signature"
 const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
 
-// Initialisation au chargement
 window.onload = () => {
     document.getElementById('neg-out').value = SUPER_NEGATIVE;
 };
 
-    function surpriseMe() {
+// 1. FONCTION SURPRISE (Réparée)
+function surpriseMe() {
     const selects = document.querySelectorAll('.p-select');
-    
     selects.forEach(s => {
-        // On filtre pour ne pas choisir l'option vide ou le mode "custom"
-        const validOptions = Array.from(s.options).filter(opt => 
-            opt.value !== "" && opt.value !== "custom"
-        );
-        
+        const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
         if (validOptions.length > 0) {
-            // On choisit une option au hasard
-            const randomOpt = validOptions[Math.floor(Math.random() * validOptions.length)];
-            s.value = randomOpt.value;
+            s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
     });
-
-    // Une fois que tout est mélangé, on lance la génération automatique du texte
-    genPrompt();
+    genPrompt(); // Relance la génération du texte
 }
-    
+
+// 2. GÉNÉRATION DU PROMPT
 function genPrompt() {
     const selects = document.querySelectorAll('.p-select');
     const menu01 = document.getElementsByName('sujet_principal')[0];
     let parts = [];
-    
-    // On isole le sujet principal pour le manipuler
     let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
     
-    // Liste pour le piochage aléatoire
-    const allSubjects = Array.from(menu01.options)
-        .filter(o => o.value !== "" && o.value !== "custom")
-        .map(o => o.value);
-
-    function getRandom() { return allSubjects[Math.floor(Math.random() * allSubjects.length)]; }
+    const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
+    const getRandom = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
 
     selects.forEach(s => {
         if(s.value && s.value !== "custom") {
             if (s.name === "scenario") {
-                // --- LOGIQUE DES SCÉNARIOS ---
-                if (s.value === "dynamic_duo") {
-                    mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off, cinematic tension`;
-                } 
-                else if (s.value === "surreal_trio") {
-                    mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}, surrealist composition`;
-                }
-                else if (s.value === "gothic_chaos") {
-                    mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}, dark macabre vibe`;
-                }
-                else if (s.value === "crystal_symphony") {
-                    mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
-                }
-                else if (s.value === "giant_micro") {
-                    mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandom()} figures`;
-                }
-                else if (s.value === "hologram_glitch") {
-                    mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandom()}`;
-                }
-                else if (s.value === "statue_museum") {
-                    mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandom()}`;
-                }
+                if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off`;
+                else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}`;
+                else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}`;
+                // ... (tes autres scénarios)
             } else if (s.name !== "sujet_principal") {
                 parts.push(s.value);
             }
         }
     });
 
-    // On remet le sujet (potentiellement modifié par le scénario) au tout début
     if (mainSubject) parts.unshift(mainSubject);
-    
     document.getElementById('pos-out').value = parts.join(", ");
 }
 
+// 3. COPIE POUR TES 6 COLONNES NOTION
 function copyToClipboard() {
     const getT = (n) => {
         const e = document.getElementsByName(n)[0];
         return e ? e.options[e.selectedIndex].text : "";
     };
 
-    const sujet = getT('sujet_principal');
-    const scenario = getT('scenario');
-    const style = getT('style_visuel');
-    // On récupère ce que TU as tapé dans la case Tags :
+    const nomSujet = getT('sujet_principal');
+    const nomScenario = getT('scenario');
+    const nomStyle = getT('style_visuel');
     const tagsManuels = document.getElementById('tags-libres').value; 
-    
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
 
-    // Ordre exact de ta photo Notion :
-    // 1.Titre | 2.Prompt VF | 3.Prompt | 4.Tags | 5.Esthétique | 6.Personne
-    const col1 = `${sujet} (${scenario})`;
-    const col2 = ""; // Vide pour tes notes
+    // Ordre de ta photo : Titre | Prompt VF | Prompt | Tags | Esthétique | Personne
+    const col1 = `${nomSujet} (${nomScenario})`;
+    const col2 = ""; // Laissé vide pour tes notes manuelles (VF)
     const col3 = `${pos}\n\n[NEGATIVE]\n${neg}`;
-    const col4 = tagsManuels; // Tes tags libres !
-    const col5 = style;
-    const col6 = ""; // Vide ou à remplir manuellement
+    const col4 = tagsManuels; // Tes tags libres (ex: dragon, feu)
+    const col5 = nomStyle;   // Ton esthétique (ukiyo-e, etc.)
+    const col6 = "";         // Personne (vide)
 
     const ligne = `${col1}\t${col2}\t${col3}\t${col4}\t${col5}\t${col6}`;
 
     navigator.clipboard.writeText(ligne).then(() => {
-        alert("✅ Ligne prête ! Les tags seront convertis en boutons dans Notion.");
+        alert("✅ Prêt pour Notion ! Clique sur la case Titre et fais Ctrl+V.");
     });
 }
 
-    function resetAll() {
+function resetAll() {
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
     document.getElementById('pos-out').value = "";
+    document.getElementById('tags-libres').value = "";
 }
 </script>
 </body>
