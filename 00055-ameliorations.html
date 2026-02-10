@@ -184,9 +184,16 @@ body {
 </header>
 
 <div class="generator-grid">
+
 <div class="field-box">
-    <label>01. SUJET PRINCIPAL</label>
-    <select class="p-select" name="sujet_principal">
+    <div class="menu-header">
+        <label>01. SUJET PRINCIPAL</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_sujet_principal" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('sujet_principal')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="sujet_principal" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Muses & Silhouettes">
             <option value="Ethereal woman with strawberry blonde hair, emerald green translucent ruffled gown, intricate lace bodice, high-fashion couture">La Muse Émeraude (Robe vaporeuse)</option>
@@ -194,26 +201,33 @@ body {
             <option value="Maid in shiny black latex dress, white apron and garters, high-contrast fetish aesthetic">Soubrette en latex noir (Esthétique fétiche)</option>
             <option value="Shadowy grim reaper in a tattered black cloak, faceless hooded entity, dark presence">Faucheuse d'ombre (Entité encapuchonnée)</option>
             <option value="Gritty plumber in blue denim overalls, heavy leather utility belt, holding a large wrench, soot-stained face, cinematic lighting">Le Plombier (Bleu de travail et clé à molette)</option>
-<option value="Astronaut in a vintage 1960s spacesuit, battered copper helmet, carrying a bouquet of wildflowers, surreal presence">L'Astronaute au bouquet (Surréalisme spatial)</option>
-<option value="Delicate ballerina in a glowing fiber-optic tutu, porcelain joints, performing a pirouette in a tattered environment">La Ballerine Cyber-Porcelaine</option>
-<option value="Master chef in a pristine white toque and apron, wearing a tactical gas mask, holding a glowing futuristic fruit">Le Chef au masque à gaz</option>
-<option value="Massive Sumo wrestler in a majestic flowing silk kimono, eyes closed in meditation, surrounded by a faint mystical aura">Le Sumo en méditation (Soie et sérénité)</option>
-<option value="Small Victorian child with a large wind-up key in their back, holding a translucent jellyfish balloon, haunting gaze">L'Enfant à clé (Automate victorien)</option>
+            <option value="Astronaut in a vintage 1960s spacesuit, battered copper helmet, carrying a bouquet of wildflowers, surreal presence">L'Astronaute au bouquet (Surréalisme spatial)</option>
+            <option value="Delicate ballerina in a glowing fiber-optic tutu, porcelain joints, performing a pirouette in a tattered environment">La Ballerine Cyber-Porcelaine</option>
+            <option value="Master chef in a pristine white toque and apron, wearing a tactical gas mask, holding a glowing futuristic fruit">Le Chef au masque à gaz</option>
+            <option value="Massive Sumo wrestler in a majestic flowing silk kimono, eyes closed in meditation, surrounded by a faint mystical aura">Le Sumo en méditation (Soie et sérénité)</option>
+            <option value="Small Victorian child with a large wind-up key in their back, holding a translucent jellyfish balloon, haunting gaze">L'Enfant à clé (Automate victorien)</option>
         </optgroup>
         <optgroup label="Créatures & Personnages">
             <option value="Mechanical steampunk dragon, brass and copper scales, visible glowing blue pistons, intricate clockwork wings, steam exhaust, majestic pose">Dragon Steampunk Mécanique (Pistons et vapeur)</option>
             <option value="Cinematic Santa Claus, weathered face, velvet suit with fur trim, wise expression">Père Noël Cinématique (Le "réel" traditionnel)</option>
             <option value="Large black panther, sleek muscular build, piercing amber eyes, predator grace">Panthère noire (Grâce sauvage)</option>
             <option value="Graceful forest doe, glowing crystalline antlers, collar made of blooming wildflowers, ethereal forest spirit">La Biche aux bois de cristal</option>
-<option value="Dapper penguin wearing a miniature black velvet tuxedo and monocle, holding a tiny silver-topped cane, sophisticated posture">Le Pingouin en smoking (Dandy polaire)</option>
-<option value="Human-sized white rabbit in a Victorian red waistcoat, holding a large glowing pocket watch, whimsical but slightly eerie">Le Lapin à la montre (Vibe Alice / Steampunk)</option>
+            <option value="Dapper penguin wearing a miniature black velvet tuxedo and monocle, holding a tiny silver-topped cane, sophisticated posture">Le Pingouin en smoking (Dandy polaire)</option>
+            <option value="Human-sized white rabbit in a Victorian red waistcoat, holding a large glowing pocket watch, whimsical but slightly eerie">Le Lapin à la montre (Vibe Alice / Steampunk)</option>
         </optgroup>
         <option value="custom">--- Custom (Saisir manuellement) ---</option>
     </select>
 </div>
+
 <div class="field-box">
-    <label>02. ACTION & POSE</label>
-    <select class="p-select" name="action_pose">
+    <div class="menu-header">
+        <label>02. ACTION & POSE</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_action_pose" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('action_pose')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="action_pose" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Énergie & Mouvement">
             <option value="Aggressive scythe swing, dynamic motion blur on red blade, powerful execution pose">Attaque à la faux (Flou de mouvement, pose d'exécution)</option>
@@ -226,18 +240,24 @@ body {
             <option value="Sitting at a bistro table, leaning on hand, sophisticated boredom, direct eye contact">Assise au café (Ennui sophistiqué, regard caméra)</option>
         </optgroup>
         <optgroup label="Comportements Draconiques">
-    <option value="Perched on a rooftop, mechanical tail coiling around a chimney, observing the city with glowing eyes">Perché sur un toit (Observation urbaine)</option>
-    <option value="Majestic takeoff, huge clockwork wings unfolding, steam geysers erupting from back vents">Décollage majestueux (Déploiement d'ailes et vapeur)</option>
-    <option value="Diving through clouds, metallic body sleek and aerodynamic, wind-swept motion blur">Plongée dans les nuages (Aérodynamisme et vitesse)</option>
-    <option value="Breathing blue electric fire, sparking gears, destructive energy blast">Souffle de feu électrique (Énergie destructive)</option>
-</optgroup>
+            <option value="Perched on a rooftop, mechanical tail coiling around a chimney, observing the city with glowing eyes">Perché sur un toit (Observation urbaine)</option>
+            <option value="Majestic takeoff, huge clockwork wings unfolding, steam geysers erupting from back vents">Décollage majestueux (Déploiement d'ailes et vapeur)</option>
+            <option value="Diving through clouds, metallic body sleek and aerodynamic, wind-swept motion blur">Plongée dans les nuages (Aérodynamisme et vitesse)</option>
+            <option value="Breathing blue electric fire, sparking gears, destructive energy blast">Souffle de feu électrique (Énergie destructive)</option>
+        </optgroup>
         <option value="custom">--- Custom ---</option>
     </select>
 </div>
 
 <div class="field-box">
-    <label>03. DÉTAILS, MATIÈRES & OBJETS</label>
-    <select class="p-select" name="objets_matieres">
+    <div class="menu-header">
+        <label>03. DÉTAILS, MATIÈRES & OBJETS</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_objets_matieres" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('objets_matieres')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="objets_matieres" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Matières & Textures (S'applique au sujet)">
             <option value="liquid metallic chrome skin, mercury-like reflections, fluid shifting shapes, high-gloss finish">Métal liquide / Chrome (Reflets mercure)</option>
@@ -260,8 +280,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>04. DÉCOR & LIEU</label>
-    <select class="p-select" name="decor_lieu">
+    <div class="menu-header">
+        <label>04. DÉCOR & LIEU</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_decor_lieu" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('decor_lieu')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="decor_lieu" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Futuriste & Dystopique">
             <option value="Futuristic neon-lit skyscraper skyline, cyberpunk city towers reflecting on water, dense urban sprawl">Skyline cyberpunk néon (Reflets sur l'eau)</option>
@@ -278,8 +304,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>05. ÉPOQUE & CONTEXTE</label>
-    <select class="p-select" name="epoque_contexte">
+    <div class="menu-header">
+        <label>05. ÉPOQUE & CONTEXTE</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_epoque_contexte" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('epoque_contexte')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="epoque_contexte" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Passé & Nostalgie">
             <option value="Cinematic 1950s glamour, Parisian Fin de Siècle vibe, vintage fashion editorial">Glamour 1950 (Vibe Fin de Siècle)</option>
@@ -295,8 +327,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>06. MÉTÉO & PHÉNOMÈNES</label>
-    <select class="p-select" name="meteo_phenomenes">
+    <div class="menu-header">
+        <label>06. MÉTÉO & PHÉNOMÈNES</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_meteo_phenomenes" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('meteo_phenomenes')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="meteo_phenomenes" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Atmosphère & Particules">
             <option value="Hazy morning mist, swirling indoor cigarette smoke, floating steam particles, soft atmospheric haze">Brume matinale et volutes de fumée</option>
@@ -312,8 +350,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>07. AMBIANCE & MOOD</label>
-    <select class="p-select" name="ambiance_mood">
+    <div class="menu-header">
+        <label>07. AMBIANCE & MOOD</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_ambiance_mood" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('ambiance_mood')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="ambiance_mood" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Surréalisme & Mystère">
             <option value="High-stakes surrealism, ominous cosmic event, high-tech meets dark magic vibe">Surréalisme menaçant (Magie noire & High-Tech)</option>
@@ -329,8 +373,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>08. LUMINOSITÉ</label>
-    <select class="p-select" name="luminosite_eclairage">
+    <div class="menu-header">
+        <label>08. LUMINOSITÉ</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_luminosite_eclairage" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('luminosite_eclairage')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="luminosite_eclairage" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Contrastes & Néons">
             <option value="Intense red neon city glow vs yellow crescent moonlight, electric blue flare accents">Néon rouge vs Lune jaune (Éclairs bleus)</option>
@@ -346,10 +396,15 @@ body {
 </div>
 
 <div class="field-box">
-    <label>09. STYLE VISUEL</label>
-    <select class="p-select" name="style_visuel">
+    <div class="menu-header">
+        <label>09. STYLE VISUEL</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_style_visuel" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('style_visuel')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="style_visuel" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
-
         <optgroup label="Moteurs de Rendu & CGI">
             <option value="Octane Render, cinematic 3D realism, physically based materials, Ray-tracing">Octane Render (Matériaux physiques)</option>
             <option value="Blender Cycles render, path-traced lighting, realistic global illumination">Blender Cycles (Lumière globale)</option>
@@ -362,13 +417,11 @@ body {
             <option value="Ray Tracing enabled, realistic reflections, accurate light bounce">Ray Tracing (Reflets réels)</option>
             <option value="Professional 3D Render, high-quality CGI, polished finish">3D Render (Rendu 3D Standard)</option>
         </optgroup>
-
         <optgroup label="Photographie & Cinéma (Tes Classiques)">
             <option value="Analog film photography, 35mm grain, lush color grading, fashion editorial look">Photo Argentique (Grain 35mm & Look mode)</option>
             <option value="Vintage Kodachrome style, saturated colors, historical film look, 1950s aesthetic">Style Kodachrome (Couleurs saturées vintage)</option>
             <option value="Photorealistic, hyper-detailed, life-like textures, masterpiece quality">Photorealistic (Ultra-réalisme)</option>
         </optgroup>
-
         <optgroup label="Artistique & Médiums">
             <option value="Masterpiece Oil Painting, rich impasto, textured canvas, classical style">Oil Painting (Peinture à l'huile)</option>
             <option value="Sketch on oil canvas, visible underdrawing, raw artistic texture">Sketch oil canvas (Esquisse sur toile)</option>
@@ -379,7 +432,6 @@ body {
             <option value="Detailed Matte Painting, epic scale, photorealistic environment composite">Matte Painting (Décors épiques)</option>
             <option value="ZBrush sculpt, high-detail clay texture, digital carving">ZBrush (Sculpture numérique)</option>
         </optgroup>
-
         <optgroup label="Styles Graphiques">
             <option value="Low Poly art style, sharp edges, flat shaded polygons, minimalist look">Low Poly (Géométrie minimaliste)</option>
             <option value="Retro Pixel Art, 16-bit aesthetic, limited palette, dithered shading">Pixel Art (Esthétique 16-bit)</option>
@@ -390,8 +442,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>10. STYLE NÉO-NOIR</label>
-    <select class="p-select" name="style_neonoir">
+    <div class="menu-header">
+        <label>10. STYLE NÉO-NOIR</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_style_neonoir" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('style_neonoir')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="style_neonoir" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Palettes Iconiques">
             <option value="Cyber-teal and electric-orange dual lighting, sharp cinematic shadows">Bichromie bleu-sarcelle et orange électrique</option>
@@ -408,8 +466,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>11. OPTIQUE & TECHNIQUE</label>
-    <select class="p-select" name="optique_camera">
+    <div class="menu-header">
+        <label>11. OPTIQUE & TECHNIQUE</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_optique_camera" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('optique_camera')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="optique_camera" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Photographie Pro">
             <option value="Professional DSLR photography, 85mm prime lens, f/1.8 aperture, sharp focus on eyes">Portrait DSLR (85mm, f/1.8, piqué net)</option>
@@ -425,8 +489,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>12. SURRÉALISME & GLITCH</label>
-    <select class="p-select" name="surrealisme_glitch">
+    <div class="menu-header">
+        <label>12. SURRÉALISME & GLITCH</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_surrealisme_glitch" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('surrealisme_glitch')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="surrealisme_glitch" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Défier la Physique">
             <option value="Zero gravity environment, floating debris, suspended liquid droplets">Zéro gravité (Débris et gouttes flottantes)</option>
@@ -442,8 +512,14 @@ body {
 </div>
 
 <div class="field-box">
-    <label>13. COMPOSITION & ANGLES</label>
-    <select class="p-select" name="composition_angle">
+    <div class="menu-header">
+        <label>13. COMPOSITION & ANGLES</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_composition_angle" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('composition_angle')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="composition_angle" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Angles de Vue">
             <option value="Low angle shot, looking up, heroic perspective, monumental scale">Contre-plongée (Perspective héroïque)</option>
@@ -461,22 +537,34 @@ body {
 </div>
 
 <div class="field-box">
-    <label>14. MES SIGNATURES (Effets cumulés)</label>
+    <div class="menu-header">
+        <label>14. MES SIGNATURES (Effets cumulés)</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_signature_preset" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('signature_preset')" class="btn-dice">🎲</button>
+        </div>
+    </div>
     <select name="signature_preset" class="p-select" onchange="genPrompt()">
         <option value="">-- Utiliser une recette sauvegardée --</option>
         <option value="highly detailed skin, subsurface scattering, cold studio lighting, high contrast, cinematic 8k render">✨ L'Effet Boucher (Peau & Lumière)</option>
         <option value="warm ethereal glow, soft focus, dreamlike atmosphere, gold leaf accents, masterpiece lighting">🎅 Le Style Papa Noël (Chaleureux)</option>
         <option value="gritty oil painting, thick brushstrokes, heavy impasto, canvas texture, dark moody colors">🎨 Peinture à l'huile Texturée</option>
-<option value="dark gothic atmosphere, eerie macabre elegance, victorian horror, chiaroscuro lighting, hyper-detailed textures, moody and mysterious">🌑 Signature : Alice Macabre (Gothique)</option>
-<option value="photorealistic, subsurface scattering, octane render, 8k, raytracing, sharp focus, professional studio lighting, hyper-realistic skin pores">💎 Signature : Rendu Cycles (Réalisme Brut)</option>
-<option value="biomechanical, intricate organic patterns, H.R. Giger style, bioluminescent accents, polished metallic surfaces, alien aesthetic">🕷️ Signature : Swedish Bio-Mech (Giger)</option>
-<option value="gritty industrial aesthetic, oily metallic textures, amber cinematic lighting, smoky atmosphere, retro-futuristic machinery, high contrast">⚙️ Signature : Dieselpunk (Ocre & Acier)</option>
-<option value="rembrandt lighting, oil on canvas texture, deep shadows, warm glowing skin, classical art style, museum quality, rich pigments">🎨 Signature : Maître Flamand (Classique)</option>
-    </select></div>
+        <option value="dark gothic atmosphere, eerie macabre elegance, victorian horror, chiaroscuro lighting, hyper-detailed textures, moody and mysterious">🌑 Signature : Alice Macabre (Gothique)</option>
+        <option value="photorealistic, subsurface scattering, octane render, 8k, raytracing, sharp focus, professional studio lighting, hyper-realistic skin pores">💎 Signature : Rendu Cycles (Réalisme Brut)</option>
+        <option value="biomechanical, intricate organic patterns, H.R. Giger style, bioluminescent accents, polished metallic surfaces, alien aesthetic">🕷️ Signature : Swedish Bio-Mech (Giger)</option>
+        <option value="gritty industrial aesthetic, oily metallic textures, amber cinematic lighting, smoky atmosphere, retro-futuristic machinery, high contrast">⚙️ Signature : Dieselpunk (Ocre & Acier)</option>
+        <option value="rembrandt lighting, oil on canvas texture, deep shadows, warm glowing skin, classical art style, museum quality, rich pigments">🎨 Signature : Maître Flamand (Classique)</option>
+    </select>
+</div>
 
-    
 <div class="field-box">
-    <label>15. FORMAT & QUALITÉ</label>
+    <div class="menu-header">
+        <label>15. FORMAT & QUALITÉ</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_format_image" title="Vérrouiller ce menu">
+            <button onclick="rollMenu('format_image')" class="btn-dice">🎲</button>
+        </div>
+    </div>
     <select class="p-select" name="format_image" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Standards & Carré">
@@ -496,7 +584,9 @@ body {
     </select>
 </div>
 
-</div>
+</div> 
+
+**Voulez-vous que je m'arrête là pour que vous puissiez tester sereinement ce bloc, ou avez-vous besoin du bloc de contrôle manuel (Seed +1, Notes, etc.) à placer juste en dessous ?**
 
 <div class="field-box">
     <label>SEED (ADN de l'image : -1 pour aléatoire)</label>
@@ -690,6 +780,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
