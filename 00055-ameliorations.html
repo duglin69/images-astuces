@@ -709,8 +709,7 @@ function surpriseMe() {
         const lock = document.getElementsByName('lock_' + s.name)[0];
         // On respecte les cadenas et on ignore Signature/Format
         if ((lock && lock.checked) || s.name === "signature_preset" || s.name === "format_image") return;
-
-        const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
+               const validOptions = Array.from(s.options).filter(opt => opt.value !== "custom");
         if (validOptions.length > 0) {
             s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
@@ -826,6 +825,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
