@@ -494,13 +494,22 @@ window.onload = () => {
 // 1. SURPRISE : Mélange les menus et remet le seed à -1
 function surpriseMe() {
     const selects = document.querySelectorAll('.p-select');
+    
     selects.forEach(s => {
+        // SÉCURITÉ : On ignore les Signatures (M14) ET le Format (M15)
+        if (s.name === "signature_preset" || s.name === "format_image") {
+            return; 
+        }
+
         const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
         if (validOptions.length > 0) {
             s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
     });
+
+    // On garde le contrôle sur le hasard
     document.getElementById('seed-input').value = "-1"; 
+    
     genPrompt();
 }
 
@@ -619,6 +628,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
