@@ -442,7 +442,7 @@ body {
     
 <div class="field-box">
     <label>15. FORMAT & QUALITÉ</label>
-    <select class="p-select" name="format_image">
+    <select class="p-select" name="format_image" onchange="genPrompt()">
         <option value="">--- Choisir ---</option>
         <optgroup label="Standards & Carré">
             <option value="1:1 aspect ratio, ultra-high resolution, 8k professional render">Format 1:1 (Carré parfait, 8K)</option>
@@ -563,30 +563,48 @@ function copyToClipboard() {
 }
 
 function resetAll() {
+    // On remet les menus à zéro (car ils changent à chaque fois)
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
+    
+    // On vide le prompt positif (pour une nouvelle idée)
     document.getElementById('pos-out').value = "";
+    
+    // On vide les notes (car elles sont liées à l'image précédente)
+    document.getElementById('user-notes').value = "";
+    
+    // On remet le Seed par hasard
     document.getElementById('seed-input').value = "-1";
+    
+    // Note : On ne touche PAS au prompt négatif car il reste fixe.
 }
     function exportPrompt() {
-    // 1. Utilitaire pour récupérer le texte de chaque menu
     const getT = (n) => {
         const e = document.getElementsByName(n)[0];
         return (e && e.selectedIndex > 0) ? e.options[e.selectedIndex].text : "---";
     };
 
     const seed = document.getElementById('seed-input').value;
+    const notes = document.getElementById('user-notes').value || "Aucune note.";
+    const signature = getT('signature_preset');
+    const format = getT('format_image');
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const titreSujet = getT('sujet_principal');
+    const sujet = getT('sujet_principal');
 
-    // 2. Construction du contenu (Structure inspirée de Z.AI)
-    let content = `--- GÉNÉRATEUR PERSONNEL 02 ---\n\n`;
-    content += `[SEED]: ${seed}\n\n`; // Archivage du Seed en haut 
+    // 1. LE HEADER ENRICHI
+    let content = `--- FICHE DE CRÉATION ---\n`;
+    content += `[DATE]: ${new Date().toLocaleDateString()}\n`;
+    content += `[SEED]: ${seed}\n`;
+    content += `[SIGNATURE]: ${signature}\n`;
+    content += `[FORMAT]: ${format}\n`;
+    content += `[NOTES]: ${notes}\n`; // Vos notes apparaissent ici
+    content += `-------------------------\n\n`;
     
+    // 2. LES PROMPTS
     content += `[PROMPT POSITIF]:\n${pos}\n\n`;
     content += `[PROMPT NÉGATIF]:\n${neg}\n\n`;
 
-    // 3. Archivage de chaque réglage individuel 
+    // 3. LA LISTE DÉTAILLÉE
     content += `[DÉTAILS SÉLECTIONNÉS]:\n`;
     const labels = {
         'sujet_principal': '01. SUJET',
@@ -603,23 +621,20 @@ function resetAll() {
         'optique_camera': '11. OPTIQUE',
         'surrealisme_glitch': '12. GLITCH',
         'composition_angle': '13. COMPOSITION',
-        'format_image': '14. FORMAT'
+        'signature_preset': '14. SIGNATURE',
+        'format_image': '15. FORMAT'
     };
 
     for (let key in labels) {
         content += `- ${labels[key]}: ${getT(key)}\n`;
     }
 
-    // 4. Création du fichier et téléchargement
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    
-    // Nom du fichier incluant le sujet et le seed pour un tri facile
-    const cleanTitle = titreSujet.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+    const cleanTitle = sujet.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
     a.href = url;
     a.download = `Export_${cleanTitle}_Seed_${seed}.txt`;
-    
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -628,6 +643,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
