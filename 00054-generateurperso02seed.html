@@ -448,6 +448,11 @@ body {
 
 </div>
 
+<div class="field-box">
+    <label>SEED (ADN de l'image : -1 pour aléatoire)</label>
+    <input type="number" id="seed-input" value="-1" style="width: 100%; padding: 10px; background: #0f172a; color: #10b981; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace;">
+</div>
+    
 <div class="button-group">
     <button onclick="genPrompt()" class="btn-gen">Générer le Prompt</button>
     <button onclick="surpriseMe()" class="btn-surprise">Surprise ✨</button>
@@ -465,59 +470,110 @@ body {
 </div>
     
 <script>
-// Configuration du "Pare-Signature" et filtres de qualité
 const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
 
-// Initialisation au chargement
 window.onload = () => {
     document.getElementById('neg-out').value = SUPER_NEGATIVE;
 };
 
-function genPrompt() {
-    // On récupère tous les menus dans l'ordre du DOM
-    const selects = document.querySelectorAll('.p-select');
-    let parts = [];
-
-    selects.forEach(s => {
-        // On n'ajoute que les options qui ont une valeur et qui ne sont pas "custom"
-        if(s.value && s.value !== "custom") {
-            parts.push(s.value);
-        }
-    });
-
-    // On injecte le résultat dans la zone de texte
-    document.getElementById('pos-out').value = parts.join(", ");
-}
-
+// 1. SURPRISE : Mélange les menus et remet le seed à -1
 function surpriseMe() {
     const selects = document.querySelectorAll('.p-select');
     selects.forEach(s => {
-        // On filtre pour ne pas tomber sur le choix vide ou "custom"
-        const validOptions = Array.from(s.options).filter(o => o.value !== "" && o.value !== "custom");
-        if(validOptions.length > 0) {
+        const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
+        if (validOptions.length > 0) {
             s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         }
     });
-    genPrompt(); // On génère automatiquement après la surprise
+    document.getElementById('seed-input').value = "-1"; 
+    genPrompt();
 }
 
+// 2. GÉNÉRATION : Compile tous les menus pour créer le prompt final
+function genPrompt() {
+    const selects = document.querySelectorAll('.p-select');
+    const menu01 = document.getElementsByName('sujet_principal')[0];
+    let parts = [];
+    
+    let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
+    const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
+    const getRandom = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
+
+    selects.forEach(s => {
+        if(s.value && s.value !== "custom") {
+            if (s.name === "scenario") {
+                // Logique des scénarios spéciaux
+                if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off`;
+                else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}`;
+                else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}`;
+                else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
+                else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandom()} figures`;
+                else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandom()}`;
+                else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandom()}`;
+            } else if (s.name !== "sujet_principal") {
+                parts.push(s.value);
+            }
+        }
+    });
+
+    if (mainSubject) parts.unshift(mainSubject);
+    document.getElementById('pos-out').value = parts.join(", ");
+}
+
+// 3. COPIE SIMPLE : Copie un bloc de texte lisible
 function copyToClipboard() {
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const fullPrompt = `PROMPT:\n${pos}\n\nNEGATIVE PROMPT:\n${neg}`;
+    const seed = document.getElementById('seed-input').value;
+
+    let blocTexte = `PROMPT POSITIF :\n${pos}\n\nPROMPT NÉGATIF :\n${neg}`;
     
-    navigator.clipboard.writeText(fullPrompt).then(() => {
-        alert("Prompt complet (Positif + Négatif) copié !");
+    // On n'ajoute le Seed que s'il est différent de -1
+    if (seed !== "-1") {
+        blocTexte += `\n\nSEED : ${seed}`;
+    }
+
+    navigator.clipboard.writeText(blocTexte).then(() => {
+        alert("✅ Prompt copié !");
     });
 }
 
 function resetAll() {
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
     document.getElementById('pos-out').value = "";
+    document.getElementById('seed-input').value = "-1";
+}
+    function exportPrompt() {
+    // 1. Récupération des données
+    const pos = document.getElementById('pos-out').value;
+    const neg = document.getElementById('neg-out').value;
+    const seed = document.getElementById('seed-input').value;
+    const menuSujet = document.getElementsByName('sujet_principal')[0];
+    const nomSujet = (menuSujet && menuSujet.selectedIndex > 0) ? menuSujet.options[menuSujet.selectedIndex].text : "Sans_titre";
+
+    // 2. Mise en forme du texte pour le fichier .txt
+    const entete = `FICHE DE GÉNÉRATION\n-------------------\nSUJET : ${nomSujet}\nSEED  : ${seed}\n-------------------\n\n`;
+    const corps = `PROMPT POSITIF :\n${pos}\n\nPROMPT NÉGATIF :\n${neg}`;
+    const contenuFinal = entete + corps;
+
+    // 3. Création et téléchargement du fichier
+    const blob = new Blob([contenuFinal], { type: 'text/plain' });
+    const lien = document.createElement('a');
+    
+    // On crée un nom de fichier explicite : "Sujet_Seed_Numero.txt"
+    const nomFichier = `Prompt_${nomSujet.replace(/\s+/g, '_')}_Seed_${seed}.txt`;
+    
+    lien.href = URL.createObjectURL(blob);
+    lien.download = nomFichier;
+    lien.click();
+    
+    // Nettoyage de la mémoire
+    URL.revokeObjectURL(lien.href);
 }
 </script>
 </body>
 </html>
+
 
 
 
