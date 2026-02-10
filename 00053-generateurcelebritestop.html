@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Personnalités V2</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1d;
+            --panel-color: #2c2c30;
+            --text-color: #c5c6c7;
+            --accent-color: #9b59b6; /* Violet */
+            --accent-hover: #be90d4;
+            --border-color: #4e4e50;
+            --input-bg: #0f0f10;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0px #000;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 20px;
+        }
+
+        .menu-block {
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .menu-label {
+            display: block;
+            font-size: 0.85em;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            background-color: var(--input-bg);
+            color: #fff;
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            font-family: inherit;
+            font-size: 0.9em;
+            box-sizing: border-box;
+            border-radius: 2px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .custom-input {
+            display: none; /* Caché par défaut */
+            margin-top: 5px;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 5px;
+        }
+
+        /* Zone de contrôle */
+        .controls {
+            width: 100%;
+            max-width: 1400px;
+            background-color: var(--panel-color);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.5);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            background-color: #000;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 10px 20px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        button.secondary {
+            border-color: var(--text-color);
+            color: var(--text-color);
+        }
+        
+        button.secondary:hover {
+            background-color: var(--text-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--text-color);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        /* Zone de résultat */
+        .output-area {
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: #000;
+            color: #0f0; /* Vert terminal */
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .negative-preview {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Toast notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Générateur de Personnalités V2</h1>
+
+    <div class="container" id="menus-container">
+        <!-- Les menus seront générés ici par JavaScript -->
+    </div>
+
+    <div class="controls">
+        <button onclick="generatePrompt()">Générer le prompt</button>
+        <button onclick="surprisePrompt()" class="secondary">Prompt Surprise</button>
+        <button onclick="copyToClipboard()" class="secondary">Copier le prompt</button>
+        <button onclick="resetAll()" class="secondary">Reset à 100%</button>
+        <button onclick="exportTxt()" class="secondary">Exporter .txt</button>
+
+        <div class="control-group">
+            <div class="toggle-container" title="Pondérer le sujet et le style">
+                <input type="checkbox" id="weight-toggle">
+                <label for="weight-toggle">Boost Pondération (1.2x)</label>
+            </div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <input type="number" id="seed-input" placeholder="Auto" style="width: 100px;">
+                <button type="button" onclick="randomizeSeed()" style="padding: 6px 10px; font-size: 1.2em; cursor: pointer;">🎲</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="output-area">
+        <label class="menu-label">Résultat Prompt Positif (Éditable) :</label>
+        <textarea id="output-positive" placeholder="Le prompt apparaîtra ici..."></textarea>
+        
+        <label class="menu-label" style="margin-top:10px; display:block;">Aperçu Prompt Négatif (Auto-géré) :</label>
+        <div id="output-negative-preview" class="negative-preview">text, watermark, signature, ...</div>
+    </div>
+
+    <div id="toast">Prompt copié dans le presse-papier !</div>
+
+    <script>
+        // --- DONNÉES DES MENUS ---
+        const menusData = [
+            {
+                title: "IDENTITÉ DE BASE",
+                id: "menu_identite",
+                options: [
+                    "Adulte - Femme (20-40 ans)",
+                    "Adulte - Femme mûre (50 ans et plus)",
+                    "Adulte - Homme (20-40 ans)",
+                    "Adulte - Homme mûr (50 ans et plus)",
+                    "Adulte - Personne Non-Binaire",
+                    "Enfant - Fille (5-10 ans)",
+                    "Enfant - Garçon (5-10 ans)",
+                    "Adolescent(e) - Fille (13-17 ans)",
+                    "Adolescent(e) - Garçon (13-17 ans)"
+                ]
+            },
+            {
+                title: "TYPE CORPOREL / SILHOUETTE",
+                id: "menu_silhouette",
+                options: [
+                    "Silhouette svelte et fine",
+                    "Silhouette athlétique et musclée",
+                    "Silhouette mince (type mannequin haute couture)",
+                    "Silhouette ronde et voluptueuse (curvy)",
+                    "Silhouette forte et imposante",
+                    "Silhouette moyenne et équilibrée",
+                    "Silhouette longiligne et grande",
+                    "Silhouette trapue et compacte",
+                    "Silhouette gracile et fragile",
+                    "Silhouette élancée et élégante"
+                ]
+            },
+            {
+                title: "FORME DU VISAGE",
+                id: "menu_visage",
+                options: [
+                    "Visage ovale équilibré (idéal esthétique)",
+                    "Visage rond (joues pleines)",
+                    "Visage carré (mandibule large)",
+                    "Visage long (rectangulaire)",
+                    "Visage en forme de cœur (front large, menton pointu)",
+                    "Visage en forme de diamant (pommettes saillantes)",
+                    "Visage triangulaire (front étroit, mâchoire large)",
+                    "Visage ovale inversé (front étroit, menton rond)",
+                    "Visage angulaire avec osselets marqués"
+                ]
+            },
+            {
+                title: "MÂCHOIRE & MENTON (Signature)",
+                id: "menu_machoire",
+                options: [
+                    "Mâchoire carrée forte et marquée",
+                    "Mâchoire douce et arrondie",
+                    "Mâchoire angulaire et pointue",
+                    "Menton rond et doux",
+                    "Menton carré et large",
+                    "Menton pointu",
+                    "Menton fendu en deux (Cleft chin)",
+                    "Menton en galoche (proéminent)",
+                    "Mâchoire serrée et étroite",
+                    "Double menton léger",
+                    "Mâchoire sculptée et définie"
+                ]
+            },
+            {
+                title: "FORME DU NEZ",
+                id: "menu_nez",
+                options: [
+                    "Nez droit et fin (élégant)",
+                    "Nez aquilin (busqué, bossu)",
+                    "Nez romain (structure forte)",
+                    "Nez camus (petit et rond, bouton)",
+                    "Nez large et épais",
+                    "Nez crochu",
+                    "Nez retroussé (bouton)",
+                    "Narines larges",
+                    "Pont nasal haut et étroit",
+                    "Nez grec (droit et harmonieux)"
+                ]
+            },
+            {
+                title: "YEUX : FORME",
+                id: "menu_yeux_forme",
+                options: [
+                    "Yeux en amande (langoureux, exotique)",
+                    "Yeux ronds (innocents, étonnés)",
+                    "Yeux tombants (Hooded eyes, lourds, intensité)",
+                    "Yeux bridés (asiatiques)",
+                    "Yeux rapprochés (séracés)",
+                    "Yeux écartés",
+                    "Yeux en forme d'amande inversée (felin, séduisant)",
+                    "Yeux globuleux (saillants)",
+                    "Yeux creux et enfoncés",
+                    "Yeux froids et inexpressifs"
+                ]
+            },
+            {
+                title: "YEUX : COULEUR",
+                id: "menu_yeux_couleur",
+                options: [
+                    "Yeux bleu acier, perçants",
+                    "Yeux bleu océan profond",
+                    "Yeux verts émeraude",
+                    "Yeux noisette (brun-vert)",
+                    "Yeux marron chocolat sombre",
+                    "Yeux marron clair",
+                    "Yeux gris perle",
+                    "Yeux vairons (hétérochromie)",
+                    "Yeux noirs profonds",
+                    "Yeux dorés (ambre)"
+                ]
+            },
+            {
+                title: "SOURCILS",
+                id: "menu_sourcils",
+                options: [
+                    "Sourcils épais et broussailleux",
+                    "Sourcils fins et arqués",
+                    "Sourcils droits et sérieux",
+                    "Sourcils hauts et expressifs (étonnement)",
+                    "Sourcils joints (monosourcil)",
+                    "Sourcils clairsemés (rares)",
+                    "Sourcils taillés au crayon",
+                    "Sourcils fournis mais soignés",
+                    "Sourcils arqués vers l'extérieur (séduction)"
+                ]
+            },
+            {
+                title: "LÈVRES & BOUCHE",
+                id: "menu_levres",
+                options: [
+                    "Lèvres pulpeuses (volume, naturel)",
+                    "Lèvres fines et délicates",
+                    "Bouche grande et souriante",
+                    "Bouche petite et pincée",
+                    "Lèvres en arc de Cupidon (bien dessinées)",
+                    "Lèvres charnues (supérieure et inférieure)",
+                    "Lèvres asymétriques",
+                    "Sourire gingival (gencelles visibles)",
+                    "Lèvres gercées ou sèches (vieillesse/dur)",
+                    "Teint de lèvres rouge naturel"
+                ]
+            },
+            {
+                title: "CHEVEUX & COIFFURE",
+                id: "menu_cheveux",
+                options: [
+                    "Cheveux longs et ondulés",
+                    "Cheveux courts coupés au carré (bob)",
+                    "Cheveux très longs jusqu'à la taille",
+                    "Cheveux bouclés naturels (afro)",
+                    "Tresses dreadlocks",
+                    "Cheveux lisses et soyeux",
+                    "Chignon de ballet",
+                    "Queue de cheval haute",
+                    "Cheveux courts et ébouriffés (messy)",
+                    "Crâne rasé (boule à zéro)",
+                    "Calvitie masculine (toupie ou dégarni)",
+                    "Coupe militaire (buzzcut)",
+                    "Cheveux mi-longs décoiffés",
+                    "Mèche sur le front (emo/rock)",
+                    "Coiffure afro volumineuse",
+                    "Coiffure samouraï traditionnelle"
+                ]
+            },
+            {
+                title: "COULEUR CHEVEUX",
+                id: "menu_cheveux_couleur",
+                options: [
+                    "Cheveux blond doré",
+                    "Cheveux blond platine (clairs)",
+                    "Cheveux bruns châtains",
+                    "Cheveux noirs de jais",
+                    "Cheveux roux",
+                    "Cheveux gris cendré",
+                    "Cheveux blanc neige",
+                    "Cheveux auburn (roux-brun)",
+                    "Cheveux colorés (pastel, bleu, rose)",
+                    "Mèches racines (ombre hair)",
+                    "Cheveux marron chocolat",
+                    "Cheveux teints en noir bleuté",
+                    "Cheveux couleur or"
+                ]
+            },
+            {
+                title: "PEAU & TEXTURE",
+                id: "menu_peau",
+                options: [
+                    "Peau lisse et parfaite (jeune, porcelaine)",
+                    "Peau bronzée mat",
+                    "Peau pâle et claire",
+                    "Peau avec pores visibles (réalisme)",
+                    "Peau avec taches de rousseur",
+                    "Peau ridée (mûre)",
+                    "Peau grasse avec brillance",
+                    "Peau sèche et rugueuse",
+                    "Teint rosé",
+                    "Teint cireux (malade/pâle)",
+                    "Peau noire ivoire",
+                    "Peau marron chocolat",
+                    "Peau asiatique claire",
+                    "Peau asiatique bronzée"
+                ]
+            },
+            {
+                title: "DÉTAILS PARTICULIERS / SIGNES DISTINCTIFS",
+                id: "menu_details",
+                options: [
+                    "Aucun détail spécifique",
+                    "Tatouages tribaux sur le visage/bras",
+                    "Tatouages Yakuzas complets ( Irezumi )",
+                    "Maquillage Drag-Queen coloré et extravagant",
+                    "Maquillage Gothique (yeux noirs, lèvres rouges)",
+                    "Cicatrices visibles sur le visage",
+                    "Implants cybernétiques (LED sous la peau)",
+                    "Veines apparentes (bodybuilder/vampire)",
+                    "Piercings multiples (nez, sourcil, lèvres)",
+                    "Ongles longs vernis colorés",
+                    "Peinture de guerre tribale sur le visage",
+                    "Barbe de trois jours (Homme/Androgyne)",
+                    "Moustache et barbe soignées"
+                ]
+            },
+            {
+                title: "ACCESSOIRES FACIAUX",
+                id: "menu_accessoires",
+                options: [
+                    "Aucun accessoire facial",
+                    "Lunettes de vue rondes",
+                    "Lunettes d'aviateur (teintées)",
+                    "Lunettes wayfarer (carrées)",
+                    "Lunettes futuristes cyberpunk",
+                    "Rouge à lèvres rouge vif",
+                    "Fard à paupières (eye liner)",
+                    "Boucles d'oreilles pendantes",
+                    "Chapeau melon",
+                    "Casquette de baseball",
+                    "Cigarette fumée à la bouche",
+                    "Pipe ancienne",
+                    "Bandeau samouraï (Hachimaki)"
+                ]
+            },
+            {
+                title: "COMPAGNON / PERSONNAGE SECONDAIRE",
+                id: "menu_compagnon",
+                options: [
+                    "Seul (pas de compagnon)",
+                    "Personne floue en arrière-plan",
+                    "Chien assis à côté du sujet",
+                    "Chat dans les bras du sujet",
+                    "Groupe de personnes indistinctes (foule)",
+                    "Silhouette en contre-jour",
+                    "Oiseau posé sur l'épaule",
+                    "Partenaire amoureux tenant la main",
+                    "Enfant jouant près du sujet",
+                    "Ombre menaçante derrière le sujet",
+                    "Robot domestique",
+                    "Fantôme flottant à côté"
+                ]
+            },
+            {
+                title: "OBJET / ÉLÉMENT DU DÉCOR",
+                id: "menu_objet",
+                options: [
+                    "Aucun objet spécifique",
+                    "Fauteuil vintage ou chaise design",
+                    "Plante verte en pot (Monstera, Ficus)",
+                    "Voiture ancienne en arrière-plan",
+                    "Boules à facettes (années disco)",
+                    "Lampe de bureau vintage",
+                    "Piano à queue",
+                    "Livres empilés sur une table",
+                    "Miroir ancien avec cadre doré",
+                    "Bicycle ou vélo ancien",
+                    "Arbre solitaire en fleurs (Sakura)",
+                    "Fenêtre ouverte avec lumière dorée",
+                    "Statue ou sculpture abstraite",
+                    "Table basse avec tasse de café fumante",
+                    "Ciel étoilé en arrière-plan",
+                    "Écouteurs de musique autour du cou",
+                    "Bouquet de fleurs",
+                    "Samouraï armé (statue ou figurine)"
+                ]
+            },
+            {
+                title: "TENUE VESTIMENTAIRE : HOMME",
+                id: "menu_tenue_homme",
+                options: [
+                    "Smoking / Tuxedo noir classique",
+                    "Costume trois pièces élégant (cravate)",
+                    "Uniforme militaire (officier)",
+                    "Veste en cuir (biker)",
+                    "Veste en jean (denim)",
+                    "Chemise blanche ouverte (décontracté)",
+                    "T-shirt simple",
+                    "Sous-vêtements : Boxer short ou slip",
+                    "Maillot de bain : Short de bain (boardshorts)",
+                    "Maillot de bain : Slip de bain (speedo)",
+                    "Gilet sans manches",
+                    "Pull en laine",
+                    "Costume vintage années 20 (pinstripe)"
+                ]
+            },
+            {
+                title: "TENUE VESTIMENTAIRE : FEMME",
+                id: "menu_tenue_femme",
+                options: [
+                    "Robe de soirée élégante (longue)",
+                    "Robe cocktail (courte)",
+                    "Chemisier blanc et jupe crayon",
+                    "Jean et haut décolleté",
+                    "Veste en cuir perfecto",
+                    "Tenue sportswear (leggings, top)",
+                    "Sous-vêtements : Soutien-gorge et culotte classiques",
+                    "Lingerie fine (dentelle, corset)",
+                    "Sous-vêtements : String",
+                    "Maillot de bain : Bikini deux pièces",
+                    "Maillot de bain : Maillot une pièce (élégant)",
+                    "Robe d'été légère",
+                    "Haut sans bretelles",
+                    "Robe de cour style reine"
+                ]
+            },
+            {
+                title: "TENUE VESTIMENTAIRE : NON-BINAIRE",
+                id: "menu_tenue_nb",
+                options: [
+                    "Hoodie (sweat à capuche) large",
+                    "T-shirt unisexe neutre",
+                    "Veste oversize androgyne",
+                    "Combinaison (overall) en denim",
+                    "Costue androgyne élégant (sans genre précis)",
+                    "Pantalon large et haut fluide",
+                    "Veste en cuir unisexe",
+                    "Tenue streetwear moderne",
+                    "Pull à col roulé",
+                    "Tunique et pantalon confortables",
+                    "Tenue hippie/colorée",
+                    "Smoking de ville style moderne"
+                ]
+            },
+            {
+                title: "TENUE VESTIMENTAIRE : ENFANT",
+                id: "menu_tenue_enfant",
+                options: [
+                    "T-shirt et short de jeu",
+                    "Robe fleurie pour fille",
+                    "Uniforme scolaire classique",
+                    "Pyjama",
+                    "Tenue de sport pour enfant",
+                    "Costume d'animal (Kigurumi)",
+                    "Tenue d'hiver (doudoune, bonnet)",
+                    "Tenue princesse ou prince",
+                    "Salopette (bavoir)",
+                    "Tenue casual"
+                ]
+            },
+            {
+                title: "TENUE VESTIMENTAIRE : ADOLESCENT(E)",
+                id: "menu_tenue_ado",
+                options: [
+                    "Hoodie et pantalon cargo",
+                    "T-shirt de groupe de musique",
+                    "Tenue sportswear (basket, survêt)",
+                    "Jean déchiré",
+                    "Veste en cuir jeune",
+                    "Robe de soirée adolescente",
+                    "Tenue d'école (lycéen)",
+                    "Tenue punk/vintage",
+                    "Maillot de bain (beach)",
+                    "Tenue gaming / geek"
+                ]
+            },
+            {
+                title: "EXPRESSION / REGARD",
+                id: "menu_expression",
+                options: [
+                    "Regard perçant et intense",
+                    "Regard doux et mélancolique",
+                    "Sourire charmeur et détendu",
+                    "Grimace colérique",
+                    "Regard perdu dans le vide",
+                    "Sourire ironique ou narquois",
+                    "Regard sérieux et concentré",
+                    "Visage fermé et froid",
+                    "Expression de surprise",
+                    "Rire franc et ouvert",
+                    "Regard fatigué (cernes)",
+                    "Regard moqueur"
+                ]
+            },
+            {
+                title: "ACTION / POSTURE",
+                id: "menu_action",
+                options: [
+                    "Portrait face caméra (straight-on)",
+                    "Regard sur le côté (profil perdu)",
+                    "De 3/4 (standard portrait)",
+                    "Assis en chaise (relax)",
+                    "Bras croisés (fermé ou puissant)",
+                    "Mains dans les poches",
+                    "Conversation avec quelqu'un (hors cadre)",
+                    "Regardant son téléphone",
+                    "S'appuyant contre un mur",
+                    "Marchant vers la caméra",
+                    "La tête dans les mains (triste/pensif)",
+                    "Danse (disco/danse classique)"
+                ]
+            },
+            {
+                title: "ANGLE DE VUE",
+                id: "menu_angle",
+                options: [
+                    "Plan face frontale (niveau des yeux)",
+                    "Vue de profil pur",
+                    "Vue légèrement surélevée",
+                    "Contre-plongée (puissance, domination)",
+                    "Plongée (faiblesse, douceur)",
+                    "Vue en plan serré (Gros plan visage)",
+                    "Vue en plan américain (bustier)",
+                    "Vue très rapprochée (yeux seulement)"
+                ]
+            },
+            {
+                title: "PROFONDEUR DE CHAMP (BOKEH)",
+                id: "menu_dof",
+                options: [
+                    "Arrière-plan totalement flou (Focus uniquement sur le sujet)",
+                    "Flou doux et artistique (Bokeh doux)",
+                    "Profondeur de champ moyenne (visage net, arrière-plan légèrement flou)",
+                    "Tout net (Pas de flou, paysage net)",
+                    "Profondeur superficielle (Shallow, seul un oeil net)",
+                    "Effet Macro (grain de peau visible, arrière-plan très flou)",
+                    "Focalisation sur l'objet en premier plan"
+                ]
+            },
+            {
+                title: "ÉCLAIRAGE PORTRAIT",
+                id: "menu_lumiere",
+                options: [
+                    "Éclairage Rembrandt (triangle d'or sur la joue)",
+                    "Éclairage Split (mi-visage noir, théâtre)",
+                    "Éclairage Butterfly (sous le nez, glamour)",
+                    "Rim Lighting (contour doré, séparation)",
+                    "Lumière plate studio (pas d'ombre, identité)",
+                    "Lumière cinématographique dramatique (contrastée)",
+                    "Lumière douce (softbox, floue)",
+                    "Lumière dure et directe (soleil midi)",
+                    "Éclairage par en dessous (horreur/étrange)",
+                    "Néons colorés (cyberpunk/nightlife)",
+                    "Lumière disco (stroboscopique, colorée)",
+                    "Lumière à la bougie (intimité)"
+                ]
+            },
+            {
+                title: "ARRIÈRE-PLAN",
+                id: "menu_fond",
+                options: [
+                    "Fond blanc studio (pureté, identification)",
+                    "Flou urbain (bokeh ville)",
+                    "Fond noir studio (mystère)",
+                    "Intérieur sombre (ambiance)",
+                    "Paysage naturel en fond (forêt, montagne)",
+                    "Fond couleur unie (studio portrait)",
+                    "Studio avec fond papier dégradé",
+                    "Arrière-plan architectural moderne",
+                    "Bibliothèque ou bureau à l'arrière-plan",
+                    "Nuit extérieure (ville)",
+                    "Château français (époque Louis XIV)",
+                    "Jardins de Versailles",
+                    "Nuit étoilée (Espace/Black space)"
+                ]
+            },
+            {
+                title: "ÉPOQUE / CONTEXTE TEMPOREL",
+                id: "menu_epoque",
+                options: [
+                    "Époque contemporaine (Moderne)",
+                    "Années 20 (Années Folles)",
+                    "Années 40 (Seconde Guerre Mondiale)",
+                    "Années 50 (Idéal américain)",
+                    "Années 60 (Hippie, Pop Art)",
+                    "Années 70 (Disco, Hippie)",
+                    "Années 80 (Néon, Synthwave)",
+                    "Années 90 (Grunge)",
+                    "Années 2000 (Y2K)",
+                    "Années Futuristes (2077)",
+                    "Antiquité (Égypte, Grèce, Rome)",
+                    "Moyen Âge",
+                    "Renaissance",
+                    "Révolution Française (1789)",
+                    "Époque Louis XIV (Versailles, Baroque)",
+                    "Guerre Froide (Années 50-60)",
+                    "Préhistoire",
+                    "Post-Apocalyptique",
+                    "Cyberpunk",
+                    "Steampunk",
+                    "Dieselpunk",
+                    "Époque Edo (Japon traditionnel)",
+                    "Ère Meiji (Japon moderne)",
+                    "Japon Futuriste (Tokyo Night)"
+                ]
+            },
+            {
+                title: "STYLE ARTISTIQUE",
+                id: "menu_style",
+                options: [
+                    "Photographie réaliste 8k",
+                    "Peinture à l'huile classique (portrait maître)",
+                    "Style Photo d'Identité (passeport, neutre)",
+                    "Style Noir & Blanc cinématographique",
+                    "Illustration BD réaliste (ligne claire)",
+                    "Style Pencil Sketch (croquis crayon)",
+                    "Style Aquarelle douce",
+                    "Style Caricature (exagération des traits)",
+                    "Hyper-réalisme (peau visible)",
+                    "Style Polaroid vintage",
+                    "Icy blue style (tons froids, glacés)",
+                    "Abstract Surrealism (Absureal, rêveur)",
+                    "Hygge style (ambiance doux, confortable, lumière naturelle)",
+                    "Afrofuturism (Afrohemain, néons, identité noire futuriste)",
+                    "Black space style (esthétique sombre, espace profond)",
+                    "Bio-mechanic (organique et machine)",
+                    "Bio organic (formes organiques fluides)"
+                ]
+            },
+            {
+                title: "QUALITÉ & RENDUS (Fusionné)",
+                id: "menu_quality",
+                options: [
+                    "3D Render", "8k", "4k", "Ambient Occlusion", "Arnold", "Best quality", "Blender Cycles", "Cinema 4D", "Concept Art", "Digital Painting", "Global Illumination", "HDR (High Dynamic Range)", "Highly detailed", "Intricate details", "Low Poly", "Marmoset Toolbag", "Masterpiece", "Matte Painting", "Oil Painting", "Octane Render", "Pencil Sketch", "Photorealistic", "Physically Based Rendering (PBR)", "Pixel Art", "Ray Tracing", "Redshift", "Résolution extrême", "Sharp focus", "Sketch oil canvas", "Stable Diffusion", "Studio lighting", "Subsurface Scattering (SSS)", "Unreal Engine 5", "Vector Art", "V-Ray", "ZBrush", "Icy blue", "Abstract Surrealism", "Hygge", "Afrofuturism", "Black space", "Bio-mechanic", "Bio organic"
+                ]
+            },
+            {
+                title: "FORMAT DE SORTIE",
+                id: "menu_format",
+                options: [
+                    "[ratio 2:3] (Portrait vertical)",
+                    "[ratio 1:1] (Carré)",
+                    "[ratio 3:4] (Portrait classique)",
+                    "[ratio 4:5] (Instagram portrait)",
+                    "[ratio 9:16] (Mobile portrait)",
+                    "[ratio 16:9]"
+                ]
+            }
+        ];
+
+        const negativePromptBase = "text, watermark, signature, logo, copyright, username, artist name, bad anatomy, deformed, distorted, extra limbs, missing limbs, blurry, low quality, jpeg artifacts, cartoon, 3d render, smooth plastic skin, crop, worst quality, normal quality, lowres, skin spots, acnes, skin blemishes, age spot, glans, extra fingers, fewer fingers, strange fingers, bad hand, missing fingers, missing arms, poorly drawn hands, poorly drawn face, mutation, mutated, ugly, disgusting, poorly drawn, long neck, duplicate, morbid, mutilated, floating hands, disconnected limbs, malformed hands, blur, out of focus, long neck, long body, disgusting, childish, cartoon, 3d, illustration, earrings, glasses, sunglasses, hat, cap, headwear, neckwear, shoes, boots, gloves, shoes, socks, sandals, bag, backpack, purse, necklace, bracelet, watch, ring, jewelry, accessories";
+
+        // --- INITIALISATION ---
+        window.onload = function() {
+            const container = document.getElementById('menus-container');
+            
+            menusData.forEach(menu => {
+                const block = document.createElement('div');
+                block.className = 'menu-block';
+
+                const label = document.createElement('label');
+                label.className = 'menu-label';
+                label.textContent = menu.title;
+                
+                const select = document.createElement('select');
+                select.id = menu.id;
+                
+                // Option par défaut
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "Choisir";
+                defaultOption.textContent = "Choisir";
+                select.appendChild(defaultOption);
+
+                // Options du menu
+                menu.options.forEach(optText => {
+                    const option = document.createElement('option');
+                    option.value = optText;
+                    option.textContent = optText;
+                    select.appendChild(option);
+                });
+
+                // Option Custom
+                const customOption = document.createElement('option');
+                customOption.value = "Custom";
+                customOption.textContent = "Custom";
+                select.appendChild(customOption);
+
+                // Input Custom (caché)
+                const customInput = document.createElement('input');
+                customInput.type = "text";
+                customInput.id = "custom_" + menu.id;
+                customInput.className = "custom-input";
+                customInput.placeholder = "Entrez votre texte...";
+
+                // Événement pour afficher l'input Custom
+                select.addEventListener('change', function() {
+                    if(this.value === "Custom") {
+                        customInput.style.display = "block";
+                        customInput.focus();
+                    } else {
+                        customInput.style.display = "none";
+                    }
+                });
+
+                block.appendChild(label);
+                block.appendChild(select);
+                block.appendChild(customInput);
+                container.appendChild(block);
+            });
+            
+            updateNegativePreview();
+        };
+
+        // --- FONCTIONS LOGIQUES ---
+
+        function generatePrompt() {
+            let parts = [];
+            let weighted = document.getElementById('weight-toggle').checked;
+            
+            // --- GESTION AMÉLIORÉE DU SEED ---
+            const seedInput = document.getElementById('seed-input');
+            let currentSeed = seedInput.value;
+
+            if (!currentSeed) {
+                currentSeed = Math.floor(Math.random() * 999999999) + 1;
+                seedInput.value = currentSeed;
+            }
+            // ---------------------------------
+
+            // Récupération de l'identité pour le filtrage (normalisation en minuscules)
+            const identiteValue = document.getElementById('menu_identite').value.toLowerCase();
+
+            menusData.forEach(menu => {
+                // --- FILTRAGE INTELLIGENT DES TENUES ---
+                if (menu.id === 'menu_tenue_femme' && !identiteValue.includes('femme')) return;
+                if (menu.id === 'menu_tenue_homme' && !identiteValue.includes('homme')) return;
+                if (menu.id === 'menu_tenue_nb' && !identiteValue.includes('non-binaire')) return;
+                if (menu.id === 'menu_tenue_enfant' && !identiteValue.includes('enfant')) return;
+                if (menu.id === 'menu_tenue_ado' && !identiteValue.includes('adolescent')) return;
+                // -----------------------------------------
+
+                const select = document.getElementById(menu.id);
+                const val = select.value;
+                let part = "";
+
+                if (val === "Custom") {
+                    const customInput = document.getElementById("custom_" + menu.id);
+                    if (customInput.value.trim() !== "") {
+                        part = customInput.value.trim();
+                    }
+                } else if (val !== "Choisir") {
+                    part = val;
+                }
+
+                if (part) {
+                    if (weighted) {
+                        // On booste l'identité, le style et la qualité pour les portraits
+                        if (menu.id === "menu_identite" || menu.id === "menu_style" || menu.id === "menu_quality") {
+                            part = `(${part}:1.2)`;
+                        }
+                    }
+                    parts.push(part);
+                }
+            });
+
+            const finalPrompt = parts.join(", ");
+            document.getElementById('output-positive').value = finalPrompt;
+            updateNegativePreview();
+            return finalPrompt;
+        }
+
+        function updateNegativePreview() {
+            let neg = negativePromptBase;
+            
+            const styleSelect = document.getElementById('menu_style');
+            const renderSelect = document.getElementById('menu_quality');
+            const styleVal = styleSelect ? styleSelect.value.toLowerCase() : "";
+            const renderVal = renderSelect ? renderSelect.value.toLowerCase() : "";
+
+            // Gestion dynamique des conflits pour Portrait
+            if (styleVal.includes("3d") || styleVal.includes("digital painting") || styleVal.includes("oil painting") || renderVal.includes("unreal") || renderVal.includes("octane") || renderVal.includes("cycles") || renderVal.includes("v-ray") || renderVal.includes("blender") || renderVal.includes("cinema 4d")) {
+                neg = neg.replace(/, 3d render/g, "").replace(/, 3d/g, "").replace(/, cartoon/g, "");
+            }
+            
+            if (styleVal.includes("pencil sketch") || styleVal.includes("caricature") || styleVal.includes("aquarelle")) {
+                neg = neg.replace(/, cartoon/g, "");
+            }
+
+            // Nettoyage des virgules doubles
+            neg = neg.replace(/, ,/g, ",");
+
+            document.getElementById('output-negative-preview').textContent = neg;
+            return neg;
+        }
+
+        function getNegativePrompt() {
+            return updateNegativePreview();
+        }
+
+        function surprisePrompt() {
+            menusData.forEach(menu => {
+                const select = document.getElementById(menu.id);
+                const customInput = document.getElementById("custom_" + menu.id);
+                const options = menu.options;
+                const randomIndex = Math.floor(Math.random() * options.length);
+                
+                select.value = options[randomIndex];
+                customInput.style.display = "none";
+                customInput.value = "";
+            });
+            generatePrompt();
+        }
+
+        function resetAll() {
+            menusData.forEach(menu => {
+                const select = document.getElementById(menu.id);
+                const customInput = document.getElementById("custom_" + menu.id);
+                select.value = "Choisir";
+                customInput.style.display = "none";
+                customInput.value = "";
+            });
+            document.getElementById('output-positive').value = "";
+            document.getElementById('seed-input').value = "";
+            document.getElementById('weight-toggle').checked = false;
+            updateNegativePreview();
+        }
+
+        async function copyToClipboard() {
+            const positive = document.getElementById('output-positive').value; // On prend directement ce qui est dans la zone (qui peut être édité)
+            const negative = getNegativePrompt();
+            const textToCopy = `${positive}\n\nNegative Prompt:\n${negative}`;
+            
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                showToast();
+            } catch (err) {
+                console.error('Erreur de copie : ', err);
+                alert("Erreur lors de la copie automatique. Veuillez copier manuellement.");
+            }
+        }
+
+        function exportTxt() {
+            const positive = document.getElementById('output-positive').value; // Capture le prompt éventuellement modifié
+            const negative = getNegativePrompt();
+            const seed = document.getElementById('seed-input').value || "Auto-Aléatoire";
+            
+            let content = `--- GENERATEUR DE PERSONNALITES V2 ---\n\n`;
+            content += `[SEED]: ${seed}\n\n`;
+            content += `[PROMPT POSITIF]:\n${positive}\n\n`;
+            content += `[PROMPT NEGATIF]:\n${negative}\n\n`;
+            content += `[DETAILS SELECTIONNES]:\n`;
+            
+            menusData.forEach(menu => {
+                const val = document.getElementById(menu.id).value;
+                if(val === "Custom") {
+                    const cVal = document.getElementById("custom_" + menu.id).value;
+                    content += `- ${menu.title}: ${cVal || "Vide"}\n`;
+                } else if (val !== "Choisir") {
+                    content += `- ${menu.title}: ${val}\n`;
+                }
+            });
+
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `personnalites_prompt_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function randomizeSeed() {
+            const newSeed = Math.floor(Math.random() * 999999999) + 1;
+            document.getElementById('seed-input').value = newSeed;
+        }
+    </script>
+</body>
+</html>
