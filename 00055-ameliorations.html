@@ -589,27 +589,43 @@ body {
 
 <div class="field-box">
     <label>SEED (ADN de l'image : -1 pour aléatoire)</label>
-    <input type="number" id="seed-input" value="-1" style="width: 100%; padding: 10px; background: #0f172a; color: #10b981; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace;">
+    <div style="display: flex; gap: 10px;">
+        <input type="number" id="seed-input" value="-1" style="flex-grow: 1; padding: 10px; background: #0f172a; color: #10b981; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace;">
+        <div class="seed-btns" style="display: flex; gap: 5px;">
+            <button onclick="updateSeed(1)" class="btn-dice" style="background: #475569; padding: 5px 15px;">+1</button>
+            <button onclick="updateSeed(-1)" class="btn-dice" style="background: #475569; padding: 5px 15px;">-1</button>
+        </div>
+    </div>
 </div>
+
+<div class="field-box" style="border: 1px solid var(--accent-primary);">
+    <label style="color: #fbbf24; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" id="lock-manual" class="lock-check"> 
+        ✍️ ACTIVER L'ÉDITION MANUELLE (Empêche les menus d'effacer vos modifs)
+    </label>
     
+    <label style="margin-top: 15px;">NOTES DU DIRECTEUR (Mémo pour votre fichier .txt)</label>
+    <textarea id="user-notes" placeholder="Ex: Alice doit avoir un regard plus intense, assombrir le décor..."></textarea>
+</div>
+
 <div class="button-group">
-    <button onclick="genPrompt()" class="btn-gen">Générer le Prompt</button>
+    <button onclick="genPrompt()" class="btn-gen">Générer</button>
     <button onclick="surpriseMe()" class="btn-surprise">Surprise ✨</button>
-    <button onclick="copyToClipboard()" class="btn-copy">Copier Tout 📋</button>
-    <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
+    <button onclick="copyBatch()" class="btn-gen" style="background: var(--accent-success);">Rafale de 4 🚀</button>
+    <button onclick="copyToClipboard()" class="btn-copy">Copier 📋</button>
     <button onclick="exportPrompt()" class="btn-export">Export .txt 💾</button>
-    <button onclick="document.getElementById('import-file').click()" class="p-btn" style="background: #10b981;">📂 Importer un .txt</button>
-<input type="file" id="import-file" style="display:none;" onchange="importPrompt(this)" accept=".txt">
+    <button onclick="document.getElementById('import-file').click()" class="p-btn" style="background: #10b981; padding: 12px 24px; border-radius: 6px; color: white; border: none; font-weight: bold; cursor: pointer;">📂 Importer</button>
+    <input type="file" id="import-file" style="display:none;" onchange="importPrompt(this)" accept=".txt">
+    <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
 </div>
 
 <div class="output-section">
     <h3>PROMPT POSITIF</h3>
-    <textarea id="pos-out" readonly></textarea>
+    <textarea id="pos-out" placeholder="Le prompt généré s'affichera ici..."></textarea>
     
     <h3>PROMPT NÉGATIF EXPERT</h3>
     <textarea id="neg-out" readonly></textarea>
-</div>
-    
+</div>    
 <script>
 // --- 1. CONFIGURATION ET INITIALISATION ---
 const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
@@ -779,6 +795,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
