@@ -694,7 +694,8 @@ function genPrompt() {
 function rollMenu(menuName) {
     const s = document.getElementsByName(menuName)[0];
     if (!s) return;
-    const validOptions = Array.from(s.options).filter(o => o.value !== "" && o.value !== "custom");
+   // On enlève le test 'opt.value !== ""' pour que le vide devienne une option possible
+const validOptions = Array.from(s.options).filter(opt => opt.value !== "custom");
     if (validOptions.length > 0) {
         s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
         genPrompt(); // Mise à jour immédiate du texte
@@ -815,6 +816,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
