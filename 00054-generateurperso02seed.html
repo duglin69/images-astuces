@@ -426,7 +426,22 @@ body {
 </div>
 
 <div class="field-box">
-    <label>14. FORMAT & QUALITÉ</label>
+    <label>14. MES SIGNATURES (Effets cumulés)</label>
+    <select name="signature_preset" class="p-select" onchange="genPrompt()">
+        <option value="">-- Utiliser une recette sauvegardée --</option>
+        <option value="highly detailed skin, subsurface scattering, cold studio lighting, high contrast, cinematic 8k render">✨ L'Effet Boucher (Peau & Lumière)</option>
+        <option value="warm ethereal glow, soft focus, dreamlike atmosphere, gold leaf accents, masterpiece lighting">🎅 Le Style Papa Noël (Chaleureux)</option>
+        <option value="gritty oil painting, thick brushstrokes, heavy impasto, canvas texture, dark moody colors">🎨 Peinture à l'huile Texturée</option>
+<option value="dark gothic atmosphere, eerie macabre elegance, victorian horror, chiaroscuro lighting, hyper-detailed textures, moody and mysterious">🌑 Signature : Alice Macabre (Gothique)</option>
+<option value="photorealistic, subsurface scattering, octane render, 8k, raytracing, sharp focus, professional studio lighting, hyper-realistic skin pores">💎 Signature : Rendu Cycles (Réalisme Brut)</option>
+<option value="biomechanical, intricate organic patterns, H.R. Giger style, bioluminescent accents, polished metallic surfaces, alien aesthetic">🕷️ Signature : Swedish Bio-Mech (Giger)</option>
+<option value="gritty industrial aesthetic, oily metallic textures, amber cinematic lighting, smoky atmosphere, retro-futuristic machinery, high contrast">⚙️ Signature : Dieselpunk (Ocre & Acier)</option>
+<option value="rembrandt lighting, oil on canvas texture, deep shadows, warm glowing skin, classical art style, museum quality, rich pigments">🎨 Signature : Maître Flamand (Classique)</option>
+    </select></div>
+
+    
+<div class="field-box">
+    <label>15. FORMAT & QUALITÉ</label>
     <select class="p-select" name="format_image">
         <option value="">--- Choisir ---</option>
         <optgroup label="Standards & Carré">
@@ -544,35 +559,67 @@ function resetAll() {
     document.getElementById('seed-input').value = "-1";
 }
     function exportPrompt() {
-    // 1. Récupération des données
+    // 1. Utilitaire pour récupérer le texte de chaque menu
+    const getT = (n) => {
+        const e = document.getElementsByName(n)[0];
+        return (e && e.selectedIndex > 0) ? e.options[e.selectedIndex].text : "---";
+    };
+
+    const seed = document.getElementById('seed-input').value;
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const seed = document.getElementById('seed-input').value;
-    const menuSujet = document.getElementsByName('sujet_principal')[0];
-    const nomSujet = (menuSujet && menuSujet.selectedIndex > 0) ? menuSujet.options[menuSujet.selectedIndex].text : "Sans_titre";
+    const titreSujet = getT('sujet_principal');
 
-    // 2. Mise en forme du texte pour le fichier .txt
-    const entete = `FICHE DE GÉNÉRATION\n-------------------\nSUJET : ${nomSujet}\nSEED  : ${seed}\n-------------------\n\n`;
-    const corps = `PROMPT POSITIF :\n${pos}\n\nPROMPT NÉGATIF :\n${neg}`;
-    const contenuFinal = entete + corps;
+    // 2. Construction du contenu (Structure inspirée de Z.AI)
+    let content = `--- GÉNÉRATEUR PERSONNEL 02 ---\n\n`;
+    content += `[SEED]: ${seed}\n\n`; // Archivage du Seed en haut 
+    
+    content += `[PROMPT POSITIF]:\n${pos}\n\n`;
+    content += `[PROMPT NÉGATIF]:\n${neg}\n\n`;
 
-    // 3. Création et téléchargement du fichier
-    const blob = new Blob([contenuFinal], { type: 'text/plain' });
-    const lien = document.createElement('a');
+    // 3. Archivage de chaque réglage individuel 
+    content += `[DÉTAILS SÉLECTIONNÉS]:\n`;
+    const labels = {
+        'sujet_principal': '01. SUJET',
+        'scenario': '01bis. SCÉNARIO',
+        'action_pose': '02. ACTION',
+        'objets_matieres': '03. MATIÈRES',
+        'decor_lieu': '04. DÉCOR',
+        'epoque_contexte': '05. ÉPOQUE',
+        'meteo_phenomenes': '06. MÉTÉO',
+        'ambiance_mood': '07. AMBIANCE',
+        'luminosite_eclairage': '08. LUMIÈRE',
+        'style_visuel': '09. STYLE',
+        'style_neonoir': '10. NÉO-NOIR',
+        'optique_camera': '11. OPTIQUE',
+        'surrealisme_glitch': '12. GLITCH',
+        'composition_angle': '13. COMPOSITION',
+        'format_image': '14. FORMAT'
+    };
+
+    for (let key in labels) {
+        content += `- ${labels[key]}: ${getT(key)}\n`;
+    }
+
+    // 4. Création du fichier et téléchargement
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
     
-    // On crée un nom de fichier explicite : "Sujet_Seed_Numero.txt"
-    const nomFichier = `Prompt_${nomSujet.replace(/\s+/g, '_')}_Seed_${seed}.txt`;
+    // Nom du fichier incluant le sujet et le seed pour un tri facile
+    const cleanTitle = titreSujet.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+    a.href = url;
+    a.download = `Export_${cleanTitle}_Seed_${seed}.txt`;
     
-    lien.href = URL.createObjectURL(blob);
-    lien.download = nomFichier;
-    lien.click();
-    
-    // Nettoyage de la mémoire
-    URL.revokeObjectURL(lien.href);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 </script>
 </body>
 </html>
+
 
 
 
