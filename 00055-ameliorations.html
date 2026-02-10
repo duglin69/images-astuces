@@ -487,55 +487,39 @@ body {
 </div>
     
 <script>
+// --- 1. CONFIGURATION ET INITIALISATION ---
 const SUPER_NEGATIVE = "signature, watermark, text, logo, username, (signature:1.2), deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck";
 
 window.onload = () => {
     document.getElementById('neg-out').value = SUPER_NEGATIVE;
 };
 
-// 1. SURPRISE : Mélange les menus et remet le seed à -1
-function surpriseMe() {
-    const selects = document.querySelectorAll('.p-select');
-    
-    selects.forEach(s => {
-        // SÉCURITÉ : On ignore les Signatures (M14) ET le Format (M15)
-        if (s.name === "signature_preset" || s.name === "format_image") {
-            return; 
-        }
-
-        const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
-        if (validOptions.length > 0) {
-            s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
-        }
-    });
-
-    // On garde le contrôle sur le hasard
-    document.getElementById('seed-input').value = "-1"; 
-    
-    genPrompt();
-}
-
-// 2. GÉNÉRATION : Compile tous les menus pour créer le prompt final
+// --- 2. LE CŒUR : GÉNÉRATION DU PROMPT (Version Riche) ---
 function genPrompt() {
+    // SÉCURITÉ : Si le mode manuel est activé, on bloque l'écriture automatique
+    const lockManual = document.getElementById('lock-manual');
+    if (lockManual && lockManual.checked) return;
+
     const selects = document.querySelectorAll('.p-select');
     const menu01 = document.getElementsByName('sujet_principal')[0];
     let parts = [];
     
+    // Récupération du sujet pour les scénarios
     let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
     const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
-    const getRandom = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
+    const getRandomSujet = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
 
     selects.forEach(s => {
         if(s.value && s.value !== "custom") {
+            // ON RÉINTÈGRE TES SCÉNARIOS SPÉCIAUX ICI
             if (s.name === "scenario") {
-                // Logique des scénarios spéciaux
-                if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandom()}, dramatic face-off`;
-                else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandom()} and ${getRandom()}`;
-                else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandom()}`;
+                if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandomSujet()}, dramatic face-off`;
+                else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandomSujet()} and ${getRandomSujet()}`;
+                else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandomSujet()}`;
                 else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
-                else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandom()} figures`;
-                else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandom()}`;
-                else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandom()}`;
+                else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandomSujet()} figures`;
+                else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandomSujet()}`;
+                else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandomSujet()}`;
             } else if (s.name !== "sujet_principal") {
                 parts.push(s.value);
             }
@@ -546,153 +530,132 @@ function genPrompt() {
     document.getElementById('pos-out').value = parts.join(", ");
 }
 
-// 3. COPIE SIMPLE : Copie un bloc de texte lisible
-function copyToClipboard() {
+// --- 3. LES DÉS (HASARD INDIVIDUEL PAR MENU) ---
+function rollMenu(menuName) {
+    const s = document.getElementsByName(menuName)[0];
+    if (!s) return;
+    const validOptions = Array.from(s.options).filter(o => o.value !== "" && o.value !== "custom");
+    if (validOptions.length > 0) {
+        s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
+        genPrompt(); // Mise à jour immédiate du texte
+    }
+}
+
+// --- 4. LA SURPRISE (MÉLANGE GLOBAL + CADENAS) ---
+function surpriseMe() {
+    document.querySelectorAll('.p-select').forEach(s => {
+        const lock = document.getElementsByName('lock_' + s.name)[0];
+        // On respecte les cadenas et on ignore Signature/Format
+        if ((lock && lock.checked) || s.name === "signature_preset" || s.name === "format_image") return;
+
+        const validOptions = Array.from(s.options).filter(opt => opt.value !== "" && opt.value !== "custom");
+        if (validOptions.length > 0) {
+            s.value = validOptions[Math.floor(Math.random() * validOptions.length)].value;
+        }
+    });
+    document.getElementById('seed-input').value = "-1"; 
+    genPrompt();
+}
+
+// --- 5. GESTION DU SEED ET RAFALE ---
+function updateSeed(val) {
+    let sInput = document.getElementById('seed-input');
+    let sValue = parseInt(sInput.value);
+    if (isNaN(sValue) || sValue < 0) sValue = Math.floor(Math.random() * 1000000);
+    sInput.value = sValue + val;
+    genPrompt();
+}
+
+function copyBatch() {
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const seed = document.getElementById('seed-input').value;
+    let seed = parseInt(document.getElementById('seed-input').value);
+    if (isNaN(seed) || seed < 0) seed = Math.floor(Math.random() * 1000000);
 
-    let blocTexte = `PROMPT POSITIF :\n${pos}\n\nPROMPT NÉGATIF :\n${neg}`;
-    
-    // On n'ajoute le Seed que s'il est différent de -1
-    if (seed !== "-1") {
-        blocTexte += `\n\nSEED : ${seed}`;
+    let batch = "=== RAFALE DE 4 VARIATIONS ===\n\n";
+    for (let i = 0; i < 4; i++) {
+        batch += `PROMPT ${i+1} (SEED: ${seed + i})\n${pos}\n--neg ${neg}\n\n`;
     }
-
-    navigator.clipboard.writeText(blocTexte).then(() => {
-        alert("✅ Prompt copié !");
-    });
+    navigator.clipboard.writeText(batch).then(() => alert("✅ Rafale copiée !"));
 }
 
-function resetAll() {
-    // On remet les menus à zéro (car ils changent à chaque fois)
-    document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
-    
-    // On vide le prompt positif (pour une nouvelle idée)
-    document.getElementById('pos-out').value = "";
-    
-    // On vide les notes (car elles sont liées à l'image précédente)
-    document.getElementById('user-notes').value = "";
-    
-    // On remet le Seed par hasard
-    document.getElementById('seed-input').value = "-1";
-    
-    // Note : On ne touche PAS au prompt négatif car il reste fixe.
-}
-    function exportPrompt() {
+// --- 6. EXPORT / IMPORT (Avec ta liste de labels complète) ---
+function exportPrompt() {
     const getT = (n) => {
         const e = document.getElementsByName(n)[0];
         return (e && e.selectedIndex > 0) ? e.options[e.selectedIndex].text : "---";
     };
 
     const seed = document.getElementById('seed-input').value;
-    const notes = document.getElementById('user-notes').value || "Aucune note.";
-    const signature = getT('signature_preset');
-    const format = getT('format_image');
+    const notes = document.getElementById('user-notes')?.value || "Aucune note.";
     const pos = document.getElementById('pos-out').value;
     const neg = document.getElementById('neg-out').value;
-    const sujet = getT('sujet_principal');
 
-    // 1. LE HEADER ENRICHI
-    let content = `--- FICHE DE CRÉATION ---\n`;
-    content += `[DATE]: ${new Date().toLocaleDateString()}\n`;
-    content += `[SEED]: ${seed}\n`;
-    content += `[SIGNATURE]: ${signature}\n`;
-    content += `[FORMAT]: ${format}\n`;
-    content += `[NOTES]: ${notes}\n`; // Vos notes apparaissent ici
-    content += `-------------------------\n\n`;
-    
-    // 2. LES PROMPTS
-    content += `[PROMPT POSITIF]:\n${pos}\n\n`;
-    content += `[PROMPT NÉGATIF]:\n${neg}\n\n`;
+    let content = `--- FICHE DE CRÉATION ---\n[SEED]: ${seed}\n[NOTES]: ${notes}\n-------------------------\n\n`;
+    content += `[PROMPT POSITIF]:\n${pos}\n\n[PROMPT NÉGATIF]:\n${neg}\n\n[DÉTAILS]:\n`;
 
-    // 3. LA LISTE DÉTAILLÉE
-    content += `[DÉTAILS SÉLECTIONNÉS]:\n`;
     const labels = {
-        'sujet_principal': '01. SUJET',
-        'scenario': '01bis. SCÉNARIO',
-        'action_pose': '02. ACTION',
-        'objets_matieres': '03. MATIÈRES',
-        'decor_lieu': '04. DÉCOR',
-        'epoque_contexte': '05. ÉPOQUE',
-        'meteo_phenomenes': '06. MÉTÉO',
-        'ambiance_mood': '07. AMBIANCE',
-        'luminosite_eclairage': '08. LUMIÈRE',
-        'style_visuel': '09. STYLE',
-        'style_neonoir': '10. NÉO-NOIR',
-        'optique_camera': '11. OPTIQUE',
-        'surrealisme_glitch': '12. GLITCH',
-        'composition_angle': '13. COMPOSITION',
-        'signature_preset': '14. SIGNATURE',
-        'format_image': '15. FORMAT'
+        'sujet_principal': '01. SUJET', 'scenario': '01bis. SCÉNARIO', 'action_pose': '02. ACTION',
+        'objets_matieres': '03. MATIÈRES', 'decor_lieu': '04. DÉCOR', 'epoque_contexte': '05. ÉPOQUE',
+        'meteo_phenomenes': '06. MÉTÉO', 'ambiance_mood': '07. AMBIANCE', 'luminosite_eclairage': '08. LUMIÈRE',
+        'style_visuel': '09. STYLE', 'style_neonoir': '10. NÉO-NOIR', 'optique_camera': '11. OPTIQUE',
+        'surrealisme_glitch': '12. GLITCH', 'composition_angle': '13. COMPOSITION',
+        'signature_preset': '14. SIGNATURE', 'format_image': '15. FORMAT'
     };
 
-    for (let key in labels) {
-        content += `- ${labels[key]}: ${getT(key)}\n`;
-    }
+    for (let key in labels) { content += `- ${labels[key]}: ${getT(key)}\n`; }
 
     const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    const cleanTitle = sujet.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
-    a.href = url;
-    a.download = `Export_${cleanTitle}_Seed_${seed}.txt`;
-    document.body.appendChild(a);
+    a.href = URL.createObjectURL(blob);
+    a.download = `Export_Seed_${seed}.txt`;
     a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 }
-    function importPrompt(input) {
-    const file = input.files[0];
-    if (!file) return;
 
+function importPrompt(input) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const text = e.target.result;
-
-        // 1. On retrouve le SEED
         const seedMatch = text.match(/\[SEED\]: (.*)/);
         if (seedMatch) document.getElementById('seed-input').value = seedMatch[1].trim();
-
-        // 2. On retrouve les NOTES
-        const notesMatch = text.match(/\[NOTES\]: ([\s\S]*?)\n-------------------------/);
-        if (notesMatch) document.getElementById('user-notes').value = notesMatch[1].trim();
-
-        // 3. On remet les MENUS à la bonne place
-        const lines = text.split('\n');
-        const selects = document.querySelectorAll('.p-select');
         
+        const notesMatch = text.match(/\[NOTES\]: ([\s\S]*?)\n-------------------------/);
+        if (notesMatch && document.getElementById('user-notes')) document.getElementById('user-notes').value = notesMatch[1].trim();
+
+        const lines = text.split('\n');
         lines.forEach(line => {
             if (line.startsWith('- ')) {
-                // On sépare le nom du menu et le texte sélectionné
                 const parts = line.substring(2).split(': ');
-                if (parts.length >= 2) {
-                    const labelText = parts[1].trim();
-                    
-                    // On cherche quel menu correspond et on sélectionne l'option par son texte
-                    selects.forEach(s => {
-                        Array.from(s.options).forEach((opt, index) => {
-                            if (opt.text.trim() === labelText) {
-                                s.selectedIndex = index;
-                            }
-                        });
+                const labelText = parts[1]?.trim();
+                document.querySelectorAll('.p-select').forEach(s => {
+                    Array.from(s.options).forEach((opt, i) => {
+                        if (opt.text.trim() === labelText) s.selectedIndex = i;
                     });
-                }
+                });
             }
         });
-
-        // 4. On rafraîchit tout pour que le prompt visuel se mette à jour
         genPrompt();
-        
-        // Petit message de succès
-        alert("Fiche de création chargée avec succès ! 🚀");
-        input.value = ""; // On vide le sélecteur pour le prochain import
+        alert("Fiche chargée ! 🚀");
     };
-    reader.readAsText(file);
+    reader.readAsText(input.files[0]);
+}
+
+// --- 7. OUTILS CLASSIQUES ---
+function copyToClipboard() {
+    const pos = document.getElementById('pos-out').value;
+    navigator.clipboard.writeText(pos).then(() => alert("✅ Prompt copié !"));
+}
+
+function resetAll() {
+    document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
+    document.getElementById('seed-input').value = "-1";
+    if (document.getElementById('user-notes')) document.getElementById('user-notes').value = "";
+    document.getElementById('pos-out').value = "";
 }
 </script>
 </body>
 </html>
+
 
 
 
