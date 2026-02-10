@@ -218,7 +218,27 @@ body {
         <option value="custom">--- Custom (Saisir manuellement) ---</option>
     </select>
 </div>
-
+    
+<div class="field-box">
+    <div class="menu-header">
+        <label>01bis. SCÉNARIO</label>
+        <div class="menu-controls">
+            <input type="checkbox" class="lock-check" name="lock_scenario" title="Bloquer">
+            <button onclick="rollMenu('scenario')" class="btn-dice">🎲</button>
+        </div>
+    </div>
+    <select class="p-select" name="scenario" onchange="genPrompt()">
+        <option value="">--- Simple (Sujet seul) ---</option>
+        <option value="dynamic_duo">👥 Dynamic Duo (Face-à-face)</option>
+        <option value="surreal_trio">👨‍👩‍👦 Surreal Trio (3 entités)</option>
+        <option value="gothic_chaos">🌑 Gothic Chaos (4 versions)</option>
+        <option value="crystal_symphony">💎 Crystal Symphony (Verre éclatant)</option>
+        <option value="giant_micro">🐘 Giant & Micro (Inversion de taille)</option>
+        <option value="hologram_glitch">👾 Hologram Glitch (Digital)</option>
+        <option value="statue_museum">🏛️ Statue Museum (Marbre)</option>
+    </select>
+</div>
+    
 <div class="field-box">
     <div class="menu-header">
         <label>02. ACTION & POSE</label>
@@ -795,6 +815,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
