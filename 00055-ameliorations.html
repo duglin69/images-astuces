@@ -685,7 +685,6 @@ window.onload = () => {
 
 // --- 2. LE CŒUR : GÉNÉRATION DU PROMPT (Version Riche) ---
 function genPrompt() {
-    // SÉCURITÉ : Si le mode manuel est activé, on bloque l'écriture automatique
     const lockManual = document.getElementById('lock-manual');
     if (lockManual && lockManual.checked) return;
 
@@ -693,24 +692,50 @@ function genPrompt() {
     const menu01 = document.getElementsByName('sujet_principal')[0];
     let parts = [];
     
-    // Récupération du sujet pour les scénarios
-    let mainSubject = menu01.value && menu01.value !== "custom" ? menu01.value : "";
+    // 1. RÉCUPÉRATION DU SUJET (Gère le Custom pour le Sujet Principal)
+    const customSujetInput = menu01.parentNode.querySelector('.custom-input');
+    let mainSubject = "";
+    
+    if (menu01.value === "custom") {
+        if (customSujetInput) {
+            customSujetInput.style.display = 'block';
+            mainSubject = customSujetInput.value;
+        }
+    } else {
+        if (customSujetInput) customSujetInput.style.display = 'none';
+        mainSubject = menu01.value;
+    }
+
     const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
     const getRandomSujet = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
 
+    // 2. BOUCLE SUR TOUS LES MENUS
     selects.forEach(s => {
-        if(s.value && s.value !== "custom") {
-            // ON RÉINTÈGRE TES SCÉNARIOS SPÉCIAUX ICI
-            if (s.name === "scenario") {
-                if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandomSujet()}, dramatic face-off`;
-                else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandomSujet()} and ${getRandomSujet()}`;
-                else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandomSujet()}`;
-                else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
-                else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandomSujet()} figures`;
-                else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandomSujet()}`;
-                else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandomSujet()}`;
-            } else if (s.name !== "sujet_principal") {
-                parts.push(s.value);
+        const customInput = s.parentNode.querySelector('.custom-input');
+        if (s.name === "sujet_principal") return; // Déjà traité au-dessus
+
+        if (s.value === "custom") {
+            // Affiche la case texte et récupère la valeur
+            if (customInput) {
+                customInput.style.display = 'block';
+                if (customInput.value) parts.push(customInput.value);
+            }
+        } else {
+            // Cache la case texte et traite l'option normale
+            if (customInput) customInput.style.display = 'none';
+            
+            if (s.value) {
+                if (s.name === "scenario") {
+                    if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandomSujet()}, dramatic face-off`;
+                    else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandomSujet()} and ${getRandomSujet()}`;
+                    else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandomSujet()}`;
+                    else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
+                    else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandomSujet()} figures`;
+                    else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandomSujet()}`;
+                    else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandomSujet()}`;
+                } else {
+                    parts.push(s.value);
+                }
             }
         }
     });
@@ -853,6 +878,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
