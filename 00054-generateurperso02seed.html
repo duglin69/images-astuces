@@ -474,6 +474,8 @@ body {
     <button onclick="copyToClipboard()" class="btn-copy">Copier Tout 📋</button>
     <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
     <button onclick="exportPrompt()" class="btn-export">Export .txt 💾</button>
+    <button onclick="document.getElementById('import-file').click()" class="p-btn" style="background: #10b981;">📂 Importer un .txt</button>
+<input type="file" id="import-file" style="display:none;" onchange="importPrompt(this)" accept=".txt">
 </div>
 
 <div class="output-section">
@@ -640,9 +642,58 @@ function resetAll() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+    function importPrompt(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+
+        // 1. On retrouve le SEED
+        const seedMatch = text.match(/\[SEED\]: (.*)/);
+        if (seedMatch) document.getElementById('seed-input').value = seedMatch[1].trim();
+
+        // 2. On retrouve les NOTES
+        const notesMatch = text.match(/\[NOTES\]: ([\s\S]*?)\n-------------------------/);
+        if (notesMatch) document.getElementById('user-notes').value = notesMatch[1].trim();
+
+        // 3. On remet les MENUS à la bonne place
+        const lines = text.split('\n');
+        const selects = document.querySelectorAll('.p-select');
+        
+        lines.forEach(line => {
+            if (line.startsWith('- ')) {
+                // On sépare le nom du menu et le texte sélectionné
+                const parts = line.substring(2).split(': ');
+                if (parts.length >= 2) {
+                    const labelText = parts[1].trim();
+                    
+                    // On cherche quel menu correspond et on sélectionne l'option par son texte
+                    selects.forEach(s => {
+                        Array.from(s.options).forEach((opt, index) => {
+                            if (opt.text.trim() === labelText) {
+                                s.selectedIndex = index;
+                            }
+                        });
+                    });
+                }
+            }
+        });
+
+        // 4. On rafraîchit tout pour que le prompt visuel se mette à jour
+        genPrompt();
+        
+        // Petit message de succès
+        alert("Fiche de création chargée avec succès ! 🚀");
+        input.value = ""; // On vide le sélecteur pour le prochain import
+    };
+    reader.readAsText(file);
+}
 </script>
 </body>
 </html>
+
 
 
 
