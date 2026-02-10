@@ -701,11 +701,13 @@ function genPrompt() {
 
     const selects = document.querySelectorAll('.p-select');
     const menu01 = document.getElementsByName('sujet_principal')[0];
+    if (!menu01) return; // Sécurité si le menu 01 n'est pas trouvé
+
     let parts = [];
-    
-    // 1. RÉCUPÉRATION DU SUJET (Gère le Custom pour le Sujet Principal)
-    const customSujetInput = menu01.parentNode.querySelector('.custom-input');
     let mainSubject = "";
+    
+    // 1. GESTION DU SUJET PRINCIPAL
+    const customSujetInput = menu01.parentNode ? menu01.parentNode.querySelector('.custom-input') : null;
     
     if (menu01.value === "custom") {
         if (customSujetInput) {
@@ -717,33 +719,34 @@ function genPrompt() {
         mainSubject = menu01.value;
     }
 
-    const allSubjects = Array.from(menu01.options).filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
-    const getRandomSujet = () => allSubjects[Math.floor(Math.random() * allSubjects.length)];
+    const allOptions = Array.from(menu01.options);
+    const allSubjects = allOptions.filter(o => o.value !== "" && o.value !== "custom").map(o => o.value);
+    const getRandomSujet = () => allSubjects.length > 0 ? allSubjects[Math.floor(Math.random() * allSubjects.length)] : "subject";
 
-    // 2. BOUCLE SUR TOUS LES MENUS
+    // 2. BOUCLE SUR LES AUTRES MENUS
     selects.forEach(s => {
-        const customInput = s.parentNode.querySelector('.custom-input');
-        if (s.name === "sujet_principal") return; // Déjà traité au-dessus
+        if (s.name === "sujet_principal") return;
+
+        const customInput = s.parentNode ? s.parentNode.querySelector('.custom-input') : null;
 
         if (s.value === "custom") {
-            // Affiche la case texte et récupère la valeur
             if (customInput) {
                 customInput.style.display = 'block';
                 if (customInput.value) parts.push(customInput.value);
             }
         } else {
-            // Cache la case texte et traite l'option normale
             if (customInput) customInput.style.display = 'none';
             
             if (s.value) {
                 if (s.name === "scenario") {
-                    if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandomSujet()}, dramatic face-off`;
+                    // Tes scénarios (inchangés)
+                    if (s.value === "dynamic_duo") mainSubject = `${mainSubject} and ${getRandomSujet()}, face-off`;
                     else if (s.value === "surreal_trio") mainSubject = `${mainSubject} with ${getRandomSujet()} and ${getRandomSujet()}`;
                     else if (s.value === "gothic_chaos") mainSubject = `${mainSubject} surrounded by 3 gothic versions of ${getRandomSujet()}`;
-                    else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} appearing next to two entities made of translucent glowing glass`;
-                    else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} towering over five tiny miniature ${getRandomSujet()} figures`;
-                    else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at flickering digital holograms of ${getRandomSujet()}`;
-                    else if (s.value === "statue_museum") mainSubject = `${mainSubject} walking through a gallery of marble statues of ${getRandomSujet()}`;
+                    else if (s.value === "crystal_symphony") mainSubject = `${mainSubject} next to entities made of glass`;
+                    else if (s.value === "giant_micro") mainSubject = `Gigantic ${mainSubject} over tiny ${getRandomSujet()}`;
+                    else if (s.value === "hologram_glitch") mainSubject = `${mainSubject} looking at holograms of ${getRandomSujet()}`;
+                    else if (s.value === "statue_museum") mainSubject = `${mainSubject} in a gallery of statues of ${getRandomSujet()}`;
                 } else {
                     parts.push(s.value);
                 }
@@ -752,7 +755,8 @@ function genPrompt() {
     });
 
     if (mainSubject) parts.unshift(mainSubject);
-    document.getElementById('pos-out').value = parts.join(", ");
+    const out = document.getElementById('pos-out');
+    if (out) out.value = parts.join(", ");
 }
 
 // --- 3. LES DÉS (HASARD INDIVIDUEL PAR MENU) ---
@@ -889,6 +893,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
