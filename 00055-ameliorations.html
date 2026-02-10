@@ -636,6 +636,7 @@ body {
     <button onclick="exportPrompt()" class="btn-export">Export .txt 💾</button>
     <button onclick="document.getElementById('import-file').click()" class="p-btn" style="background: #10b981; padding: 12px 24px; border-radius: 6px; color: white; border: none; font-weight: bold; cursor: pointer;">📂 Importer</button>
     <input type="file" id="import-file" style="display:none;" onchange="importPrompt(this)" accept=".txt">
+    <button onclick="cleanPrompt()" class="btn-reset" style="background: #64748b;">Nettoyer 🧹</button>
     <button onclick="resetAll()" class="btn-reset">Reset 🔄</button>
 </div>
 
@@ -806,7 +807,16 @@ function copyToClipboard() {
     const pos = document.getElementById('pos-out').value;
     navigator.clipboard.writeText(pos).then(() => alert("✅ Prompt copié !"));
 }
-
+function cleanPrompt() {
+    document.querySelectorAll('.p-select').forEach(s => {
+        const lock = document.getElementsByName('lock_' + s.name)[0];
+        // Si le menu n'est pas verrouillé, on le remet à zéro
+        if (!lock || !lock.checked) {
+            s.selectedIndex = 0;
+        }
+    });
+    genPrompt(); // On met à jour le texte du prompt immédiatement
+}
 function resetAll() {
     document.querySelectorAll('.p-select').forEach(s => s.selectedIndex = 0);
     document.getElementById('seed-input').value = "-1";
@@ -816,6 +826,7 @@ function resetAll() {
 </script>
 </body>
 </html>
+
 
 
 
