@@ -929,14 +929,16 @@ body {
         }
 </script>
 <script type="module">
+    // Importation de la bibliothèque depuis le serveur sécurisé
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 
-    // On réinitialise les réglages par défaut qui fonctionnent normalement très bien sur GitHub
+    // Configuration pour le web
     env.allowLocalModels = false;
     env.useBrowserCache = true;
 
     let captioner = null;
 
+    // On attache la fonction au bouton "Analyser"
     window.runInterrogation = async function() {
         const fileInput = document.getElementById('image-input');
         const status = document.getElementById('status-area');
@@ -947,15 +949,14 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Connexion au cerveau IA...";
+            status.innerText = "Connexion au cerveau IA (chargement)...";
 
+            // Chargement du modèle s'il n'est pas en mémoire
             if (!captioner) {
-                // TEST : On utilise un modèle beaucoup plus léger (30Mo au lieu de 100Mo) 
-                // pour vérifier si le blocage vient de la taille du fichier.
                 captioner = await pipeline('image-to-text', 'Xenova/vit-gpt2-image-captioning');
             }
 
-            status.innerText = "Analyse de l'image...";
+            status.innerText = "L'IA analyse ton image...";
 
             const file = fileInput.files[0];
             const reader = new FileReader();
@@ -963,23 +964,28 @@ body {
                 const url = e.target.result;
                 const result = await captioner(url);
                 
-                aiField.value = result[0].generated_text.replace(/\.$/, "");
+                // On nettoie le texte (minuscules et pas de point final)
+                const finalDescription = result[0].generated_text.toLowerCase().replace(/\.$/, "");
+                
+                // Injection dans la zone "Base IA"
+                aiField.value = finalDescription;
                 status.innerText = "Analyse terminée !";
                 btn.disabled = false;
                 
+                // On déclenche la mise à jour automatique du gros prompt vert
                 if (typeof window.generatePrompt === "function") window.generatePrompt();
             };
             reader.readAsDataURL(file);
 
         } catch (err) {
             console.error("Détail complet :", err);
-            // Si l'erreur persiste, on affiche un message plus explicite
-            status.innerText = "Erreur d'accès. Vérifie ton AdBlock ou essaie en navigation privée.";
+            status.innerText = "Erreur. Vérifie uBlock ou la console (F12).";
             btn.disabled = false;
         }
     }
 </script>
 </body>
 </html>
+
 
 
