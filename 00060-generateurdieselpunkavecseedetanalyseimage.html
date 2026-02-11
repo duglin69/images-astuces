@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Prompt Dieselpunk</title>
+    <title>Générateur Dieselpunk V3 (Auto-Analyse)</title>
     <style>
         :root {
             --bg-color: #1a1a1d;
             --panel-color: #2c2c30;
             --text-color: #c5c6c7;
-            --accent-color: #e8902b; /* Orange rouille */
+            --accent-color: #e8902b;
             --accent-hover: #ffaa4d;
             --border-color: #4e4e50;
             --input-bg: #0f0f10;
@@ -64,7 +64,7 @@
             font-weight: bold;
         }
 
-        select, input[type="text"], input[type="number"] {
+        select, input[type="text"], input[type="number"], input[type="file"], input[type="password"] {
             width: 100%;
             background-color: var(--input-bg);
             color: #fff;
@@ -82,13 +82,12 @@
         }
 
         .custom-input {
-            display: none; /* Caché par défaut */
+            display: none;
             margin-top: 5px;
             border-left: 3px solid var(--accent-color);
             padding-left: 5px;
         }
 
-        /* Zone de contrôle */
         .controls {
             width: 100%;
             max-width: 1400px;
@@ -147,7 +146,6 @@
             cursor: pointer;
         }
 
-        /* Zone de résultat */
         .output-area {
             width: 100%;
             max-width: 1400px;
@@ -158,7 +156,7 @@
             width: 100%;
             height: 150px;
             background-color: #000;
-            color: #0f0; /* Vert terminal */
+            color: #0f0;
             border: 1px solid var(--border-color);
             padding: 10px;
             font-family: 'Courier New', monospace;
@@ -173,7 +171,6 @@
             font-style: italic;
         }
 
-        /* Toast notification */
         #toast {
             visibility: hidden;
             min-width: 250px;
@@ -195,35 +192,44 @@
             animation: fadein 0.5s, fadeout 0.5s 2.5s;
         }
 
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        
+        .top-right {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
         }
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-        }
-   .top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-}
 
-body {
-    padding-top: 80px;
-}
-.btn-retour {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-}
+        .btn-retour {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .analysis-box {
+            background: #222;
+            border: 1px solid var(--accent-color);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .analysis-input {
+            background: #000;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -232,11 +238,29 @@ body {
     <a href="repertoire/index.html" class="btn-retour">📚 Répertoire</a>
 </div>
     
-    <h1>Générateur Dieselpunk V1.0</h1>
+    <h1>Générateur Dieselpunk V3 (Auto-Analyse)</h1>
 
-    <div class="container" id="menus-container">
-        <!-- Les menus seront générés ici par JavaScript -->
+    <!-- ZONE ANALYSE IMAGE -->
+    <div class="analysis-box">
+        <label class="menu-label">1. TON TOKEN REPLICATE</label>
+        <input type="password" id="hf-token-input" class="analysis-input" placeholder="Colle ton token Replicate (commence par r8...) ici" style="width: 100%; background: #000; color: var(--accent-hover); border: 1px solid var(--border-color); padding: 8px; margin-bottom: 15px; font-family: monospace;">
+
+        <label class="menu-label">2. ANALYSE D'IMAGE</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="file" id="image-input" accept="image/*" style="font-size: 0.8em;">
+            <button id="btn-interrogate" onclick="runInterrogation()">Analyser</button>
+        </div>
+
+        <label class="menu-label">RÉSULTAT DE L'ANALYSE</label>
+        <textarea id="ai-base-content" class="analysis-input" style="height: 50px;" placeholder="La description apparaîtra ici..."></textarea>
+        
+        <div id="status-area" style="font-size: 0.8em; color: var(--accent-color); text-align: center; margin-top: 5px; font-style: italic;">
+            Prêt.
+        </div>
     </div>
+    <!-- FIN ZONE ANALYSE -->
+
+    <div class="container" id="menus-container"></div>
 
     <div class="controls">
         <button onclick="generatePrompt()">Générer le prompt</button>
@@ -246,16 +270,16 @@ body {
         <button onclick="exportTxt()" class="secondary">Exporter .txt</button>
 
         <div class="control-group">
-    <div class="toggle-container" title="Pondérer le sujet et le style">
-        <input type="checkbox" id="weight-toggle">
-        <label for="weight-toggle">Boost Pondération (1.2x)</label>
+            <div class="toggle-container" title="Pondérer le sujet et le style">
+                <input type="checkbox" id="weight-toggle">
+                <label for="weight-toggle">Boost Pondération (1.2x)</label>
+            </div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <input type="number" id="seed-input" placeholder="Seed Auto" style="width: 120px;">
+                <button type="button" onclick="randomizeSeed()" style="padding: 8px 12px;" title="Générer un nouveau Seed aléatoire">🎲</button>
+            </div>
+        </div>
     </div>
-    
-    <div style="display: flex; align-items: center; gap: 5px;">
-        <input type="number" id="seed-input" placeholder="Seed Auto" style="width: 120px;">
-        <button type="button" onclick="randomizeSeed()" style="padding: 8px 12px;" title="Générer un nouveau Seed aléatoire">🎲</button>
-    </div>
-</div>
 
     <div class="output-area">
         <label class="menu-label">Résultat Prompt Positif :</label>
@@ -273,402 +297,102 @@ body {
             {
                 title: "PERSONNAGE / SUJET",
                 id: "menu_sujet",
-                options: [
-                    "Ingénieur cybernétique (cheveux argentés, combinaison kevlar)",
-                    "Mécanicien borgne (moustache fournie, salopette tachée)",
-                    "Pilote d'aéronef (casque cuir, écharpe au vent)",
-                    "Cartographe nomade (manteau toile cirée, yeux perçants)",
-                    "Alchimiste juvénile (teint verdâtre, tunique runique)",
-                    "Chanteuse de cabaret (robe fourreau scintillante, boa de plumes)",
-                    "Aviateur (combinaison zébrée, casque profilé)",
-                    "Détective privé (trench-coat froissé, fedora)",
-                    "Hôtesse de l'air (combinaison moulante à hublots, years 50)",
-                    "Ouvrier d'usine (combinaison usée, masque à gaz)",
-                    "Maréchal soviétique cyborg (uniforme rouge et or, buste mécanique)",
-                    "Mécha nazi colossal (gris militariste, croix gammées, yeux rouges)",
-                    "Samouraï dieselpunk (armure lamellée noire, tech intégrée)",
-                    "Seigneur de guerre squelette (crâne cybernétique, armure rivetée)",
-                    "Herboriste (corset ajouré de vitraux, gants longs)",
-                    "Soldat d'élite (armure complexe, masque à gaz)",
-                    "Gentilhomme gangster (costume élégant, pistolet-mitrailleur)",
-                    "Aventurier pulp (veste en cuir, fouet ou sac à dos)",
-                    "Gardien de phare (vêtements huileux, silhouette solitaire)",
-                    "Robot d'entretien (tôles embouties, articulations apparentes)"
-                ]
+                options: ["Ingénieur cybernétique (cheveux argentés, combinaison kevlar)", "Mécanicien borgne (moustache fournie, salopette tachée)", "Pilote d'aéronef (casque cuir, écharpe au vent)", "Cartographe nomade (manteau toile cirée, yeux perçants)", "Alchimiste juvénile (teint verdâtre, tunique runique)", "Chanteuse de cabaret (robe fourreau scintillante, boa de plumes)", "Aviateur (combinaison zébrée, casque profilé)", "Détective privé (trench-coat froissé, fedora)", "Hôtesse de l'air (combinaison moulante à hublots, years 50)", "Ouvrier d'usine (combinaison usée, masque à gaz)", "Maréchal soviétique cyborg (uniforme rouge et or, buste mécanique)", "Mécha nazi colossal (gris militariste, croix gammées, yeux rouges)", "Samouraï dieselpunk (armure lamellée noire, tech intégrée)", "Seigneur de guerre squelette (crâne cybernétique, armure rivetée)", "Herboriste (corset ajouré de vitraux, gants longs)", "Soldat d'élite (armure complexe, masque à gaz)", "Gentilhomme gangster (costume élégant, pistolet-mitrailleur)", "Aventurier pulp (veste en cuir, fouet ou sac à dos)", "Gardien de phare (vêtements huileux, silhouette solitaire)", "Robot d'entretien (tôles embouties, articulations apparentes)"]
             },
             {
                 title: "ACTION / POSTURE",
                 id: "menu_action",
-                options: [
-                    "Répare un générateur antigravité massive",
-                    "Assemble une prothèse mécanique géante",
-                    "Inspecte les moteurs d'un dirigeable",
-                    "Trace des itinéraires sur une table holographique rudimentaire",
-                    "Mélange des élixirs dangereux",
-                    "Escalade une échelle de maintenance verticale",
-                    "Chante sur une scène illuminée",
-                    "Pilote un hydravion à grande vitesse",
-                    "Dégaine son revolver dans un hangar",
-                    "Active une machine infernale",
-                    "Cueille des plantes luminescentes",
-                    "Marche vers une horde de zombies",
-                    "Charge au milieu de la fumée et des flammes",
-                    "Observe l'horizon depuis une tour de guet",
-                    "Salue militairement sous une pluie battante",
-                    "Tombe du ciel en parachute déchiré",
-                    "Survit dans un paysage de décombres",
-                    "Négocie avec un officier ennemi",
-                    "Croise le fer sous la pluie",
-                    "Se tient immobile, silhouette menaçante"
-                ]
+                options: ["Répare un générateur antigravité massive", "Assemble une prothèse mécanique géante", "Inspecte les moteurs d'un dirigeable", "Trace des itinéraires sur une table holographique rudimentaire", "Mélange des élixirs dangereux", "Escalade une échelle de maintenance verticale", "Chante sur une scène illuminée", "Pilote un hydravion à grande vitesse", "Dégaine son revolver dans un hangar", "Active une machine infernale", "Cueille des plantes luminescentes", "Marche vers une horde de zombies", "Charge au milieu de la fumée et des flammes", "Observe l'horizon depuis une tour de guet", "Salue militairement sous une pluie battante", "Tombe du ciel en parachute déchiré", "Survit dans un paysage de décombres", "Négocie avec un officier ennemi", "Croise le fer sous la pluie", "Se tient immobile, silhouette menaçante"]
             },
             {
                 title: "LIEU / ENVIRONNEMENT",
                 id: "menu_lieu",
-                options: [
-                    "Cœur d'une raffinerie flottante sur océan de nuages orangés",
-                    "Atelier souterrain encombré de pistons et engrenages",
-                    "Plateforme aérienne entre deux gratte-ciel de briques",
-                    "Tour de guet rouillée dominant une vallée de derricks en feu",
-                    "Laboratoire perché sur une cataracte de pétrole",
-                    "Cathédrale-usine illuminée par des fours internes",
-                    "Scène de paquebot volant art déco",
-                    "Canyon de gratte-ciel style streamline (années 30)",
-                    "Hangar clandestin rempli de caisses d'armes",
-                    "Station orbitale aux parois incurvées et néons verts",
-                    "Usine souterraine aux engrenages géants tordus",
-                    "Serre suspendue à une tour de fer forgé",
-                    "Château japonais féodal reconverti en forteresse diesel",
-                    "Cité hybride (victorien, byzantin, néo-futuriste)",
-                    "Désert post-apocalyptique aux routes poussiéreuses",
-                    "Métropole industrielle nocturne style Gotham",
-                    "Pont métallique au-dessus d'un fleuve pollué",
-                    "Trenches boueuses éclairées par des lanternes",
-                    "Citadelle chinoise impériale sur falaise rocheuse",
-                    "Ruines urbaines envahies par la végétation"
-                ]
+                options: ["Cœur d'une raffinerie flottante sur océan de nuages orangés", "Atelier souterrain encombré de pistons et engrenages", "Plateforme aérienne entre deux gratte-ciel de briques", "Tour de guet rouillée dominant une vallée de derricks en feu", "Laboratoire perché sur une cataracte de pétrole", "Cathédrale-usine illuminée par des fours internes", "Scène de paquebot volant art déco", "Canyon de gratte-ciel style streamline (années 30)", "Hangar clandestin rempli de caisses d'armes", "Station orbitale aux parois incurvées et néons verts", "Usine souterraine aux engrenages géants tordus", "Serre suspendue à une tour de fer forgé", "Château japonais féodal reconverti en forteresse diesel", "Cité hybride (victorien, byzantin, néo-futuriste)", "Désert post-apocalyptique aux routes poussiéreuses", "Métropole industrielle nocturne style Gotham", "Pont métallique au-dessus d'un fleuve pollué", "Trenches boueuses éclairées par des lanternes", "Citadelle chinoise impériale sur falaise rocheuse", "Ruines urbaines envahies par la végétation"]
             },
             {
                 title: "ÉPOQUE / PÉRIODE",
                 id: "menu_epoque",
-                options: [
-                    "Années Folles (Roaring Twenties - 1920s)",
-                    "Grande Dépression (1930s)",
-                    "Seconde Guerre Mondiale (1940s historique)",
-                    "Guerre Mondiale Alternative (Mechs vs Nazis)",
-                    "Immédiat Après-guerre (Fin des années 40)",
-                    "Âge Atomique (Années 50 - Atompunk)",
-                    "Futur Rétro 1920 (Ce qui aurait dû être)",
-                    "Années 30 Pulp (Aventure et Serials)",
-                    "Transition Diesel-Électrique",
-                    "Guerre Civile Alternate History",
-                    "Âge d'Or de l'Aviation",
-                    "Ère industrielle victorienne tardive"
-                ]
+                options: ["Années Folles (Roaring Twenties - 1920s)", "Grande Dépression (1930s)", "Seconde Guerre Mondiale (1940s historique)", "Guerre Mondiale Alternative (Mechs vs Nazis)", "Immédiat Après-guerre (Fin des années 40)", "Âge Atomique (Années 50 - Atompunk)", "Futur Rétro 1920 (Ce qui aurait dû être)", "Années 30 Pulp (Aventure et Serials)", "Transition Diesel-Électrique", "Guerre Civile Alternate History", "Âge d'Or de l'Aviation", "Ère industrielle victorienne tardive"]
             },
             {
                 title: "CADRAGE / COMPOSITION",
                 id: "menu_cadrage",
-                options: [
-                    "Gros plan intense sur le visage",
-                    "Plan moyen (bustier)",
-                    "Plan américain (taille-cuisses)",
-                    "Plan large d'ambiance",
-                    "Vue en plongée (vu du dessus)",
-                    "Vue contre-plongée (vue du bas, héroïque)",
-                    "Vue aérienne (Bird's eye view)",
-                    "Perspective à la première personne (POV)",
-                    "Profil latéral pur",
-                    "Cadrage serré (Close-up détail)",
-                    "Plan d'ensemble grandiose",
-                    "Vue subjective à travers un viseur"
-                ]
+                options: ["Gros plan intense sur le visage", "Plan moyen (bustier)", "Plan américain (taille-cuisses)", "Plan large d'ambiance", "Vue en plongée (vu du dessus)", "Vue contre-plongée (vue du bas, héroïque)", "Vue aérienne (Bird's eye view)", "Perspective à la première personne (POV)", "Profil latéral pur", "Cadrage serré (Close-up détail)", "Plan d'ensemble grandiose", "Vue subjective à travers un viseur"]
             },
             {
                 title: "PALETTE DE COULEURS",
                 id: "menu_couleur",
-                options: [
-                    "Teal & Orange cinématographique",
-                    "Noir & Blanc contrasté (Film Noir)",
-                    "Sépia vintage et chaud",
-                    "Terre, Ocre et Rouille (Industrial)",
-                    "Chrome, Bleu acier et Froid",
-                    "Or, Noir et Ivoire (Art Déco)",
-                    "Pastel et Menthe (Atompunk 50s)",
-                    "Rouge et Noir (Totalitarisme/Sang)",
-                    "Vert toxique, Gris et Poussière",
-                    "Saturé Pulp Magazine (Vives)",
-                    "Désaturé Post-Apocalyptique (Terne)",
-                    "Bleu nuit et Or (Glamour nuit)"
-                ]
+                options: ["Teal & Orange cinématographique", "Noir & Blanc contrasté (Film Noir)", "Sépia vintage et chaud", "Terre, Ocre et Rouille (Industrial)", "Chrome, Bleu acier et Froid", "Or, Noir et Ivoire (Art Déco)", "Pastel et Menthe (Atompunk 50s)", "Rouge et Noir (Totalitarisme/Sang)", "Vert toxique, Gris et Poussière", "Saturé Pulp Magazine (Vives)", "Désaturé Post-Apocalyptique (Terne)", "Bleu nuit et Or (Glamour nuit)"]
             },
             {
                 title: "EXPRESSION DU VISAGE",
                 id: "menu_expression",
-                options: [
-                    "Déterminé et stoïque",
-                    "Mystérieux et inscrutable",
-                    "Effrayé et paniqué",
-                    "En colère et criant",
-                    "Émerveillé (yeux écarquillés)",
-                    "Méprisant et hautain",
-                    "Las et fatigué (vétéran)",
-                    "Maniaque et fou",
-                    "Sérieux et concentré",
-                    "Fou rire sadique",
-                    "Triste et mélancolique",
-                    "Soupçonneux (regard de côté)",
-                    "Calme et serein",
-                    "Douloureux (blessé)",
-                    "Apathique (résigné)"
-                ]
+                options: ["Déterminé et stoïque", "Mystérieux et inscrutable", "Effrayé et paniqué", "En colère et criant", "Émerveillé (yeux écarquillés)", "Méprisant et hautain", "Las et fatigué (vétéran)", "Maniaque et fou", "Sérieux et concentré", "Fou rire sadique", "Triste et mélancolique", "Soupçonneux (regard de côté)", "Calme et serein", "Douloureux (blessé)", "Apathique (résigné)"]
             },
             {
                 title: "COMPAGNON",
                 id: "menu_compagnon",
-                options: [
-                    "Robot assisteur bipède rouillé",
-                    "Chien mécanique à vapeur",
-                    "Homme de main silencieux et massif",
-                    "Assistante féline en tenue cuir",
-                    "Créature modifiée génétiquement",
-                    "Esclave cybernétique docile",
-                    "Duo d'élite militaire (médic)",
-                    "Hologramme fantomatique",
-                    "Oiseau prédateur robotique",
-                    "Petite orpheline voleuse",
-                    "Singe cyborg ingénieur",
-                    "Vampire aristocratique",
-                    "Zombie industriel lent",
-                    "Agent double en civil",
-                    "Génie excentrique"
-                ]
+                options: ["Robot assisteur bipède rouillé", "Chien mécanique à vapeur", "Homme de main silencieux et massif", "Assistante féline en tenue cuir", "Créature modifiée génétiquement", "Esclave cybernétique docile", "Duo d'élite militaire (médic)", "Hologramme fantomatique", "Oiseau prédateur robotique", "Petite orpheline voleuse", "Singe cyborg ingénieur", "Vampire aristocratique", "Zombie industriel lent", "Agent double en civil", "Génie excentrique"]
             },
             {
                 title: "OBJET",
                 id: "menu_objet",
-                options: [
-                    "Lance-flammes lourd et massif",
-                    "Jetpack en cuir usagé",
-                    "Tablette holographique rudimentaire",
-                    "Boussole antique complexe",
-                    "Masque à gaz vintage (filter box)",
-                    "Radio à lampes et potentiomètres",
-                    "Arme à énergie expérimentale",
-                    "Clef anglaise géante",
-                    "Livre de sorts mécanique (automate)",
-                    "Drapeau national déchiré",
-                    "Bouteille d'éther luminescent",
-                    "Cartes géographiques jaunies",
-                    "Prothèse mécanique détaillée",
-                    "Valise atomique (bombe)",
-                    "Médaillon patriotique"
-                ]
+                options: ["Lance-flammes lourd et massif", "Jetpack en cuir usagé", "Tablette holographique rudimentaire", "Boussole antique complexe", "Masque à gaz vintage (filter box)", "Radio à lampes et potentiomètres", "Arme à énergie expérimentale", "Clef anglaise géante", "Livre de sorts mécanique (automate)", "Drapeau national déchiré", "Bouteille d'éther luminescent", "Cartes géographiques jaunies", "Prothèse mécanique détaillée", "Valise atomique (bombe)", "Médaillon patriotique"]
             },
             {
                 title: "STYLE GRAPHIQUE / ESTHÉTIQUE",
                 id: "menu_style",
-                options: [
-                    "Peinture numérique réaliste (hyper-détaillé)",
-                    "Ligne claire / inking comics (contours nets)",
-                    "Dieselpunk industriel monumental",
-                    "Art Déco / Decopunk (géométrique, luxe)",
-                    "Streamline Moderne (aérodynamique)",
-                    "Pulp illustration (couleurs vives, dramatique)",
-                    "Atompunk / Raygun Gothic (50s optimiste)",
-                    "Expressionnisme allemand / Metropolis (sombre)",
-                    "Art Nouveau rétrofuturiste (organique)",
-                    "Anime réaliste style Yoji Shinkawa",
-                    "Dark Fantasy / Warhammer 40k",
-                    "Noir et blanc gravure réaliste",
-                    "Illustration publicitaire vintage",
-                    "Photographie vintage colorisée",
-                    "Peinture impressionniste moderne",
-                    "Concept art industriel complexe"
-                ]
+                options: ["Peinture numérique réaliste (hyper-détaillé)", "Ligne claire / inking comics (contours nets)", "Dieselpunk industriel monumental", "Art Déco / Decopunk (géométrique, luxe)", "Streamline Moderne (aérodynamique)", "Pulp illustration (couleurs vives, dramatique)", "Atompunk / Raygun Gothic (50s optimiste)", "Expressionnisme allemand / Metropolis (sombre)", "Art Nouveau rétrofuturiste (organique)", "Anime réaliste style Yoji Shinkawa", "Dark Fantasy / Warhammer 40k", "Noir et blanc gravure réaliste", "Illustration publicitaire vintage", "Photographie vintage colorisée", "Peinture impressionniste moderne", "Concept art industriel complexe"]
             },
             {
                 title: "EFFETS SPÉCIAUX (VFX)",
                 id: "menu_vfx",
-                options: [
-                    "Explosion de vapeur et fumée",
-                    "Pluie battante et réverbérations",
-                    "Fumée noire épaisse (carbone)",
-                    "Étincelles électriques (court-circuit)",
-                    "Flammes d'enfer et incendies",
-                    "Lens flare (halo lumineux)",
-                    "Traînées de condensation (vapeur avion)",
-                    "Boue et éclaboussures",
-                    "Particules de poussière dans la lumière",
-                    "Reflets métalliques intenses (specular)",
-                    "Brume épaisse et atmosphérique",
-                    "Débris volants (gravats)",
-                    "Onde de choc",
-                    "Éclipse solaire",
-                    "Pluie de cendres"
-                ]
+                options: ["Explosion de vapeur et fumée", "Pluie battante et réverbérations", "Fumée noire épaisse (carbone)", "Étincelles électriques (court-circuit)", "Flammes d'enfer et incendies", "Lens flare (halo lumineux)", "Traînées de condensation (vapeur avion)", "Boue et éclaboussures", "Particules de poussière dans la lumière", "Reflets métalliques intenses (specular)", "Brume épaisse et atmosphérique", "Débris volants (gravats)", "Onde de choc", "Éclipse solaire", "Pluie de cendres"]
             },
             {
                 title: "TEXTURES DE RENDU",
                 id: "menu_textures",
-                options: [
-                    "Métal rouillé et corrodé",
-                    "Peau humide et sueur",
-                    "Cuir vieilli et craquelé",
-                    "Acier brossé industriel",
-                    "Laiton patiné (tarnished brass)",
-                    "Verre sale et poussiéreux",
-                    "Tissu épais et lourd",
-                    "Carton bouilli (cuirasse)",
-                    "Bois carbonisé",
-                    "Porcelaine écaillée",
-                    "Chrome poli (miroir)",
-                    "Huile et graisse",
-                    "Béton armé brut",
-                    "Caoutchouc noir",
-                    "Poussière de charbon"
-                ]
+                options: ["Métal rouillé et corrodé", "Peau humide et sueur", "Cuir vieilli et craquelé", "Acier brossé industriel", "Laiton patiné (tarnished brass)", "Verre sale et poussiéreux", "Tissu épais et lourd", "Carton bouilli (cuirasse)", "Bois carbonisé", "Porcelaine écaillée", "Chrome poli (miroir)", "Huile et graisse", "Béton armé brut", "Caoutchouc noir", "Poussière de charbon"]
             },
             {
                 title: "GRAIN / TEXTURE FILM",
                 id: "menu_grain",
-                options: [
-                    "Grain argentique fin",
-                    "Grain fort (années 40 documentaire)",
-                    "Rayures et poussières de projection",
-                    "Vignettage sévère (coins noirs)",
-                    "Photo jaunie par le temps",
-                    "Pellicule endommagée (déchirures)",
-                    "Noir et blanc film vintage",
-                    "Flou de bougé (motion blur)",
-                    "Croisé de teintes (cross-process)",
-                    "Effet flashback nostalgique"
-                ]
+                options: ["Grain argentique fin", "Grain fort (années 40 documentaire)", "Rayures et poussières de projection", "Vignettage sévère (coins noirs)", "Photo jaunie par le temps", "Pellicule endommagée (déchirures)", "Noir et blanc film vintage", "Flou de bougé (motion blur)", "Croisé de teintes (cross-process)", "Effet flashback nostalgique"]
             },
             {
                 title: "COMPOSITION AVANCÉE",
                 id: "menu_compo_adv",
-                options: [
-                    "Règle des tiers dynamique",
-                    "Symétrie parfaite (centrée)",
-                    "Perspective verticale extrême (key visual)",
-                    "Perspective diagonale forte",
-                    "Cadre dans le cadre (porte/fenêtre)",
-                    "Lignes directrices (rails, routes)",
-                    "Espace négatif dominant (isolement)",
-                    "Remplissage du cadre (claustrophobie)",
-                    "Spirale dorée",
-                    "Mise en abyme",
-                    "Déséquilibre contrôlé (tension)"
-                ]
+                options: ["Règle des tiers dynamique", "Symétrie parfaite (centrée)", "Perspective verticale extrême (key visual)", "Perspective diagonale forte", "Cadre dans le cadre (porte/fenêtre)", "Lignes directrices (rails, routes)", "Espace négatif dominant (isolement)", "Remplissage du cadre (claustrophobie)", "Spirale dorée", "Mise en abyme", "Déséquilibre contrôlé (tension)"]
             },
             {
                 title: "PROFONDEUR DE CHAMP (DOF)",
                 id: "menu_dof",
-                options: [
-                    "Faible profondeur de champ (flou arrière)",
-                    "Grande profondeur de champ (tout net)",
-                    "Focus sélectif sur les yeux",
-                    "Focus sur l'objet premier plan",
-                    "Bokeh doux et crémeux",
-                    "Miniature (Tilt-shift)",
-                    "Focus infini (paysage lointain)",
-                    "Double exposition (flou artistique)"
-                ]
+                options: ["Faible profondeur de champ (flou arrière)", "Grande profondeur de champ (tout net)", "Focus sélectif sur les yeux", "Focus sur l'objet premier plan", "Bokeh doux et crémeux", "Miniature (Tilt-shift)", "Focus infini (paysage lointain)", "Double exposition (flou artistique)"]
             },
             {
                 title: "TROPES VISUELS DIESERPUNK",
                 id: "menu_tropes",
-                options: [
-                    "Tuyaux et conduits apparents partout",
-                    "Rivets industriels massifs",
-                    "Hélices d'avion et turbines",
-                    "Formes aérodynamiques (Streamline)",
-                    "Motifs géométriques Art Déco (Zigzags)",
-                    "Architecture verticale oppressante",
-                    "Graffiti de propagande politique",
-                    "Néons et enseignes au néon",
-                    "Vêtements fonctionnels avec nombreuses poches",
-                    "Implantations cybernétiques exposées",
-                    "Vapeur s'échappant des soupapes",
-                    "Lignes de fuite perspective forcée",
-                    "Silhouettes contre l'éclairage (backlight)",
-                    "Miroirs et surfaces réfléchissantes",
-                    "Technologie 'Bricolée' (Kitbash)"
-                ]
+                options: ["Tuyaux et conduits apparents partout", "Rivets industriels massifs", "Hélices d'avion et turbines", "Formes aérodynamiques (Streamline)", "Motifs géométriques Art Déco (Zigzags)", "Architecture verticale oppressante", "Graffiti de propagande politique", "Néons et enseignes au néon", "Vêtements fonctionnels avec nombreuses poches", "Implantations cybernétiques exposées", "Vapeur s'échappant des soupapes", "Lignes de fuite perspective forcée", "Silhouettes contre l'éclairage (backlight)", "Miroirs et surfaces réfléchissantes", "Technologie 'Bricolée' (Kitbash)"]
             },
             {
                 title: "RÉFÉRENCE ARTISTIQUE",
                 id: "menu_artiste",
-                options: [
-                    "Style de Alejandro Burdisio (voitures volantes)",
-                    "Style de Sam Van Olffen (sociétés dystopiques)",
-                    "Style de Keith Thompson (inventions WWII)",
-                    "Style de Stefan Prohaczka (portraits diesel)",
-                    "Style de Mike Mignola (Hellboy, lignes sombres)",
-                    "Style de Tom Floyd (comics pulp)",
-                    "Style de Tim Huhn (série Art Deco)",
-                    "Style de Max Bedulenko (villes kitbash)",
-                    "Style de Frank Frazetta (pulp heroic)",
-                    "Style de Simon Stålenhag (onirique mélancolique)",
-                    "Style de Makoto Shinkai (décors détaillés)",
-                    "Style de Yoji Shinkawa (croquis dynamique)",
-                    "Style de Gil Elvgren (pin-up modernisé)",
-                    "Style de Norman Bel Geddes (Streamline)",
-                    "Style de Hugh Ferriss (architecture massive)",
-                    "Style de Dean Cornwell (illustrations pulp)",
-                    "Style de J.H. Williams III (ligne claire)"
-                ]
+                options: ["Style de Alejandro Burdisio (voitures volantes)", "Style de Sam Van Olffen (sociétés dystopiques)", "Style de Keith Thompson (inventions WWII)", "Style de Stefan Prohaczka (portraits diesel)", "Style de Mike Mignola (Hellboy, lignes sombres)", "Style de Tom Floyd (comics pulp)", "Style de Tim Huhn (série Art Deco)", "Style de Max Bedulenko (villes kitbash)", "Style de Frank Frazetta (pulp heroic)", "Style de Simon Stålenhag (onirique mélancolique)", "Style de Makoto Shinkai (décors détaillés)", "Style de Yoji Shinkawa (croquis dynamique)", "Style de Gil Elvgren (pin-up modernisé)", "Style de Norman Bel Geddes (Streamline)", "Style de Hugh Ferriss (architecture massive)", "Style de Dean Cornwell (illustrations pulp)", "Style de J.H. Williams III (ligne claire)"]
             },
             {
                 title: "BOOSTS QUALITÉ",
                 id: "menu_quality",
-                options: [
-                    "Ultra-détaillé (Highly detailed)",
-                    "8k, 4k",
-                    "Masterpiece",
-                    "Meilleur résultat (Best quality)",
-                    "Photorealistic",
-                    "Texture HD",
-                    "Sharp focus",
-                    "Détails intriqués (Intricate details)",
-                    "Œuvre gagnante (Award winning art)",
-                    "Éclairage de studio (Studio lighting)",
-                    "Professionnel",
-                    "Résolution extrême"
-                ]
+                options: ["Ultra-détaillé (Highly detailed)", "8k, 4k", "Masterpiece", "Meilleur résultat (Best quality)", "Photorealistic", "Texture HD", "Sharp focus", "Détails intriqués (Intricate details)", "Œuvre gagnante (Award winning art)", "Éclairage de studio (Studio lighting)", "Professionnel", "Résolution extrême"]
             },
             {
                 title: "RENDUS / MOTEURS 3D",
                 id: "menu_render",
-                options: [
-                    "Octane Render",
-                    "Unreal Engine 5",
-                    "Redshift",
-                    "V-Ray",
-                    "Blender Cycles",
-                    "Ray Tracing",
-                    "Global Illumination",
-                    "Ambient Occlusion",
-                    "Subsurface Scattering (SSS)",
-                    "Path Tracing",
-                    "HDR (High Dynamic Range)",
-                    "Physically Based Rendering (PBR)"
-                ]
+                options: ["Octane Render", "Unreal Engine 5", "Redshift", "V-Ray", "Blender Cycles", "Ray Tracing", "Global Illumination", "Ambient Occlusion", "Subsurface Scattering (SSS)", "Path Tracing", "HDR (High Dynamic Range)", "Physically Based Rendering (PBR)"]
             },
             {
                 title: "FORMAT DE SORTIE",
                 id: "menu_format",
-                options: [
-                    "[ratio 16:9]",
-                    "[ratio 1:1]",
-                    "[ratio 21:9]",
-                    "[ratio 9:16]",
-                    "[ratio 4:3]",
-                    "[ratio 3:2]",
-                    "[ratio 2:1]",
-                    "[ratio 32:9] (Ultra-cinémascope)"
-                ]
+                options: ["[ratio 16:9]", "[ratio 1:1]", "[ratio 21:9]", "[ratio 9:16]", "[ratio 4:3]", "[ratio 3:2]", "[ratio 2:1]", "[ratio 32:9] (Ultra-cinémascope)"]
             }
         ];
 
@@ -735,10 +459,17 @@ body {
             updateNegativePreview();
         };
 
-                // --- FONCTIONS LOGIQUES ---
+        // --- FONCTIONS LOGIQUES ---
 
         function generatePrompt() {
             let parts = [];
+            
+            // On récupère d'abord le texte de l'analyse IA
+            const aiBase = document.getElementById('ai-base-content').value.trim();
+            if (aiBase) {
+                parts.push(aiBase); // On l'ajoute en tête de liste
+            }
+
             let weighted = document.getElementById('weight-toggle').checked;
             
             // --- GESTION AMÉLIORÉE DU SEED ---
@@ -902,11 +633,94 @@ body {
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // Nouvelle fonction pour le bouton "Dé"
         function randomizeSeed() {
             const newSeed = Math.floor(Math.random() * 999999999) + 1;
             document.getElementById('seed-input').value = newSeed;
         }
-</script>
+
+        // --- FONCTIONS ANALYSE IMAGE (VERSION REPLICATE) ---
+        async function runInterrogation() {
+            const hfInput = document.getElementById('hf-token-input');
+            const fileInput = document.getElementById('image-input');
+            const status = document.getElementById('status-area');
+            const aiField = document.getElementById('ai-base-content');
+            const btn = document.getElementById('btn-interrogate');
+
+            const token = hfInput.value.trim();
+            const file = fileInput.files[0];
+
+            if (!token || !file) {
+                status.innerText = "Erreur : Token ou Image manquante.";
+                status.style.color = "red";
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                status.innerText = "Conversion de l'image...";
+                status.style.color = "#e8902b";
+
+                // On convertit l'image en Base64 (chaîne de texte)
+                const imageBase64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result); // Le résultat est "data:image/png;base64,..."
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file); 
+                });
+
+                status.innerText = "Envoi à l'IA (Replicate)...";
+
+                const apiUrl = "https://api.replicate.com/v1/predictions";
+
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": "Token " + token,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        version: "c221b2a876eddc29c14d35978c8e3db9675e4c",
+                        input: {
+                            image: imageBase64 // On envoie toute la chaîne "data:image..."
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error("Erreur API Replicate : " + response.status + " - " + errorText);
+                }
+
+                const result = await response.json();
+
+                let caption = "";
+                
+                // Replicate renvoie souvent le texte dans une chaîne simple ou un tableau
+                if (typeof result === 'string') {
+                    caption = result;
+                } else if (result.output) {
+                    caption = result.output;
+                } else {
+                    caption = "Erreur: Pas de texte généré.";
+                }
+
+                if (caption && caption !== "Erreur: Pas de texte généré.") {
+                    aiField.value = caption.toLowerCase().replace(/\.$/, "");
+                    status.innerText = "Terminé avec succès !";
+                    status.style.color = "#4CAF50"; // Vert
+                } else {
+                    aiField.value = "";
+                    status.innerText = "L'IA n'a rien trouvé.";
+                }
+
+            } catch (err) {
+                console.error(err);
+                status.innerText = "Erreur : " + err.message;
+                status.style.color = "red";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
