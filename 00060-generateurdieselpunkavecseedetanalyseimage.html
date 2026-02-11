@@ -953,29 +953,31 @@ body {
             btn.disabled = true;
             status.innerText = "Lecture de l'image en cours...";
 
-            // Étape 1 : Convertir l'image en Base64 (une chaîne de texte)
+            // Étape 1 : Convertir l'image en Base64
             const reader = new FileReader();
             
-            // On retourne une Promise pour attendre la fin de la lecture
             const imageBase64 = await new Promise((resolve, reject) => {
-                reader.onload = () => resolve(reader.result); // Le résultat est "data:image/jpeg;base64,...."
+                reader.onload = () => resolve(reader.result);
                 reader.onerror = error => reject(error);
                 reader.readAsDataURL(file); 
             });
 
-            status.innerText = "Envoi à l'IA... (merci de patienter)";
+            // Étape 2 : Nettoyer l'en-tête (data:image/jpeg;base64,)
+            // L'API de BLIP veut souvent JUSTE la chaine de caractères
+            const cleanBase64 = imageBase64.split(',')[1];
 
-            // Étape 2 : Envoyer le JSON (plus stable que FormData)
+            status.innerText = "Envoi à l'IA...";
+
             const url = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
             
             const response = await fetch(url, {
                 method: "POST",
                 headers: { 
                     "Authorization": "Bearer " + token,
-                    "Content-Type": "application/json" // On envoie du JSON standard
+                    "Content-Type": "application/json" 
                 },
                 body: JSON.stringify({
-                    inputs: imageBase64
+                    inputs: cleanBase64 // On envoie le texte brut, pas l'en-tête image
                 })
             });
 
@@ -986,9 +988,7 @@ body {
 
             const result = await response.json();
 
-            // Étape 3 : Traitement de la réponse
             let caption = "";
-            // BLIP renvoie généralement un objet direct ou un tableau
             if (Array.isArray(result) && result[0].generated_text) {
                 caption = result[0].generated_text;
             } else if (result.generated_text) {
@@ -1015,6 +1015,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
