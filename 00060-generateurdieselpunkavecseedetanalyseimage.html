@@ -951,7 +951,7 @@ body {
 
             // L'URL corrigée : on retire "/hf-inference/" qui provoquait le 404
             const url = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large";
-
+            
             const response = await fetch(url, {
                 headers: { "Authorization": "Bearer " + token },
                 method: "POST",
@@ -980,6 +980,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
