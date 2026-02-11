@@ -935,6 +935,14 @@ body {
         }
 </script>
 <script>
+    // Au chargement, on récupère le token s'il a déjà été sauvé
+    window.onload = function() {
+        const savedToken = localStorage.getItem('hf_token');
+        if (savedToken) {
+            document.getElementById('hf-token-input').value = savedToken;
+        }
+    };
+
     async function runInterrogation() {
         const hfInput = document.getElementById('hf-token-input');
         const fileInput = document.getElementById('image-input');
@@ -942,15 +950,16 @@ body {
         const aiField = document.getElementById('ai-base-content');
         const btn = document.getElementById('btn-interrogate');
 
-        // On récupère le token que TU as collé dans la case
         const token = hfInput.value.trim();
-
-        if (!token) return alert("N'oublie pas de coller ton Token hf_... dans la case !");
+        if (!token) return alert("Colle ton Token !");
         if (!fileInput.files[0]) return alert("Choisis une image.");
+
+        // On sauve le token pour la prochaine fois
+        localStorage.setItem('hf_token', token);
 
         try {
             btn.disabled = true;
-            status.innerText = "Envoi au serveur Hugging Face...";
+            status.innerText = "Appel à l'IA distante...";
 
             const response = await fetch(
                 "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
@@ -961,17 +970,13 @@ body {
                 }
             );
 
-            const result = await response.json();
-
-            if (result.error) {
-                if (result.error.includes("loading")) {
-                    status.innerText = "Le serveur s'allume... réessaie dans 15s.";
-                } else {
-                    status.innerText = "Erreur : Token invalide ou expiré.";
-                }
-                btn.disabled = false;
-                return;
+            // Si le serveur répond avec une erreur (ex: Token invalide)
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Erreur serveur");
             }
+
+            const result = await response.json();
 
             if (result[0] && result[0].generated_text) {
                 aiField.value = result[0].generated_text.toLowerCase();
@@ -980,8 +985,9 @@ body {
             }
 
         } catch (err) {
-            status.innerText = "Erreur de connexion réseau.";
-            console.error(err);
+            console.error("Détail :", err);
+            // ON AFFICHE L'ERREUR PRÉCISE ICI
+            status.innerText = "Détail : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -989,6 +995,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
