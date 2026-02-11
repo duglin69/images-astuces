@@ -935,7 +935,6 @@ body {
         }
 </script>
 <script>
-    // Cette fonction s'occupe de tout
     async function runInterrogation() {
         const hfInput = document.getElementById('hf-token-input');
         const fileInput = document.getElementById('image-input');
@@ -944,43 +943,47 @@ body {
         const btn = document.getElementById('btn-interrogate');
 
         const token = hfInput.value.trim();
-        if (!token) return alert("N'oublie pas de coller ton Token hf_...");
-        if (!fileInput.files[0]) return alert("Choisis une image !");
+        if (!token) return alert("N'oublie pas de coller ton Token !");
+        if (!fileInput.files[0]) return alert("Choisis une image.");
 
         try {
             btn.disabled = true;
-            status.innerText = "Analyse en cours (serveur distant)...";
+            status.innerText = "Analyse en cours sur le nouveau serveur...";
 
-            // On utilise l'URL ultra-simplifiée
-            const url = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
-            
+            // --- CHANGEMENT ICI : Nouvelle URL ---
+            // On utilise "router.huggingface.co" au lieu de "api-inference..."
+            const url = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large";
+
             const response = await fetch(url, {
                 headers: { "Authorization": "Bearer " + token },
                 method: "POST",
                 body: fileInput.files[0]
             });
 
+            // Si le serveur répond avec une erreur
+            if (!response.ok) {
+                const errorData = await response.text();
+                throw new Error(`Erreur serveur (${response.status}): ${errorData}`);
+            }
+
             const result = await response.json();
 
-            // Si le serveur est en train de démarrer
             if (result.error && result.error.includes("loading")) {
-                status.innerText = "L'IA se réveille... attends 20 secondes et reclique.";
+                status.innerText = "Le modèle se charge (15s)... Reclique après.";
                 btn.disabled = false;
                 return;
             }
 
             if (result[0] && result[0].generated_text) {
-                // Succès ! On écrit le texte
                 aiField.value = result[0].generated_text.toLowerCase();
-                status.innerText = "Analyse terminée !";
-                
-                // On met à jour ton prompt vert
+                status.innerText = "Analyse terminée avec succès !";
                 if (typeof window.generatePrompt === "function") window.generatePrompt();
             }
 
         } catch (err) {
             console.error(err);
-            status.innerText = "Erreur de connexion. Vérifie ton Token.";
+            // Affiche un message d'erreur plus clair
+            status.innerText = "Erreur : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -988,6 +991,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
