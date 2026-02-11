@@ -942,17 +942,18 @@ body {
         const aiField = document.getElementById('ai-base-content');
         const btn = document.getElementById('btn-interrogate');
 
+        // Récupération manuelle (pas de sauvegarde localStorage ici)
         const token = hfInput.value.trim();
-        if (!token) return alert("N'oublie pas de coller ton Token !");
-        if (!fileInput.files[0]) return alert("Choisis une image.");
+        
+        if (!token) return alert("N'oublie pas de coller ton Token hf_... dans la case !");
+        if (!fileInput.files[0]) return alert("Choisis une image avant d'analyser.");
 
         try {
             btn.disabled = true;
-            status.innerText = "Analyse en cours sur le nouveau serveur...";
+            status.innerText = "Analyse en cours via le nouveau routeur (2026)...";
 
-            // --- CHANGEMENT ICI : Nouvelle URL ---
-            // On utilise "router.huggingface.co" au lieu de "api-inference..."
-            const url = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large";
+            // L'URL exacte validée pour le nouveau système
+            const url = "https://router.huggingface.co/hf-inference/models/Salesforce/blip-image-captioning-large";
 
             const response = await fetch(url, {
                 headers: { "Authorization": "Bearer " + token },
@@ -960,30 +961,32 @@ body {
                 body: fileInput.files[0]
             });
 
-            // Si le serveur répond avec une erreur
+            // Gestion de la réponse serveur
             if (!response.ok) {
-                const errorData = await response.text();
-                throw new Error(`Erreur serveur (${response.status}): ${errorData}`);
+                const errorText = await response.text();
+                throw new Error(`Erreur ${response.status} : ${errorText}`);
             }
 
             const result = await response.json();
 
+            // Si l'IA n'est pas encore "réveillée" sur le serveur
             if (result.error && result.error.includes("loading")) {
-                status.innerText = "Le modèle se charge (15s)... Reclique après.";
+                status.innerText = "L'IA se prépare... attends 20s et reclique.";
                 btn.disabled = false;
                 return;
             }
 
             if (result[0] && result[0].generated_text) {
-                aiField.value = result[0].generated_text.toLowerCase();
-                status.innerText = "Analyse terminée avec succès !";
+                // On affiche le résultat et on déclenche la mise à jour du prompt vert
+                aiField.value = result[0].generated_text.toLowerCase().replace(/\.$/, "");
+                status.innerText = "Analyse terminée !";
+                
                 if (typeof window.generatePrompt === "function") window.generatePrompt();
             }
 
         } catch (err) {
             console.error(err);
-            // Affiche un message d'erreur plus clair
-            status.innerText = "Erreur : " + err.message;
+            status.innerText = "Détail : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -991,6 +994,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
