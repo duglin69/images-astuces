@@ -238,16 +238,22 @@ body {
         <!-- Les menus seront générés ici par JavaScript -->
     </div>
 <div class="controls" style="border-color: #e8902b; flex-direction: column; align-items: stretch;">
-    <label class="menu-label">BASE D'ANALYSE IA (IMAGE TO TEXT)</label>
-    <textarea id="ai-base-content" placeholder="Le résultat de l'analyse apparaîtra ici et sera inclus au début du prompt..." style="height: 50px; background: #000; color: var(--accent-hover); margin-bottom: 10px; border: 1px solid var(--border-color); font-family: 'Courier New', monospace;"></textarea>
-    
-    <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+    <label class="menu-label">1. TON TOKEN HUGGING FACE</label>
+    <input type="password" id="hf-token-input" placeholder="Colle ton token hf_... ici" style="width: 100%; background: #111; color: var(--accent-hover); border: 1px solid var(--border-color); padding: 8px; margin-bottom: 15px; font-family: monospace;">
+
+    <label class="menu-label">2. ANALYSE D'IMAGE</label>
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
         <input type="file" id="image-input" accept="image/*" style="font-size: 0.8em;">
-       <button id="btn-interrogate" onclick="runInterrogation()">Analyser l'image</button>
+        <button id="btn-interrogate" onclick="runInterrogation()">Analyser</button>
     </div>
+
+    <label class="menu-label">RÉSULTAT DE L'ANALYSE</label>
+    <textarea id="ai-base-content" placeholder="La description apparaîtra ici..." style="height: 50px; background: #000; color: #fff; border: 1px solid var(--border-color);"></textarea>
+    
     <div id="status-area" style="font-size: 0.7em; color: var(--accent-color); text-align: center; margin-top: 5px; font-style: italic;">
-        Prêt pour analyse (Nécessite connexion au premier chargement)
+        Prêt (utilise l'API distante)
     </div>
+</div>
 </div>
     <div class="controls">
         <button onclick="generatePrompt()">Générer le prompt</button>
@@ -991,6 +997,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
