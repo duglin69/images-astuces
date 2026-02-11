@@ -638,7 +638,7 @@
             document.getElementById('seed-input').value = newSeed;
         }
 
-        // --- FONCTIONS ANALYSE IMAGE (VERSION REPLICATE) ---
+                // --- FONCTIONS ANALYSE IMAGE (VERSION REPLICATE CORRIGÉE) ---
         async function runInterrogation() {
             const hfInput = document.getElementById('hf-token-input');
             const fileInput = document.getElementById('image-input');
@@ -660,16 +660,16 @@
                 status.innerText = "Conversion de l'image...";
                 status.style.color = "#e8902b";
 
-                // On convertit l'image en Base64 (chaîne de texte)
+                // Conversion en Base64
                 const imageBase64 = await new Promise((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result); // Le résultat est "data:image/png;base64,..."
-                    reader.onerror = error => reject(error);
+                    reader.onload = () => resolve(reader.result);
                     reader.readAsDataURL(file); 
                 });
 
-                status.innerText = "Envoi à l'IA (Replicate)...";
+                status.innerText = "Envoi à Replicate...";
 
+                // API Replicate (plus stable que Hugging Face pour le Web)
                 const apiUrl = "https://api.replicate.com/v1/predictions";
 
                 const response = await fetch(apiUrl, {
@@ -678,28 +678,29 @@
                         "Authorization": "Token " + token,
                         "Content-Type": "application/json"
                     },
+                    // IMPORTANT : "inputs" (avec un S) est le bon chemin
                     body: JSON.stringify({
                         version: "c221b2a876eddc29c14d35978c8e3db9675e4c",
-                        input: {
-                            image: imageBase64 // On envoie toute la chaîne "data:image..."
+                        inputs: {
+                            image: imageBase64,
+                            task: "Image Captioning"
                         }
                     })
                 });
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error("Erreur API Replicate : " + response.status + " - " + errorText);
+                    throw new Error("Erreur Replicate : " + response.status);
                 }
 
                 const result = await response.json();
 
+                // Gestion robuste de la réponse (BLIP versionne souvent le texte dans .output)
                 let caption = "";
-                
-                // Replicate renvoie souvent le texte dans une chaîne simple ou un tableau
-                if (typeof result === 'string') {
-                    caption = result;
-                } else if (result.output) {
+                if (result.output) {
                     caption = result.output;
+                } else if (Array.isArray(result) && result[0] && result[0].output) {
+                    caption = result[0].output;
                 } else {
                     caption = "Erreur: Pas de texte généré.";
                 }
@@ -724,3 +725,4 @@
     </script>
 </body>
 </html>
+
