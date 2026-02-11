@@ -949,8 +949,8 @@ body {
             btn.disabled = true;
             status.innerText = "Analyse en cours...";
 
-            // L'adresse exacte pour le routeur 2026
-            const url = "https://router.huggingface.co/hf-inference/models/Salesforce/blip-image-captioning-large";
+            // L'URL corrigée : on retire "/hf-inference/" qui provoquait le 404
+            const url = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large";
 
             const response = await fetch(url, {
                 headers: { "Authorization": "Bearer " + token },
@@ -958,25 +958,21 @@ body {
                 body: fileInput.files[0]
             });
 
-            const result = await response.json();
-
-            // Gestion du temps de chargement du modèle (cold start)
-            if (result.error && result.error.includes("loading")) {
-                status.innerText = "L'IA se réveille... attends 20s et reclique.";
-                btn.disabled = false;
-                return;
+            // Si le serveur répond autre chose que 200 (ex: 404), on l'affiche
+            if (!response.ok) {
+                throw new Error("Erreur " + response.status);
             }
 
+            const result = await response.json();
+
             if (result[0] && result[0].generated_text) {
-                // Écriture directe dans le bloc dédié
                 aiField.value = result[0].generated_text.toLowerCase().replace(/\.$/, "");
                 status.innerText = "Terminé.";
-            } else {
-                status.innerText = "Erreur de réponse.";
             }
 
         } catch (err) {
-            status.innerText = "Erreur réseau.";
+            // Affiche l'erreur réelle (plus de "Erreur réseau" générique)
+            status.innerText = "Détail : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -984,6 +980,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
