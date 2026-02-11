@@ -37,8 +37,9 @@
             width: 100%;
             text-align: center;
             background: #fff;
-            padding: 10px;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .container {
@@ -55,7 +56,7 @@
             border: 2px solid var(--border-color);
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
             position: relative;
         }
 
@@ -72,12 +73,12 @@
             width: 100%;
             background-color: var(--input-bg);
             color: #333;
-            border: 2px solid #ccc;
+            border: 2px solid var(--border-color);
             padding: 10px;
             font-family: inherit;
             font-size: 1em;
             box-sizing: border-box;
-            border-radius: 4px;
+            border-radius: 6px;
         }
 
         select:focus, input:focus {
@@ -89,7 +90,7 @@
         .custom-input {
             display: none;
             margin-top: 8px;
-            border-left: 3px solid var(--accent-color);
+            border-left: 4px solid var(--accent-color);
             padding-left: 8px;
             font-style: italic;
             color: #666;
@@ -108,7 +109,7 @@
             gap: 15px;
             justify-content: center;
             align-items: center;
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border-radius: 12px;
         }
 
@@ -128,13 +129,13 @@
             font-size: 1.1em;
             cursor: pointer;
             text-transform: uppercase;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(230, 126, 34, 0.2);
+            transition: all 0.3s;
+            box-shadow: 0 4px 0px rgba(230, 126, 34, 0.2);
         }
 
         button:hover {
-            background-color: #fff;
-            color: var(--accent-color);
+            background-color: #8bc34a;
+            color: #fff;
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(230, 126, 34, 0.3);
         }
@@ -142,14 +143,17 @@
         button.secondary {
             background-color: #f0f0f0;
             color: #555;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid #ccc;
+            box-shadow: none;
+            transform: none;
         }
         
         button.secondary:hover {
             background-color: #e0e0e0;
+            border-color: #bbb;
             color: #000;
-            box-shadow: 0 6px 8px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
+            transform: none;
+            box-shadow: none;
         }
 
         .toggle-container {
@@ -178,7 +182,7 @@
             font-family: 'Courier New', monospace;
             resize: vertical;
             box-sizing: border-box;
-            background-image: linear-gradient(0 0 0 0, transparent 50%), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff);
+            background-image: linear-gradient(0 0 0 0, transparent 50%), linear-gradient(45deg, #fff 25%, transparent 25%, #fff 75%, transparent);
             background-size: 20px 20px;
         }
 
@@ -190,6 +194,7 @@
             padding: 10px;
             background: #f9f9f9;
             border-radius: 4px;
+            text-align: center;
         }
 
         /* Toast notification */
@@ -256,8 +261,8 @@
         <label class="menu-label">Prompt pour Coloriage (Lignes Noires) :</label>
         <textarea id="output-positive" readonly placeholder="Le prompt apparaîtra ici..."></textarea>
         
-        <label class="menu-label" style="margin-top:10px; display:block;">Info Négatif (Géré pour le No&Blanc) :</label>
-        <div id="output-negative-preview" class="negative-preview">colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic...</div>
+        <label class="menu-label" style="margin-top:10px; display:block;">Info Négatif (Général pour le Noir & Blanc) :</label>
+        <div id="output-negative-preview" class="negative-preview">colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic, watercolor, oil painting, saturated, colorful</div>
     </div>
 
     <div id="toast">Prompt copié !</div>
@@ -271,19 +276,16 @@
                 options: [
                     "Princesse Disney moderne",
                     "Princesse traditionnelle",
-                    "Chevalier au galop",
+                    "Chevalier de galop",
                     "Pirate mignon",
                     "Fée enchantée",
                     "Robot ami",
                     "Animal de la forêt",
                     "Chat mignon",
-                    "Chien dessin animé",
                     "Super Héros (style BD)",
                     "Gardien du zoo",
                     "Père Noël moderne",
-                    "Voyageur du temps",
-                    "Astronaute",
-                    "Pêcheur de rivière"
+                    "Voyageur du temps"
                 ]
             },
             {
@@ -291,7 +293,7 @@
                 id: "menu_style_trait",
                 options: [
                     "Ligne noire épaisse et nette",
-                    "Crayon de couleur",
+                    "Crayon de couleur (Crayon de bois)",
                     "Aquarelle gouachée",
                     "Illustration de livre pour enfants",
                     "Gravure sur bois",
@@ -299,9 +301,8 @@
                     "Peinture à l'aquarelle douce",
                     "Illustration vintage années 50",
                     "Style Manga / Shonen (contours nets)",
-                    "Style BD Belge (ligne claire)",
-                    "Style American Golden Age",
-                    "Art Nouveau floral (détails organiques)"
+                    "Style Beldam (ligne claire)",
+                    "Style American Golden Age"
                 ]
             },
             {
@@ -310,42 +311,40 @@
                 options: [
                     "Simple (peu de détails, pour tout-petit)",
                     "Moyenne (contours propres, standard)",
-                    "Détaillé (beaucoup de traits)",
-                    "Très détaillé (pour adultes)"
+                    "Détaillé (beaucoup de traits)"
                 ]
             },
             {
                 title: "ACTION / POSTURE",
-                id: "menu_action",
+                id: menu_action",
                 options: [
-                    "Assis en traineau à vapeur",
+                    "Assis dans une bulle à vapeur",
                     "Lit dans un champ de fleurs",
                     "Court un dragon dans le ciel",
                     "Regarde par la fenêtre",
                     "Mange une pomme",
                     "Ouvre un cadeau",
-                    "Court une fusée",
+                    "Tire un fusil",
                     "Peint un tableau",
                     "Dort sur un nuage",
-                    "Gagne un trophée"
+                    "Gagne une course"
                 ]
             },
             {
                 title: "ARRIÈRE-PLAN / DÉCOR",
-                id: menu_lieu,
+                id: "menu_lieu",
                 options: [
                     "Chambre d'enfant colorée",
                     "Jardin secret",
                     "Château de conte de fées",
                     "Forêt enchantée",
-                    "Ville dessin animé (Disney style)",
                     "Fond spatial (Lune et étoiles)",
                     "Paysage champêtre",
-                    "Sous la mer",
-                    "Grotte mystérieuse",
                     "Bibliothèque magique",
                     "École de sorciers",
-                    "Piste de course de jouets"
+                    "Paysage marin",
+                    "Grotes grottes",
+                    "Ville dessin animé"
                 ]
             },
             {
@@ -358,8 +357,7 @@
                     "Livre de contes",
                     "Lanterne magique",
                     "Baguette de sorcier",
-                    "Couronne",
-                    "Pomme rouge brillante",
+                    "Couronne royale",
                     "Épée à glace",
                     "Petite voiture bleue",
                     "Panier picnic"
@@ -372,29 +370,27 @@
                     "Style Mary Blair (Disney classique)",
                     "Style Al Hirschfeld (Aquarelle douce)",
                     "Style Dr Seuss (Whimsical, rond)",
-                    "Style Beatrix Potter (Détails organiques)",
                     "Style Studio Ghibli (Anime clair)",
                     "Style Maurice Sendak (Contour dur, sombre)",
                     "Style Tim Burton (Gothique, tordu)",
-                    "Style Arthur Rackham (Féer, sombre)",
+                    "Style Arthur Rackham (Féer, sombre, détaillé)",
                     "Style Gustave Doré (Classique, détaillé)",
                     "Style Hayao Miyazaki (Anime épique)"
                 ]
             },
             {
                 title: "FORMAT & PAPIER",
-                id: menu_format,
+                id: "menu_format",
                 options: [
                     "Format A4 (Portrait/Paysage)",
                     "Format A3 (Double A4)",
-                    "Format A5",
                     "Format Carré (Pour cartes postales)",
-                    "Format 16:9 (Pour fond d'écran)"
+                    "Format 16:9 (Pour écrans)"
                 ]
             },
             {
                 title: "QUALITÉ",
-                id: "menu_qualite",
+                id: menu_qualite,
                 options: [
                     "Clean outlines (Nettoyé)",
                     "High contrast (Contraste élevé)",
@@ -406,7 +402,7 @@
         ];
 
         // Le Prompt Négatif est DÉJÀ PRÊT pour le Coloriage
-        const negativePromptBase = "colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic, watercolor, oil painting, saturated, colorful, vivid";
+        const negativePromptBase = "colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic, watercolor, oil painting, saturated, colorful";
 
         // --- INITIALISATION ---
         window.onload = function() {
@@ -423,11 +419,13 @@
                 const select = document.createElement('select');
                 select.id = menu.id;
                 
+                // Option par défaut
                 const defaultOption = document.createElement('option');
                 defaultOption.value = "Choisir";
                 defaultOption.textContent = "Choisir";
                 select.appendChild(defaultOption);
 
+                // Options du menu
                 menu.options.forEach(optText => {
                     const option = document.createElement('option');
                     option.value = optText;
@@ -435,17 +433,20 @@
                     select.appendChild(option);
                 });
 
+                // Option Custom
                 const customOption = document.createElement('option');
                 customOption.value = "Custom";
                 customOption.textContent = "Custom";
                 select.appendChild(customOption);
 
+                // Input Custom (caché)
                 const customInput = document.createElement('input');
                 customInput.type = "text";
                 customInput.id = "custom_" + menu.id;
                 customInput.className = "custom-input";
                 customInput.placeholder = "Ajoutez votre texte...";
 
+                // Événement pour afficher l'input Custom
                 select.addEventListener('change', function() {
                     if(this.value === "Custom") {
                         customInput.style.display = "block";
@@ -474,13 +475,15 @@
             const seedInput = document.getElementById('seed-input');
             let currentSeed = seedInput.value;
 
+            // Si la case est vide, on génère un seed aléatoire (entre 1 et 999999999)
+            // ET on l'affiche dans la case pour que l'utilisateur puisse le voir/copier
             if (!currentSeed) {
                 currentSeed = Math.floor(Math.random() * 999999999) + 1;
                 seedInput.value = currentSeed;
             }
             // ---------------------------------
 
-            // Le mot clé "Noir et Blanc" est automatique ici
+            // On ajoute le style de base "Ligne noire" car c'est un coloriage
             parts.push("Ligne noire épaisse, dessin au trait, noir et blanc, illustration pour enfants");
 
             menusData.forEach(menu => {
@@ -498,8 +501,9 @@
                 }
 
                 if (part) {
+                    // Application de la pondération si activée
                     if (weighted) {
-                        // On booste l'Artiste surtout pour le style
+                        // On booste surtout l'Artiste
                         if (menu.id === "menu_artiste") {
                             part = `(${part}:1.2)`;
                         }
@@ -515,7 +519,7 @@
         }
 
         function updateNegativePreview() {
-            // Pour le coloriage, on force le négatif
+            // Pour le coloriage, on force un prompt négatif simple qui évite la couleur
             const neg = negativePromptBase;
             document.getElementById('output-negative-preview').textContent = neg;
             return neg;
@@ -530,9 +534,13 @@
                 const select = document.getElementById(menu.id);
                 const customInput = document.getElementById("custom_" + menu.id);
                 const options = menu.options;
+                
+                // Choisir un index aléatoire (excluant les 2 dernières options si besoin, mais ici on veut éviter "Choisir" et "Custom")
                 const randomIndex = Math.floor(Math.random() * options.length);
                 
                 select.value = options[randomIndex];
+                
+                // Cacher l'input custom au cas où
                 customInput.style.display = "none";
                 customInput.value = "";
             });
@@ -540,7 +548,7 @@
         }
 
         function resetAll() {
-            menusData(menu => {
+            menusData.forEach(menu => {
                 const select = document.getElementById(menu.id);
                 const customInput = document.getElementById("custom_" + menu.id);
                 select.value = "Choisir";
@@ -575,6 +583,7 @@
             let content = `--- GENERATEUR DE COLORIAGES ---\n\n`;
             content += `[SEED]: ${seed}\n\n`;
             content += `[PROMPT]:\n${positive}\n\n`;
+            content += `[INFO NÉGATIF]:\n${negative}\n\n`;
             content += `[DETAILS SELECTIONNES]:\n`;
             
             menusData.forEach(menu => {
