@@ -931,8 +931,9 @@ body {
 <script type="module">
     import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 
+    // Configuration optimale pour GitHub Pages
     env.allowLocalModels = false;
-    env.useBrowserCache = true;
+    env.useBrowserCache = true; 
 
     let captioner = null;
 
@@ -946,22 +947,27 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Chargement du moteur BLIP (plus précis, 100Mo)...";
+            status.innerText = "Chargement du cerveau Large (env. 400Mo)...";
 
             if (!captioner) {
-                // CHANGEMENT ICI : Modèle BLIP beaucoup plus performant
-                captioner = await pipeline('image-to-text', 'Xenova/blip-image-captioning-base');
+                // Utilisation du modèle BLIP Large pour une analyse de haut niveau
+                captioner = await pipeline('image-to-text', 'Xenova/blip-image-captioning-large');
             }
 
-            status.innerText = "Analyse approfondie en cours...";
+            status.innerText = "Analyse détaillée en cours...";
 
             const reader = new FileReader();
             reader.onload = async (e) => {
-                const result = await captioner(e.target.result);
+                // Paramètres de génération pour un texte plus riche
+                const result = await captioner(e.target.result, {
+                    max_new_tokens: 60,
+                    repetition_penalty: 1.5
+                });
+                
                 const desc = result[0].generated_text.toLowerCase().replace(/\.$/, "");
                 
                 aiField.value = desc;
-                status.innerText = "Analyse terminée !";
+                status.innerText = "Analyse terminée avec succès !";
                 btn.disabled = false;
                 
                 if (typeof window.generatePrompt === "function") window.generatePrompt();
@@ -970,13 +976,14 @@ body {
 
         } catch (err) {
             console.error(err);
-            status.innerText = "Erreur. Vérifie Ghostery ou la console.";
+            status.innerText = "Erreur. Vérifiez Ghostery/uBlock et rafraîchissez.";
             btn.disabled = false;
         }
     }
 </script>
 </body>
 </html>
+
 
 
 
