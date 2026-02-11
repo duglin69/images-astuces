@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Coloriages</title>
+    <style>
+        :root {
+            --bg-color: #fdfbf7; /* Papier légèrement crème */
+            --panel-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #e67e22; /* Vert Crayon */
+            --accent-hover: #8bc34a;
+            --border-color: #d1d1d1;
+            --input-bg: #fafafa;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px #ccc;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 10px;
+            width: 100%;
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+        }
+
+        .menu-block {
+            background-color: var(--panel-color);
+            border: 2px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .menu-label {
+            display: block;
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            background-color: var(--input-bg);
+            color: #333;
+            border: 2px solid #ccc;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: #fff;
+        }
+
+        .custom-input {
+            display: none;
+            margin-top: 8px;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 8px;
+            font-style: italic;
+            color: #666;
+        }
+
+        /* Zone de contrôle */
+        .controls {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            border: 2px solid var(--accent-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(230, 126, 34, 0.2);
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(230, 126, 34, 0.3);
+        }
+
+        button.secondary {
+            background-color: #f0f0f0;
+            color: #555;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        button.secondary:hover {
+            background-color: #e0e0e0;
+            color: #000;
+            box-shadow: 0 6px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #555;
+        }
+
+        /* Zone de résultat */
+        .output-area {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #fff;
+            color: #000;
+            border: 2px dashed #aaa;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            box-sizing: border-box;
+            background-image: linear-gradient(0 0 0 0, transparent 50%), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff);
+            background-size: 20px 20px;
+        }
+
+        .negative-preview {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        /* Toast notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom: 4px solid var(--accent-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Générateur de Coloriages</h1>
+
+    <div class="container" id="menus-container">
+        <!-- Les menus seront générés ici par JavaScript -->
+    </div>
+
+    <div class="controls">
+        <button onclick="generatePrompt()">Générer le coloriage</button>
+        <button onclick="surprisePrompt()" class="secondary">Idée Surprise</button>
+        <button onclick="copyToClipboard()" class="secondary">Copier le prompt</button>
+        <button onclick="resetAll()" class="secondary">Reset</button>
+        <button onclick="exportTxt()" class="secondary">Exporter .txt</button>
+
+        <div class="control-group">
+            <div class="toggle-container" title="Pondérer le sujet et le style">
+                <input type="checkbox" id="weight-toggle">
+                <label for="weight-toggle">Boost Détails (1.2x)</label>
+            </div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <input type="number" id="seed-input" placeholder="Seed Auto" style="width: 100px;">
+                <button type="button" onclick="randomizeSeed()" style="padding: 6px 10px;" title="Générer un nouveau Seed aléatoire">🎲</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="output-area">
+        <label class="menu-label">Prompt pour Coloriage (Lignes Noires) :</label>
+        <textarea id="output-positive" readonly placeholder="Le prompt apparaîtra ici..."></textarea>
+        
+        <label class="menu-label" style="margin-top:10px; display:block;">Info Négatif (Géré pour le No&Blanc) :</label>
+        <div id="output-negative-preview" class="negative-preview">colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic...</div>
+    </div>
+
+    <div id="toast">Prompt copié !</div>
+
+    <script>
+        // --- DONNÉES DES MENUS (THEME COLORIAGES) ---
+        const menusData = [
+            {
+                title: "PERSONNAGE / SUJET",
+                id: "menu_sujet",
+                options: [
+                    "Princesse Disney moderne",
+                    "Princesse traditionnelle",
+                    "Chevalier au galop",
+                    "Pirate mignon",
+                    "Fée enchantée",
+                    "Robot ami",
+                    "Animal de la forêt",
+                    "Chat mignon",
+                    "Chien dessin animé",
+                    "Super Héros (style BD)",
+                    "Gardien du zoo",
+                    "Père Noël moderne",
+                    "Voyageur du temps",
+                    "Astronaute",
+                    "Pêcheur de rivière"
+                ]
+            },
+            {
+                title: "STYLE DE TRAIT",
+                id: "menu_style_trait",
+                options: [
+                    "Ligne noire épaisse et nette",
+                    "Crayon de couleur",
+                    "Aquarelle gouachée",
+                    "Illustration de livre pour enfants",
+                    "Gravure sur bois",
+                    "Croquis au crayon (Rough sketch)",
+                    "Peinture à l'aquarelle douce",
+                    "Illustration vintage années 50",
+                    "Style Manga / Shonen (contours nets)",
+                    "Style BD Belge (ligne claire)",
+                    "Style American Golden Age",
+                    "Art Nouveau floral (détails organiques)"
+                ]
+            },
+            {
+                title: "COMPLEXITÉ",
+                id: "menu_complexite",
+                options: [
+                    "Simple (peu de détails, pour tout-petit)",
+                    "Moyenne (contours propres, standard)",
+                    "Détaillé (beaucoup de traits)",
+                    "Très détaillé (pour adultes)"
+                ]
+            },
+            {
+                title: "ACTION / POSTURE",
+                id: "menu_action",
+                options: [
+                    "Assis en traineau à vapeur",
+                    "Lit dans un champ de fleurs",
+                    "Court un dragon dans le ciel",
+                    "Regarde par la fenêtre",
+                    "Mange une pomme",
+                    "Ouvre un cadeau",
+                    "Court une fusée",
+                    "Peint un tableau",
+                    "Dort sur un nuage",
+                    "Gagne un trophée"
+                ]
+            },
+            {
+                title: "ARRIÈRE-PLAN / DÉCOR",
+                id: menu_lieu,
+                options: [
+                    "Chambre d'enfant colorée",
+                    "Jardin secret",
+                    "Château de conte de fées",
+                    "Forêt enchantée",
+                    "Ville dessin animé (Disney style)",
+                    "Fond spatial (Lune et étoiles)",
+                    "Paysage champêtre",
+                    "Sous la mer",
+                    "Grotte mystérieuse",
+                    "Bibliothèque magique",
+                    "École de sorciers",
+                    "Piste de course de jouets"
+                ]
+            },
+            {
+                title: "OBJETS & DÉTAILS",
+                id: "menu_objet",
+                options: [
+                    "Ballons de baudruche",
+                    "Jouets en bois et rouille",
+                    "Fleurs et papillons",
+                    "Livre de contes",
+                    "Lanterne magique",
+                    "Baguette de sorcier",
+                    "Couronne",
+                    "Pomme rouge brillante",
+                    "Épée à glace",
+                    "Petite voiture bleue",
+                    "Panier picnic"
+                ]
+            },
+            {
+                title: "ARTISTES / STYLE VISUEL",
+                id: menu_artiste,
+                options: [
+                    "Style Mary Blair (Disney classique)",
+                    "Style Al Hirschfeld (Aquarelle douce)",
+                    "Style Dr Seuss (Whimsical, rond)",
+                    "Style Beatrix Potter (Détails organiques)",
+                    "Style Studio Ghibli (Anime clair)",
+                    "Style Maurice Sendak (Contour dur, sombre)",
+                    "Style Tim Burton (Gothique, tordu)",
+                    "Style Arthur Rackham (Féer, sombre)",
+                    "Style Gustave Doré (Classique, détaillé)",
+                    "Style Hayao Miyazaki (Anime épique)"
+                ]
+            },
+            {
+                title: "FORMAT & PAPIER",
+                id: menu_format,
+                options: [
+                    "Format A4 (Portrait/Paysage)",
+                    "Format A3 (Double A4)",
+                    "Format A5",
+                    "Format Carré (Pour cartes postales)",
+                    "Format 16:9 (Pour fond d'écran)"
+                ]
+            },
+            {
+                title: "QUALITÉ",
+                id: "menu_qualite",
+                options: [
+                    "Clean outlines (Nettoyé)",
+                    "High contrast (Contraste élevé)",
+                    "Shadows included (Ombres douces)",
+                    "No shadows (Plat, pour colorier soi-même)",
+                    "Crisp edges (Bords nets)"
+                ]
+            }
+        ];
+
+        // Le Prompt Négatif est DÉJÀ PRÊT pour le Coloriage
+        const negativePromptBase = "colored, full color, vibrant colors, shading, grayscale, realistic, 3d render, photorealistic, watercolor, oil painting, saturated, colorful, vivid";
+
+        // --- INITIALISATION ---
+        window.onload = function() {
+            const container = document.getElementById('menus-container');
+            
+            menusData.forEach(menu => {
+                const block = document.createElement('div');
+                block.className = 'menu-block';
+
+                const label = document.createElement('label');
+                label.className = 'menu-label';
+                label.textContent = menu.title;
+                
+                const select = document.createElement('select');
+                select.id = menu.id;
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "Choisir";
+                defaultOption.textContent = "Choisir";
+                select.appendChild(defaultOption);
+
+                menu.options.forEach(optText => {
+                    const option = document.createElement('option');
+                    option.value = optText;
+                    option.textContent = optText;
+                    select.appendChild(option);
+                });
+
+                const customOption = document.createElement('option');
+                customOption.value = "Custom";
+                customOption.textContent = "Custom";
+                select.appendChild(customOption);
+
+                const customInput = document.createElement('input');
+                customInput.type = "text";
+                customInput.id = "custom_" + menu.id;
+                customInput.className = "custom-input";
+                customInput.placeholder = "Ajoutez votre texte...";
+
+                select.addEventListener('change', function() {
+                    if(this.value === "Custom") {
+                        customInput.style.display = "block";
+                        customInput.focus();
+                    } else {
+                        customInput.style.display = "none";
+                    }
+                });
+
+                block.appendChild(label);
+                block.appendChild(select);
+                block.appendChild(customInput);
+                container.appendChild(block);
+            });
+            
+            updateNegativePreview();
+        };
+
+        // --- FONCTIONS LOGIQUES ---
+
+        function generatePrompt() {
+            let parts = [];
+            let weighted = document.getElementById('weight-toggle').checked;
+            
+            // --- GESTION DU SEED ---
+            const seedInput = document.getElementById('seed-input');
+            let currentSeed = seedInput.value;
+
+            if (!currentSeed) {
+                currentSeed = Math.floor(Math.random() * 999999999) + 1;
+                seedInput.value = currentSeed;
+            }
+            // ---------------------------------
+
+            // Le mot clé "Noir et Blanc" est automatique ici
+            parts.push("Ligne noire épaisse, dessin au trait, noir et blanc, illustration pour enfants");
+
+            menusData.forEach(menu => {
+                const select = document.getElementById(menu.id);
+                const val = select.value;
+                let part = "";
+
+                if (val === "Custom") {
+                    const customInput = document.getElementById("custom_" + menu.id);
+                    if (customInput.value.trim() !== "") {
+                        part = customInput.value.trim();
+                    }
+                } else if (val !== "Choisir") {
+                    part = val;
+                }
+
+                if (part) {
+                    if (weighted) {
+                        // On booste l'Artiste surtout pour le style
+                        if (menu.id === "menu_artiste") {
+                            part = `(${part}:1.2)`;
+                        }
+                    }
+                    parts.push(part);
+                }
+            });
+
+            const finalPrompt = parts.join(", ");
+            document.getElementById('output-positive').value = finalPrompt;
+            updateNegativePreview();
+            return finalPrompt;
+        }
+
+        function updateNegativePreview() {
+            // Pour le coloriage, on force le négatif
+            const neg = negativePromptBase;
+            document.getElementById('output-negative-preview').textContent = neg;
+            return neg;
+        }
+
+        function getNegativePrompt() {
+            return updateNegativePreview();
+        }
+
+        function surprisePrompt() {
+            menusData.forEach(menu => {
+                const select = document.getElementById(menu.id);
+                const customInput = document.getElementById("custom_" + menu.id);
+                const options = menu.options;
+                const randomIndex = Math.floor(Math.random() * options.length);
+                
+                select.value = options[randomIndex];
+                customInput.style.display = "none";
+                customInput.value = "";
+            });
+            generatePrompt();
+        }
+
+        function resetAll() {
+            menusData(menu => {
+                const select = document.getElementById(menu.id);
+                const customInput = document.getElementById("custom_" + menu.id);
+                select.value = "Choisir";
+                customInput.style.display = "none";
+                customInput.value = "";
+            });
+            document.getElementById('output-positive').value = "";
+            document.getElementById('seed-input').value = "";
+            document.getElementById('weight-toggle').checked = false;
+            updateNegativePreview();
+        }
+
+        async function copyToClipboard() {
+            const positive = generatePrompt();
+            const negative = getNegativePrompt();
+            const textToCopy = `${positive}\n\nNegative Prompt:\n${negative}`;
+            
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                showToast();
+            } catch (err) {
+                console.error('Erreur de copie : ', err);
+                alert("Erreur lors de la copie automatique. Veuillez copier manuellement.");
+            }
+        }
+
+        function exportTxt() {
+            const positive = generatePrompt();
+            const negative = getNegativePrompt();
+            const seed = document.getElementById('seed-input').value || "Auto-Aléatoire";
+            
+            let content = `--- GENERATEUR DE COLORIAGES ---\n\n`;
+            content += `[SEED]: ${seed}\n\n`;
+            content += `[PROMPT]:\n${positive}\n\n`;
+            content += `[DETAILS SELECTIONNES]:\n`;
+            
+            menusData.forEach(menu => {
+                const val = document.getElementById(menu.id).value;
+                if(val === "Custom") {
+                    const cVal = document.getElementById("custom_" + menu.id).value;
+                    content += `- ${menu.title}: ${cVal || "Vide"}\n`;
+                } else if (val !== "Choisir") {
+                    content += `- ${menu.title}: ${val}\n`;
+                }
+            });
+
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `coloriage_prompt_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function randomizeSeed() {
+            const newSeed = Math.floor(Math.random() * 999999999) + 1;
+            document.getElementById('seed-input').value = newSeed;
+        }
+    </script>
+</body>
+</html>
