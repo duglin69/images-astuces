@@ -929,19 +929,10 @@ body {
         }
 </script>
 <script type="module">
-    // On utilise la version stable la plus récente
-    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1';
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 
-    // --- CONFIGURATION DE SÉCURITÉ RENFORCÉE ---
-    // On autorise explicitement les modèles distants (indispensable pour GitHub)
+    // On réinitialise les réglages par défaut qui fonctionnent normalement très bien sur GitHub
     env.allowLocalModels = false;
-    env.allowRemoteModels = true; 
-    
-    // On définit explicitement l'hôte pour éviter les erreurs de redirection
-    env.remoteHost = 'https://huggingface.co';
-    env.remotePathTemplate = '{model}/resolve/{revision}/';
-    
-    // On active le cache du navigateur pour éviter les retéléchargements inutiles
     env.useBrowserCache = true;
 
     let captioner = null;
@@ -956,36 +947,39 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Initialisation du moteur de vision...";
+            status.innerText = "Connexion au cerveau IA...";
 
             if (!captioner) {
-                // On spécifie le modèle avec ses options de chargement
-                captioner = await pipeline('image-to-text', 'Xenova/blip-image-captioning-base', {
-                    revision: 'main',
-                });
+                // TEST : On utilise un modèle beaucoup plus léger (30Mo au lieu de 100Mo) 
+                // pour vérifier si le blocage vient de la taille du fichier.
+                captioner = await pipeline('image-to-text', 'Xenova/vit-gpt2-image-captioning');
             }
 
-            status.innerText = "Analyse de l'image en cours...";
+            status.innerText = "Analyse de l'image...";
 
+            const file = fileInput.files[0];
             const reader = new FileReader();
             reader.onload = async (e) => {
-                const result = await captioner(e.target.result);
-                aiField.value = result[0].generated_text.replace(/\.$/, "");
+                const url = e.target.result;
+                const result = await captioner(url);
                 
+                aiField.value = result[0].generated_text.replace(/\.$/, "");
                 status.innerText = "Analyse terminée !";
                 btn.disabled = false;
                 
                 if (typeof window.generatePrompt === "function") window.generatePrompt();
             };
-            reader.readAsDataURL(fileInput.files[0]);
+            reader.readAsDataURL(file);
 
         } catch (err) {
-            console.error("Détail de l'erreur :", err);
-            status.innerText = "Erreur de connexion : Vérifie ta console (F12)";
+            console.error("Détail complet :", err);
+            // Si l'erreur persiste, on affiche un message plus explicite
+            status.innerText = "Erreur d'accès. Vérifie ton AdBlock ou essaie en navigation privée.";
             btn.disabled = false;
         }
     }
 </script>
 </body>
 </html>
+
 
