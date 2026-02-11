@@ -951,29 +951,28 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Préparation de l'envoi...";
+            status.innerText = "Connexion via Proxy (Tunnel)...";
 
-            // On utilise FormData (Envoi de fichier brut)
             const formData = new FormData();
             formData.append("inputs", file);
 
-            status.innerText = "Connexion à l'IA (CORS)...";
+            // --- LE TRUC : ON UTILISE UN PROXY POUR PASSER LE MUR CORS ---
+            const hfUrl = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
+            const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(hfUrl);
+            // -------------------------------------------------------------
 
-            const url = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
-            
-            const response = await fetch(url, {
+            const response = await fetch(proxyUrl, {
                 method: "POST",
                 headers: { 
                     "Authorization": "Bearer " + token 
-                    // IMPORTANT : On NE MET PAS "Content-Type" ici ! 
-                    // Le navigateur doit le définir lui-même pour le multipart (boundary)
+                    // Pas de Content-Type pour FormData
                 },
                 body: formData
             });
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error("Erreur API HF : " + response.status + " - " + errorText);
+                throw new Error("Erreur API HF (via Proxy) : " + response.status + " - " + errorText);
             }
 
             const result = await response.json();
@@ -1005,6 +1004,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
