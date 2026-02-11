@@ -942,17 +942,14 @@ body {
         const aiField = document.getElementById('ai-base-content');
         const btn = document.getElementById('btn-interrogate');
 
-        // Récupération manuelle immédiate
         const token = hfInput.value.trim();
-        
-        if (!token) return alert("Le champ Token est vide !");
-        if (!fileInput.files[0]) return alert("Choisis une image.");
+        if (!token || !fileInput.files[0]) return alert("Token ou image manquante.");
 
         try {
             btn.disabled = true;
-            status.innerText = "Envoi au routeur Hugging Face...";
+            status.innerText = "Analyse en cours...";
 
-            // L'URL exacte pour l'infrastructure 2026
+            // L'adresse exacte pour le routeur 2026
             const url = "https://router.huggingface.co/hf-inference/models/Salesforce/blip-image-captioning-large";
 
             const response = await fetch(url, {
@@ -961,14 +958,9 @@ body {
                 body: fileInput.files[0]
             });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Serveur : ${response.status} - ${errorText}`);
-            }
-
             const result = await response.json();
 
-            // Gestion du réveil du modèle (cold start)
+            // Gestion du temps de chargement du modèle (cold start)
             if (result.error && result.error.includes("loading")) {
                 status.innerText = "L'IA se réveille... attends 20s et reclique.";
                 btn.disabled = false;
@@ -976,14 +968,15 @@ body {
             }
 
             if (result[0] && result[0].generated_text) {
-                // Remplissage du bloc orange uniquement
+                // Écriture directe dans le bloc dédié
                 aiField.value = result[0].generated_text.toLowerCase().replace(/\.$/, "");
-                status.innerText = "Analyse terminée !";
+                status.innerText = "Terminé.";
+            } else {
+                status.innerText = "Erreur de réponse.";
             }
 
         } catch (err) {
-            console.error(err);
-            status.innerText = "Erreur : " + err.message;
+            status.innerText = "Erreur réseau.";
         } finally {
             btn.disabled = false;
         }
@@ -991,6 +984,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
