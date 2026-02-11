@@ -243,7 +243,7 @@ body {
     
     <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
         <input type="file" id="image-input" accept="image/*" style="font-size: 0.8em;">
-        <button id="btn-interrogate" onclick="runInterrogation()">Analyser l'image</button>
+       <button id="btn-interrogate" onclick="runInterrogation()">Analyser l'image</button>
     </div>
     <div id="status-area" style="font-size: 0.7em; color: var(--accent-color); text-align: center; margin-top: 5px; font-style: italic;">
         Prêt pour analyse (Nécessite connexion au premier chargement)
@@ -929,9 +929,8 @@ body {
         }
 </script>
 <script>
-    // --- TA CONFIGURATION ---
-    const HF_TOKEN = "COLLE_TON_TOKEN_ICI"; 
-    const MODEL_ID = "Salesforce/blip-image-captioning-large";
+    // COLLE TON TOKEN ENTRE LES GUILLEMETS CI-DESSOUS
+    const HF_TOKEN = "hf_ICI_TON_TOKEN_HUGGING_FACE"; 
 
     async function runInterrogation() {
         const fileInput = document.getElementById('image-input');
@@ -939,18 +938,22 @@ body {
         const aiField = document.getElementById('ai-base-content');
         const btn = document.getElementById('btn-interrogate');
 
-        if (!fileInput.files[0]) return alert("Choisis une image !");
+        if (!fileInput.files[0]) return alert("Veuillez choisir une image !");
 
         try {
             btn.disabled = true;
-            status.innerText = "Envoi de l'image au serveur IA...";
+            status.innerText = "Connexion au serveur Hugging Face...";
 
             const imageData = fileInput.files[0];
             
+            // Appel à l'API (Modèle BLIP Large)
             const response = await fetch(
-                `https://api-inference.huggingface.co/models/${MODEL_ID}`,
+                "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large",
                 {
-                    headers: { Authorization: `Bearer ${HF_TOKEN}` },
+                    headers: { 
+                        "Authorization": `Bearer ${HF_TOKEN}`,
+                        "Content-Type": "application/octet-stream"
+                    },
                     method: "POST",
                     body: imageData,
                 }
@@ -958,19 +961,29 @@ body {
 
             const result = await response.json();
 
+            // Si le serveur est en train de démarrer, il renvoie un message "estimated_time"
+            if (result.error && result.error.includes("currently loading")) {
+                status.innerText = "L'IA se réveille... réessaie dans 20 secondes.";
+                btn.disabled = false;
+                return;
+            }
+
             if (result[0] && result[0].generated_text) {
-                const desc = result[0].generated_text.toLowerCase();
+                const desc = result[0].generated_text.toLowerCase().replace(/\.$/, "");
                 aiField.value = desc;
-                status.innerText = "Analyse API terminée !";
+                status.innerText = "Analyse terminée !";
                 
-                if (typeof window.generatePrompt === "function") window.generatePrompt();
+                // On met à jour le gros prompt vert automatiquement
+                if (typeof window.generatePrompt === "function") {
+                    window.generatePrompt();
+                }
             } else {
-                throw new Error("Réponse inattendue de l'IA");
+                throw new Error("Réponse vide du serveur.");
             }
 
         } catch (err) {
-            console.error(err);
-            status.innerText = "Erreur API : Vérifie ton Token ou ta connexion.";
+            console.error("Erreur détaillée :", err);
+            status.innerText = "Erreur : Vérifie ton Token ou ta connexion.";
         } finally {
             btn.disabled = false;
         }
@@ -978,6 +991,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
