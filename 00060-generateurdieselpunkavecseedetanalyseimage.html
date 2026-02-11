@@ -951,28 +951,32 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Connexion via Proxy (Tunnel)...";
+            status.innerText = "Envoi via le Router HF...";
 
+            // On utilise FormData (Fichier brut)
             const formData = new FormData();
             formData.append("inputs", file);
 
-            // --- LE TRUC : ON UTILISE UN PROXY POUR PASSER LE MUR CORS ---
-            const hfUrl = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
+            // --- URL FINALE CORRECTE (selon le message 410 de HF) ---
+            // L'erreur disait : "Please use https://router.huggingface.co"
+            // On ajoute /infer à la fin pour le Router
+            const hfUrl = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large/infer";
+            // ---------------------------------------------------------
+
+            // On garde le Proxy pour GitHub Pages
             const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(hfUrl);
-            // -------------------------------------------------------------
 
             const response = await fetch(proxyUrl, {
                 method: "POST",
                 headers: { 
                     "Authorization": "Bearer " + token 
-                    // Pas de Content-Type pour FormData
                 },
                 body: formData
             });
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error("Erreur API HF (via Proxy) : " + response.status + " - " + errorText);
+                throw new Error("Erreur API HF (Router) : " + response.status + " - " + errorText);
             }
 
             const result = await response.json();
@@ -1004,6 +1008,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
