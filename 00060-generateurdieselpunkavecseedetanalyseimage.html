@@ -942,17 +942,17 @@ body {
         const aiField = document.getElementById('ai-base-content');
         const btn = document.getElementById('btn-interrogate');
 
-        // Récupération manuelle (pas de sauvegarde localStorage ici)
+        // Récupération manuelle immédiate
         const token = hfInput.value.trim();
         
-        if (!token) return alert("N'oublie pas de coller ton Token hf_... dans la case !");
-        if (!fileInput.files[0]) return alert("Choisis une image avant d'analyser.");
+        if (!token) return alert("Le champ Token est vide !");
+        if (!fileInput.files[0]) return alert("Choisis une image.");
 
         try {
             btn.disabled = true;
-            status.innerText = "Analyse en cours via le nouveau routeur (2026)...";
+            status.innerText = "Envoi au routeur Hugging Face...";
 
-            // L'URL exacte validée pour le nouveau système
+            // L'URL exacte pour l'infrastructure 2026
             const url = "https://router.huggingface.co/hf-inference/models/Salesforce/blip-image-captioning-large";
 
             const response = await fetch(url, {
@@ -961,32 +961,29 @@ body {
                 body: fileInput.files[0]
             });
 
-            // Gestion de la réponse serveur
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(`Erreur ${response.status} : ${errorText}`);
+                throw new Error(`Serveur : ${response.status} - ${errorText}`);
             }
 
             const result = await response.json();
 
-            // Si l'IA n'est pas encore "réveillée" sur le serveur
+            // Gestion du réveil du modèle (cold start)
             if (result.error && result.error.includes("loading")) {
-                status.innerText = "L'IA se prépare... attends 20s et reclique.";
+                status.innerText = "L'IA se réveille... attends 20s et reclique.";
                 btn.disabled = false;
                 return;
             }
 
             if (result[0] && result[0].generated_text) {
-                // On affiche le résultat et on déclenche la mise à jour du prompt vert
+                // Remplissage du bloc orange uniquement
                 aiField.value = result[0].generated_text.toLowerCase().replace(/\.$/, "");
                 status.innerText = "Analyse terminée !";
-                
-                if (typeof window.generatePrompt === "function") window.generatePrompt();
             }
 
         } catch (err) {
             console.error(err);
-            status.innerText = "Détail : " + err.message;
+            status.innerText = "Erreur : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -994,6 +991,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
