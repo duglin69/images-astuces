@@ -756,16 +756,16 @@ body {
 
         
             function generatePrompt() {
-    let parts = [];
+            let parts = [];
     
-    // On récupère d'abord le texte de l'analyse IA
-    const aiBase = document.getElementById('ai-base-content').value.trim();
-    if (aiBase) {
-        parts.push(aiBase); // On l'ajoute en tête de liste
-    }
+            // --- INTÉGRATION DE L'ANALYSE IA ---
+            const aiBase = document.getElementById('ai-base-content').value.trim();
+            if (aiBase) {
+                parts.push(aiBase); // On l'ajoute en tête de liste
+            }
+            // ----------------------------------------
 
-    let weighted = document.getElementById('weight-toggle').checked;
-    // ... la suite de ta fonction (menusData.forEach...) reste identique
+            let weighted = document.getElementById('weight-toggle').checked;
             
             // --- GESTION AMÉLIORÉE DU SEED ---
             const seedInput = document.getElementById('seed-input');
@@ -811,7 +811,6 @@ body {
             updateNegativePreview();
             return finalPrompt;
         }
-
         function updateNegativePreview() {
             let neg = negativePromptBase;
             
@@ -947,32 +946,48 @@ body {
 
         try {
             btn.disabled = true;
-            status.innerText = "Analyse en cours...";
+            status.innerText = "Analyse en cours... (Patience, ça peut prendre 10s)";
 
-            // L'URL corrigée : on retire "/hf-inference/" qui provoquait le 404
-            const url = "https://router.huggingface.co/models/Salesforce/blip-image-captioning-large";
+            // --- CORRECTION ICI : Nouvelle URL correcte pour l'API Inference ---
+            const url = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large";
             
+            // On crée un FormData pour envoyer l'image proprement
+            const formData = new FormData();
+            formData.append("inputs", fileInput.files[0]);
+            // -------------------------------------------------------------
+
             const response = await fetch(url, {
                 headers: { "Authorization": "Bearer " + token },
                 method: "POST",
-                body: fileInput.files[0]
+                body: formData
             });
 
-            // Si le serveur répond autre chose que 200 (ex: 404), on l'affiche
             if (!response.ok) {
-                throw new Error("Erreur " + response.status);
+                const errorText = await response.text();
+                throw new Error("Erreur API HF : " + response.status + " - " + errorText);
             }
 
             const result = await response.json();
 
-            if (result[0] && result[0].generated_text) {
-                aiField.value = result[0].generated_text.toLowerCase().replace(/\.$/, "");
+            // --- CORRECTION ICI : Parsing robuste de la réponse ---
+            let caption = "";
+            // Parfois l'API renvoie un tableau [{...}], parfois un objet {...}
+            if (Array.isArray(result) && result[0].generated_text) {
+                caption = result[0].generated_text;
+            } else if (result.generated_text) {
+                caption = result.generated_text;
+            } else {
+                caption = "Erreur: Format de réponse inconnu. Vérifie la console.";
+            }
+
+            if (caption) {
+                aiField.value = caption.toLowerCase().replace(/\.$/, "");
                 status.innerText = "Terminé.";
             }
 
         } catch (err) {
-            // Affiche l'erreur réelle (plus de "Erreur réseau" générique)
-            status.innerText = "Détail : " + err.message;
+            console.error(err);
+            status.innerText = "Erreur : " + err.message;
         } finally {
             btn.disabled = false;
         }
@@ -980,6 +995,7 @@ body {
 </script>
 </body>
 </html>
+
 
 
 
