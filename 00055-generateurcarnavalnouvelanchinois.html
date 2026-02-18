@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎭🐴 Générateur Carnaval & Nouvel An Chinois — Nano Banana</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Cinzel:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --imperial-red: #8B0000;
+  --fortune-gold: #D4AF37;
+  --deep-crimson: #641220;
+  --jade-green: #00755E;
+  --ivory: #FFFFF0;
+  --midnight: #0F0A1E;
+  --warm-amber: #FFBF00;
+  --shadow: rgba(139, 0, 0, 0.15);
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: linear-gradient(135deg, var(--midnight) 0%, #1a0a0a 50%, var(--deep-crimson) 100%);
+  color: var(--ivory);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--fortune-gold) 0%, var(--warm-amber) 50%, var(--fortune-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 240, 0.8);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.theme-selector {
+  background: linear-gradient(135deg, rgba(139, 0, 0, 0.3), rgba(100, 18, 32, 0.3));
+  border: 2px solid var(--fortune-gold);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px var(--shadow), inset 0 1px 0 rgba(212, 175, 55, 0.2);
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.theme-selector h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  color: var(--fortune-gold);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.theme-option {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-option label {
+  display: block;
+  padding: 1.5rem;
+  background: rgba(255, 255, 240, 0.05);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.theme-option:hover label {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--fortune-gold);
+  transform: translateY(-2px);
+}
+
+.theme-option input:checked + label {
+  background: linear-gradient(135deg, var(--imperial-red), var(--deep-crimson));
+  border-color: var(--fortune-gold);
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--ivory);
+}
+
+.generator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+.control-group {
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.6), rgba(26, 10, 10, 0.6));
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.control-group:hover {
+  border-color: var(--fortune-gold);
+  box-shadow: 0 5px 20px var(--shadow);
+  transform: translateY(-2px);
+}
+
+.control-group label.main-label {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fortune-gold);
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.control-group select,
+.control-group input[type="text"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: rgba(15, 10, 30, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: var(--ivory);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.control-group select:focus,
+.control-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--fortune-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.control-group select option {
+  background: var(--midnight);
+  color: var(--ivory);
+  padding: 0.5rem;
+}
+
+.slider-container {
+  margin-top: 0.8rem;
+}
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 240, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(to right, var(--imperial-red), var(--fortune-gold));
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--fortune-gold);
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+}
+
+.output-section {
+  background: linear-gradient(135deg, rgba(15, 10, 30, 0.9), rgba(26, 10, 10, 0.9));
+  border: 2px solid var(--fortune-gold);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px var(--shadow), inset 0 1px 0 rgba(212, 175, 55, 0.1);
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.output-section h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  color: var(--fortune-gold);
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 10px;
+  color: var(--ivory);
+  font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--fortune-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.negative-prompt textarea {
+  min-height: 100px;
+  border-color: rgba(139, 0, 0, 0.6);
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+button {
+  padding: 1rem 2rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--fortune-gold);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+button span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-surprise {
+  background: linear-gradient(135deg, var(--jade-green), #00a67e);
+  color: var(--ivory);
+  border-color: var(--jade-green);
+}
+
+.btn-surprise:hover {
+  background: linear-gradient(135deg, #00a67e, var(--jade-green));
+  box-shadow: 0 5px 20px rgba(0, 117, 94, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-copy {
+  background: linear-gradient(135deg, var(--imperial-red), var(--deep-crimson));
+  color: var(--ivory);
+  border-color: var(--fortune-gold);
+}
+
+.btn-copy:hover {
+  background: linear-gradient(135deg, var(--deep-crimson), var(--imperial-red));
+  box-shadow: 0 5px 20px rgba(139, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-export {
+  background: linear-gradient(135deg, var(--fortune-gold), var(--warm-amber));
+  color: var(--midnight);
+  border-color: var(--fortune-gold);
+}
+
+.btn-export:hover {
+  background: linear-gradient(135deg, var(--warm-amber), var(--fortune-gold));
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-reset {
+  background: rgba(255, 255, 240, 0.1);
+  color: rgba(255, 255, 240, 0.8);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.btn-reset:hover {
+  background: rgba(255, 255, 240, 0.15);
+  color: var(--ivory);
+  border-color: var(--fortune-gold);
+  transform: translateY(-2px);
+}
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, var(--imperial-red), var(--deep-crimson));
+  color: var(--ivory);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--fortune-gold);
+  box-shadow: 0 10px 30px rgba(139, 0, 0, 0.5);
+  transform: translateX(400px);
+  transition: transform 0.4s ease;
+  z-index: 1000;
+  font-weight: 600;
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  color: rgba(255, 255, 240, 0.6);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .generator-grid {
+    grid-template-columns: 1fr;
+  }
+  .button-group {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🎭🐴 Générateur Festif</h1>
+    <p class="subtitle">Carnaval · Mardi Gras · Nouvel An Chinois</p>
+  </header>
+
+  <!-- THÉMATIQUE -->
+  <section class="theme-selector">
+    <h2>Choisissez votre thématique</h2>
+    <div class="theme-options">
+      <div class="theme-option">
+        <input type="radio" name="theme" id="theme-none" value="none" checked>
+        <label for="theme-none">Choisir</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" name="theme" id="theme-carnival" value="carnival">
+        <label for="theme-carnival">🎭 Carnaval / Mardi Gras</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" name="theme" id="theme-chinese" value="chinese">
+        <label for="theme-chinese">🐴 Nouvel An Chinois</label>
+      </div>
+      <div class="theme-option">
+        <input type="radio" name="theme" id="theme-fusion" value="fusion">
+        <label for="theme-fusion">✨ FUSION Carnaval Chinois</label>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTRÔLES -->
+  <div class="generator-grid" id="controlsGrid">
+    <!-- Sujet 1 -->
+    <div class="control-group">
+      <label class="main-label">Sujet Principal</label>
+      <select id="subject1"></select>
+      <input type="text" id="subject1Custom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Sujet 2 (fusion only) -->
+    <div class="control-group" id="subject2Group" style="display:none;">
+      <label class="main-label">Sujet Principal 2 (Fusion)</label>
+      <select id="subject2"></select>
+      <input type="text" id="subject2Custom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Action -->
+    <div class="control-group">
+      <label class="main-label">Action / Pose</label>
+      <select id="action"></select>
+      <input type="text" id="actionCustom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Lieu -->
+    <div class="control-group">
+      <label class="main-label">Lieu</label>
+      <select id="location"></select>
+      <input type="text" id="locationCustom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Personnage secondaire -->
+    <div class="control-group">
+      <label class="main-label">Personnage Secondaire</label>
+      <select id="secondary"></select>
+      <input type="text" id="secondaryCustom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Ambiance -->
+    <div class="control-group">
+      <label class="main-label">Ambiance</label>
+      <select id="mood"></select>
+    </div>
+
+    <!-- Météo -->
+    <div class="control-group">
+      <label class="main-label">Météo / Moment</label>
+      <select id="weather"></select>
+    </div>
+
+    <!-- Époque -->
+    <div class="control-group">
+      <label class="main-label">Époque</label>
+      <select id="era"></select>
+      <input type="text" id="eraCustom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Style 1 -->
+    <div class="control-group">
+      <label class="main-label">Style Artistique 1</label>
+      <select id="style1"></select>
+      <input type="text" id="style1Custom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+    </div>
+
+    <!-- Style 2 -->
+    <div class="control-group">
+      <label class="main-label">Style Artistique 2 (optionnel)</label>
+      <select id="style2"></select>
+      <input type="text" id="style2Custom" placeholder="Personnalisé..." style="margin-top:0.5rem; display:none;">
+      <div class="slider-container" id="style2WeightContainer" style="display:none;">
+        <div class="slider-label">
+          <span>Pondération Style 2</span>
+          <span id="style2WeightValue">0.3</span>
+        </div>
+        <input type="range" id="style2Weight" min="0.1" max="0.9" step="0.1" value="0.3">
+      </div>
+    </div>
+
+    <!-- Rendu -->
+    <div class="control-group">
+      <label class="main-label">Rendu / Moteur</label>
+      <select id="rendering"></select>
+    </div>
+
+    <!-- Éclairage -->
+    <div class="control-group">
+      <label class="main-label">Éclairage</label>
+      <select id="lighting"></select>
+    </div>
+
+    <!-- Composition -->
+    <div class="control-group">
+      <label class="main-label">Composition / Angle</label>
+      <select id="composition"></select>
+    </div>
+
+    <!-- Format -->
+    <div class="control-group">
+      <label class="main-label">Format</label>
+      <select id="format"></select>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <section class="output-section">
+    <h3>Prompt Positif</h3>
+    <textarea id="promptOutput" placeholder="Votre prompt apparaîtra ici..."></textarea>
+  </section>
+
+  <section class="output-section negative-prompt">
+    <h3>Negative Prompt</h3>
+    <textarea id="negativeOutput" placeholder="Negative prompt adaptatif..."></textarea>
+  </section>
+
+  <!-- BOUTONS -->
+  <div class="button-group">
+    <button class="btn-surprise" onclick="generateSurprise()">
+      <span>🎲 Prompt Surprise</span>
+    </button>
+    <button class="btn-copy" onclick="copyAll()">
+      <span>📋 Copier Tout</span>
+    </button>
+    <button class="btn-export" onclick="exportTxt()">
+      <span>💾 Export .TXT</span>
+    </button>
+    <button class="btn-reset" onclick="resetAll()">
+      <span>🔄 Reset 100%</span>
+    </button>
+  </div>
+
+  <footer>
+    <p>Nano Banana — Expert Prompts V3 — Générateur Carnaval & Nouvel An Chinois 2026</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ DONNÉES ═══
+const data = {
+  subjects: {
+    carnival: [
+      'Choisir',
+      'Arlequin masqué (Venise)',
+      'Reine Mardi Gras (Nouvelle-Orléans)',
+      'Danseur de samba (Rio)',
+      'Créature carnavalesque fantastique',
+      'Foule en défilé coloré',
+      'Lanceur de perles sur balcon',
+      'Personnalisé'
+    ],
+    chinese: [
+      'Choisir',
+      'Cheval Céleste (Wood Horse 2026)',
+      'Dragon impérial doré',
+      'Danseur de lion rouge et or',
+      'Famille en réunion (Nián Yèfàn)',
+      'Défilé de rue traditionnel',
+      'Jeune femme aux lanternes',
+      'Personnalisé'
+    ]
+  },
+  actions: [
+    'Choisir',
+    'En train de danser joyeusement',
+    'Levant les bras en célébration',
+    'Tenant une lanterne / objet festif',
+    'En plein défilé (mouvement)',
+    'Posant de manière dramatique',
+    'Lançant des confettis / enveloppes rouges',
+    'Galopant librement (cheval)',
+    'Personnalisé'
+  ],
+  locations: {
+    carnival: [
+      'Choisir',
+      'Piazza San Marco (Venise)',
+      'Bourbon Street (Nouvelle-Orléans)',
+      'Sambódromo (Rio de Janeiro)',
+      'Ruelle médiévale européenne',
+      'Pont vénitien brumeux',
+      'Personnalisé'
+    ],
+    chinese: [
+      'Choisir',
+      'Temple bouddhiste enfumé',
+      'Hutong traditionnel Beijing',
+      'Yuyuan Garden Shanghai',
+      'Place publique avec lanternes',
+      'Lac avec pagode (West Lake)',
+      'Personnalisé'
+    ],
+    fusion: [
+      'Choisir',
+      '🎭 LIEU FUSION AUTO',
+      'Temple vénitien hybride',
+      'Rue de Chinatown pendant Mardi Gras',
+      'Sambódromo avec lanternes chinoises',
+      'Personnalisé'
+    ]
+  },
+  secondary: [
+    'Choisir',
+    'Aucun (solo)',
+    'Duo (2 personnages)',
+    'Foule en arrière-plan',
+    'Animal (cheval / dragon / lion)',
+    'Objet magique (lanterne / masque)',
+    'Enfant jouant avec pétards',
+    'Personnalisé'
+  ],
+  mood: [
+    'Choisir',
+    'Joyeuse et festive',
+    'Mystérieuse et dramatique',
+    'Romantique et intimiste',
+    'Épique et grandiose',
+    'Onirique et magique'
+  ],
+  weather: [
+    'Choisir',
+    'Coucher de soleil doré',
+    'Nuit étoilée',
+    'Crépuscule brumeux',
+    'Jour éclatant',
+    'Pluie légère (reflets)'
+  ],
+  era: [
+    'Choisir',
+    'Époque authentique (historique)',
+    'Préhistorique / Paléolithique',
+    'Futuriste / Cyberpunk',
+    'Espace / Station orbitale',
+    'Steampunk victorien',
+    'Alice au Pays des Merveilles',
+    'Post-apocalyptique',
+    'Personnalisé'
+  ],
+  styles: [
+    'Choisir',
+    'Peinture Tang / Song (Chine)',
+    'Art Nouveau Mucha',
+    'Impressionnisme Monet',
+    'Art Déco Shanghai 1930s',
+    'Sumi-e encre japonaise',
+    'Zhang Yimou cinéma',
+    'Studio Ghibli animation',
+    'Cyberpunk 2077 néon',
+    'Photographie vintage',
+    'Nianhua estampe populaire',
+    'Baroque Caravaggio',
+    'Ukiyo-e Hokusai',
+    'Xu Beihong chevaux',
+    'Peking Opera jingju',
+    'Personnalisé'
+  ],
+  rendering: [
+    'Choisir',
+    'Digital painting',
+    'Oil painting traditional',
+    'Unreal Engine 5 cinematic',
+    'Watercolor / Aquarelle',
+    'Ink wash / Encre',
+    '3D render Octane',
+    'Photography réaliste'
+  ],
+  lighting: [
+    'Choisir',
+    'Golden hour (lumière dorée)',
+    'Lanternes (lumière chaude 2700K)',
+    'Néons (couleurs saturées)',
+    'Clair-obscur dramatique',
+    'Lumière diffuse douce',
+    'Contre-jour / Rim lighting'
+  ],
+  composition: [
+    'Choisir',
+    'Vue aérienne (overhead)',
+    'Niveau des yeux',
+    'Contre-plongée (low angle)',
+    'Plongée (high angle)',
+    'Portrait serré (close-up)',
+    'Plan large (wide shot)'
+  ],
+  format: [
+    'Choisir',
+    '1:1 (carré)',
+    '16:9 (paysage cinéma)',
+    '9:16 (portrait mobile)',
+    '3:2 (photo classique)',
+    '4:5 (portrait Instagram)',
+    '21:9 (ultrawide épique)'
+  ]
+};
+
+// ═══ INITIALISATION ═══
+let currentTheme = 'none';
+
+function initSelects() {
+  populateSelect('action', data.actions);
+  populateSelect('secondary', data.secondary);
+  populateSelect('mood', data.mood);
+  populateSelect('weather', data.weather);
+  populateSelect('era', data.era);
+  populateSelect('style1', data.styles);
+  populateSelect('style2', ['Aucun (style unique)'].concat(data.styles));
+  populateSelect('rendering', data.rendering);
+  populateSelect('lighting', data.lighting);
+  populateSelect('composition', data.composition);
+  populateSelect('format', data.format);
+}
+
+function populateSelect(id, options) {
+  const select = document.getElementById(id);
+  select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+}
+
+function updateTheme() {
+  currentTheme = document.querySelector('input[name="theme"]:checked').value;
+  
+  // Sujet 1
+  if (currentTheme === 'carnival') {
+    populateSelect('subject1', data.subjects.carnival);
+  } else if (currentTheme === 'chinese') {
+    populateSelect('subject1', data.subjects.chinese);
+  } else if (currentTheme === 'fusion') {
+    populateSelect('subject1', data.subjects.carnival);
+  } else {
+    document.getElementById('subject1').innerHTML = '<option>Choisir (sélectionnez d\'abord une thématique)</option>';
+  }
+
+  // Sujet 2 (fusion)
+  const subject2Group = document.getElementById('subject2Group');
+  if (currentTheme === 'fusion') {
+    subject2Group.style.display = 'block';
+    populateSelect('subject2', data.subjects.chinese);
+  } else {
+    subject2Group.style.display = 'none';
+  }
+
+  // Lieu
+  if (currentTheme === 'carnival') {
+    populateSelect('location', data.locations.carnival);
+  } else if (currentTheme === 'chinese') {
+    populateSelect('location', data.locations.chinese);
+  } else if (currentTheme === 'fusion') {
+    populateSelect('location', data.locations.fusion);
+  } else {
+    document.getElementById('location').innerHTML = '<option>Choisir (sélectionnez d\'abord une thématique)</option>';
+  }
+
+  generatePrompt();
+}
+
+// ═══ GESTION CUSTOM ═══
+function setupCustomFields() {
+  const fields = ['subject1', 'subject2', 'action', 'location', 'secondary', 'era', 'style1', 'style2'];
+  fields.forEach(field => {
+    const select = document.getElementById(field);
+    const custom = document.getElementById(field + 'Custom');
+    if (select && custom) {
+      select.addEventListener('change', () => {
+        custom.style.display = select.value === 'Personnalisé' ? 'block' : 'none';
+        generatePrompt();
+      });
+      custom.addEventListener('input', generatePrompt);
+    }
+  });
+
+  // Style 2 weight
+  const style2 = document.getElementById('style2');
+  const weightContainer = document.getElementById('style2WeightContainer');
+  const weightSlider = document.getElementById('style2Weight');
+  const weightValue = document.getElementById('style2WeightValue');
+
+  style2.addEventListener('change', () => {
+    weightContainer.style.display = style2.value !== 'Aucun (style unique)' && style2.value !== 'Choisir' ? 'block' : 'none';
+    generatePrompt();
+  });
+
+  weightSlider.addEventListener('input', () => {
+    weightValue.textContent = weightSlider.value;
+    generatePrompt();
+  });
+}
+
+// ═══ GÉNÉRATION PROMPT ═══
+function generatePrompt() {
+  if (currentTheme === 'none') {
+    document.getElementById('promptOutput').value = 'Veuillez d\'abord sélectionner une thématique ci-dessus.';
+    document.getElementById('negativeOutput').value = '';
+    return;
+  }
+
+  const values = {
+    subject1: getValue('subject1'),
+    subject2: getValue('subject2'),
+    action: getValue('action'),
+    location: getValue('location'),
+    secondary: getValue('secondary'),
+    mood: document.getElementById('mood').value,
+    weather: document.getElementById('weather').value,
+    era: getValue('era'),
+    style1: getValue('style1'),
+    style2: getValue('style2'),
+    style2Weight: document.getElementById('style2Weight').value,
+    rendering: document.getElementById('rendering').value,
+    lighting: document.getElementById('lighting').value,
+    composition: document.getElementById('composition').value,
+    format: document.getElementById('format').value
+  };
+
+  let prompt = buildPrompt(values);
+  let negative = buildNegative(values);
+
+  document.getElementById('promptOutput').value = prompt;
+  document.getElementById('negativeOutput').value = negative;
+}
+
+function getValue(id) {
+  const select = document.getElementById(id);
+  const custom = document.getElementById(id + 'Custom');
+  if (select.value === 'Personnalisé' && custom && custom.value.trim()) {
+    return custom.value.trim();
+  }
+  return select.value;
+}
+
+function buildPrompt(v) {
+  let parts = [];
+
+  // Sujet principal
+  if (v.subject1 && v.subject1 !== 'Choisir') {
+    if (currentTheme === 'fusion' && v.subject2 && v.subject2 !== 'Choisir') {
+      parts.push(`A fusion character combining ${v.subject1} and ${v.subject2}`);
+    } else {
+      parts.push(`A ${v.subject1}`);
+    }
+  }
+
+  // Action
+  if (v.action && v.action !== 'Choisir') {
+    parts.push(v.action.toLowerCase());
+  }
+
+  // Secondaire
+  if (v.secondary && v.secondary !== 'Choisir' && v.secondary !== 'Aucun (solo)') {
+    parts.push(`with ${v.secondary}`);
+  }
+
+  // Lieu
+  if (v.location && v.location !== 'Choisir') {
+    if (v.location === '🎭 LIEU FUSION AUTO') {
+      parts.push('in a fantastical fusion location blending Venetian carnival architecture with Chinese temple elements');
+    } else {
+      parts.push(`in ${v.location}`);
+    }
+  }
+
+  // Météo
+  if (v.weather && v.weather !== 'Choisir') {
+    parts.push(`during ${v.weather}`);
+  }
+
+  // Époque
+  if (v.era && v.era !== 'Choisir' && v.era !== 'Époque authentique (historique)') {
+    parts.push(`reimagined in ${v.era} setting`);
+  }
+
+  // Ambiance
+  if (v.mood && v.mood !== 'Choisir') {
+    parts.push(`${v.mood} atmosphere`);
+  }
+
+  // Style
+  let styleText = '';
+  if (v.style1 && v.style1 !== 'Choisir') {
+    if (v.style2 && v.style2 !== 'Choisir' && v.style2 !== 'Aucun (style unique)') {
+      const weight1 = (1 - parseFloat(v.style2Weight)).toFixed(1);
+      styleText = `in the style of (${v.style1}:${weight1}) combined with (${v.style2}:${v.style2Weight})`;
+    } else {
+      styleText = `in the style of ${v.style1}`;
+    }
+    parts.push(styleText);
+  }
+
+  // Rendu
+  if (v.rendering && v.rendering !== 'Choisir') {
+    parts.push(v.rendering);
+  }
+
+  // Éclairage
+  if (v.lighting && v.lighting !== 'Choisir') {
+    parts.push(`${v.lighting} as primary illumination`);
+  }
+
+  // Composition
+  if (v.composition && v.composition !== 'Choisir') {
+    parts.push(`${v.composition} composition`);
+  }
+
+  // Final
+  parts.push('highly detailed, professional quality, masterpiece');
+
+  // Format
+  if (v.format && v.format !== 'Choisir') {
+    const ratio = v.format.match(/\d+:\d+/)[0];
+    parts.push(`${ratio} ratio`);
+  }
+
+  return parts.join(', ');
+}
+
+function buildNegative(v) {
+  let neg = ['lowres', 'bad anatomy', 'bad hands', 'signature (1:4)', 'missing fingers', 'extra digits', 'watermark', 'low quality', 'jpeg artifacts', 'blurry', 'deformed', 'poorly drawn'];
+
+  // Adaptatif thématique
+  if (currentTheme === 'carnival' || currentTheme === 'fusion') {
+    neg.push('modern anachronistic elements', 'generic non-festive setting', 'flat lighting', 'dull colors');
+  }
+  if (currentTheme === 'chinese' || currentTheme === 'fusion') {
+    neg.push('miswritten Chinese characters', 'Western architecture', 'inauspicious white mourning background', 'cold blue lighting inconsistent with festival warmth');
+  }
+
+  // Époque
+  if (v.era.includes('Futuriste') || v.era.includes('Cyberpunk') || v.era.includes('Espace')) {
+    neg = neg.filter(n => !n.includes('modern'));
+  }
+  if (v.era.includes('Préhistorique')) {
+    neg.push('modern technology', 'metallic objects');
+  }
+
+  // Style
+  if (v.style1.includes('Sumi-e') || v.style1.includes('Ink')) {
+    neg.push('photorealistic detail', 'multiple colors');
+  }
+
+  // Sujet
+  if (v.subject1.includes('fantastique') || v.subject1.includes('Céleste') || v.subject1.includes('Dragon')) {
+    neg.push('fully human appearance without magical markers', 'realistic domestic animal');
+  }
+
+  return neg.join(', ');
+}
+
+// ═══ SURPRISE ═══
+function generateSurprise() {
+  // Thématique aléatoire (pas "Choisir")
+  const themes = ['carnival', 'chinese', 'fusion'];
+  const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+  document.getElementById(`theme-${randomTheme}`).checked = true;
+  updateTheme();
+
+  // Remplir tous les selects (ignorer "Choisir")
+  fillRandom('action', data.actions);
+  fillRandom('secondary', data.secondary);
+  fillRandom('mood', data.mood);
+  fillRandom('weather', data.weather);
+  fillRandom('era', data.era);
+  fillRandom('style1', data.styles);
+  fillRandom('rendering', data.rendering);
+  fillRandom('lighting', data.lighting);
+  fillRandom('composition', data.composition);
+  fillRandom('format', data.format);
+
+  // Style 2 (50% chance)
+  if (Math.random() > 0.5) {
+    fillRandom('style2', data.styles);
+  } else {
+    document.getElementById('style2').value = 'Aucun (style unique)';
+  }
+
+  // Sujets selon thème
+  if (randomTheme === 'carnival') {
+    fillRandom('subject1', data.subjects.carnival);
+  } else if (randomTheme === 'chinese') {
+    fillRandom('subject1', data.subjects.chinese);
+  } else {
+    fillRandom('subject1', data.subjects.carnival);
+    fillRandom('subject2', data.subjects.chinese);
+  }
+
+  // Lieu selon thème
+  if (randomTheme === 'carnival') {
+    fillRandom('location', data.locations.carnival);
+  } else if (randomTheme === 'chinese') {
+    fillRandom('location', data.locations.chinese);
+  } else {
+    fillRandom('location', data.locations.fusion);
+  }
+
+  generatePrompt();
+  showToast('🎲 Prompt surprise généré !');
+}
+
+function fillRandom(id, options) {
+  const validOptions = options.filter(o => o !== 'Choisir' && !o.includes('Personnalisé') && !o.includes('Aucun'));
+  const random = validOptions[Math.floor(Math.random() * validOptions.length)];
+  document.getElementById(id).value = random;
+}
+
+// ═══ COPIER ═══
+function copyAll() {
+  const positive = document.getElementById('promptOutput').value;
+  const negative = document.getElementById('negativeOutput').value;
+  const full = `${positive}\n\nNEGATIVE PROMPT:\n${negative}`;
+  
+  navigator.clipboard.writeText(full).then(() => {
+    showToast('📋 Prompts copiés !');
+  });
+}
+
+// ═══ EXPORT ═══
+function exportTxt() {
+  const positive = document.getElementById('promptOutput').value;
+  const negative = document.getElementById('negativeOutput').value;
+  const content = `GÉNÉRATEUR CARNAVAL & NOUVEL AN CHINOIS\nNano Banana — Expert Prompts V3\n\n═══ PROMPT POSITIF ═══\n\n${positive}\n\n═══ NEGATIVE PROMPT ═══\n\n${negative}`;
+  
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Prompt_Festif_${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  showToast('💾 Fichier exporté !');
+}
+
+// ═══ RESET ═══
+function resetAll() {
+  document.getElementById('theme-none').checked = true;
+  currentTheme = 'none';
+  document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+  document.querySelectorAll('input[type="text"]').forEach(i => i.style.display = 'none');
+  document.getElementById('style2WeightContainer').style.display = 'none';
+  document.getElementById('style2Weight').value = 0.3;
+  document.getElementById('style2WeightValue').textContent = '0.3';
+  document.getElementById('subject2Group').style.display = 'none';
+  updateTheme();
+  showToast('🔄 Réinitialisé !');
+}
+
+// ═══ TOAST ═══
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ═══ ÉVÉNEMENTS ═══
+document.addEventListener('DOMContentLoaded', () => {
+  initSelects();
+  setupCustomFields();
+  
+  document.querySelectorAll('input[name="theme"]').forEach(radio => {
+    radio.addEventListener('change', updateTheme);
+  });
+  
+  document.querySelectorAll('select').forEach(select => {
+    select.addEventListener('change', generatePrompt);
+  });
+
+  updateTheme();
+});
+</script>
+
+</body>
+</html>
