@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LENA // Workflow de Cohérence Personnage par IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:       #0D0D14;
+      --paper:     #F5F0E8;
+      --gold:      #C9A84C;
+      --gold-pale: #F0E4C0;
+      --gold-dim:  #7A5F28;
+      --grey-1:    #1A1A2E;
+      --grey-2:    #2A2A3E;
+      --grey-3:    #444460;
+      --text:      #1C1C2A;
+      --muted:     #666680;
+      --rule:      rgba(201,168,76,0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(100,80,180,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(5rem, 18vw, 14rem);
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.4s forwards;
+    }
+
+    .hero-title span {
+      display: block;
+      font-style: italic;
+      font-size: 0.4em;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+    }
+
+    .hero-subtitle {
+      margin-top: 2.5rem;
+      font-family: 'Lora', serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-style: italic;
+      color: rgba(245,240,232,0.55);
+      max-width: 480px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.7s forwards;
+    }
+
+    .hero-rule {
+      width: 80px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2.5rem auto 0;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.9s forwards;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+    }
+
+    /* ── SECTION ── */
+    section {
+      margin-bottom: 6rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--paper);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--gold);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    p {
+      color: rgba(245,240,232,0.8);
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+
+    /* ── CODE / PROMPT BLOCKS ── */
+    .prompt-block {
+      background: var(--grey-1);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--gold-pale);
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+    }
+
+    .prompt-block .label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 8px;
+      padding: 1.6rem 2rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box strong {
+      color: var(--gold);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-style: italic;
+      color: rgba(245,240,232,0.75);
+      font-size: 0.92rem;
+    }
+
+    /* ── QUOTE ── */
+    .big-quote {
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .big-quote::before {
+      content: '❝';
+      display: block;
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .big-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-style: italic;
+      color: var(--paper);
+      margin: 0 auto;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .big-quote cite {
+      display: block;
+      margin-top: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead tr {
+      background: var(--grey-1);
+    }
+
+    th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    td {
+      padding: 0.8rem 1rem;
+      color: rgba(245,240,232,0.78);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    /* ── TWO COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .col-box {
+      background: var(--grey-1);
+      border-radius: 6px;
+      padding: 1.4rem;
+    }
+
+    .col-box .col-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .col-box.good .col-title { color: #7EC8A0; }
+    .col-box.bad  .col-title { color: #E07070; }
+    .col-box.neutral .col-title { color: var(--gold); }
+
+    .col-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .col-box ul li {
+      padding: 0.3rem 0 0.3rem 1.2rem;
+      position: relative;
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.75);
+    }
+
+    .col-box ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+    }
+
+    /* ── PYRAMID ── */
+    .pyramid {
+      margin: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .pyramid-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .pyramid-bar {
+      height: 38px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--ink);
+      font-weight: 500;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .pyramid-bar:hover { transform: translateX(4px); }
+
+    .pyramid-meta {
+      font-size: 0.8rem;
+      color: rgba(245,240,232,0.55);
+      font-style: italic;
+    }
+
+    /* ── BLOC STRUCTURE DIAGRAM ── */
+    .bloc-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .bloc-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.2rem;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    .bloc-row.fixed {
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-pale);
+    }
+
+    .bloc-row.variable {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(245,240,232,0.65);
+    }
+
+    .bloc-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .fixed .bloc-tag {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .variable .bloc-tag {
+      background: rgba(255,255,255,0.1);
+      color: rgba(245,240,232,0.5);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 3rem 2rem;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--ink); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .two-col { grid-template-columns: 1fr; }
+      .hero-title { font-size: 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<div class="hero">
+  <p class="hero-eyebrow">Workflow Professionnel · Génération IA · Cohérence Personnage</p>
+  <h1 class="hero-title">
+    LENA
+    <span>Sniper Fantôme</span>
+  </h1>
+  <p class="hero-subtitle">Un personnage. Une identité verrouillée. Des scènes infinies.</p>
+  <div class="hero-rule"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════ -->
+<main>
+
+  <!-- 1. LE DÉFI -->
+  <section>
+    <span class="section-number">// 01</span>
+    <h2>Le Défi — Cohérence dans la Génération IA</h2>
+    <p>La génération d'images par IA souffre d'un problème fondamental : chaque image est créée de manière indépendante. Sans méthode rigoureuse, le même personnage peut présenter un visage légèrement différent, une morphologie qui varie, des traits qui dérivent imperceptiblement d'une image à l'autre.</p>
+    <p>Pour un usage professionnel — BD, roman graphique, storyboard, campagne de communication — cette incohérence est rédhibitoire. Ce workflow résout ce problème par une approche en trois phases, inspirée des méthodes de <em>character design</em> des studios d'animation professionnels.</p>
+  </section>
+
+  <!-- 2. LES TROIS PHASES -->
+  <section>
+    <span class="section-number">// 02</span>
+    <h2>Les Trois Phases du Workflow</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Phase</th><th>Nom</th><th>Objectif</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td>Fiche Identitaire</td><td>Capturer et verrouiller les traits physiques</td></tr>
+          <tr><td>02</td><td>Ancre de Cohérence</td><td>Définir les paramètres techniques invariables</td></tr>
+          <tr><td>03</td><td>Déclinaison en Scènes</td><td>Générer des situations infinies avec une identité stable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. FICHE IDENTITAIRE -->
+  <section>
+    <span class="section-number">// 03</span>
+    <h2>Phase 01 — La Fiche Identitaire</h2>
+    <p>La Fiche Identitaire est le cœur du système. C'est un bloc de texte ultra-précis, construit une seule fois à partir d'une image de référence, et réutilisé <strong>mot pour mot</strong> dans chaque prompt. Elle ne change jamais. Elle est l'ADN du personnage.</p>
+
+    <h3>Le Bloc 1 — Lena (à copier intégralement dans chaque prompt)</h3>
+    <div class="prompt-block"><span class="label">// BLOC 1 — ANCRE PERSONNAGE — INVARIABLE</span>The same woman : early 30s, sharp angular facial features, high cheekbones, thin lips, pale skin with subtle imperfections, cold intense gaze, distinctively thick perfectly straight horizontal dark eyebrows never arched, dark black hair in a loose low ponytail with loose strands falling across her face, slim athletic build</div>
+
+    <h3>La Règle du Verrouillage Renforcé</h3>
+    <p>Certains traits faciaux ont tendance à dériver lors de la génération : les sourcils s'arrondissent, la mâchoire s'adoucit. Pour contrer ce phénomène, on utilise des formulations contraignantes — avec le mot <code style="background:rgba(201,168,76,0.15);color:var(--gold);padding:1px 6px;border-radius:3px;font-family:'DM Mono',monospace;font-size:0.8em;">never</code> comme instruction négative imbriquée.</p>
+
+    <div class="two-col">
+      <div class="col-box bad">
+        <div class="col-title">❌ Formulation faible</div>
+        <ul><li>"thick dark eyebrows"</li></ul>
+      </div>
+      <div class="col-box good">
+        <div class="col-title">✅ Formulation verrouillée</div>
+        <ul><li>"distinctively thick, perfectly straight, horizontal dark eyebrows, <strong style="color:#7EC8A0">never arched</strong>"</li></ul>
+      </div>
+    </div>
+
+    <h3>Les 6 Catégories Descriptives</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Catégorie</th><th>Descripteurs pour Lena</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Âge & Type</td><td>Early 30s, woman</td></tr>
+          <tr><td>Structure faciale</td><td>Sharp angular features, high cheekbones, thin lips</td></tr>
+          <tr><td>Peau & Regard</td><td>Pale skin with subtle imperfections, cold intense gaze</td></tr>
+          <tr><td>Sourcils — verrouillés</td><td>Distinctively thick, perfectly straight, horizontal, never arched</td></tr>
+          <tr><td>Cheveux</td><td>Dark black, loose low ponytail, strands falling across face</td></tr>
+          <tr><td>Morphologie</td><td>Slim athletic build</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. ARCHITECTURE 5 BLOCS -->
+  <section>
+    <span class="section-number">// 04</span>
+    <h2>Phase 02 — Architecture en 5 Blocs</h2>
+    <p>Chaque prompt professionnel suit une structure en cinq blocs. Les blocs 1, 4 et 5 sont fixes — ils définissent l'identité et le style house. Seuls les blocs 2 et 3 varient d'une scène à l'autre.</p>
+
+    <div class="bloc-diagram">
+      <div class="bloc-row fixed">
+        <span class="bloc-tag">Fixe</span>
+        <span>BLOC 1 — Ancre Personnage &nbsp;·&nbsp; copié mot pour mot dans chaque prompt</span>
+      </div>
+      <div class="bloc-row variable">
+        <span class="bloc-tag">Variable</span>
+        <span>BLOC 2 — Action & Pose &nbsp;·&nbsp; change selon la scène</span>
+      </div>
+      <div class="bloc-row variable">
+        <span class="bloc-tag">Variable</span>
+        <span>BLOC 3 — Décor & Ambiance &nbsp;·&nbsp; change selon la scène</span>
+      </div>
+      <div class="bloc-row fixed">
+        <span class="bloc-tag">Fixe</span>
+        <span>BLOC 4 — Paramètres Techniques &nbsp;·&nbsp; style house invariable</span>
+      </div>
+      <div class="bloc-row fixed">
+        <span class="bloc-tag">Fixe</span>
+        <span>BLOC 5 — Lumière & Mood &nbsp;·&nbsp; semi-variable selon l'ambiance</span>
+      </div>
+    </div>
+
+    <h3>Bloc 4 — Paramètres Techniques Invariables</h3>
+    <div class="prompt-block"><span class="label">// BLOC 4 — STYLE HOUSE — INVARIABLE</span>Cinematic concept art, 35mm lens full-frame sensor, f/2.0–f/2.8, medium depth of field, subject sharply focused, softly blurred background, subtle film grain, realistic yet painterly, high detail</div>
+  </section>
+
+  <!-- 5. PROMPTS NÉGATIFS -->
+  <section>
+    <span class="section-number">// 05</span>
+    <h2>Les Prompts Négatifs — La Liste Noire</h2>
+    <p>Les prompts négatifs sont aussi importants que les prompts positifs. Ils bloquent les dérives les plus fréquentes des modèles IA.</p>
+
+    <div class="prompt-block"><span class="label">// LISTE NOIRE UNIVERSELLE</span>extra limbs, deformed hands, duplicate faces, morphed features,
+arched eyebrows, blonde hair, rounder face, soft features,
+cartoon, anime, low quality, watermark, text,
+extra fingers, fused fingers, poorly drawn face,
+asymmetrical eyes, different person, changing identity,
+overexposed, flat lighting</div>
+
+    <h3>Note sur l'Occlusion</h3>
+    <div class="highlight-box">
+      <strong>// OCCLUSION — Usage sélectif</strong>
+      <p>Dans les scènes multi-sujets (Lena + Rex, Lena + Marco), ajouter si nécessaire : <em>"occluded subjects, Rex hidden behind figure, characters overlapping, obstructed dalmatian"</em>. À utiliser sélectivement — un léger chevauchement naturel peut enrichir la composition.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Terme négatif</th><th>Pourquoi c'est critique</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>extra limbs / fingers</td><td>Les mains sont le point de défaillance n°1 des modèles IA</td></tr>
+          <tr><td>arched eyebrows</td><td>Contrecarre directement la formulation "never arched" du Bloc 1</td></tr>
+          <tr><td>different person / changing identity</td><td>Rappelle explicitement au modèle que l'identité est verrouillée</td></tr>
+          <tr><td>flat lighting</td><td>Force le modèle vers un éclairage dramatique cohérent avec le style</td></tr>
+          <tr><td>text / watermark</td><td>Élimine les artefacts textuels parasites</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. MOUVEMENT -->
+  <section>
+    <span class="section-number">// 06</span>
+    <h2>Donner l'Impression de Mouvement à un Visage Figé</h2>
+    <p>Le Bloc 1 fige l'identité — les traits permanents du visage et du corps. Il ne dit rien sur la pose ou le mouvement. C'est dans le Bloc 2 que l'action est injectée avec des descripteurs cinématographiques précis.</p>
+
+    <div class="two-col">
+      <div class="col-box neutral">
+        <div class="col-title">Le Bloc 1 fige</div>
+        <ul>
+          <li>La forme du visage</li>
+          <li>La ligne des sourcils</li>
+          <li>La couleur des cheveux</li>
+          <li>La morphologie</li>
+          <li>Le teint</li>
+        </ul>
+      </div>
+      <div class="col-box neutral">
+        <div class="col-title">Le Bloc 2 libère</div>
+        <ul>
+          <li>La pose et l'angle du corps</li>
+          <li>L'expression momentanée</li>
+          <li>Le mouvement du manteau</li>
+          <li>La direction du regard</li>
+          <li>La tension musculaire</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Exemple — Penthouse Pursuit</h3>
+    <div class="prompt-block"><span class="label">// BLOC 2 — Descripteurs de mouvement</span>"sprinting through a luxury penthouse"
+"crashing through a glass coffee table"
+"tactical black leather coat flying open"
+"one hand pushing off a marble countertop"
+"dramatic motion blur on background pursuers"
+"shattered glass catching light"</div>
+
+    <p>La clé : les éléments en mouvement sont ceux qui entourent le personnage. Le visage reste <em>sharp</em>, ancré, identifiable. C'est la technique des photographes de sport professionnels : sujet net, environnement en mouvement.</p>
+  </section>
+
+  <!-- 7. PORTRAIT COMPLET -->
+  <section>
+    <span class="section-number">// 07</span>
+    <h2>Le Portrait Complet — Corps & Âme</h2>
+    <p>Un personnage n'existe pas seulement dans l'action. Pour qu'une identité visuelle soit vraiment verrouillée, elle doit résister à des situations radicalement différentes.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Dimension</th><th>Scènes</th><th>Ce que ça teste</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Action</td><td>Penthouse, alley, coffre-fort, bateau…</td><td>Cohérence physique sous tension</td></tr>
+          <tr><td>Intimité</td><td>Douche, petit déjeuner, méditation…</td><td>Profondeur émotionnelle</td></tr>
+          <tr><td>Relation</td><td>Marco, Rex, les deux ensemble</td><td>Dynamique sociale & contraste</td></tr>
+          <tr><td>Glamour</td><td>Poses magazine, piscine, bibliothèque…</td><td>Cohérence sous éclairage contrôlé</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Rex — Le Canari dans la Mine</h3>
+    <div class="highlight-box">
+      <strong>// ASTUCE PROFESSIONNELLE</strong>
+      <p>Rex est votre indicateur de cohérence le plus facile à vérifier. Si ses taches sont cohérentes et sa posture disciplinée d'une image à l'autre, les autres éléments sont généralement bien verrouillés. Son noir et blanc pur crée aussi des jeux de lumière naturels magnifiques dans les scènes nocturnes.</p>
+    </div>
+  </section>
+
+  <!-- 8. TEST DES 3 NIVEAUX -->
+  <section>
+    <span class="section-number">// 08</span>
+    <h2>Évaluation — Le Test des 3 Niveaux</h2>
+    <p>La cohérence d'un personnage ne s'évalue pas au feeling global. Elle se teste marqueur par marqueur.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Niveau</th><th>Test</th><th>Méthode</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td>Le Masque</td><td>Cacher tout sauf le visage — les deux visages pourraient-ils appartenir au même acteur ?</td></tr>
+          <tr><td>02</td><td>La Silhouette</td><td>Cacher le visage — même morphologie, même rapport taille / épaules ?</td></tr>
+          <tr><td>03</td><td>Les Signatures</td><td>Vérifier les marqueurs clés : queue de cheval, teint, sourcils, mèches sur le visage</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 9. PYRAMIDE -->
+  <section>
+    <span class="section-number">// 09</span>
+    <h2>La Pyramide de Cohérence</h2>
+    <p>Pour les équipes souhaitant aller au-delà du workflow textuel :</p>
+
+    <div class="pyramid">
+      <div class="pyramid-row">
+        <div class="pyramid-bar" style="width:60%;background:linear-gradient(90deg,#3A3A50,#4A4A60);">Bloc 1 renforcé</div>
+        <span class="pyramid-meta">~60% · Accessible à tous</span>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-bar" style="width:72%;background:linear-gradient(90deg,#4A4A40,#5A5A30);">+ Seed verrouillé</div>
+        <span class="pyramid-meta">~75% · Noter le numéro de seed</span>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-bar" style="width:82%;background:linear-gradient(90deg,#5A5020,#7A6828);">+ img2img référence</div>
+        <span class="pyramid-meta">~85% · Outil compatible requis</span>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-bar" style="width:92%;background:linear-gradient(90deg,#8A7830,#AA9840);">+ IP-Adapter face lock</div>
+        <span class="pyramid-meta">~95% · Usage professionnel</span>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-bar" style="width:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));">+ LoRA entraîné</div>
+        <span class="pyramid-meta">~98% · Expert · 15–30 images</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CITATION FINALE -->
+  <section>
+    <div class="big-quote">
+      <p>L'IA génère. Le photographe crée. L'outil ne remplace pas la vision — il l'amplifie.</p>
+      <cite>— Conclusion du workflow Lena // Sniper Fantôme</cite>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Lena // Sniper Fantôme &nbsp;·&nbsp; Workflow IA Cohérence Personnage &nbsp;·&nbsp; 2026
+</footer>
+
+<script>
+  // Intersection Observer pour les animations d'entrée
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section').forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
