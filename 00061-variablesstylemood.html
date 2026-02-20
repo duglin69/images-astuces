@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 items par variable · Prompt Engineering</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f4f9;
+            color: #1e1e2a;
+            padding: 30px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            border-left: 6px solid #ff6f91;
+            padding-left: 20px;
+        }
+        .subhead {
+            color: #4a4a5a;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            margin-left: 26px;
+        }
+        section {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 28px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+            border: 1px solid #ececf0;
+        }
+        section:hover {
+            box-shadow: 0 20px 35px rgba(255, 111, 145, 0.08);
+        }
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin: 0 0 6px 0;
+            color: #2b2b3a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h2 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #ff6f91;
+            background: #ffeeee;
+            padding: 4px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+        .btn-copy {
+            background: #ff6f91;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 15px 0 20px 0;
+            border: 1px solid #ff527b;
+            transition: 0.15s;
+            box-shadow: 0 4px 10px rgba(255, 111, 145, 0.3);
+        }
+        .btn-copy:hover {
+            background: #ff527b;
+            transform: scale(1.02);
+        }
+        .btn-copy:active {
+            background: #e63e68;
+            transform: scale(0.98);
+        }
+        ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 8px 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 6px 0 6px 18px;
+            border-bottom: 1px dashed #e2e2ec;
+            font-size: 0.98rem;
+            color: #2f2f3b;
+            position: relative;
+        }
+        li::before {
+            content: "✦";
+            color: #ff6f91;
+            position: absolute;
+            left: 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        footer {
+            text-align: center;
+            color: #6f6f82;
+            margin-top: 60px;
+            font-size: 0.95rem;
+            border-top: 1px solid #d9d9e6;
+            padding-top: 30px;
+        }
+        .note {
+            background: #f0f0fa;
+            padding: 12px 22px;
+            border-radius: 50px;
+            color: #3e3e52;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎨 50 items par variable</h1>
+    <div class="subhead">pour le système d'injection automatique · <span style="background: #ffe6ec; padding: 2px 12px; border-radius: 30px;">cliquez sur "copier" pour obtenir la liste brute (1 item par ligne)</span></div>
+
+    <!-- STYLE_WEIGHT -->
+    <section>
+        <h2>STYLE_WEIGHT <small>descriptions stylistiques</small></h2>
+        <button class="btn-copy" onclick="copyList('styleList')">📋 Copier les 121 items</button>
+        <ul id="styleList">
+            <li>ultra high-end editorial fashion portrait</li>
+            <li>cinematic fashion photography</li>
+            <li>avant-garde haute couture</li>
+            <li>minimalist studio portrait</li>
+            <li>vintage glamour hollywood</li>
+            <li>modern luxury campaign</li>
+            <li>fine art conceptual portrait</li>
+            <li>ethereal dreamscape fashion</li>
+            <li>dark romantic gothic</li>
+            <li>surrealist fashion art</li>
+            <li>high contrast monochrome portrait</li>
+            <li>soft pastel beauty shot</li>
+            <li>dramatic chiaroscuro studio</li>
+            <li>futuristic cyberpunk fashion</li>
+            <li>bohemian free-spirited portrait</li>
+            <li>regal aristocratic style</li>
+            <li>edgy street fashion</li>
+            <li>romantic impressionist soft focus</li>
+            <li>sharp hyperrealistic detail</li>
+            <li>abstract color field fashion</li>
+            <li>minimalist Japanese wabi-sabi</li>
+            <li>baroque opulent portrait</li>
+            <li>neoclassical sculpture lighting</li>
+            <li>gritty urban fashion</li>
+            <li>ethereal fairy tale</li>
+            <li>sci-fi editorial</li>
+            <li>1970s retro glam</li>
+            <li>1990s grunge fashion</li>
+            <li>rococo pastel fantasy</li>
+            <li>industrial brutalist setting</li>
+            <li>underwater fashion portrait</li>
+            <li>smoke and mirrors mystical</li>
+            <li>geometric abstract composition</li>
+            <li>floral nature inspired</li>
+            <li>metallic chrome future</li>
+            <li>velvet texture rich</li>
+            <li>lace and transparency</li>
+            <li>leather and punk</li>
+            <li>silk and satin elegance</li>
+            <li>wool and tweed classic</li>
+            <li>denim casual chic</li>
+            <li>sportswear athleisure</li>
+            <li>bridal romantic</li>
+            <li>evening gown red carpet</li>
+            <li>lingerie boudoir</li>
+            <li>swimwear tropical</li>
+            <li>outerwear winter</li>
+            <li>knitwear cozy</li>
+            <li>accessories close-up</li>
+            <li>shoe advertisement dynamic</li>
+ <li>Steampunk aesthetic industrial revolution gears and brass</li>
+  <li>Biomechanical art fusion of flesh and machine H.R. Giger style</li>
+  <li>Bio-organic natural growth cellular and root structures</li>
+  <li>Bio-art and Biopunk laboratory grown organisms</li>
+  <li>Trash Polka high contrast black and red chaotic collage</li>
+  <li>Deep Black extreme chiaroscuro</li>
+  <li>Icy Blue clinical lighting</li>
+  <li>Art Folk Modern repeating tribal patterns</li>
+  <li>Art Deco symmetrical luxury</li>
+  <li>Bauhaus functionalist forms</li>
+  <li>Kintsugi golden cracks</li>
+  <li>Ukiyo-e Blackwood texture</li>
+  <li>Brutalist Architecture raw concrete</li>
+  <li>Solar-Folk sunny pagan joy</li>
+  <li>Gothic Horror dark fantasy</li>
+  <li>Retro-Synth vaporwave neon</li>
+  <li>Surrealist Collage chaotic fragments</li>
+  <li>Ethereal Watercolor soft bleeding edges</li>
+  <li>Claymation style stop-motion animation aesthetic hand-molded plasticine</li>
+  <li>Deep Black</li>
+  <li>Icy Blue</li>
+  <li>Art Folk Modern</li>
+  <li>Art Deco</li>
+  <li>Bauhaus</li>
+  <li>Kintsugi</li>
+  <li>Ukiyo-e Blackwood</li>
+  <li>Brutalist Architecture</li>
+  <li>Solar-Folk</li>
+  <li>Gothic Horror</li>
+  <li>Retro-Synth</li>
+  <li>Surrealist Collage</li>
+  <li>Ethereal Watercolor</li>
+  <li>Claymation style stop-motion animation aesthetic hand-molded plasticine</li>
+<li>Hygge</li>
+  <li>Afrohemian</li>
+  <li>Absurealism</li>
+  <li>Deep black</li>
+  <li>Fauvism</li>
+  <li>Cubism</li>
+  <li>80s 90s retro anime style, vintage anime aesthetic, old school animation</li>
+  <li>magical girl anime style, sailor moon aesthetic, shoujo sparkles</li>
+  <li>mecha anime style, gundam aesthetic, mechanical details, sci-fi anime</li>
+  <li>retro shoujo manga style, classic shoujo aesthetic, ornate decorative</li>
+  <li>kyoto animation style, modern moe aesthetic, soft detailed shading</li>
+  <li>ufotable anime style, dynamic action aesthetic, detailed effects</li>
+  <li>MAPPA anime style, contemporary animation, detailed character design</li>
+  <li>studio trigger style, dynamic poses, bold colors, energetic composition</li>
+  <li>A-1 pictures style, clean modern anime aesthetic</li>
+  <li>bones animation style, dynamic action scenes, fluid movement</li>
+  <li>studio ghibli style, miyazaki aesthetic, watercolor backgrounds, whimsical</li>
+  <li>modern ghibli style, 3d-2d hybrid aesthetic, detailed textures</li>
+  <li>makoto shinkai style, hyper detailed backgrounds, dramatic lighting, photorealistic elements</li>
+  <li>satoshi kon style, surreal composition, psychological aesthetic</li>
+  <li>masaaki yuasa style, experimental animation, distorted perspectives</li>
+  <li>shonen action anime style, dynamic poses, energy effects, battle scene aesthetic</li>
+  <li>seinen dark anime style, mature aesthetic, detailed realistic elements</li>
+  <li>slice of life anime style, iyashikei aesthetic, calm peaceful atmosphere</li>
+  <li>romance josei anime style, mature romantic aesthetic, soft lighting</li>
+  <li>sports anime style, dynamic motion, competitive energy</li>
+  <li>isekai fantasy anime style, rpg game aesthetic, fantasy elements</li>
+  <li>cell shaded anime, 2-tone shading, flat colors, hard edge shadows</li>
+  <li>cell shaded anime, 3-tone shading, defined shadows, clean lineart</li>
+  <li>semi realistic anime style, detailed rendering, soft shading</li>
+  <li>chibi style, super deformed, cute proportions, simplified features</li>
+  <li>light novel illustration style, cover art aesthetic, detailed character</li>
+  <li>manga cover style, dramatic composition, bold lineart</li>
+  <li>visual novel style, dating sim aesthetic, expressive characters</li>
+  <li>WPA poster style illustration, vintage national park poster aesthetic, limited 5-color palette, flat color blocking with hard edges, screenprint aesthetic, 1930s travel poster, retro americana</li>
+  <li>ukiyo-e fusion anime, japanese woodblock print aesthetic, traditional meets modern</li>
+  <li>art nouveau anime style, organic flowing lines, decorative ornamental</li>
+  <li>vaporwave anime aesthetic, retro futurism, pastel neon colors, 80s nostalgia</li>
+
+        </ul>
+    </section>
+
+    <!-- SUBJECT -->
+    <section>
+        <h2>SUBJECT <small>sujets / modèles</small></h2>
+        <button class="btn-copy" onclick="copyList('subjectList')">📋 Copier les 50 items</button>
+        <ul id="subjectList">
+            <li>elegant woman</li>
+            <li>confident male model</li>
+            <li>androgynous figure</li>
+            <li>young adult female</li>
+            <li>mature sophisticated woman</li>
+            <li>teenage girl</li>
+            <li>senior gentleman</li>
+            <li>plus-size model</li>
+            <li>petite model</li>
+            <li>tall statuesque woman</li>
+            <li>athletic male</li>
+            <li>dancer with graceful pose</li>
+            <li>couple embracing</li>
+            <li>group of friends</li>
+            <li>mother and child</li>
+            <li>father and son</li>
+            <li>siblings together</li>
+            <li>twins symmetrical</li>
+            <li>model with curly hair</li>
+            <li>model with short pixie cut</li>
+            <li>model with long flowing hair</li>
+            <li>model with afro</li>
+            <li>model with shaved head</li>
+            <li>model with freckles</li>
+            <li>model with tattoos</li>
+            <li>model with glasses</li>
+            <li>model with hat</li>
+            <li>model with veil</li>
+            <li>model with mask</li>
+            <li>model with jewelry</li>
+            <li>model in motion</li>
+            <li>model sitting gracefully</li>
+            <li>model leaning on wall</li>
+            <li>model looking over shoulder</li>
+            <li>model with closed eyes</li>
+            <li>model with intense gaze</li>
+            <li>model smiling softly</li>
+            <li>model laughing candid</li>
+            <li>model serious expression</li>
+            <li>model profile view</li>
+            <li>model back view</li>
+            <li>model hands in hair</li>
+            <li>model holding fabric</li>
+            <li>model holding prop (flower)</li>
+            <li>model with umbrella</li>
+            <li>model with fan</li>
+            <li>model with sunglasses</li>
+            <li>model with scarf</li>
+            <li>model with gloves</li>
+            <li>model barefoot</li>
+        </ul>
+    </section>
+
+    <!-- FABRIC_TYPE -->
+    <section>
+        <h2>FABRIC_TYPE <small>tissus & matières</small></h2>
+        <button class="btn-copy" onclick="copyList('fabricList')">📋 Copier les 50 items</button>
+        <ul id="fabricList">
+            <li>translucent chiffon</li>
+            <li>flowing silk</li>
+            <li>heavy velvet</li>
+            <li>delicate lace</li>
+            <li>structured organza</li>
+            <li>soft satin</li>
+            <li>rustic linen</li>
+            <li>cozy wool</li>
+            <li>lightweight cotton</li>
+            <li>shimmering lamé</li>
+            <li>metallic foil</li>
+            <li>iridescent taffeta</li>
+            <li>crushed velvet</li>
+            <li>embroidered brocade</li>
+            <li>sheer mesh</li>
+            <li>opaque jersey</li>
+            <li>ribbed knit</li>
+            <li>plush faux fur</li>
+            <li>smooth leather</li>
+            <li>patent leather</li>
+            <li>suede</li>
+            <li>denim</li>
+            <li>canvas</li>
+            <li>tulle</li>
+            <li>netting</li>
+            <li>crepe</li>
+            <li>georgette</li>
+            <li>charmeuse</li>
+            <li>double-faced satin</li>
+            <li>mikado</li>
+            <li>duchess satin</li>
+            <li>faille</li>
+            <li>grosgrain</li>
+            <li>moiré</li>
+            <li>piqué</li>
+            <li>poplin</li>
+            <li>oxford cloth</li>
+            <li>chambray</li>
+            <li>seersucker</li>
+            <li>batiste</li>
+            <li>voile</li>
+            <li>organza</li>
+            <li>organdy</li>
+            <li>dotted swiss</li>
+            <li>eyelet</li>
+            <li>guipure lace</li>
+            <li>chantilly lace</li>
+            <li>alençon lace</li>
+            <li>sequined fabric</li>
+            <li>beaded fabric</li>
+        </ul>
+    </section>
+
+    <!-- COLOR_PALETTE -->
+    <section>
+        <h2>COLOR_PALETTE <small>palettes de couleurs</small></h2>
+        <button class="btn-copy" onclick="copyList('colorList')">📋 Copier les 50 items</button>
+        <ul id="colorList">
+            <li>coral pink gradients</li>
+            <li>soft pastel rainbow</li>
+            <li>monochrome black and white</li>
+            <li>deep burgundy and gold</li>
+            <li>emerald green and navy</li>
+            <li>dusty rose and cream</li>
+            <li>lavender and grey</li>
+            <li>terracotta and olive</li>
+            <li>mustard yellow and charcoal</li>
+            <li>electric blue and silver</li>
+            <li>hot pink and orange</li>
+            <li>mint green and peach</li>
+            <li>lilac and mauve</li>
+            <li>chocolate brown and beige</li>
+            <li>crimson and black</li>
+            <li>royal blue and white</li>
+            <li>sunshine yellow and grey</li>
+            <li>sage green and blush</li>
+            <li>peach and coral</li>
+            <li>ivory and gold</li>
+            <li>slate blue and silver</li>
+            <li>plum and taupe</li>
+            <li>rust and mustard</li>
+            <li>teal and copper</li>
+            <li>magenta and purple</li>
+            <li>sky blue and sand</li>
+            <li>forest green and cream</li>
+            <li>wine and rose gold</li>
+            <li>charcoal and yellow</li>
+            <li>navy and camel</li>
+            <li>olive and burgundy</li>
+            <li>blush and navy</li>
+            <li>lavender and charcoal</li>
+            <li>peach and gold</li>
+            <li>mint and coral</li>
+            <li>turquoise and brown</li>
+            <li>fuchsia and black</li>
+            <li>apricot and cream</li>
+            <li>pistachio and white</li>
+            <li>raspberry and grey</li>
+            <li>cobalt and orange</li>
+            <li>violet and lime</li>
+            <li>indigo and peach</li>
+            <li>amber and ivory</li>
+            <li>jade and silver</li>
+            <li>rose gold and blush</li>
+            <li>copper and teal</li>
+            <li>bronze and olive</li>
+            <li>platinum and black</li>
+            <li>rainbow holographic</li>
+        </ul>
+    </section>
+
+    <!-- LIGHTING_SETUP -->
+    <section>
+        <h2>LIGHTING_SETUP <small>configurations d'éclairage</small></h2>
+        <button class="btn-copy" onclick="copyList('lightList')">📋 Copier les 50 items</button>
+        <ul id="lightList">
+            <li>high-key softbox frontal</li>
+            <li>low-key dramatic single source</li>
+            <li>rim-lit cinematic backlight</li>
+            <li>butterfly lighting</li>
+            <li>loop lighting</li>
+            <li>Rembrandt lighting</li>
+            <li>split lighting</li>
+            <li>broad lighting</li>
+            <li>short lighting</li>
+            <li>clamshell lighting with two softboxes</li>
+            <li>beauty dish frontal</li>
+            <li>octabox key light</li>
+            <li>strip box rim light</li>
+            <li>parabolic umbrella</li>
+            <li>bare bulb hard light</li>
+            <li>diffused window light</li>
+            <li>golden hour sunlight</li>
+            <li>overcast sky natural</li>
+            <li>studio strobe with grid</li>
+            <li>snoot focused spot</li>
+            <li>gobo pattern projected</li>
+            <li>colored gel accents</li>
+            <li>mixed temperature (tungsten+daylight)</li>
+            <li>ring light catchlights</li>
+            <li>led panel continuous</li>
+            <li>fluorescent practical</li>
+            <li>candlelight warm</li>
+            <li>neon sign ambient</li>
+            <li>stage spotlight</li>
+            <li>multiple flash setup</li>
+            <li>three-point lighting classic</li>
+            <li>four-point with background</li>
+            <li>high contrast noir</li>
+            <li>soft gradient from above</li>
+            <li>underlighting dramatic</li>
+            <li>top lighting flat</li>
+            <li>backlight silhouette</li>
+            <li>edge lighting</li>
+            <li>kicker light</li>
+            <li>fill card bounce</li>
+            <li>reflector fill</li>
+            <li>diffuser scrim</li>
+            <li>bare flash direct</li>
+            <li>slow sync flash</li>
+            <li>high-speed sync</li>
+            <li>strobe with softbox</li>
+            <li>moonlight simulation</li>
+            <li>studio cove lighting</li>
+            <li>light painting</li>
+            <li>practical lamp in scene</li>
+        </ul>
+    </section>
+
+    <!-- LENS_TYPE -->
+    <section>
+        <h2>LENS_TYPE <small>objectifs recommandés</small></h2>
+        <button class="btn-copy" onclick="copyList('lensList')">📋 Copier les 15 items</button>
+        <ul id="lensList">
+            <li>85mm f/1.2 (portrait, bokeh extrême)</li>
+        <li>85mm f/1.4 (portrait professionnel)</li>
+        <li>50mm f/1.2 (faible lumière, plans larges)</li>
+        <li>50mm f/1.4 (standard polyvalent)</li>
+        <li>135mm f/2 (portrait serré, compression)</li>
+        <li>35mm f/1.4 (portrait environnemental)</li>
+        <li>24-70mm f/2.8 (zoom de travail)</li>
+        <li>70-200mm f/2.8 (zoom téléobjectif)</li>
+        <li>105mm f/2.8 macro (détails, textures)</li>
+        <li>100mm f/2.8 macro (alternative macro)</li>
+        <li>200mm f/2 (compression extrême, bokeh)</li>
+        <li>28mm f/1.4 (grand-angle pour plein pied)</li>
+        <li>24mm f/1.4 (ultra grand-angle créatif)</li>
+        <li>45mm tilt-shift (effets de perspective)</li>
+        <li>90mm tilt-shift (portrait avec décentrement)</li>
+        </ul>
+    </section>
+
+    <!-- MOOD -->
+    <section>
+        <h2>MOOD <small>ambiances / émotions</small></h2>
+        <button class="btn-copy" onclick="copyList('moodList')">📋 Copier les 50 items</button>
+        <ul id="moodList">
+            <li>ethereal modern romanticism</li>
+            <li>empowered femininity</li>
+            <li>mysterious allure</li>
+            <li>melancholic introspection</li>
+            <li>joyful celebration</li>
+            <li>serene tranquility</li>
+            <li>dramatic tension</li>
+            <li>nostalgic vintage</li>
+            <li>futuristic optimism</li>
+            <li>dark brooding</li>
+            <li>playful whimsy</li>
+            <li>sensual intimacy</li>
+            <li>regal majesty</li>
+            <li>raw authenticity</li>
+            <li>surreal dreamlike</li>
+            <li>minimalist calm</li>
+            <li>vibrant energy</li>
+            <li>soft tenderness</li>
+            <li>bold confidence</li>
+            <li>quiet contemplation</li>
+            <li>rebellious attitude</li>
+            <li>elegant sophistication</li>
+            <li>rustic charm</li>
+            <li>ethereal fantasy</li>
+            <li>gothic romance</li>
+            <li>bohemian freedom</li>
+            <li>academic classicism</li>
+            <li>avant-garde edgy</li>
+            <li>pop art fun</li>
+            <li>cinematic epic</li>
+            <li>film noir shadowy</li>
+            <li>impressionist soft</li>
+            <li>expressionist angst</li>
+            <li>surrealist absurd</li>
+            <li>abstract conceptual</li>
+            <li>minimalist zen</li>
+            <li>baroque opulence</li>
+            <li>rococo playful</li>
+            <li>neoclassical purity</li>
+            <li>romantic passion</li>
+            <li>victorian restraint</li>
+            <li>art deco glamour</li>
+            <li>mid-century modern</li>
+            <li>contemporary cool</li>
+            <li>streetwise urban</li>
+            <li>natural organic</li>
+            <li>cosmic infinite</li>
+            <li>underwater fluid</li>
+            <li>aerial lightness</li>
+            <li>fiery intensity</li>
+        </ul>
+    </section>
+
+    <!-- BACKGROUND -->
+    <section>
+        <h2>BACKGROUND <small>arrière‑plans / décors</small></h2>
+        <button class="btn-copy" onclick="copyList('bgList')">📋 Copier les 50 items</button>
+        <ul id="bgList">
+            <li>seamless white</li>
+            <li>seamless black</li>
+            <li>soft blush gradient</li>
+            <li>studio grey cove</li>
+            <li>textured concrete wall</li>
+            <li>brick wall urban</li>
+            <li>wooden panels rustic</li>
+            <li>marble slab luxury</li>
+            <li>velvet curtain drape</li>
+            <li>cityscape blurred</li>
+            <li>nature landscape</li>
+            <li>forest bokeh</li>
+            <li>ocean sunset</li>
+            <li>cloudy sky</li>
+            <li>starry night</li>
+            <li>abstract geometric shapes</li>
+            <li>neon lights</li>
+            <li>industrial pipes</li>
+            <li>minimalist empty room</li>
+            <li>ornate vintage wallpaper</li>
+            <li>floral pattern</li>
+            <li>striped fabric</li>
+            <li>polka dots</li>
+            <li>metallic foil backdrop</li>
+            <li>crumpled paper texture</li>
+            <li>painted canvas</li>
+            <li>gradient colored paper</li>
+            <li>mirror reflection</li>
+            <li>water surface ripples</li>
+            <li>smoke/fog atmosphere</li>
+            <li>light leaks</li>
+            <li>lens flare overlay</li>
+            <li>double exposure effect</li>
+            <li>collage mixed media</li>
+            <li>solid color (pantone)</li>
+            <li>architectural columns</li>
+            <li>staircase spiral</li>
+            <li>doorway frame</li>
+            <li>window with light</li>
+            <li>garden greenery</li>
+            <li>desert sand dunes</li>
+            <li>snowy mountain</li>
+            <li>urban alley</li>
+            <li>rooftop skyline</li>
+            <li>bridge perspective</li>
+            <li>tunnel leading</li>
+            <li>studio equipment visible</li>
+            <li>plain cyc wall</li>
+            <li>muslin backdrop</li>
+            <li>chroma key green</li>
+        </ul>
+    </section>
+
+    <footer>
+        ⚡ Listes prêtes à être injectées dans votre template · <strong>50 items par catégorie</strong><br>
+        Utilisez les boutons pour copier, puis collez dans votre système de variables.
+    </footer>
+</div>
+
+<script>
+function copyList(elementId) {
+    const list = document.getElementById(elementId);
+    if (!list) return;
+    const items = list.querySelectorAll('li');
+    let text = '';
+    items.forEach(item => {
+        text += item.innerText.trim() + '\n';
+    });
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Liste copiée (' + items.length + ' éléments)');
+    }).catch(() => {
+        alert('❌ Échec de la copie');
+    });
+}
+</script>
+
+</body>
+</html>
