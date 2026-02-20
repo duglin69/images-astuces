@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opération Ressources Terrestres · Crise Galactique Totale</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0b0e14;
+      background-image: radial-gradient(circle at 20% 30%, #1a2340 0%, #030507 90%);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: #e0e4f0;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(10, 15, 22, 0.7);
+      backdrop-filter: blur(2px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 2px #2e3b4e inset, 0 0 0 3px #0f1219 inset;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffe77a, #ffb56b, #ff8a7a, #b57ee5, #7ec8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.2em;
+      text-shadow: 0 0 20px #7ec8ff80;
+    }
+
+    .sous-titre {
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: #b0cbff;
+      border-left: 6px solid #ffd966;
+      padding-left: 1.5rem;
+      margin-bottom: 2.5rem;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .guide {
+      background: #0f172a;
+      border: 1px solid #2e4b6e;
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 0 30px #0055ff22;
+    }
+
+    .guide h2 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #a3d8ff;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .guide h2::before {
+      content: "📡";
+      font-size: 2.2rem;
+    }
+
+    .guide-placeholders {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      background: #1a253b;
+      padding: 1.8rem;
+      border-radius: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 8px solid #f97316;
+    }
+
+    .placeholder-col {
+      flex: 1 1 260px;
+    }
+
+    .placeholder-col p {
+      margin: 0.5rem 0;
+      font-family: 'Fira Code', monospace;
+      color: #f1f1f1;
+    }
+
+    .placeholder-col strong {
+      color: #facc15;
+      font-weight: 600;
+    }
+
+    .template-prompt {
+      background: #1e2a3a;
+      padding: 1.8rem;
+      border-radius: 1.2rem;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px dashed #fbbf24;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #3b4e6b;
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #ffd966;
+      border: 1px solid #7289da;
+    }
+
+    .grid-prompts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .card {
+      background: rgba(16, 24, 39, 0.95);
+      backdrop-filter: blur(3px);
+      border-radius: 2rem;
+      border: 1px solid #374f6b;
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.2s;
+      box-shadow: 0 15px 30px -10px black;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      border-color: #fbbf24;
+      transform: scale(1.01);
+    }
+
+    .card-header {
+      background: #1e2d44;
+      padding: 1.3rem 1.8rem;
+      border-bottom: 2px solid #ff7f3f;
+    }
+
+    .card-header h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #ffdbb5;
+      line-height: 1.3;
+    }
+
+    .card-header .style-tag {
+      font-size: 0.9rem;
+      color: #b7d6ff;
+      margin-top: 0.3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .card-content {
+      padding: 1.8rem;
+      flex: 1;
+    }
+
+    .prompt-block {
+      background: #0c121f;
+      padding: 1.2rem;
+      border-radius: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-left: 5px solid #3b82f6;
+      margin-bottom: 1.5rem;
+      color: #d6e4ff;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .negative-block {
+      background: #2a1c28;
+      padding: 1rem 1.2rem;
+      border-radius: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-left: 5px solid #ef4444;
+      color: #ffc6c6;
+      margin-top: 1rem;
+    }
+
+    .negative-label {
+      display: inline-block;
+      background: #b91c1c;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .synthese {
+      background: #0f212e;
+      border-radius: 2rem;
+      padding: 2.2rem;
+      margin: 3rem 0 2rem;
+      border: 2px solid #3f6a9a;
+    }
+
+    .synthese h2, .defis h2 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: #ffbb77;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 5px #bd6200;
+    }
+
+    .artiste-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .artiste-list span {
+      background: #2f4769;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 1rem;
+      border: 1px solid #ffb27f;
+    }
+
+    .defis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 2.5rem;
+    }
+
+    .defi-card {
+      background: #162a3b;
+      padding: 1.8rem;
+      border-radius: 2rem;
+      border: 1px solid #eb9e3e;
+      box-shadow: 0 10px 20px #00000055;
+    }
+
+    .defi-card h3 {
+      font-size: 1.9rem;
+      color: #ffd966;
+      margin-bottom: 0.5rem;
+    }
+
+    .defi-card p {
+      font-size: 1rem;
+      color: #cfdfee;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, #ffbb00, #7196ff, #ff66b2);
+      margin: 3rem 0 2rem;
+    }
+
+    footer {
+      text-align: center;
+      color: #7f95b0;
+      font-size: 0.9rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 700px) {
+      h1 { font-size: 2.2rem; }
+      .page { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>⚡ OPÉRATION RESSOURCES TERRESTRES<br> — CRISE GALACTIQUE TOTALE</h1>
+  <div class="sous-titre">PROMPT MASTER — VERSION SYNTHÉTIQUE UNIVERSELLE</div>
+
+  <!-- GUIDE D'ADAPTATION -->
+  <section class="guide">
+    <h2>ADAPTATEUR DE CRISE</h2>
+    <div class="guide-placeholders">
+      <div class="placeholder-col">
+        <p><strong>[ALIEN_STATE]</strong> = shaking / sobbing / white-knuckled / flushing with panic</p>
+        <p><strong>[OBJECT]</strong> = roundabout / DVD box set / mismatched socks / plunger / shampoo / etc.</p>
+        <p><strong>[CRISIS]</strong> = navigation failure / communication collapse / starvation / economic crash</p>
+      </div>
+      <div class="placeholder-col">
+        <p><strong>[EVIDENCE]</strong> = holographic countdown / planetary display / newspaper headline / communicator</p>
+        <p><strong>[STYLE]</strong> = Pixar / photojournalism / manga / Baroque / Cyberpunk / Fashion editorial</p>
+        <p><strong>[NUMBER]</strong> + [ACTION] + [ENVIRONMENT] + [CRISIS_DETAIL] + [EVIDENCE_OF_CRISIS]</p>
+      </div>
+    </div>
+    <div class="template-prompt">
+      [NUMBER] alien figure(s) in [state of desperate urgency — torn suits / shaking hands / bioluminescent skin flushing with panic / compound eyes red-rimmed and glistening], [ACTION] [OBJECT] in [ENVIRONMENT] with the absolute desperation of someone whose civilization depends on it. [CRISIS_DETAIL]. [EVIDENCE_OF_CRISIS visible in scene]. [STYLE], [RENDER ENGINE], [LIGHTING — emergency / dramatic / clinical], highly detailed, masterpiece quality, professional quality, [COMPOSITION emphasizing urgency], [x:y ratio]<br><br>
+      <span class="badge">NEGATIVE PROMPT:</span> calm, serene, peaceful, composed, reverent without urgency, happy, fully human appearance, clean undamaged suits, signature (1:4)
+    </div>
+  </section>
+
+  <!-- GRILLE DES 15 VARIATIONS + défis intégrés plus bas -->
+  <div class="grid-prompts">
+    <!-- 1. Dark Surrealism (magnets) -->
+    <div class="card">
+      <div class="card-header"><h3>1. Dark Surrealism <br>Le vol des magnets</h3><div class="style-tag">Beksiński · Giger</div></div>
+      <div class="card-content"><div class="prompt-block">A masterpiece of dark surrealism, nightmarish and visceral. Three gaunt, skeletal alien children with sunken, weeping black eyes and grey, vein-filled skin stand in a decaying, rusted French kitchen. They are methodically harvesting fridge magnets that glow with a sickening, unearthly light. One child holds a screaming sunflower magnet, another clutches a bag of raw, pulsing artifacts. The kitchen is a claustrophobic ruin of peeling paint and exposed pipes. In the background, a skeletal cat sits by a shattered window looking out at a biomechanical spacecraft in a void. Deep shadows, macabre atmosphere, (Zdzisław Beksiński and H.R. Giger influence:0.8), high contrast, cinematic horror, highly detailed, 16:9 ratio.</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>Bright, cheerful, Ghibli style, cute, happy, colorful, clean, healthy, human, sunshine, peaceful.</div></div>
+    </div>
+    <!-- 2. Pop Surrealism / BD (trous du Gruyère) -->
+    <div class="card">
+      <div class="card-header"><h3>2. Pop Surrealism / BD<br>Vol des trous du Gruyère</h3><div class="style-tag">Lowbrow · underground comix</div></div>
+      <div class="card-content"><div class="prompt-block">Vibrant pop surrealism comic book illustration. In a technicolor 1950s-style kitchen, three bug-eyed, octopus-headed aliens are using ray-gun vacuum devices to suck the "void" out of a giant wheel of Gruyère cheese. The holes are being extracted as swirling star-filled cosmic pockets and put into glowing bags. Colorful halftone dot textures, heavy ink outlines. Speech bubbles in French: "VITE ! LES TROUS SONT LA SOURCE D’ÉNERGIE PURE !", "PRENEZ LE VIDE !", "J'AI UN GROS RIEN !". A three-eyed ginger cat smokes a pipe on the counter. Through the window, a giant strawberry UFO hovers over the Eiffel Tower. (Lowbrow art, underground comix style), psychedelic colors, masterpiece quality, 16:9 ratio.</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>Realistic, photorealistic, 3D render, dark, moody, black and white, serious, oil painting, blurry.</div></div>
+    </div>
+    <!-- 3. Art Folk Moderne (minous) -->
+    <div class="card">
+      <div class="card-header"><h3>3. Modern Folk Art<br>Le vol des minous</h3><div class="style-tag">naive · botanique</div></div>
+      <div class="card-content"><div class="prompt-block">Modern Folk Art illustration of "Le Vol des Minous". In a cozy, stylized living room with flat perspective and symmetrical composition, three friendly blue aliens with intricate patterned tunics are gathering "minous" (cute, sentient dust bunnies with tiny smiling faces) into woven wooden baskets. The floor is warm wood, the walls decorated with simple framed pictures and a window showing a crescent moon. In the background, a French couple and their tabby cat watch with puzzled expressions. Intricate botanical and star borders frame the image. Warm earthy palette (terracotta, mustard, forest green, cream), matte texture, naive art style. Text at the top: "LE VOL DES MINOUS". Clean lines, charming and whimsical, 1:1 ratio.</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>3D, photorealistic, neon, digital painting, complex shadows, futuristic, dark, chaotic, scary, metallic.</div></div>
+    </div>
+    <!-- 4. Aliens love adult tissues / Ghibli -->
+    <div class="card">
+      <div class="card-header"><h3>4. Studio Ghibli · Paris<br>La Chatte Noire</h3><div class="style-tag">Miyazaki · Monet</div></div>
+      <div class="card-content"><div class="prompt-block">Soft hand-painted animation cel artwork in the style of Studio Ghibli, warm golden morning light flooding a small Parisian adult cinema house called 'La Chatte Noire'. A black dragon-shaped alien stands in front of a wall filled with old movie posters like 'La poilue contre-attaque', 'Le retour du gourdin', 'La revanche des biroutes' et 'Pussy wars'. On the floor and in several dustbins, heaps of used white sticky handerchief packs. The dragon emotionally smells an handkerchief with a visible white sticky stain with the focused tenderness of a child opening precious gifts. A second black dragon-shaped alien grabbed some of the handkerchieves and eargerly put them in a plastic cosmic bag. The clerk — an old kind-faced woman in a (Playboy bunny outfit 1:3) — stands with arms crossed in front of her, watching them with bemused grandmotherly acceptance, as if this happens every Tuesday. The quiet magical realism of an ordinary extraordinary morning. (Studio Ghibli hand-painted animation style:0.65), (Claude Monet impressionist light and color:0.25), warm palette, painterly brushstroke texture, soft focus edges, Hayao Miyazaki narrative warmth, highly detailed, masterpiece quality, 16:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>dark, threatening, photorealistic, horror, aggressive, harsh lighting, cold tones, digital hard edges, signature (1:2), misspelling (1:5), occlusion (1:2)</div></div>
+    </div>
+    <!-- 5. LE PÈLERINAGE DU DERNIER ROND-POINT (Pixar / dark scifi) -->
+    <div class="card">
+      <div class="card-header"><h3>5. Pèlerinage rond-point<br>Pixar x Dark SciFi</h3><div class="style-tag">Unreal Engine 5</div></div>
+      <div class="card-content"><div class="prompt-block">Three extraterrestrial beings in battered iridescent emergency suits, bioluminescent skin flushing deep red with stress and panic, enormous compound eyes bloodshot and glistening with desperate tears, four-fingered hands shaking uncontrollably — surrounding a modest French suburban roundabout at 3 AM. The roundabout is heartbreakingly ordinary: three dying rosebushes, a concrete municipal sculpture of an abstract bird, faded road markings. The first alien is on its knees pressing both palms flat against the asphalt of the circular road, sobbing openly, bioluminescent tears dripping onto the tarmac and glowing where they land. The second alien is on a communicator screaming coordinates into a device, one arm gesturing wildly at the roundabout, its translucent cranium pulsing bright orange with urgency. The third alien is attempting to physically dismantle the central island with a vibrating extraction tool, hands trembling so badly it keeps dropping it. A holographic countdown timer floats above them: 03:47:22 — ticking down. A holographic newspaper headline spins in the air: "PLUS UN SEUL ROND-POINT EN STOCK — LA CIVILISATION CONDAMNÉE." Their colossal spacecraft hovers directly overhead, searchlights pinning the roundabout, emergency red lights strobing across the suburban street. A Renault Clio is frozen mid-approach, driver filming on phone with mouth open. Highly detailed, masterpiece quality, professional quality, (Pixar animation style:0.55), (dark sci-fi cinematic emergency:0.35), (French suburban realism:0.10), Unreal Engine 5 cinematic render, volumetric red emergency lighting, 8K resolution, wide shot showing full roundabout and hovering spacecraft, 16:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>calm, peaceful, serene, reverent, slow, happy, relaxed, clean suits, fully human appearance, signature (1:4)</div></div>
+    </div>
+    <!-- 6. LE CALENDRIER QUI SAUVE LE MONDE (fashion editorial) -->
+    <div class="card">
+      <div class="card-header"><h3>6. Fashion editorial<br>Calendrier pompiers</h3><div class="style-tag">Avedon · Meisel · Close</div></div>
+      <div class="card-content"><div class="prompt-block">Hyperrealistic fashion editorial photography, white infinity studio, harsh directional beauty flash — but the subject is shaking. A towering alien ambassador — deep iridescent blue-black skin with starling-like structural color, cranium tapering to a narrow crest, four arms in pairs from the shoulder, pupil-less silver eyes with no iris — stands in what was meant to be a composed diplomatic portrait pose. But everything has gone wrong with composure: all four hands are gripping the French firefighter calendar (édition 2025, format A3, slightly damp from being clutched so desperately) with the white-knuckled grip of someone holding the last oxygen tank in space. The alien's face — which was intended to appear regal and serene — is clearly on the verge of total emotional collapse: jaw tight, bioluminescent crest flushing violent orange with suppressed panic, the silver eyes glistening at the edges, one single bioluminescent tear tracking a slow line down the right cheek despite every diplomatic effort to prevent it. The calendar itself, held against the alien's chest like a shield, is mundane and absurd: smiling French firefighters, a slightly cheesy pose, the Paris fire department logo. On the alien's left wrist: a holographic display showing a planet slowly turning blue-grey with cold. Richard Avedon fashion photography, Steven Meisel editorial lighting, white seamless backdrop, Chuck Close hyperrealism precision, highly detailed, masterpiece quality, professional fashion editorial, 2:3 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>cartoon, anime, painterly, soft warm, dark moody, impressionistic, fully composed calm expression, fully human, signature (1:4), text</div></div>
+    </div>
+    <!-- 7. LE PÈLERINAGE DU DERNIER ROND-POINT (double? mais on garde la variante texte complet, mais c'est le même titre, on le met quand même) -->
+    <div class="card">
+      <div class="card-header"><h3>7. Rond-point (variante)<br>Pixar/Urgence</h3><div class="style-tag">Unreal Engine 5</div></div>
+      <div class="card-content"><div class="prompt-block">Three extraterrestrial beings in battered iridescent emergency suits, bioluminescent skin flushing deep red with stress and panic, enormous compound eyes bloodshot and glistening with desperate tears, four-fingered hands shaking uncontrollably — surrounding a modest French suburban roundabout at 3 AM. The roundabout is heartbreakingly ordinary: three dying rosebushes, a concrete municipal sculpture of an abstract bird, faded road markings. The first alien is on its knees pressing both palms flat against the asphalt of the circular road, sobbing openly, bioluminescent tears dripping onto the tarmac and glowing where they land. The second alien is on a communicator screaming coordinates into a device, one arm gesturing wildly at the roundabout, its translucent cranium pulsing bright orange with urgency. The third alien is attempting to physically dismantle the central island with a vibrating extraction tool, hands trembling so badly it keeps dropping it. A holographic countdown timer floats above them: 03:47:22 — ticking down. A holographic newspaper headline spins in the air: "PLUS UN SEUL ROND-POINT EN STOCK — LA CIVILISATION CONDAMNÉE." Their colossal spacecraft hovers directly overhead, searchlights pinning the roundabout, emergency red lights strobing across the suburban street. A Renault Clio is frozen mid-approach, driver filming on phone with mouth open. Highly detailed, masterpiece quality, professional quality, (Pixar animation style:0.55), (dark sci-fi cinematic emergency:0.35), (French suburban realism:0.10), Unreal Engine 5 cinematic render, volumetric red emergency lighting, 8K resolution, wide shot showing full roundabout and hovering spacecraft, 16:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>calm, peaceful, serene, reverent, slow, happy, relaxed, clean suits, fully human appearance, signature (1:4)</div></div>
+    </div>
+    <!-- 8. NATIONAL GEOGRAPHIC : L'ARRACHAGE DES DVD -->
+    <div class="card">
+      <div class="card-header"><h3>8. National Geographic<br>Emmaüs / DVD</h3><div class="style-tag">photojournalisme · T-Max</div></div>
+      <div class="card-content"><div class="prompt-block">Grainy crisis photojournalism, handheld camera shaking from adrenaline, interior of a dim Emmaüs charity shop at closing time, fluorescent tubes flickering. Three alien figures in civilian disguise — badly fitting human raincoats three sizes too small, hats pulled down over enormous craniums, compound eyes hidden behind absurdly large sunglasses that keep slipping — are engaged in a frantic desperate scramble through the DVD bargain bins. One alien has found the "Hélène et les Garçons — Intégrale Collector 22 DVDs" box set and is clutching it to its chest with all four arms, compound eyes visible above the sunglasses wide with overwhelming relief and tears streaming down translucent cheeks, bioluminescent veins pulsing erratically with emotion. A second alien is on its communicator, speaking in hushed panicked alien language, one finger pointing at the box set with the intensity of someone defusing a bomb. The third alien is blocking the shop door with its body, scanning the street outside through its terrible disguise, clearly terrified of being too late. On the alien's forearm: a holographic readout counting down. The elderly French shop volunteer at the counter stares at them over her reading glasses with magnificent Gallic indifference. Price sticker on the DVD box: "3€." Photojournalism reportage, Kodak T-Max 3200 grain, available light only, f/2.8 handheld, 35mm lens, ISO 6400 noise, masterpiece quality, highly detailed, 16:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>smooth, polished, studio lighting, posed, calm, clean disguise convincing, cartoonish, illustrated, signature (1:4)</div></div>
+    </div>
+    <!-- 9. AFFICHE RÉTRO : LA GRANDE PANIQUE DES CHAUSSETTES -->
+    <div class="card">
+      <div class="card-header"><h3>9. Affiche rétro 50's<br>Panique des chaussettes</h3><div class="style-tag">Reynold Brown · WPA</div></div>
+      <div class="card-content"><div class="prompt-block">Vintage 1950s American science fiction movie poster, offset lithograph printing, bold limited color palette of electric blue, mustard yellow, panic red and black, halftone dot texture throughout, worn paper with foxing and fold creases. Massive bold slab serif typography at top screams: "ILS VIENNENT VOLER NOS CHAUSSETTES !!" Center composition: a wild-eyed alien in a silver bubble helmet bursts through a laundry room wall, tentacle-arms overflowing with dozens of mismatched socks — a striped one, a Christmas reindeer one, one that says LUNDI worn on a Saturday, a single fluorescent yellow sports sock — all clutched with the manic desperation of a bank robber mid-heist. Behind it: three more aliens dive headfirst into washing machines and tumble dryers, legs kicking in the air. The family dog barks at them. A housewife in curlers screams from the doorway but an alien has already grabbed her favorite wool sock. Flying saucer visible through the laundry room window, cargo bay open and waiting. Bottom text: "LEUR ÉCONOMIE S'EFFONDRE... ET VOS TIROIRS SONT LEUR SEUL ESPOIR." Sub-text: "UN FILM DE TERREUR GALACTIQUE EN TECHNICOLOR" Reynold Brown movie poster style, WPA influence, vintage propaganda art, highly detailed, masterpiece quality, 3:2 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>photorealistic, modern, digital clean, 3D render, dark atmospheric, dull muted colors, calm, signature (1:4)</div></div>
+    </div>
+    <!-- 10. MANGA SHONEN : L'ULTIME DÉBOUCHOIR -->
+    <div class="card">
+      <div class="card-header"><h3>10. Manga Shonen<br>Ultime débouchoir</h3><div class="style-tag">speed lines · ZUUUUN</div></div>
+      <div class="card-content"><div class="prompt-block">High-energy Japanese shonen manga illustration, explosive action composition, heavy speed lines radiating from center like a supernova, maximum dramatic impact. A lone alien warrior sprints at impossible speed through a French hardware store aisle, eyes blazing with heroic desperation, tears streaming horizontally from the velocity, mouth open in a silent battle cry. In its outstretched hand, raised above its head like Excalibur finally retrieved from the stone: a single ordinary red rubber plunger, radiating blinding golden light and divine energy rings as if it were the most powerful artifact in the universe. The shelves explode around the alien from the shockwave of its speed. In the top corner: a small inset panel showing 847 alien spaceships floating dead in space, a countdown: 01:58:33. In the bottom corner: another inset panel showing millions of tiny aliens pressed against spaceship windows, paws raised in desperate hope, watching. Giant Japanese-style sound effect typography: ZUUUUN! KAAAAA! HOOOOPE! integrated into the art. The alien's species-specific tentacle-appendages stream behind it like a battle flag. Screen tone textures, professional manga panel composition, highly detailed ink work, masterpiece quality, 2:3 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>calm, slow, realistic, photographic, muted, western comic style, fully human, signature (1:4)</div></div>
+    </div>
+    <!-- 11. BLADE RUNNER : LA NUIT DU SHAMPOING -->
+    <div class="card">
+      <div class="card-header"><h3>11. Blade Runner<br>Nuit du shampoing</h3><div class="style-tag">Deakins · Stålenhag</div></div>
+      <div class="card-content"><div class="prompt-block">Cinematic noir science fiction, rain-hammering a Parisian supermarket at 2 AM, neon pharmacy signs bleeding color across wet pavement. Two alien figures in black emergency overalls move through the shampoo aisle with the controlled panic of special forces on a failed mission. The first alien — translucent skin chalk-white with stress, subcutaneous bioluminescent veins pulsing a desperate flickering blue like a dying light bulb, compound eyes scanning labels with shaking hands — grabs every bottle of Extra-Volume shampoo off the shelf simultaneously with four arms, reading each label with mounting horror: "VOLUME NORMAL — NON NON NON." "HYDRATANT — INUTILE." "ANTI-FRIZZ — CATASTROPHIQUE." Then: "EXTRA-VOLUME BRILLANCE MAXIMALE" — it freezes. Its skin floods with sudden gold bioluminescence. It clutches the bottle to its chest with both pairs of arms and slides down the shelf to the floor, overcome with relief so intense it cannot stand. Alien tears — glowing faintly gold — run down its face. The second alien is on a communicator whispering in alien language, clearly reporting back to the stranded fleet. Through the supermarket's rain-lashed window: a colossal dark spacecraft fills the sky above the périphérique, navigation lights off, completely still, utterly enormous. A security guard 30 meters away has noticed nothing. (Blade Runner 2049 cinematography:0.70), (Simon Stålenhag melancholy:0.30), Roger Deakins lighting, anamorphic lens flare, volumetric rain, highly detailed, masterpiece quality, 21:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>bright cheerful, cartoon, colorful, comedic face, daytime, clean, fully human, signature (1:4)</div></div>
+    </div>
+    <!-- 12. CYBERPUNK : RAZZIA SUR LE GAZON SYNTHÉTIQUE -->
+    <div class="card">
+      <div class="card-header"><h3>12. Cyberpunk · Vaporwave<br>Gazon synthétique</h3><div class="style-tag">CP2077 · néon</div></div>
+      <div class="card-content"><div class="prompt-block">Cyberpunk neon rain-slicked night, industrial suburban Paris, a DIY megastore parking lot and garden center at 1 AM. An alien commando squad of five moves through the outdoor garden display with military precision and absolute ravenous desperation — their tactical black suits contrast with the absurd target: rolls of artificial turf, balcony grass strips, fake lawn samples in every shade of synthetic green. The squad leader — bioluminescent tattoos tracking mission data on neck and arms, pupil-less silver eyes behind tactical goggles, four-jointed arms moving with trained efficiency — coordinates the loading of rolled turf sections into a hovering cargo drone via frantic hand signals, its jaw tight with urgency. A second alien operative cannot help itself: it has stopped mid-mission and is eating directly from a roll of artificial turf, cramming handfuls of synthetic green fibers into its mouth with the desperate relief of someone who has not eaten in months, eyes half-closed in overwhelmed hunger, tears of relief visible on its cheeks — completely breaking protocol. A third alien pulls it upright with one arm while loading cargo with the other three. Holographic mission timer on the squad leader's wrist: 00:22:14. Neon signs from the megastore bleed hot pink and cyan across wet asphalt. In the background: their cloaked transport, barely visible except for emergency running lights. (Cyberpunk 2077:0.60), (Vaporwave:0.30), Unreal Engine 5, volumetric neon, masterpiece quality, highly detailed, 16:9 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>bright daylight, cheerful, pastoral, clean tidy suits, calm, well-fed aliens, fully human, signature (1:4)</div></div>
+    </div>
+    <!-- 13. BAROQUE : LA PIETA DE LA PLATINE VINYLE -->
+    <div class="card">
+      <div class="card-header"><h3>13. Baroque · Caravaggio<br>Pietà du vinyle</h3><div class="style-tag">chiaroscuro · Gentileschi</div></div>
+      <div class="card-content"><div class="prompt-block">Baroque oil painting masterwork in the manner of Caravaggio and Artemisia Gentileschi, extreme chiaroscuro, profound human — or rather alien — drama. A single alien figure kneels on the dusty floor of a Lyon vide-grenier, illuminated by a single shaft of divine light falling from a dirty skylight above, all surrounding darkness impenetrable. In its arms, cradled with the precise tenderness of the Pietà: an ordinary Technics SL-1200 turntable, dusty, slightly scratched, complete with a Boney M record still on the platter. The alien's face — elongated, compound eyes half-closed, four-fingered hands trembling — expresses an emotion so immense it has passed beyond desperation into a kind of sacred relief too large for the body to contain. Bioluminescent skin barely visible under Renaissance-style draped emergency clothing — the clothing of someone who left home in a hurry and has not slept in days. One alien tear, catching the shaft of light, glows gold as it falls toward the dusty floor. Around the alien in the darkness: the vague shapes of folding tables covered in junk, cardboard boxes, a faded poster for a 1987 local accordion festival — the magnificently mundane surroundings of the most important moment in galactic history. In the alien's belt: a communicator. It has not yet called home. It is not ready. This moment is too enormous. (Caravaggio Baroque dramatic chiaroscuro:0.65), (Artemisia Gentileschi Renaissance emotion:0.35), sfumato, oil on canvas texture, craquelure, Old Masters glazing, museum quality, masterpiece quality, highly detailed, 3:2 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>bright even lighting, modern, cartoon, anime, flat, digital, comedic expression, clean environment, fully human, signature (1:4)</div></div>
+    </div>
+    <!-- 14. Ils sont Vénus pour Martine -->
+    <div class="card">
+      <div class="card-header"><h3>14. Rétro · Martine<br>Vénus pour Martine</h3><div class="style-tag">Reynold Brown</div></div>
+      <div class="card-content"><div class="prompt-block">Vintage 1950s American science fiction movie poster, offset lithograph printing, bold limited color palette of cherry red, lime green, chrome yellow and black, halftone dot texture visible throughout. Dramatic retro typography at top reads "ILS SONT VÉNUS POUR MARTINE" in bold slab serif. Center composition: a towering bug-eyed alien in a silver spacesuit clutches a "Martine book", title 'Martine est amoureuse de E.T.' (book for children) above its dome-shaped helmet, ray gun holstered at hip, tentacle-like fingers wrapped around the miniature doll with greedy possessiveness. Behind it, a flying saucer hovers over a Parisian skyline with the Eiffel Tower silhouetted. A screaming French woman in a polka-dot dress flees in the foreground, a Martine book flying from her basket. Text at bottom: "L'AVENIR DE LEUR PLANÈTE PASSE PAR MARTINE." Worn paper texture, fold creases, yellowing edges, foxing spots. Classic retro sci-fi aesthetic, WPA poster influence, vintage propaganda art, Reynold Brown movie poster style, highly detailed, masterpiece quality, 3:2 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>photorealistic, modern, digital clean, 3D render, dark, serious, horror, dull colors, signature (1:2), (misspelling 1:5)</div></div>
+    </div>
+    <!-- 15. Ils sont Vénus pour Manu -->
+    <div class="card">
+      <div class="card-header"><h3>15. Rétro · Manu<br>Vénus pour Manu</h3><div class="style-tag">Reynold Brown</div></div>
+      <div class="card-content"><div class="prompt-block">Vintage 1950s American science fiction movie poster, offset lithograph printing, bold limited color palette of cherry red, lime green, chrome yellow and black, halftone dot texture visible throughout. Dramatic retro typography at top reads "ILS SONT VÉNUS POUR MANU" in bold slab serif. Center composition: a towering bug-eyed alien in a silver spacesuit clutches a miniature Manuel Valls above its dome-shaped helmet, ray gun holstered at hip, tentacle-like fingers wrapped around the miniature doll with greedy possessiveness. Behind it, a flying saucer hovers over a Parisian skyline with the Eiffel Tower silhouetted. A screaming French woman in a polka-dot dress flees in the foreground, a baguette flying from her shopping basket. Text at bottom: "L'AVENIR DE LEUR PLANÈTE PASSE PAR MANU." Worn paper texture, fold creases, yellowing edges, foxing spots. Classic retro sci-fi aesthetic, WPA poster influence, vintage propaganda art, Reynold Brown movie poster style, highly detailed, masterpiece quality, 3:2 ratio</div><div class="negative-block"><span class="negative-label">NEGATIVE PROMPT</span>photorealistic, modern, digital clean, 3D render, dark, serious, horror, dull colors, signature (1:2), (misspelling 1:5)</div></div>
+    </div>
+  </div>
+
+  <!-- SYNTHÈSE et artistes -->
+  <section class="synthese">
+    <h2>⚡ SYNTHÈSE : STYLES & RÉFÉRENCES</h2>
+    <div><strong>Styles utilisés (10) :</strong> Pixar+DarkScifi · Photojournalisme · B-Movie 1950s · Manga Shonen · Blade Runner+Stålenhag · Cyberpunk+Vaporwave · Caravaggio Baroque · Fashion Editorial Avedon · Lowbrow · WPA</div>
+    <div class="artiste-list">
+      <span>Caravaggio</span> <span>Artemisia Gentileschi</span> <span>Alphonse Mucha</span> <span>Claude Monet</span> <span>Roger Deakins</span> <span>Simon Stålenhag</span> <span>Reynold Brown</span> <span>Richard Avedon</span> <span>Steven Meisel</span> <span>Chuck Close</span> <span>Hayao Miyazaki</span>
+    </div>
+  </section>
+
+  <!-- DÉFIS -->
+  <h2 style="font-size:2.5rem; margin: 2rem 0 1rem; color:#fcd34d;">🏆 DÉFIS POUR GÉNÉRATIONS</h2>
+  <div class="defis">
+    <div class="defi-card"><h3>🏛️ DÉFI 1</h3><p><strong>CONFÉRENCE DE PRESSE</strong><br>ONU, ambassadeur alien doit expliquer le vol de 847 calendriers de pompiers et tous les aimants d'Île-de-France. Style : (Kubrick:0.6) + (Wes Anderson symétrie:0.4)</p></div>
+    <div class="defi-card"><h3>📝 DÉFI 2</h3><p><strong>LISTE DE COURSES GALACTIQUE</strong><br>Alien lit sa liste (aimants, trombones, gazon) en alien script + petits dessins. Slice-of-life manga / Yotsuba aesthetic.</p></div>
+    <div class="defi-card"><h3>🚀 DÉFI 3</h3><p><strong>RETOUR TRIOMPHAL</strong><br>Après mission réussie, alien revient sur sa planète avec un caddie plein de débouchoirs. Foule en liesse, soulagement total, joie absolue.</p></div>
+  </div>
+
+  <hr>
+  <footer>OPÉRATION RESSOURCES TERRESTRES — CRISE GALACTIQUE TOTALE • PROMPT MASTER V1.0 • Tous les univers parallèles sont prévenus.</footer>
+</div>
+</body>
+</html>
