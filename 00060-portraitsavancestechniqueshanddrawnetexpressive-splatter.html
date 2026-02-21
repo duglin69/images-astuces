@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portraits Avancés — Cours de Prompting</title>
+  <style>
+    :root {
+      --bg: #0c0c10;
+      --card: #15151e;
+      --card2: #1b1b27;
+      --accent-a: #f0a842;
+      --accent-b: #42c8f0;
+      --accent-g: #a142f0;
+      --text: #e8e8f0;
+      --muted: #8888a8;
+      --border: #252535;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    header {
+      background: linear-gradient(135deg, #1a0a00, #000a1a, #0a001a);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(240,168,66,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 50%, rgba(66,200,240,0.10) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, var(--accent-a), var(--accent-g), var(--accent-b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      position: relative;
+    }
+    header .subtitle { color: var(--muted); margin-top: 0.8rem; font-size: 1rem; position: relative; }
+    header .pills { display: flex; gap: 0.6rem; justify-content: center; margin-top: 1.2rem; flex-wrap: wrap; position: relative; }
+    .pill {
+      padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+      border: 1px solid;
+    }
+    .pill-a { background: rgba(240,168,66,0.15); color: var(--accent-a); border-color: rgba(240,168,66,0.3); }
+    .pill-b { background: rgba(66,200,240,0.15); color: var(--accent-b); border-color: rgba(66,200,240,0.3); }
+
+    nav {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;
+      padding: 1.2rem 2rem; background: var(--card); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav a {
+      color: var(--muted); text-decoration: none; font-size: 0.8rem;
+      padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    nav a:hover { color: var(--text); border-color: var(--accent-g); background: rgba(161,66,240,0.1); }
+
+    main { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+    .part-title {
+      font-size: 1.8rem; font-weight: 900; margin-bottom: 2.5rem;
+      padding: 1.2rem 1.5rem; border-radius: 14px;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .part-a { background: linear-gradient(135deg, rgba(240,168,66,0.1), rgba(240,168,66,0.03)); border: 1px solid rgba(240,168,66,0.25); color: var(--accent-a); }
+    .part-b { background: linear-gradient(135deg, rgba(66,200,240,0.1), rgba(66,200,240,0.03)); border: 1px solid rgba(66,200,240,0.25); color: var(--accent-b); }
+
+    .techniques-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem; }
+
+    .tech-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .tech-card:hover { border-color: rgba(161,66,240,0.4); }
+
+    .tech-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.3rem; background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid var(--border); cursor: pointer;
+    }
+    .tech-num {
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem; border-radius: 6px; flex-shrink: 0;
+    }
+    .num-a { background: rgba(240,168,66,0.2); color: var(--accent-a); }
+    .num-b { background: rgba(66,200,240,0.2); color: var(--accent-b); }
+    .tech-name { flex: 1; }
+    .tech-name strong { font-size: 1rem; display: block; }
+    .tech-name span { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+    .toggle-icon { color: var(--muted); font-size: 1.2rem; transition: transform 0.2s; flex-shrink: 0; }
+    .tech-card.open .toggle-icon { transform: rotate(180deg); }
+
+    .tech-body { display: none; padding: 1.3rem; }
+    .tech-card.open .tech-body { display: block; }
+
+    .keywords-section { margin-bottom: 1.2rem; }
+    .keywords-section h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.6rem; }
+    .kw {
+      display: inline-block; background: rgba(161,66,240,0.12); color: var(--accent-g);
+      border: 1px solid rgba(161,66,240,0.25); border-radius: 4px;
+      padding: 0.1rem 0.45rem; font-size: 0.78rem; margin: 0.12rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    .prompts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 650px) { .prompts-grid { grid-template-columns: 1fr; } }
+
+    .prompt-box {
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .prompt-box-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border);
+    }
+    .prompt-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .label-gen { color: var(--accent-a); }
+    .label-var { color: var(--accent-b); }
+    .prompt-cadrage { font-size: 0.7rem; color: var(--muted); font-style: italic; }
+    .prompt-text {
+      padding: 0.9rem; font-family: 'Courier New', monospace;
+      font-size: 0.82rem; color: #b8e8c8; line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .copy-btn {
+      background: rgba(161,66,240,0.15); color: var(--accent-g);
+      border: 1px solid rgba(161,66,240,0.3); border-radius: 5px;
+      padding: 0.2rem 0.6rem; font-size: 0.7rem; cursor: pointer;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .copy-btn:hover { background: rgba(161,66,240,0.3); }
+    .copy-btn.copied { background: rgba(66,200,240,0.2); color: var(--accent-b); border-color: rgba(66,200,240,0.3); }
+
+    .recap-section { margin-top: 2rem; }
+    .recap-title { font-size: 1.4rem; font-weight: 800; color: var(--accent-g); border-left: 4px solid var(--accent-g); padding-left: 1rem; margin-bottom: 1.5rem; }
+    .recap-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 600px) { .recap-cols { grid-template-columns: 1fr; } }
+    .recap-block { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; }
+    .recap-block h3 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.8rem; }
+    .recap-block.ra h3 { color: var(--accent-a); }
+    .recap-block.rb h3 { color: var(--accent-b); }
+    .recap-line { font-size: 0.8rem; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .recap-line:last-child { border-bottom: none; }
+    .recap-code { font-family: monospace; color: var(--text); font-weight: 600; }
+
+    footer { text-align: center; padding: 3rem 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎨 Portraits Avancés — 40 Techniques</h1>
+  <p class="subtitle">Cours de prompting · Hand-Drawn · Expressive · Splatter · Visage · Buste · Plein pied</p>
+  <div class="pills">
+    <span class="pill pill-a">✏️ Partie A — 20 techniques Hand-Drawn</span>
+    <span class="pill pill-b">💥 Partie B — 20 techniques Expressive / Splatter</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#partA">Hand-Drawn</a>
+  <a href="#a01">Oil</a><a href="#a02">Watercolour</a><a href="#a03">Pencil</a>
+  <a href="#a04">Charcoal</a><a href="#a05">Ink Line</a><a href="#a06">Pastel</a>
+  <a href="#a07">Gouache</a><a href="#a08">Acrylic</a><a href="#a09">Cross-hatch</a>
+  <a href="#a10">Conté</a>
+  <a href="#partB">Expressive</a>
+  <a href="#b01">Splatter</a><a href="#b02">Drip</a><a href="#b03">Impasto</a>
+  <a href="#b04">Ink Splash</a><a href="#b05">Pour</a><a href="#b06">Knife</a>
+  <a href="#b07">Bloom</a><a href="#b08">Collage</a><a href="#b09">Spray</a>
+  <a href="#recap">Récap</a>
+</nav>
+
+<main>
+
+<!-- ===== PARTIE A ===== -->
+<div id="partA" style="padding-top:2rem;">
+  <div class="part-title part-a">✏️ Partie A — Hand-Drawn &amp; Traditions</div>
+  <div class="techniques-grid">
+
+    <!-- A01 -->
+    <div class="tech-card" id="a01">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A01</span>
+        <div class="tech-name"><strong>Oil Painting Portrait</strong><span>Peinture à l'huile</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">oil painting portrait</span><span class="kw">thick brushstrokes</span><span class="kw">glazing technique</span><span class="kw">chiaroscuro lighting</span><span class="kw">luminous skin tones</span><span class="kw">Old Masters style</span><span class="kw">impasto highlights</span><span class="kw">canvas texture visible</span><span class="kw">Rembrandt-inspired</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header">
+              <span class="prompt-label label-gen">Générique</span>
+              <span class="prompt-cadrage">Visage</span>
+              <button class="copy-btn" onclick="cp(this)">Copier</button>
+            </div>
+            <div class="prompt-text">Oil painting portrait of a woman, close-up face, classical Old Masters style, rich chiaroscuro lighting, luminous skin tones, thick visible brushstrokes, deep shadow areas, glazed layers, canvas texture, Rembrandt-inspired, warm amber tones, highly detailed.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header">
+              <span class="prompt-label label-var">Varié</span>
+              <span class="prompt-cadrage">Buste</span>
+              <button class="copy-btn" onclick="cp(this)">Copier</button>
+            </div>
+            <div class="prompt-text">Oil painting portrait of an elderly fisherman, half-body bust shot, weathered face and strong hands resting on a rope, dramatic side lighting, Old Masters style brushwork, deep navy and ochre palette, thick impasto highlights on cheekbones and knuckles, canvas texture visible, painterly realism.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A02 -->
+    <div class="tech-card" id="a02">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A02</span>
+        <div class="tech-name"><strong>Watercolour Portrait</strong><span>Aquarelle</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">watercolour portrait</span><span class="kw">wet-on-wet technique</span><span class="kw">soft bleeding edges</span><span class="kw">transparent washes</span><span class="kw">granulation texture</span><span class="kw">white paper showing through</span><span class="kw">loose expressive brushwork</span><span class="kw">luminous transparent layers</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Watercolour portrait, close-up face, loose expressive style, soft bleeding washes, transparent luminous layers, white paper showing through highlights, granulation texture visible, gentle colour blooms, delicate line work in ink, airy and light atmosphere.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Full body watercolour portrait of a ballet dancer mid-leap, soft bleeding washes of rose and ivory, movement suggested by loose brushwork, wet-on-wet technique, white paper as light source, delicate ink outlines on face and hands only, ethereal floating atmosphere, minimal background wash of pale blue.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A03 -->
+    <div class="tech-card" id="a03">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A03</span>
+        <div class="tech-name"><strong>Pencil Sketch Portrait</strong><span>Crayon graphite</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">pencil sketch portrait</span><span class="kw">graphite drawing</span><span class="kw">hatching and cross-hatching</span><span class="kw">smudged tonal values</span><span class="kw">construction lines visible</span><span class="kw">2B-6B pencil texture</span><span class="kw">soft erased highlights</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Pencil sketch portrait, detailed graphite drawing, close-up face, careful hatching and cross-hatching for shadows, smudged midtones, erased white highlights, construction lines faintly visible, white paper background, realistic proportions, 6B pencil texture, highly detailed fine lines around eyes and lips.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Pencil sketch portrait of a young jazz musician holding a trumpet, half-body composition, graphite on cream paper, detailed hatching on face and instrument, loose sketchy lines on clothing, soft smudged shadows, erased highlights on trumpet bell, natural window light from left, realistic study style.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A04 -->
+    <div class="tech-card" id="a04">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A04</span>
+        <div class="tech-name"><strong>Charcoal Portrait</strong><span>Fusain</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">charcoal portrait</span><span class="kw">vine charcoal</span><span class="kw">compressed charcoal</span><span class="kw">smudged tonal masses</span><span class="kw">erased white highlights</span><span class="kw">powdery texture</span><span class="kw">dark velvety shadows</span><span class="kw">raw expressive marks</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Charcoal portrait, close-up face, vine charcoal on toned paper, dramatic high contrast black and white, smudged tonal masses, bright erased highlights on forehead and nose bridge, deep velvety shadows, powdery charcoal texture, raw expressive marks, moody atmosphere, no colour.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Full body charcoal portrait of a flamenco dancer in motion, dynamic gestural charcoal drawing, swirling dress captured in bold smudged marks, dramatic spotlight lighting, deep black shadows and stark white highlights, compressed charcoal for darks, vine charcoal for soft transitions, performance energy captured in loose expressive strokes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A05 -->
+    <div class="tech-card" id="a05">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A05</span>
+        <div class="tech-name"><strong>Ink Line Drawing</strong><span>Dessin à l'encre</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">ink line drawing portrait</span><span class="kw">pen and ink</span><span class="kw">fine liner</span><span class="kw">bold black lines</span><span class="kw">stippling for texture</span><span class="kw">no shading only line</span><span class="kw">cross-hatching shadows</span><span class="kw">graphic and precise</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Ink line drawing portrait, close-up face, fine liner pen on white paper, bold clean contour lines, cross-hatching for shadow areas, stippling for skin texture, minimal but precise detail, graphic black and white, confident single-line technique, no colour, illustration style.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Ink portrait of a Victorian-era woman, half-body bust, fine liner pen and ink, intricate cross-hatching on elaborate dress and hair, clean elegant contour lines on face, stippling for fabric texture, decorative ornate detail style, black and white, pen and ink illustration.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A06 -->
+    <div class="tech-card" id="a06">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A06</span>
+        <div class="tech-name"><strong>Soft Pastel Portrait</strong><span>Pastels doux</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">soft pastel portrait</span><span class="kw">chalk pastel</span><span class="kw">blended pastel tones</span><span class="kw">velvety smooth transitions</span><span class="kw">coloured paper background</span><span class="kw">finger-blended softness</span><span class="kw">luminous pastel highlights</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Soft pastel portrait, close-up face, chalk pastels on toned grey paper, velvety blended skin tones, warm peachy highlights, cool lavender shadows, finger-blended smooth transitions, luminous soft quality, pastel dust texture, delicate layered colour, impressionistic style.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Full body soft pastel portrait of a child reading under a tree, warm afternoon light, chalk pastels on cream paper, soft blended greens and yellows for the sunlit background, warm peachy skin tones, loose impressionistic style, dappled light effect through leaves, gentle dreamy atmosphere, Renoir-inspired colour palette.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A07 -->
+    <div class="tech-card" id="a07">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A07</span>
+        <div class="tech-name"><strong>Gouache Portrait</strong><span>Gouache</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">gouache portrait</span><span class="kw">opaque matte finish</span><span class="kw">flat colour areas</span><span class="kw">bold colour blocking</span><span class="kw">mid-century illustration style</span><span class="kw">poster-like quality</span><span class="kw">limited palette gouache</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Gouache portrait, close-up face, opaque matte finish, flat bold colour areas with visible brushstroke edges, limited palette of 4-5 colours, graphic illustration quality, mid-century modern style, no gradients just clean colour blocking, poster-like quality, matte surface texture.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Gouache portrait of a 1950s aviator, half-body composition, bold flat colour blocking, matte opaque paint, limited warm palette of ochre, rust and ivory, mid-century poster illustration style, clean graphic shapes, leather jacket with flat shadow planes, confident strong design.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A08 -->
+    <div class="tech-card" id="a08">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A08</span>
+        <div class="tech-name"><strong>Acrylic Portrait</strong><span>Acrylique</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">acrylic portrait</span><span class="kw">acrylic on canvas</span><span class="kw">bold saturated colours</span><span class="kw">visible brushwork</span><span class="kw">layered acrylic</span><span class="kw">contemporary realism</span><span class="kw">bright clean colours</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Acrylic portrait, close-up face, acrylic on canvas, bold saturated colour palette, visible confident brushstrokes, layered paint texture, contemporary realist style, strong form through colour, bright clean skin tones, textured canvas visible in lighter areas.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Full body acrylic portrait of a street skater mid-trick, dynamic action composition, bold vibrant acrylic colours, loose expressive brushwork, urban background suggested with fast gestural marks, energy and movement in the paint application, contemporary youth culture vibe, saturated neon accents.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A09 -->
+    <div class="tech-card" id="a09">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A09</span>
+        <div class="tech-name"><strong>Cross-Hatching Portrait</strong><span>Hachures croisées</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">cross-hatching portrait</span><span class="kw">etching style</span><span class="kw">dense parallel lines</span><span class="kw">tonal depth through line density</span><span class="kw">no blending only marks</span><span class="kw">Dürer-inspired technique</span><span class="kw">systematic shadow building</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Cross-hatching portrait, close-up face, etching and engraving style, dense systematic parallel hatching lines building tonal depth, no blending only line marks, deep shadows through maximum line density, Dürer-inspired precision, black ink on white paper, architectural and methodical quality, highly detailed.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Cross-hatching portrait of a Renaissance scholar at a writing desk, half-body, etching print style, dense systematic hatching on robes and face, lighter cross-hatching on illuminated manuscript pages, dramatic candlelight from below, intricate fine line detail, black and white engraving aesthetic.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="tech-card" id="a10">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A10</span>
+        <div class="tech-name"><strong>Conté Crayon Portrait</strong><span>Crayon Conté</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section">
+          <h4>Mots-clés</h4>
+          <span class="kw">conte crayon portrait</span><span class="kw">red chalk drawing</span><span class="kw">toned paper ground</span><span class="kw">three-tone technique</span><span class="kw">academic figure drawing</span><span class="kw">white chalk highlights</span><span class="kw">warm earth tones</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Conté crayon portrait, close-up face, red sanguine chalk on toned cream paper, three-tone technique using paper mid-tone, dark conte marks for shadows, white chalk for highlights, academic figure drawing style, Renaissance study quality, hatched shadows, warm terracotta and ivory palette.</div>
+          </div>
+          <div class="prompt-box">
+            <div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div>
+            <div class="prompt-text">Full body Conté portrait study of a standing figure, classical academic pose, sanguine red chalk on toned tan paper, white chalk highlights on shoulders and torso, conte hatching for shadow masses, Renaissance atelier study style, precise anatomical observation, formal classical composition.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A11-A20 condensed for space - same structure -->
+    <div class="tech-card" id="a11">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A11</span>
+        <div class="tech-name"><strong>Silverpoint Portrait</strong><span>Pointe d'argent</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">silverpoint drawing</span><span class="kw">metalpoint technique</span><span class="kw">delicate fine lines</span><span class="kw">prepared ground paper</span><span class="kw">silver-grey tonal values</span><span class="kw">Renaissance master drawing style</span><span class="kw">fragile luminous quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Silverpoint portrait drawing, close-up face, metalpoint technique on prepared cream ground, extremely delicate fine silver-grey lines, subtle tonal values through line density, Renaissance master drawing style, no harsh contrasts, luminous fragile quality, precise anatomical detail, warm oxidised silver tones.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Silverpoint portrait of a young noblewoman, half-body, Leonardo da Vinci metalpoint style, prepared ivory ground, delicate hatched lines on face and neck, subtle shadow modelling, precise detail on hands and fabric folds, Renaissance court portrait quality, fragile luminous beauty, warm silver-grey tones.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a12">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A12</span>
+        <div class="tech-name"><strong>Egg Tempera Portrait</strong><span>Tempera à l'oeuf</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">egg tempera portrait</span><span class="kw">Byzantine icon influence</span><span class="kw">flat luminous colour</span><span class="kw">wood panel texture</span><span class="kw">jewel-like saturated tones</span><span class="kw">Early Renaissance style</span><span class="kw">crisp precise edges</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Egg tempera portrait, close-up face, Early Renaissance style, flat luminous colour areas, fine hatching lines for facial modelling, jewel-like saturated skin tones, crisp precise edges, wood panel texture, Byzantine-influenced frontal composition, translucent layered paint, gold background accents.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Egg tempera portrait of a medieval queen, half-body, Byzantine-Renaissance style, luminous flat gold and lapis blue palette, fine hatched modelling on face, jewelled crown with precise detail, wood panel texture, hieratic formal pose, translucent jewel-tone colour, icon painting quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a13">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A13</span>
+        <div class="tech-name"><strong>Sanguine Portrait</strong><span>Pierre sanguine / craie rouge</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">sanguine portrait</span><span class="kw">red chalk drawing</span><span class="kw">terracotta tones</span><span class="kw">warm monochromatic palette</span><span class="kw">rubbed soft midtones</span><span class="kw">Raphael sketch style</span><span class="kw">preparatory study quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Sanguine red chalk portrait, close-up face, warm terracotta monochromatic palette, hatched shadow areas, rubbed and blended midtones, white paper as highlight, Raphael preparatory sketch style, academic drawing quality, warm red-brown atmosphere, intimate study feeling.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body sanguine drawing of a reclining woman, warm red chalk on cream paper, Michelangelo figure study style, confident hatching on draped fabric, soft rubbed modelling on face and limbs, gestural loose lines for background, warm intimate atmosphere, classical figure study.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a14">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A14</span>
+        <div class="tech-name"><strong>Woodcut / Linocut Portrait</strong><span>Gravure sur bois / linoléum</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">woodcut portrait</span><span class="kw">linocut print</span><span class="kw">bold black and white graphic</span><span class="kw">carved relief marks visible</span><span class="kw">no grey tones</span><span class="kw">German Expressionism influence</span><span class="kw">stark contrast</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Woodcut print portrait, close-up face, bold black and white only, carved relief texture visible, raw expressive cut marks, no grey tones, stark high contrast, German Expressionist woodcut style, handmade print quality, aggressive carved lines for shadow areas, powerful graphic simplification.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Linocut portrait of a protest leader, half-body, bold graphic black and white, stark contrast with no grey, raw carved relief marks, strong simplified forms, German Expressionist influence, hand-printed quality, powerful political poster aesthetic, dramatic upward gaze, fist raised composition.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a15">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A15</span>
+        <div class="tech-name"><strong>Etching / Engraving Portrait</strong><span>Eau-forte / Gravure</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">etching portrait</span><span class="kw">intaglio print</span><span class="kw">fine bitten lines</span><span class="kw">aquatint tonal areas</span><span class="kw">Rembrandt etching style</span><span class="kw">rich velvety blacks</span><span class="kw">plate tone warmth</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Etching portrait, close-up face, intaglio print style, fine bitten etched lines, aquatint shadow areas, warm plate tone on cream paper, Rembrandt etching style, rich velvety black shadows, delicate line work on face, printed print quality, intimate and personal feeling, black and warm cream tones only.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Etching portrait of a philosopher in a study, half-body, Rembrandt intaglio style, rich aquatint shadows in background, fine etched line detail on face and hands holding a book, drypoint burr softness on beard, warm candlelit atmosphere, plate tone warmth, intimate printed quality, cream and black palette.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a16">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A16</span>
+        <div class="tech-name"><strong>Oil Pastel Portrait</strong><span>Pastels à l'huile</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">oil pastel portrait</span><span class="kw">thick waxy texture</span><span class="kw">impasto-like application</span><span class="kw">sgraffito scratched marks</span><span class="kw">vibrant saturated colour</span><span class="kw">expressionist colour choices</span><span class="kw">waxy luminous surface</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Oil pastel portrait, close-up face, thick waxy textured marks, bold vibrant colour mixing directly on paper, impasto-like application, scratched sgraffito lines revealing under layers, expressionist colour choices, heavy saturated strokes, luminous waxy surface, contemporary expressive style.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body oil pastel portrait of a Carnival performer in costume, plein pied, thick bold waxy marks, vibrant saturated reds yellows and deep blues, sgraffito scratches revealing gold beneath costume, expressionist colour, heavy textured application, festive joyful energy, bold graphic quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a17">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A17</span>
+        <div class="tech-name"><strong>Brush and Ink Portrait</strong><span>Encre au pinceau / Sumi-e</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">brush and ink portrait</span><span class="kw">sumi-e influence</span><span class="kw">calligraphic brushstroke</span><span class="kw">ink dilution for grey tones</span><span class="kw">East Asian ink painting</span><span class="kw">white space as light</span><span class="kw">spontaneous fluid quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Brush and ink portrait, close-up face, sumi-e inspired technique, calligraphic brushstrokes, ink wash diluted for grey midtones, confident gestural marks, white paper as light and space, East Asian ink painting influence, spontaneous fluid quality, no corrections, black ink on white paper, expressive simplicity.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Brush and ink portrait of a samurai warrior, half-body bust, sumi-e Japanese ink style, bold confident calligraphic strokes for armour, delicate diluted wash for face modelling, white space as atmosphere, single brushstroke efficiency for helmet details, powerful restrained composition, black ink on cream washi paper.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a18">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A18</span>
+        <div class="tech-name"><strong>Coloured Pencil Portrait</strong><span>Crayons de couleur</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">coloured pencil portrait</span><span class="kw">layered colour pencil</span><span class="kw">burnishing technique</span><span class="kw">waxy smooth colour blend</span><span class="kw">hyperrealistic coloured pencil</span><span class="kw">prismacolor style</span><span class="kw">smooth gradients</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Coloured pencil portrait, close-up face, layered coloured pencil technique, burnished smooth skin tones, hyperrealistic detail, waxy transparent colour layers, fine precise lines on hair and eyelashes, paper tooth visible in lighter areas, prismacolor style, warm natural skin palette, highly detailed photorealistic quality.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Coloured pencil portrait of a young indigenous woman in traditional dress, half-body, layered coloured pencil, burnished vibrant colour in traditional beadwork and fabric, precise fine detail, warm skin tone layers, intricate pattern detail on garments, natural warm light, hyperrealistic coloured pencil quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a19">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A19</span>
+        <div class="tech-name"><strong>Fresco Style Portrait</strong><span>Style fresque</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">fresco portrait</span><span class="kw">buon fresco technique</span><span class="kw">flat matte earth tones</span><span class="kw">ancient wall texture</span><span class="kw">Roman or Renaissance fresco</span><span class="kw">lime plaster ground</span><span class="kw">faded aged quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Fresco style portrait, close-up face, buon fresco technique aesthetic, flat matte earth tone palette of ochre terracotta and sienna, simplified clean line drawing, ancient Roman wall texture ground, faded aged quality, mineral pigment look, lime plaster surface, timeless classical simplicity.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body fresco portrait of a Roman goddess figure, plein pied, buon fresco wall painting style, ancient terracotta and mineral blue palette, simplified flowing form, limestone wall texture ground, Pompeii-inspired, faded aged patina, hieratic graceful pose, matte pigment quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="a20">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-a">A20</span>
+        <div class="tech-name"><strong>Monochrome Ink Wash Portrait</strong><span>Lavis monochrome</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">ink wash portrait</span><span class="kw">monochrome wash</span><span class="kw">fluid ink dilution</span><span class="kw">wet brush technique</span><span class="kw">tonal gradation</span><span class="kw">Chinese ink painting influence</span><span class="kw">no line only tone</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Ink wash portrait, close-up face, monochrome grey tonal study, fluid diluted ink washes, wet brush technique, soft tonal gradation from deep black to pale grey, white paper as brightest light, atmospheric depth, Chinese ink painting influence, spontaneous fluid marks, no line only tone.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Ink wash portrait of a woman emerging from mist, half-body, fluid monochrome grey washes, face emerging from soft pale ink, deep concentrated ink at edges dissolving to almost nothing at centre, atmospheric and ethereal, wet brush technique, dreamlike misty quality, minimal and powerful.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end techniques-grid A -->
+</div>
+
+<!-- ===== PARTIE B ===== -->
+<div id="partB" style="padding-top:1rem;">
+  <div class="part-title part-b">💥 Partie B — Expressive / Gestural / Splatter</div>
+  <div class="techniques-grid">
+
+    <div class="tech-card" id="b01">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B01</span>
+        <div class="tech-name"><strong>Splatter Paint Portrait</strong><span>Peinture projetée / éclabousée</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">splatter paint portrait</span><span class="kw">action painting</span><span class="kw">dripped and thrown paint</span><span class="kw">Jackson Pollock influence</span><span class="kw">controlled chaos</span><span class="kw">paint droplets</span><span class="kw">energetic abstract background with defined face</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Splatter paint portrait, close-up face, paint splatter explosion surrounding defined facial features, action painting technique, Jackson Pollock-inspired colour chaos in background, controlled face emerging from paint chaos, vibrant colour droplets and trails, high energy composition, acrylic splatter on dark background.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body splatter paint portrait of a rock musician mid-performance, plein pied, entire body dissolving into paint splatter explosion, face most defined, guitar and arms becoming abstracted colour chaos, neon paint splashes on black background, action painting energy, vibrant magenta yellow and electric blue splatter, raw power.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b02">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B02</span>
+        <div class="tech-name"><strong>Drip Painting Portrait</strong><span>Peinture qui coule / dripping</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">drip painting portrait</span><span class="kw">vertical paint drips</span><span class="kw">melting face effect</span><span class="kw">paint running down canvas</span><span class="kw">gravity-driven marks</span><span class="kw">flowing paint streams</span><span class="kw">surreal drip effect</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Drip painting portrait, close-up face, vertical paint drips flowing downward from facial features, melting surreal quality, Pollock-inspired drip technique, face dissolving into coloured streams, gravity-driven paint flows, dark background with bright colour drips, surreal and hypnotic quality.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Drip painting portrait of a woman, half-body bust, face meticulously rendered then dissolving into long vertical colour drips below, hair melting into flowing paint rivers, deep teal and gold drips on black canvas, drip technique creating movement and melancholy, surreal beauty, powerful emotional quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b03">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B03</span>
+        <div class="tech-name"><strong>Impasto Portrait</strong><span>Peinture épaisse au couteau</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">impasto portrait</span><span class="kw">palette knife painting</span><span class="kw">thick paint texture</span><span class="kw">raised paint surface</span><span class="kw">Van Gogh impasto</span><span class="kw">sculptural paint application</span><span class="kw">three-dimensional paint surface</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Impasto portrait, close-up face, extremely thick paint application, palette knife painting technique, heavily textured raised paint surface, Van Gogh-inspired swirling impasto marks, sculptural three-dimensional quality, bold ridge marks on forehead and cheeks, tactile heavy texture, rich saturated colour under raking light.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Impasto portrait of an old sailor, half-body bust, extraordinarily thick palette knife paint, weathered face built up in heavy paint layers, ridged impasto suggesting wrinkles and life experience, deep blue sea in background of thick swirling marks, Van Gogh oil painting energy, sculptural paint relief quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b04">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B04</span>
+        <div class="tech-name"><strong>Ink Splash Portrait</strong><span>Encre projetée / explosion d'encre</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">ink splash portrait</span><span class="kw">india ink explosion</span><span class="kw">high-speed splash frozen in time</span><span class="kw">organic fluid forms</span><span class="kw">splash crown shapes</span><span class="kw">monochrome explosive quality</span><span class="kw">fluid dynamics frozen</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Ink splash portrait, close-up face, india ink explosion surrounding face, high-speed ink splash frozen in time, organic fluid ink forms, face emerging from black ink chaos, white background, monochrome dramatic quality, fluid dynamics aesthetic, ink drop photography inspired, explosive yet controlled composition.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body ink splash portrait of a martial artist in kick pose, plein pied, entire silhouette suggested by india ink explosion, limbs dissolving into ink splash tendrils, frozen high-speed movement quality, white negative space as light, powerful monochrome drama, the body becoming pure ink energy.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b05">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B05</span>
+        <div class="tech-name"><strong>Acrylic Pour Portrait</strong><span>Coulée d'acrylique / fluid art</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">acrylic pour portrait</span><span class="kw">fluid acrylic</span><span class="kw">cell formation pattern</span><span class="kw">marbled colour flows</span><span class="kw">silicone oil cells</span><span class="kw">Dutch pour technique</span><span class="kw">face emerging from fluid colour landscape</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Acrylic pour portrait, close-up face, fluid acrylic pour technique, marbled flowing colour patterns forming facial features, cell formation from silicone oil, organic liquid colour interaction, jewel-tone palette of teal gold and ivory, Dutch pour technique, face emerging from abstract fluid colour landscape.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Acrylic pour portrait of a woman, half-body, face and shoulders formed entirely from fluid acrylic pour patterns, galaxy-like colour flows in deep purple indigo and gold, cell formations creating texture of skin and hair, pour painting technique, cosmic fluid aesthetic, the portrait as a natural phenomenon of flowing paint.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b06">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B06</span>
+        <div class="tech-name"><strong>Palette Knife Portrait</strong><span>Portrait au couteau à palette</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">palette knife portrait</span><span class="kw">knife painting</span><span class="kw">scraped paint surface</span><span class="kw">angular paint planes</span><span class="kw">no brushes only knife</span><span class="kw">Cézanne-influenced planes</span><span class="kw">raw direct application</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Palette knife portrait, close-up face, painted exclusively with palette knife, bold angular paint planes suggesting facial structure, scraped paint surface, thick applied colour, no brushwork only knife marks, geometric paint facets for shadows and lights, Cézanne-influenced planar structure, raw direct impasto quality.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Palette knife portrait of a boxer, half-body bust, aggressive palette knife marks mirroring the subject's power, bold angular paint planes on face and shoulders, thick impasto build-up, dramatic side lighting creating strong light and shadow planes, raw physical energy in the paint application, no delicacy only force.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b07">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B07</span>
+        <div class="tech-name"><strong>Watercolour Bleed &amp; Bloom</strong><span>Aquarelle qui saigne et fleurit</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">watercolour bloom portrait</span><span class="kw">backwash technique</span><span class="kw">cauliflower blooms</span><span class="kw">uncontrolled colour spread</span><span class="kw">water stain marks</span><span class="kw">happy accidents aesthetic</span><span class="kw">fluid unpredictable quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Watercolour bloom portrait, close-up face, wet-into-wet technique, intentional backwash blooms and cauliflower marks, colours bleeding unpredictably, organic fluid spread beyond edges, water stain patterns, happy accidents aesthetic, loose uncontrolled quality, face suggested rather than defined, fluid and dreamlike.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body watercolour bloom portrait of a woman in a summer garden, plein pied, entire figure dissolving into watercolour blooms and bleeding washes, flowers and figure merging through wet-into-wet, warm rose coral and sage green blooms, organic colour spread, the boundary between person and garden dissolved by water.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b08">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B08</span>
+        <div class="tech-name"><strong>Mixed Media Collage Portrait</strong><span>Collage mixte</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">mixed media collage portrait</span><span class="kw">torn paper collage</span><span class="kw">newspaper fragments</span><span class="kw">painted over collage</span><span class="kw">Kurt Schwitters influence</span><span class="kw">found material texture</span><span class="kw">assemblage quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Mixed media collage portrait, close-up face, torn newspaper and magazine fragments forming facial features, painted over with transparent washes, layered texture collage, found material aesthetic, Kurt Schwitters-inspired assemblage, paint and paper together, text fragments visible through paint layers, rich surface complexity.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Mixed media collage portrait of a woman, half-body, face assembled from torn vintage fashion magazine pages, hair from map fragments, clothing from music score paper, all unified by painted transparent colour washes, bold collage composition, Romare Bearden-inspired, rich layered surface, found material beauty.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b09">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B09</span>
+        <div class="tech-name"><strong>Spray Paint Stencil Portrait</strong><span>Bombe aérosol / pochoir street art</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">spray paint portrait</span><span class="kw">stencil art</span><span class="kw">street art style</span><span class="kw">Banksy-inspired</span><span class="kw">spray overspray glow</span><span class="kw">urban wall texture</span><span class="kw">bold graphic street art portrait</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Spray paint stencil portrait, close-up face, street art style, Banksy-inspired stencil technique, multi-layer spray colours, overspray halo effect, urban concrete wall texture background, bold graphic simplification, spray paint drips, graffiti aesthetic, high contrast with limited colour palette.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body spray paint stencil portrait of a woman with flowers replacing weapons, plein pied, Banksy-inspired street art, multi-layer stencil spray technique on brick wall background, stark black figure with vibrant colour accents, spray overspray effect, powerful political poster aesthetic, urban wall texture, bold graphic impact.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b10">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B10</span>
+        <div class="tech-name"><strong>Torn Paper Portrait</strong><span>Portrait en papier déchiré</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">torn paper portrait</span><span class="kw">ripped paper edges</span><span class="kw">mosaic-like paper assemblage</span><span class="kw">shadow depth between layers</span><span class="kw">paper grain visible</span><span class="kw">paper construction portrait</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Torn paper portrait, close-up face, assembled from torn coloured paper pieces, ripped irregular edges, mosaic-like paper construction, visible paper grain and fibre texture, layered paper depth creating shadow, face built from many paper tones, paper collage art aesthetic, handmade quality.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Torn paper portrait of a lion, half-body bust, assembled from torn warm golden orange and amber paper pieces, ripped edges suggesting fur texture, layered paper creating depth and shadow in mane, mosaic-like construction, dark torn paper for shadow areas, white for highlights, powerful paper assemblage, tactile handmade quality.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b11">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B11</span>
+        <div class="tech-name"><strong>Abstract Expressionist Portrait</strong><span>Expressionnisme abstrait</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">abstract expressionist portrait</span><span class="kw">de Kooning woman series</span><span class="kw">gestural paint marks</span><span class="kw">barely defined features</span><span class="kw">raw emotional paint</span><span class="kw">aggressive mark-making</span><span class="kw">paint as emotion</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Abstract expressionist portrait, close-up face, Willem de Kooning inspired, gestural aggressive paint marks, face barely defined through raw emotional brushwork, colour field fragments, paint as pure emotion, action painting energy, features suggested through mark direction, raw canvas areas, paint drips, expressive violence and beauty.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body abstract expressionist portrait of a woman, plein pied, de Kooning Woman series inspired, fragmented gestural figure, aggressive paint marks building and destroying form simultaneously, raw emotional energy, bright saturated flesh tones fragmenting into pure colour, canvas visible, paint drips, the figure as battlefield of marks.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b12">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B12</span>
+        <div class="tech-name"><strong>Encaustic Portrait</strong><span>Portrait à la cire chaude</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">encaustic portrait</span><span class="kw">hot wax painting</span><span class="kw">translucent wax depth</span><span class="kw">luminous wax glow</span><span class="kw">Fayum mummy portrait</span><span class="kw">layered transparent hot wax</span><span class="kw">timeless preserved quality</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Encaustic portrait, close-up face, hot wax painting technique, layered translucent wax depth, luminous wax glow from within, fused wax surface texture, Fayum mummy portrait-inspired quality, ancient luminous warmth, pigment suspended in transparent wax layers, timeless preserved quality.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Encaustic portrait of a young man, half-body, Fayum Egyptian mummy portrait style, ancient encaustic hot wax technique, luminous warm wax glow, dark eyes of extraordinary directness, simple ochre and ivory wax palette, ancient preserved quality, the face speaking across millennia, waxy translucent skin tones.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b13">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B13</span>
+        <div class="tech-name"><strong>Monotype Print Portrait</strong><span>Portrait en monotype</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">monotype portrait</span><span class="kw">monoprint technique</span><span class="kw">ghost print quality</span><span class="kw">ink transfer texture</span><span class="kw">Degas monotype style</span><span class="kw">dark to light monotype</span><span class="kw">reductive technique</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Monotype portrait, close-up face, monoprint technique aesthetic, dark ink plate with reductive marks creating light areas, ghost print texture quality, Degas-inspired monotype style, unique print quality, ink transfer marks, dark atmospheric ground with luminous extracted face, painterly print aesthetic.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Monotype portrait of a woman at a mirror, half-body, Degas monotype series inspired, dark ink ground with reductive marks extracting face and hands, ghost print texture, intimate bathroom atmosphere, dark velvety background, luminous figure emerging from darkness, unique printed quality, painterly intimate feeling.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b14">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B14</span>
+        <div class="tech-name"><strong>Double Exposure Portrait</strong><span>Portrait double exposition</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">double exposure portrait</span><span class="kw">silhouette filled with landscape</span><span class="kw">transparent overlay</span><span class="kw">nature inside face</span><span class="kw">dreamy overlap aesthetic</span><span class="kw">two worlds one image</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Double exposure portrait, close-up face, photographic double exposure technique rendered as painting, silhouette of face filled with forest or landscape scene, two images transparently blended, dreamy merged identity aesthetic, dark edges with light interior landscape, soft transitions between face and nature.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Double exposure portrait of a woman, half-body bust, face and shoulders filled with a stormy ocean scene, waves visible through skin, hair merging with sea spray, deep teal and dark navy palette, the inner world made visible, painterly double exposure technique, emotional depth through layered identity, powerful and dreamlike.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b15">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B15</span>
+        <div class="tech-name"><strong>Glitch Art Portrait</strong><span>Portrait glitch / erreur numérique</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">glitch art portrait</span><span class="kw">digital corruption aesthetic</span><span class="kw">RGB shift</span><span class="kw">pixel displacement</span><span class="kw">scan line distortion</span><span class="kw">data moshing</span><span class="kw">corrupted signal aesthetic</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Glitch art portrait, close-up face, digital corruption aesthetic, RGB colour channel shift displacement, horizontal scan line glitch bands, pixel fragmentation on facial features, data moshing texture, corrupted signal beauty, dark background with neon glitch colours, the face broken and beautiful simultaneously.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Glitch art portrait of a woman, half-body bust, heavy RGB channel separation, face fragmented into pixel displacement, neon cyan and magenta glitch trails, scan line corruption across eyes and lips, dark digital background, the portrait as beautiful digital error, cyberpunk aesthetic, corrupted data beauty.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b16">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B16</span>
+        <div class="tech-name"><strong>Rust &amp; Oxidation Portrait</strong><span>Portrait oxydation / rouille</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">rust and oxidation portrait</span><span class="kw">chemical reaction texture</span><span class="kw">corroded metal surface</span><span class="kw">rust stain portrait</span><span class="kw">copper verdigris tones</span><span class="kw">industrial patina</span><span class="kw">chemical accident beauty</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Rust oxidation portrait, close-up face, chemical reaction texture aesthetic, corroded metal surface forming facial features, rust stain marks and verdigris patches, aged industrial patina, organic chemical accident beauty, copper and rust orange tones, salt bleach texture marks, the face emerging from decay and oxidation.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Oxidation portrait of an elderly man, half-body, face formed from rust and copper verdigris chemical reactions, corroded metal surface, wrinkles as cracks in patina, industrial aged beauty, rust orange and deep teal verdigris palette, chemical accident texture, the face as a beautiful relic of time and corrosion.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b17">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B17</span>
+        <div class="tech-name"><strong>Light Painting Portrait</strong><span>Portrait en lumière peinte</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">light painting portrait</span><span class="kw">long exposure light trails</span><span class="kw">neon light drawing on dark</span><span class="kw">glowing light streaks</span><span class="kw">bioluminescent quality</span><span class="kw">dark background bright light</span><span class="kw">photographic light art</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Light painting portrait, close-up face, long exposure light trail technique, face drawn in glowing neon light streams on absolute black, luminous electric light lines defining features, multiple colour light trails, photographic light art aesthetic, bioluminescent quality, pure light against darkness.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body light painting portrait of a dancer, plein pied, entire figure drawn in flowing neon light trails on black background, body in motion with light streaks suggesting movement, multiple colour light streams, electric blue and warm gold light trails, the dancer as pure luminous energy, long exposure light art.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b18">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B18</span>
+        <div class="tech-name"><strong>Pyrography / Burnt Portrait</strong><span>Portrait brûlé / pyrographie</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">pyrography portrait</span><span class="kw">burnt paper portrait</span><span class="kw">scorched marks</span><span class="kw">fire-drawn portrait</span><span class="kw">wood burning portrait</span><span class="kw">fire as drawing tool</span><span class="kw">aged scorched surface</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Pyrography portrait, close-up face, wood burning technique aesthetic, face drawn with fire and scorched marks, charred texture on wood surface, singed and burnt edges, warm dark brown to black tones, fire as drawing tool, aged scorched quality, intimate and fragile burnt surface.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Pyrography portrait of a Native American elder, half-body bust, wood burning technique, face drawn in scorched tones from pale wood to deep char, intricate burned texture for headdress and clothing detail, warm amber and deep char black palette, fire as drawing tool, ancient ceremonial quality, scorched surface beauty.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b19">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B19</span>
+        <div class="tech-name"><strong>Fluid Resin Portrait</strong><span>Portrait résine fluide</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">resin art portrait</span><span class="kw">fluid resin pour</span><span class="kw">glossy resin surface</span><span class="kw">deep gloss finish</span><span class="kw">jewel-like resin colour</span><span class="kw">liquid glass appearance</span><span class="kw">encased colour depth</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Fluid resin portrait, close-up face, resin art technique aesthetic, glossy deep resin surface, jewel-like trapped colour layers, facial features forming in flowing resin, cell formations in translucent depths, liquid glass appearance, extraordinary gloss finish, deep dimensional colour, the face preserved in luminous resin.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Buste</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Fluid resin portrait of a woman, half-body, face emerging from deep navy and gold fluid resin layers, cell formations creating abstract skin texture, galaxy-like resin colours in hair, deep gloss surface, the portrait as jewel-like resin sculpture, extraordinary luminous depth, gold flake inclusions, liquid luxury.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-card" id="b20">
+      <div class="tech-header" onclick="toggle(this)">
+        <span class="tech-num num-b">B20</span>
+        <div class="tech-name"><strong>Paint Explosion Portrait</strong><span>Portrait explosion de peinture</span></div>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="tech-body">
+        <div class="keywords-section"><h4>Mots-clés</h4>
+          <span class="kw">paint explosion portrait</span><span class="kw">paint bomb burst</span><span class="kw">high speed paint photography style</span><span class="kw">paint crown formation</span><span class="kw">face at centre of explosion</span><span class="kw">colour shrapnel flying</span><span class="kw">paint as force of nature</span>
+        </div>
+        <div class="prompts-grid">
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-gen">Générique</span><span class="prompt-cadrage">Visage</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Paint explosion portrait, close-up face, face at the epicentre of a paint explosion, high-speed photography style frozen mid-burst, paint crown formations radiating outward, colour shrapnel flying, dynamic frozen energy, multiple vibrant paint colours exploding outward from face, the portrait as pure explosive colour force.</div></div>
+          <div class="prompt-box"><div class="prompt-box-header"><span class="prompt-label label-var">Varié</span><span class="prompt-cadrage">Plein pied</span><button class="copy-btn" onclick="cp(this)">Copier</button></div><div class="prompt-text">Full body paint explosion portrait of a woman, plein pied, figure surrounded and partially composed of a full body paint explosion, every colour erupting outward simultaneously, frozen high-speed moment, the body as origin point of colour energy, paint tendrils and droplets in every direction, pure chromatic explosion, black background making colours sing.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end techniques-grid B -->
+</div>
+
+<!-- RÉCAP -->
+<div id="recap" class="recap-section">
+  <h2 class="recap-title">Aide-mémoire rapide</h2>
+  <div class="recap-cols">
+    <div class="recap-block ra">
+      <h3>✏️ Partie A — Hand-Drawn</h3>
+      <div class="recap-line"><span class="recap-code">A01</span> Oil Painting → thick brushstrokes · chiaroscuro</div>
+      <div class="recap-line"><span class="recap-code">A02</span> Watercolour → wet-on-wet · bleeding washes</div>
+      <div class="recap-line"><span class="recap-code">A03</span> Pencil Sketch → cross-hatching · graphite</div>
+      <div class="recap-line"><span class="recap-code">A04</span> Charcoal → smudged masses · velvety dark</div>
+      <div class="recap-line"><span class="recap-code">A05</span> Ink Line → fine liner · no grey only line</div>
+      <div class="recap-line"><span class="recap-code">A06</span> Soft Pastel → blended chalk · velvety smooth</div>
+      <div class="recap-line"><span class="recap-code">A07</span> Gouache → opaque matte · flat colour blocks</div>
+      <div class="recap-line"><span class="recap-code">A08</span> Acrylic → bold saturated · contemporary</div>
+      <div class="recap-line"><span class="recap-code">A09</span> Cross-hatching → parallel lines · engraving</div>
+      <div class="recap-line"><span class="recap-code">A10</span> Conté Crayon → three-tone · academic</div>
+      <div class="recap-line"><span class="recap-code">A11</span> Silverpoint → metalpoint · Renaissance</div>
+      <div class="recap-line"><span class="recap-code">A12</span> Egg Tempera → flat luminous · Byzantine</div>
+      <div class="recap-line"><span class="recap-code">A13</span> Sanguine → red chalk · warm mono</div>
+      <div class="recap-line"><span class="recap-code">A14</span> Woodcut/Linocut → carved marks · Expressionist</div>
+      <div class="recap-line"><span class="recap-code">A15</span> Etching/Engraving → bitten lines · Rembrandt</div>
+      <div class="recap-line"><span class="recap-code">A16</span> Oil Pastel → waxy impasto · sgraffito</div>
+      <div class="recap-line"><span class="recap-code">A17</span> Brush and Ink → calligraphic · sumi-e</div>
+      <div class="recap-line"><span class="recap-code">A18</span> Coloured Pencil → burnished · hyperrealistic</div>
+      <div class="recap-line"><span class="recap-code">A19</span> Fresco Style → matte earth tones · ancient wall</div>
+      <div class="recap-line"><span class="recap-code">A20</span> Ink Wash Mono → grey tonal · no line only tone</div>
+    </div>
+    <div class="recap-block rb">
+      <h3>💥 Partie B — Expressive / Splatter</h3>
+      <div class="recap-line"><span class="recap-code">B01</span> Splatter Paint → thrown paint · Pollock</div>
+      <div class="recap-line"><span class="recap-code">B02</span> Drip Painting → vertical drips · melting face</div>
+      <div class="recap-line"><span class="recap-code">B03</span> Impasto → palette knife · Van Gogh texture</div>
+      <div class="recap-line"><span class="recap-code">B04</span> Ink Splash → frozen splash · fluid dynamics</div>
+      <div class="recap-line"><span class="recap-code">B05</span> Acrylic Pour → fluid cells · Dutch pour</div>
+      <div class="recap-line"><span class="recap-code">B06</span> Palette Knife → scraped planes · no brushes</div>
+      <div class="recap-line"><span class="recap-code">B07</span> Watercolour Bloom → backwash · happy accident</div>
+      <div class="recap-line"><span class="recap-code">B08</span> Mixed Media Collage → torn paper · assemblage</div>
+      <div class="recap-line"><span class="recap-code">B09</span> Spray Stencil → Banksy · urban wall</div>
+      <div class="recap-line"><span class="recap-code">B10</span> Torn Paper → ripped edges · paper mosaic</div>
+      <div class="recap-line"><span class="recap-code">B11</span> Abstract Expressionist → de Kooning · gestural</div>
+      <div class="recap-line"><span class="recap-code">B12</span> Encaustic → hot wax · Fayum quality</div>
+      <div class="recap-line"><span class="recap-code">B13</span> Monotype Print → dark plate · ghost texture</div>
+      <div class="recap-line"><span class="recap-code">B14</span> Double Exposure → nature inside face</div>
+      <div class="recap-line"><span class="recap-code">B15</span> Glitch Art → RGB shift · digital error</div>
+      <div class="recap-line"><span class="recap-code">B16</span> Rust Oxidation → corrosion · chemical patina</div>
+      <div class="recap-line"><span class="recap-code">B17</span> Light Painting → neon trails · black background</div>
+      <div class="recap-line"><span class="recap-code">B18</span> Pyrography → fire marks · wood burning</div>
+      <div class="recap-line"><span class="recap-code">B19</span> Fluid Resin → glossy depth · liquid glass</div>
+      <div class="recap-line"><span class="recap-code">B20</span> Paint Explosion → frozen burst · colour epicentre</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>Cours de prompting — Portraits Avancés · 40 techniques · Hand-Drawn &amp; Expressive 🎨</p>
+</footer>
+
+<script>
+  function toggle(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+  function cp(btn) {
+    const text = btn.closest('.prompt-box').querySelector('.prompt-text').textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copié !';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
