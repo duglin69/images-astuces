@@ -94,15 +94,7 @@ footer {
     font-size: 0.9rem;
 }
 
-</style>
-
-<script>
-function copyCode(id) {
-  const code = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(code);
-  alert("Prompt copied to clipboard.");
-}
-.top-right {
+    .top-right {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -122,6 +114,14 @@ body {
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
+}
+</style>
+
+<script>
+function copyCode(id) {
+  const code = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(code);
+  alert("Prompt copied to clipboard.");
 }
 </script>
 
