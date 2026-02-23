@@ -108,38 +108,36 @@ function doPost(e) {
 import requests
 import json
 
-# 1. L'ADRESSE (L'URL /exec de votre déploiement Google Apps Script)
-URL_SHEET = "VOTRE_URL_ICI/exec"
+# 1. TON ADRESSE RÉELLE (Ne pas toucher)
+URL_SHEET = "https://script.google.com/macros/s/AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8/exec"
 
-# 2. LA STRUCTURE (Le colis générique à remplir)
-# Vous pouvez ajouter autant de blocs {} que vous le souhaitez entre les crochets [ ]
-colis_generique = [
+# 2. LE COLIS LIBRE (Remplissez ce que vous voulez)
+colis_libre = [
     {
         "sheetName": "MASTER_ART_BIBLE",
-        "Format": "",          # Ex: Affiche, Illustration, Photo...
-        "Artist_Style": "",    # Ex: Style Giger, Cinématographique...
-        "Genre": "",           # Ex: SF, Fantasy, Portrait...
-        "Sujet": "",           # Le nom de votre création
-        "Tags": "",            # Paramètres techniques (8K, Bokeh...)
-        "positive": "",        # Votre prompt de génération complet
-        "negative": "",        # Votre prompt négatif
-        "Ratio": "",           # Format (16:9, 1:1, 9:16...)
-        "seed": "Auto",        # "Auto" ou un numéro précis
-        "link": ""             # URL de l'image (ImgBB, kDrive...)
+        "Format": "",          # Ex: Illustration, Timbre, Photo, Vitrail, Logo...
+        "Artist_Style": "",    # Ex: Style Enki Bilal, Réalisme, Aquarelle...
+        "Genre": "",           # Ex: Fantasy, Nature morte, Portrait...
+        "Sujet": "",           # Description brève (ex: Chat dans l'espace)
+        "Tags": "",            # Ex: 8K, Bokeh, Unreal Engine 5...
+        "positive": "",        # Votre prompt complet pour l'IA
+        "negative": "blurry, signature 1.5, watermark, text, signature, filigrane, basse résolution, déformé, mauvaise qualité, distorted, out of frame",
+        "Ratio": "",           # Ex: 1:1, 16:9, 4:5, 9:16...
+        "seed": "Auto",
+        "link": ""             # Sera rempli une fois l'image générée
     }
 ]
 
-# 3. LE MOTEUR D'INJECTION (Ne jamais modifier cette partie)
-print(f"📡 Connexion au serveur Google Sheets...")
-for item in colis_generique:
+# 3. LE MOTEUR (Automatisé)
+print("📡 Expédition vers le Master Art Bible...")
+for item in colis_libre:
     try:
-        response = requests.post(URL_SHEET, data=json.dumps(item))
-        # Affiche le message de succès renvoyé par le Google Sheet
-        print(f"✅ Résultat pour '{item.get('Sujet')}' : {response.text}")
+        r = requests.post(URL_SHEET, data=json.dumps(item))
+        print(f"✅ Ligne ajoutée : {item.get('Sujet') if item.get('Sujet') else 'Sans nom'} | Réponse : {r.text}")
     except Exception as e:
-        print(f"❌ Erreur lors de l'envoi : {e}")
+        print(f"❌ Erreur d'envoi : {e}")
 
-print("\n🏁 Opération terminée.")
+print("\n🏁 Tout est en place dans le Google Sheet.")
 </pre>
 
     <h3>📜 LES AFFICHES Science-Fiction</h3>
@@ -196,5 +194,6 @@ for p in colis_noir:
     
 </body>
 </html>
+
 
 
