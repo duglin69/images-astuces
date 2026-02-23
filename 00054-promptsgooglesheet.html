@@ -56,51 +56,36 @@ pour les 5 autres affiches. Il doit y avoir 7 affiches au ratio 9:16 et 3 affich
 <p>LE SCRIPT (Google Sheet - APPS SCRIPT - déploiement) : [fichier "Code.gs"]</p>
 ```python
 function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
   var data = JSON.parse(e.postData.contents);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(data.sheetName);
   
-  var category = data.category ? data.category : "Général";
-  var sheet = ss.getSheetByName(category);
-
-  // Création automatique de l'onglet si inexistant
+  // Création auto de l'onglet s'il n'existe pas
   if (!sheet) {
-    sheet = ss.insertSheet(category);
-    var headers = ["ID", "Thème", "Artiste/Style", "Prompt Positif", "Prompt Négatif", "Seed", "Lien Image", "Note", "Date"];
-    sheet.appendRow(headers);
-    sheet.getRange(1, 1, 1, 9).setBackground("#121212").setFontColor("white").setFontWeight("bold");
-    sheet.setFrozenRows(1);
+    sheet = ss.insertSheet(data.sheetName);
+    sheet.appendRow([
+      "Format", "Artist_Style", "Genre", "Sujet / Set-up", 
+      "Tags / Ambiance", "Positive_Prompt", "Negative_Prompt", 
+      "Ratio", "Seed", "Link"
+    ]);
   }
 
-  // Calcul de l'ID (ex: #001)
-  var id = "#" + (sheet.getLastRow()).toString().padStart(3, '0');
-  
-  // 1. SÉCURITÉ ANNETTE : Verrou anti-signature systématique
-  var posPrompt = (data.positive || "").trim() + ", Absolutely no signature";
-  
-  // 2. VERROU NÉGATIF : Tag [NEG] + Protection contre le texte déformé
-  var negPrompt = "[NEG] misspelling, distorted text, blurry letters, " + (data.negative || "").trim();
-  
-  // Ajout de la ligne dans le tableau
+  // Injection des données (Colonnes A à J)
   sheet.appendRow([
-    id, 
-    data.theme, 
-    data.artist, 
-    posPrompt, 
-    negPrompt, 
-    data.seed || "Auto", 
-    data.link || "", 
-    "", 
-    new Date()
+    data.Format,         // A
+    data.Artist_Style,   // B
+    data.Genre,          // C
+    data.Sujet,          // D
+    data.Tags,           // E
+    data.positive,       // F
+    data.negative,       // G
+    data.Ratio,          // H
+    data.seed,           // I
+    data.link            // J
   ]);
-
-  // Formatage visuel (Couleurs et alignement)
-  var lastRow = sheet.getLastRow();
-  sheet.getRange(lastRow, 4).setBackground("#EBF5FB"); // Bleu pour le Positif
-  sheet.getRange(lastRow, 5).setBackground("#FDEDEC").setFontColor("#922B21"); // Rouge pour le Négatif
-  sheet.getRange(lastRow, 1, 1, 9).setVerticalAlignment("top").setWrap(true);
-
-  return ContentService.createTextOutput("Success : " + category).setMimeType(ContentService.MimeType.TEXT);
-  }
+  
+  return ContentService.createTextOutput("OK : Ligne ajoutée avec succès !");
+}
 ```
 
 <p>ID de déploiement - <br>
@@ -172,6 +157,7 @@ for item in data_to_send:
 
 print("\n🏁 La base de données est prête. Bonne conférence !")
     ```
+
 
 
 
