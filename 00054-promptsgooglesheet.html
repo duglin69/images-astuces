@@ -1,0 +1,130 @@
+<div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcqfmwi7NNsQcMc6A0pKOZXObmbE2B2rt2wCAUSSRWriEErSPU8UgO9rYyBLyX_2AwYkIpiqWg9Hx7BItwrXAqWC8T2vDDKPfuNS1P8BzX2JbVY9vLkf9XdAyHJhA7u5dDI56C_3kghrsKAiGbHdGTROpqsHzYNRnvZsbFKQW8STTFxixdlhjwESZeJDw/s1600/Prompt.jpg" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" data-original-height="1024" data-original-width="1024" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcqfmwi7NNsQcMc6A0pKOZXObmbE2B2rt2wCAUSSRWriEErSPU8UgO9rYyBLyX_2AwYkIpiqWg9Hx7BItwrXAqWC8T2vDDKPfuNS1P8BzX2JbVY9vLkf9XdAyHJhA7u5dDI56C_3kghrsKAiGbHdGTROpqsHzYNRnvZsbFKQW8STTFxixdlhjwESZeJDw/s1600/Prompt.jpg"/></a></div>
+<p>BLOC 1 : Le Grimoire des Requêtes (Interface Utilisateur)<br>
+  Ce bloc est destiné à être copié-collé par l'utilisateur final dans sa discussion avec l'IA.</p>
+
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; border: 2px solid #1a73e8; padding: 25px; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <h2 style="color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; margin-top: 0;">📜 Formules Magiques : Architect of the Lens</h2>
+  
+  <p><strong>1. ANALYSE (Extraction d'ADN)</strong><br>
+  <em>« Analyse cette image en tant qu'Architect of the Lens. Identifie l'ADN technique (Lumière, artiste, technique, palette). Détermine la Catégorie la plus pertinente pour le rangement. Fournis-moi le "Colis de données" au format Python (dict) incluant : category, theme, artist, positive, negative, seed ("Auto"), et link (vide). »</em></p>
+  
+  <p><strong>2. CRÉATION (Uni-Thème - 50 Variations)</strong><br>
+  <em>« Agis en tant qu'Architect of the Lens. Génère un batch de 50 variations sur le thème [Insérer Sujet] en utilisant le style [Insérer Style]. Fournis le résultat en format dictionnaire Python pour mon Art Bible. »</em></p>
+  
+  <p><strong>3. CRÉATION (Multi-Thèmes - 50 Variations)</strong><br>
+  <em>« Agis en tant qu'Architect of the Lens. Génère un batch de 50 variations sur le style [Insérer Style] déclinées sur divers thèmes (architecture, portrait, affiche, timbre, etc.). Choisis la catégorie de rangement la plus logique pour chaque ligne. Format : dictionnaire Python. »</em></p>
+  
+  <p><strong>4. CRÉATION (Quotas Précis & Langues)</strong><br>
+  <em>« Agis en tant qu'Architect of the Lens. Génère un batch de 50 variations sur le style [Style]. Quotas : [Ex: 25 peintures, 10 affiches]. Note : Les textes sur les affiches doivent être en [Langue]. Format : dictionnaire Python. »</em></p>
+</div>
+
+<p>BLOC 2 : Le Guide de Production (Coulisses Techniques)<br>
+  Ce bloc est votre aide-mémoire pour expliquer l'infrastructure aux techniciens ou curieux.</p>
+
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; border: 2px solid #34a853; padding: 25px; border-radius: 12px; background-color: #f3fcf4; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+  <h2 style="color: #34a853; border-bottom: 2px solid #34a853; padding-bottom: 10px; margin-top: 0;">⚙️ Workflow Technique : Art Bible</h2>
+  
+  <ul style="line-height: 1.6;">
+    <li><strong>Structure Google Sheet :</strong> Le script <code>doPost</code> génère automatiquement 9 colonnes (ID, Thème, Artiste, Prompt +, Prompt -, Seed, Lien Image, Note, Date) et les onglets par catégorie.</li>
+    <li><strong>Google Apps Script :</strong> 
+      <ul>
+        <li>Accès via <em>Extensions > Apps Script</em>.</li>
+        <li>Déploiement via <strong>Gérer les déploiements > Nouvelle version</strong> (pour conserver l'URL <code>/exec</code> stable).</li>
+      </ul>
+    </li>
+    <li><strong>Google Colab :</strong> 
+      <ul>
+        <li>Outil de transmission : <a href="https://colab.google" target="_blank">colab.google</a>.</li>
+        <li>Variable <code>URL_SHEET</code> : Coller l'URL <code>/exec</code>.</li>
+        <li>Action : Coller le dictionnaire Python et exécuter (Play).</li>
+      </ul>
+    </li>
+    <li><strong>Hébergement Image (Confidentialité) :</strong> Utilisation d'URL <strong>kDrive (Infomaniak)</strong>. 
+      <em>Note : S'assurer que le "Lien de partage" est public pour l'affichage dans le Sheet.</em></li>
+  </ul>
+</div>
+
+<p>exemples de requête : </p>
+ <p> 1 - Agis en tant qu'architect of the lens, génère 10 affiches de films sur le thème de la science-fiction dont 5 ayant pour style un mix de "deep black (0.6)" et de "icy blue (0.3)". Je te laisse choisir les styles
+pour les 5 autres affiches. Il doit y avoir 7 affiches au ratio 9:16 et 3 affiches au ratio 16:9. Le texte sur les 10 affiches doit être en français. La règles des 3 tiers doit être respectée. Octane render. Qualité 8K. Format : dictionnaire Python.</p><br>
+<p> 2 - Agis en tant qu'Architect of the Lens. Génère un batch de 10 variations sur le style [High-contrast black and white comic illustration, cinematic chiaroscuro lighting, bold graphic ink style, strong deep shadows with dramatic light beams, clean solid black fills combined with crisp white highlights, classic noir atmosphere, detailed line-art with confident inking, controlled cross-hatching for depth, sharp contour outlines with varied line weight, realistic anatomy rendering with semi-stylized proportions, expressive facial structure defined by shadow planes, sculpted features using light and dark contrast instead of color, textured interior background elements in monochrome, vintage graphic novel aesthetic, woodcut-inspired tonal balance, subtle halftone shading accents, gritty yet refined composition, dynamic perspective framing, storytelling-focused layout, strong foreground-background separation, matte finish, print-ready comic panel quality, ultra-detailed ink rendering, timeless monochrome illustration style.] sur les thèmes, quotas et formats suivants [2 animaux préhistoriques au format 1:1, 3 jeunes femmes de 25 ans défilant sur un podium de mode en bikini format 5:4, 2 timbres-postes format 3:2, 3 affiches de films sur la thématique "film noir" au format 9:16 et avec des textes en français]. Format : dictionnaire Python.</p>
+
+<p>LE SCRIPT (Google Sheet - APPS SCRIPT - déploiement) : [fichier "Code.gs"]
+<br>function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  var category = data.category ? data.category : "Général";
+  var sheet = ss.getSheetByName(category);
+
+  // Création automatique de l'onglet si inexistant
+  if (!sheet) {
+    sheet = ss.insertSheet(category);
+    var headers = ["ID", "Thème", "Artiste/Style", "Prompt Positif", "Prompt Négatif", "Seed", "Lien Image", "Note", "Date"];
+    sheet.appendRow(headers);
+    sheet.getRange(1, 1, 1, 9).setBackground("#121212").setFontColor("white").setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  }
+
+  // Calcul de l'ID (ex: #001)
+  var id = "#" + (sheet.getLastRow()).toString().padStart(3, '0');
+  
+  // 1. SÉCURITÉ ANNETTE : Verrou anti-signature systématique
+  var posPrompt = (data.positive || "").trim() + ", Absolutely no signature";
+  
+  // 2. VERROU NÉGATIF : Tag [NEG] + Protection contre le texte déformé
+  var negPrompt = "[NEG] misspelling, distorted text, blurry letters, " + (data.negative || "").trim();
+  
+  // Ajout de la ligne dans le tableau
+  sheet.appendRow([
+    id, 
+    data.theme, 
+    data.artist, 
+    posPrompt, 
+    negPrompt, 
+    data.seed || "Auto", 
+    data.link || "", 
+    "", 
+    new Date()
+  ]);
+
+  // Formatage visuel (Couleurs et alignement)
+  var lastRow = sheet.getLastRow();
+  sheet.getRange(lastRow, 4).setBackground("#EBF5FB"); // Bleu pour le Positif
+  sheet.getRange(lastRow, 5).setBackground("#FDEDEC").setFontColor("#922B21"); // Rouge pour le Négatif
+  sheet.getRange(lastRow, 1, 1, 9).setVerticalAlignment("top").setWrap(true);
+
+  return ContentService.createTextOutput("Success : " + category).setMimeType(ContentService.MimeType.TEXT);
+  }</p>
+
+<p>ID de déploiement - <br>
+  AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8 <br>
+Application Web - URL - <br> 
+  https://script.google.com/macros/s/AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8/exec
+</p>
+
+<p>Code moteur (Python) pour Colab : 
+  import requests
+import json
+
+# L'URL /exec obtenue lors du déploiement dans Apps Script
+URL_SHEET = "VOTRE_URL_IC (url avec /exec)"
+
+# La liste qui contiendra vos futurs colis de données
+data_to_send = [
+    # Collez ici les dictionnaires générés
+]
+
+print(f"🚀 Envoi de {len(data_to_send)} éléments...")
+
+for item in data_to_send:
+    try:
+        response = requests.post(URL_SHEET, data=json.dumps(item))
+        if response.status_code == 200:
+            print(f"✅ Succès : {item.get('theme')} ({response.text})")
+        else:
+            print(f"❌ Erreur {response.status_code} sur {item.get('theme')}")
+    except Exception as e:
+  print(f"⚠️ Problème : {e}")</p>
+
+
