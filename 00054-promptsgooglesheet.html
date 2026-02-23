@@ -53,8 +53,9 @@
 pour les 5 autres affiches. Il doit y avoir 7 affiches au ratio 9:16 et 3 affiches au ratio 16:9. Le texte sur les 10 affiches doit être en français. La règles des 3 tiers doit être respectée. Octane render. Qualité 8K. Format : dictionnaire Python.</p><br>
 <p> 2 - Agis en tant qu'Architect of the Lens. Génère un batch de 10 variations sur le style [High-contrast black and white comic illustration, cinematic chiaroscuro lighting, bold graphic ink style, strong deep shadows with dramatic light beams, clean solid black fills combined with crisp white highlights, classic noir atmosphere, detailed line-art with confident inking, controlled cross-hatching for depth, sharp contour outlines with varied line weight, realistic anatomy rendering with semi-stylized proportions, expressive facial structure defined by shadow planes, sculpted features using light and dark contrast instead of color, textured interior background elements in monochrome, vintage graphic novel aesthetic, woodcut-inspired tonal balance, subtle halftone shading accents, gritty yet refined composition, dynamic perspective framing, storytelling-focused layout, strong foreground-background separation, matte finish, print-ready comic panel quality, ultra-detailed ink rendering, timeless monochrome illustration style.] sur les thèmes, quotas et formats suivants [2 animaux préhistoriques au format 1:1, 3 jeunes femmes de 25 ans défilant sur un podium de mode en bikini format 5:4, 2 timbres-postes format 3:2, 3 affiches de films sur la thématique "film noir" au format 9:16 et avec des textes en français]. Format : dictionnaire Python.</p>
 
-<p>LE SCRIPT (Google Sheet - APPS SCRIPT - déploiement) : [fichier "Code.gs"]
-<br>function doPost(e) {
+<p>LE SCRIPT (Google Sheet - APPS SCRIPT - déploiement) : [fichier "Code.gs"]</p>
+```python
+function doPost(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var data = JSON.parse(e.postData.contents);
   
@@ -99,7 +100,8 @@ pour les 5 autres affiches. Il doit y avoir 7 affiches au ratio 9:16 et 3 affich
   sheet.getRange(lastRow, 1, 1, 9).setVerticalAlignment("top").setWrap(true);
 
   return ContentService.createTextOutput("Success : " + category).setMimeType(ContentService.MimeType.TEXT);
-  }</p>
+  }
+```
 
 <p>ID de déploiement - <br>
   AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8 <br>
@@ -108,28 +110,69 @@ Application Web - URL - <br>
 </p>
 
 <p>Code moteur (Python) pour Colab : 
-  import requests
+```python
+    import requests
 import json
 
-# L'URL /exec obtenue lors du déploiement dans Apps Script
-URL_SHEET = "VOTRE_URL_IC (url avec /exec)"
+# URL de votre Web App Google Apps Script
+URL_SHEET = "VOTRE_URL_ICI" 
 
-# La liste qui contiendra vos futurs colis de données
+# Structure Finale (10 colonnes) : 
+# [A:Format, B:Artist_Style, C:Genre, D:Sujet/Set-up, E:Tags/Ambiance, F:Positive, G:Negative, H:Ratio, I:Seed, J:Link]
 data_to_send = [
-    # Collez ici les dictionnaires générés
+    {
+        "sheetName": "MASTER_ART_BIBLE",
+        "Format": "Affiche",
+        "Artist_Style": "Style cinématographique, Noir profond, Bleu glacé",
+        "Genre": "Science-Fiction",
+        "Sujet": "Vaisseau 'L'ABYSSAL' en détresse",
+        "Tags": "8K, Éclairage dramatique, Glacé",
+        "positive": "Affiche de film de science-fiction titrée 'L'ABYSSAL'. Palette de noir profond et bleu glacé. Un grand vaisseau spatial au centre. Crédits de film en bas avec date 'Décembre 2026'.",
+        "negative": "flou, basse résolution",
+        "Ratio": "16:9",
+        "seed": "Auto",
+        "link": "https://i.ibb.co/example/abyssal.jpg"
+    },
+    {
+        "sheetName": "MASTER_ART_BIBLE",
+        "Format": "Illustration",
+        "Artist_Style": "Comic Noir, Encre de chine N&B",
+        "Genre": "Comic Noir",
+        "Sujet": "Détective sous le lampadaire",
+        "Tags": "Pluie, Ombres marquées, High Contrast",
+        "positive": "Illustration style bande dessinée noir et blanc. Un détective en trench-coat sous la pluie. AUCUN TEXTE. Ambiance polar.",
+        "negative": "texte, titre, couleur, gris",
+        "Ratio": "1:1",
+        "seed": "Auto",
+        "link": "https://i.ibb.co/example/detective.jpg"
+    },
+    {
+        "sheetName": "MASTER_ART_BIBLE",
+        "Format": "Carte Postale",
+        "Artist_Style": "Style féérique, Rendu photographique",
+        "Genre": "Conte",
+        "Sujet": "Tinkerbell (La Fée Clochette)",
+        "Tags": "Poussière d'étoile, Forêt enchantée, Lumineux",
+        "positive": "Petite fée lumineuse volant dans une forêt dense, lumières magiques, détails macro.",
+        "negative": "sombre, effrayant",
+        "Ratio": "4:5",
+        "seed": "Auto",
+        "link": "https://i.ibb.co/example/tinkerbell.jpg"
+    }
 ]
 
-print(f"🚀 Envoi de {len(data_to_send)} éléments...")
+print(f"📡 Injection dans MASTER_ART_BIBLE (Structure A-J) en cours...")
 
 for item in data_to_send:
     try:
         response = requests.post(URL_SHEET, data=json.dumps(item))
-        if response.status_code == 200:
-            print(f"✅ Succès : {item.get('theme')} ({response.text})")
-        else:
-            print(f"❌ Erreur {response.status_code} sur {item.get('theme')}")
+        print(f"✅ Ligne ajoutée : {item.get('Sujet')} | Style: {item.get('Artist_Style')}")
     except Exception as e:
-  print(f"⚠️ Problème : {e}")</p>
+        print(f"❌ Erreur sur {item.get('Sujet')} : {e}")
+
+print("\n🏁 La base de données est prête. Bonne conférence !")
+    ```
+
 
 
 
