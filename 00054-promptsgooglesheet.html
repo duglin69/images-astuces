@@ -77,29 +77,27 @@
 
 <div class="url-box">
   <strong>ID de déploiement :</strong><br>
-  AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8<br><br>
+AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh<br><br>
   <strong>Application Web - URL :</strong><br>
-  https://script.google.com/macros/s/AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8/exec
+ https://script.google.com/macros/s/AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh/exec
 </div>
     
-<h3>📜 LE RÉCEPTIONNISTE (Google Apps Script)</h3>
+<h3>📜 LE RÉCEPTIONNISTE (Google Apps Script) - V8</h3>
 <pre class="code-container">
 function doPost(e) {
-  var data = JSON.parse(e.postData.contents);
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(data.sheetName);
-  
-  if (!sheet) {
-    sheet = ss.insertSheet(data.sheetName);
-    sheet.appendRow(["Format", "Artist_Style", "Genre", "Sujet / Set-up", "Tags / Ambiance", "Positive_Prompt", "Negative_Prompt", "Ratio", "Seed", "Link"]);
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(data.sheetName) || ss.getSheets()[0];
+    sheet.appendRow([
+      data.Format, data.Artist_Style, data.Genre, data.Sujet, data.Tags, 
+      data.positive, data.negative, data.Ratio, data.seed, data.link, 
+      data.Territoire // Colonne K
+    ]);
+    return ContentService.createTextOutput("✅ SYSTÈME OPÉRATIONNEL");
+  } catch (f) {
+    return ContentService.createTextOutput("❌ ERREUR : " + f.toString());
   }
-
-  sheet.appendRow([
-    data.Format, data.Artist_Style, data.Genre, data.Sujet, data.Tags, 
-    data.positive, data.negative, data.Ratio, data.seed, data.link
-  ]);
-  
-  return ContentService.createTextOutput("Injection réussie !");
 }
 </pre>
 
@@ -167,6 +165,7 @@ except Exception as e:
     
 </body>
 </html>
+
 
 
 
