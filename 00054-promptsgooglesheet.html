@@ -124,5 +124,58 @@ for item in data_to_send:
     print(f"Statut : {response.text}")
 </pre>
 
+    <h3>📜 LES AFFICHES Science-Fiction</h3>
+<pre class="code-container">
+import requests
+import json
+
+URL_SHEET = "VOTRE_URL_DÉPLOYÉE_ICI/exec"
+
+colis_sf = [
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Noir profond, Bleu glacé", "Genre": "Science-Fiction", "Sujet": "Vaisseau 'L'ABYSSAL'", "Tags": "8K, Octane Render", "positive": "Affiche de film SF titrée 'L'ABYSSAL'. Vaisseau massif en détresse.", "negative": "flou", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Cyberpunk Néon", "Genre": "Science-Fiction", "Sujet": "Marché de nuit néon", "Tags": "Pluie, Reflets rose", "positive": "Affiche 'NEON MARKET'. Cyberpunk vibe, lumières saturées.", "negative": "soleil", "Ratio": "9:16", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Retro-Futurisme 70s", "Genre": "Science-Fiction", "Sujet": "Colonisation de Mars", "Tags": "Grain film, Couleurs chaudes", "positive": "Style vintage SF, dômes sur Mars, fusées pointues.", "negative": "moderne", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Hard Science-Fiction", "Genre": "Science-Fiction", "Sujet": "Trou noir", "Tags": "Réalisme NASA, Accrétion", "positive": "Visualisation scientifique d'un trou noir massif.", "negative": "aliens", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Biomécanique Giger", "Genre": "Science-Fiction", "Sujet": "Cité organique", "Tags": "Sombre, Viscéral", "positive": "Architecture biomécanique, structures osseuses.", "negative": "couleur vive", "Ratio": "9:16", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Minimaliste Vectoriel", "Genre": "Science-Fiction", "Sujet": "Premier Contact", "Tags": "Flat design, Géométrique", "positive": "Silhouette de vaisseau monolithique sur ciel blanc.", "negative": "détails", "Ratio": "1:1", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Space Opera Épique", "Genre": "Science-Fiction", "Sujet": "Bataille d'Andromède", "Tags": "Explosions, Échelle immense", "positive": "Flotte spatiale engageant le combat.", "negative": "calme", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Post-Apocalyptique", "Genre": "Science-Fiction", "Sujet": "Paris en 2150", "Tags": "Végétation, Ruines", "positive": "Tour Eiffel effondrée recouverte de jungle.", "negative": "neuf", "Ratio": "9:16", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Solarpunk Éclatant", "Genre": "Science-Fiction", "Sujet": "Cité flottante", "Tags": "Énergie propre, Blanc et Vert", "positive": "Futur utopique, jardins suspendus, drones solaires.", "negative": "pollution", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Vaporwave Sci-Fi", "Genre": "Science-Fiction", "Sujet": "Station balnéaire lunaire", "Tags": "Pastel, Grille 3D", "positive": "Esthétique 80s, palmiers holographiques sur la Lune.", "negative": "réaliste", "Ratio": "9:16", "seed": "Auto", "link": ""}
+]
+
+print("📡 Lancement du Colis n°1 (SF)...")
+for p in colis_sf:
+    r = requests.post(URL_SHEET, data=json.dumps(p))
+    print(f"✅ Injecté : {p['Sujet']}")
+</pre>  
+
+    <h3>📜 LES ILLUSTRATIONS Comic-Noir</h3>
+<pre class="code-container">
+import requests
+import json
+
+URL_SHEET = "VOTRE_URL_DÉPLOYÉE_ICI/exec"
+
+colis_noir = [
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Comic Noir, Encre de chine", "Genre": "Comic Noir", "Sujet": "Détective", "Tags": "Pluie, Trench-coat", "positive": "Détective fumant sous un réverbère. N&B contrasté.", "negative": "couleur", "Ratio": "1:1", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Style Frank Miller", "Genre": "Comic Noir", "Sujet": "Toits de la ville", "Tags": "Ombres dures, Rouge sang unique", "positive": "Vue plongeante sur une ruelle sombre, contrastes brutaux.", "negative": "doux", "Ratio": "9:16", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Chiaroscuro Cinématique", "Genre": "Comic Noir", "Sujet": "La Femme Fatale", "Tags": "Rideaux, Lumière zébrée", "positive": "Portrait mystérieux, regard intense à travers des stores.", "negative": "enfantin", "Ratio": "4:5", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Gravure sur bois", "Genre": "Comic Noir", "Sujet": "Le Braquage", "Tags": "Texture, Brutaliste", "positive": "Scène de crime, silhouettes courant dans l'ombre.", "negative": "lisse", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Aquarelle Grise", "Genre": "Comic Noir", "Sujet": "Gare abandonnée", "Tags": "Brouillard, Mélancolie", "positive": "Quai de gare vide, lavis de gris et noir.", "negative": "joie", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Ligne Claire Noir", "Genre": "Comic Noir", "Sujet": "Le Bureau du Privé", "Tags": "Détails, Ventilateur", "positive": "Bureau encombré, machine à écrire, cendrier fumant.", "negative": "abstrait", "Ratio": "1:1", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Style Sin City", "Genre": "Comic Noir", "Sujet": "Poursuite auto", "Tags": "Vitesse, Noir total", "positive": "Phares de voiture perçant l'obscurité totale.", "negative": "gris", "Ratio": "16:9", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Hachures Croisées", "Genre": "Comic Noir", "Sujet": "L'Interrogatoire", "Tags": "Lampe pendante, Sueur", "positive": "Gros plan sur un visage sous une lumière crue.", "negative": "couleur", "Ratio": "4:5", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Style Polar Français", "Genre": "Comic Noir", "Sujet": "Bar de nuit", "Tags": "Néon solitaire, Zinc", "positive": "Un verre de whisky sur un comptoir, reflet d'un néon.", "negative": "fête", "Ratio": "1:1", "seed": "Auto", "link": ""},
+    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Encre et Lavis", "Genre": "Comic Noir", "Sujet": "Pont sous la brume", "Tags": "Silhouettes, Reflets eau", "positive": "Homme en chapeau traversant un pont brumeux.", "negative": "précis", "Ratio": "16:9", "seed": "Auto", "link": ""}
+]
+
+print("🕵️ Lancement du Colis n°2 (Comic Noir)...")
+for p in colis_noir:
+    r = requests.post(URL_SHEET, data=json.dumps(p))
+    print(f"✅ Injecté : {p['Sujet']}")
+</pre>  
+    
 </body>
 </html>
+
