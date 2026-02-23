@@ -101,27 +101,38 @@ function doPost(e) {
 import requests
 import json
 
-URL_SHEET = "VOTRE_URL_DÉPLOYÉE_ICI/exec"
+# 1. L'ADRESSE (L'URL /exec de votre déploiement Google Apps Script)
+URL_SHEET = "VOTRE_URL_ICI/exec"
 
-data_to_send = [
+# 2. LA STRUCTURE (Le colis générique à remplir)
+# Vous pouvez ajouter autant de blocs {} que vous le souhaitez entre les crochets [ ]
+colis_generique = [
     {
         "sheetName": "MASTER_ART_BIBLE",
-        "Format": "Affiche",
-        "Artist_Style": "Noir profond, Bleu glacé",
-        "Genre": "Science-Fiction",
-        "Sujet": "L'ABYSSAL",
-        "Tags": "8K, Octane Render",
-        "positive": "Affiche de film SF...",
-        "negative": "flou",
-        "Ratio": "16:9",
-        "seed": "Auto",
-        "link": ""
+        "Format": "",          # Ex: Affiche, Illustration, Photo...
+        "Artist_Style": "",    # Ex: Style Giger, Cinématographique...
+        "Genre": "",           # Ex: SF, Fantasy, Portrait...
+        "Sujet": "",           # Le nom de votre création
+        "Tags": "",            # Paramètres techniques (8K, Bokeh...)
+        "positive": "",        # Votre prompt de génération complet
+        "negative": "",        # Votre prompt négatif
+        "Ratio": "",           # Format (16:9, 1:1, 9:16...)
+        "seed": "Auto",        # "Auto" ou un numéro précis
+        "link": ""             # URL de l'image (ImgBB, kDrive...)
     }
 ]
 
-for item in data_to_send:
-    response = requests.post(URL_SHEET, data=json.dumps(item))
-    print(f"Statut : {response.text}")
+# 3. LE MOTEUR D'INJECTION (Ne jamais modifier cette partie)
+print(f"📡 Connexion au serveur Google Sheets...")
+for item in colis_generique:
+    try:
+        response = requests.post(URL_SHEET, data=json.dumps(item))
+        # Affiche le message de succès renvoyé par le Google Sheet
+        print(f"✅ Résultat pour '{item.get('Sujet')}' : {response.text}")
+    except Exception as e:
+        print(f"❌ Erreur lors de l'envoi : {e}")
+
+print("\n🏁 Opération terminée.")
 </pre>
 
     <h3>📜 LES AFFICHES Science-Fiction</h3>
