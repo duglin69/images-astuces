@@ -105,124 +105,69 @@ function doPost(e) {
 
 <h3>📜 LE TRANSPORTEUR (Python pour Colab)</h3>
 <pre class="code-container">
-import requests
-import json
+import requests, json
+from datetime import datetime, timedelta
 
-# 1. TON ADRESSE RÉELLE (Ne pas toucher)
-URL_SHEET = "https://script.google.com/macros/s/AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8/exec"
+# --- CONFIGURATION ---
+URL_SHEET = "https://script.google.com/macros/s/AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh/exec"
 
-# 2. LE COLIS LIBRE (Remplissez ce que vous voulez)
-colis_libre = [
-    {
-        "sheetName": "MASTER_ART_BIBLE",
-        "Format": "",          # Ex: Illustration, Timbre, Photo, Vitrail, Logo...
-        "Artist_Style": "",    # Ex: Style Enki Bilal, Réalisme, Aquarelle...
-        "Genre": "",           # Ex: Fantasy, Nature morte, Portrait...
-        "Sujet": "",           # Description brève (ex: Chat dans l'espace)
-        "Tags": "",            # Ex: 8K, Bokeh, Unreal Engine 5...
-        "positive": "",        # Votre prompt complet pour l'IA
-        "negative": "blurry, signature 1.5, watermark, text, signature, filigrane, basse résolution, déformé, mauvaise qualité, distorted, out of frame",
-        "Ratio": "",           # Ex: 1:1, 16:9, 4:5, 9:16...
-        "seed": "Auto",
-        "link": ""             # Sera rempli une fois l'image générée
-    }
-]
+def get_date(pays):
+    # Logique de date pour 2026 [cite: 2026-01-19]
+    j = 2 if pays.upper() == "FRANCE" else 4
+    d = datetime.now() + timedelta(days=180)
+    return (d + timedelta(days=(j - d.weekday() + 7) % 7)).strftime("%d.%m.%Y")
 
-# 3. LE MOTEUR (Automatisé)
-print("📡 Expédition vers le Master Art Bible...")
-for item in colis_libre:
-    try:
-        r = requests.post(URL_SHEET, data=json.dumps(item))
-        print(f"✅ Ligne ajoutée : {item.get('Sujet') if item.get('Sujet') else 'Sans nom'} | Réponse : {r.text}")
-    except Exception as e:
-        print(f"❌ Erreur d'envoi : {e}")
+# --- DONNÉES VERROUILLÉES (AVEC ACCENTS) ---
+titre = "NÉON RIVAGES" # Corrigé : l'accent est là.
+studio = "LUMIÈRE NOIRE"
+date_f = get_date("France")
 
-print("\n🏁 Tout est en place dans le Google Sheet.")
-</pre>
+# 1. CONSTRUCTION DU PROMPT POSITIF (Colonne F)
+prompt_positif = (
+    f"Professional cinematic movie poster. photographic rendering [cite: 2026-01-18]. "
+    f"MANDATORY: Place the graphic visual logo of the studio {studio} at the very top. "
+    f"LARGE MAIN TITLE BELOW LOGO: {titre} " # Utilise le titre avec accent
+    f"Visuals: A detective in a trench coat under acidic rain, facing a holographic Eiffel Tower at night. "
+    f"Lighting: Lit ONLY by streetlights and the Eiffel Tower glow. NO background neon signs [cite: 2026-01-18]. "
+    f"CREDITS AT BOTTOM (4 lines, NO PERIODS): "
+    f"Line 1: {studio} présente {titre} "
+    f"Line 2: Réalisation : MARCELLE LEROI "
+    f"Line 3: avec SACHA VALES "
+    f"Line 4: {date_f}"
+)
 
-    <h3>📜 LES AFFICHES Science-Fiction</h3>
-<pre class="code-container">
-import requests
-import json
+# 2. CONSTRUCTION DU PROMPT NÉGATIF (Colonne G)
+# On ajoute l'interdiction de l'absence d'accents [cite: 2026-01-19]
+prompt_negatif = (
+    f"negative prompt: missing accents on capital letters, NEON without accent, "
+    f"no studio logo, missing logo, background neon signs, "
+    f"text on signs, NUIOS, duplicate title, apostrophes in title, points at end of lines, "
+    f"blurry, watermarks, signature"
+)
 
-URL_SHEET = "VOTRE_URL_DÉPLOYÉE_ICI/exec"
+# 3. ENVOI DU PAQUET COMPLET
+payload = {
+    "sheetName": "MASTER",
+    "Format": "Affiche",
+    "Genre": "SF Néo-noir",
+    "Sujet": titre,
+    "Artist_Style": "Dir: MARCELLE LEROI",
+    "Tags": f"Typo Correcte | {date_f}",
+    "positive": prompt_positif,
+    "negative": prompt_negatif,
+    "Territoire": "France"
+}
 
-colis_sf = [
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Noir profond, Bleu glacé", "Genre": "Science-Fiction", "Sujet": "Vaisseau 'L'ABYSSAL'", "Tags": "8K, Octane Render", "positive": "Affiche de film SF 'L'ABYSSAL'. Avec Elara Vance et Marc Koven. Un film de Soren Astra. Sortie : 13.05.2026. Logo 'Nebula Studios' en bas. Style cinématographique.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Cyberpunk Néon", "Genre": "Science-Fiction", "Sujet": "Marché de nuit", "Tags": "Pluie, Rose", "positive": "Affiche 'NEON TRACE'. Avec J-9 et Lyra Seven. Réalisé par K. Dicksson. Sortie : 03.06.2026. Logo 'CyberCorp' visible. Ambiance électrique.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "9:16", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Retro-Futurisme 70s", "Genre": "Science-Fiction", "Sujet": "Mars One", "Tags": "Grain film, 70s", "positive": "Affiche 'HORIZON ROUGE'. Avec Peter Sterling. Un film de John Vargo. Sortie : 10.06.2026. Logo 'Orbit Films' vintage. Style Saul Bass.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Hard SF, NASA", "Genre": "Science-Fiction", "Sujet": "Le Trou Noir", "Tags": "Réalisme", "positive": "Affiche 'SINGULARITÉ'. Avec Robert Duglino et K-7. Un film de Mary Thorne. Sortie : 08.07.2026. Logo 'Deep Space Vision'. Réalisme photographique.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Biomécanique", "Genre": "Science-Fiction", "Sujet": "Genèse", "Tags": "Giger", "positive": "Affiche 'XENO-GENESIS'. Avec Jack Difool et Raoul Dusse. Réalisé par H.R. Giger. Sortie : 12.08.2026. Logo 'Biotech Arts'. Visuel sombre et viscéral.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "9:16", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Minimaliste", "Genre": "Science-Fiction", "Sujet": "Contact", "Tags": "Vectoriel", "positive": "Affiche 'PREMIER CONTACT'. Avec Johnny H. et Eddy Marmouze. Un film de Aris K. Sortie : 02.09.2026. Logo 'Monolith Pictures'. Design épuré, silhouette de vaisseau immense.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "1:1", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Space Opera", "Genre": "Science-Fiction", "Sujet": "Bataille d'Orion", "Tags": "Épique", "positive": "Affiche 'LES CENDRES D'ORION'. Avec 3-pac et Sifuk Yin. Réalisé par Lucas J. Sortie : 16.09.2026. Logo 'Galactic Cinema'. Grand spectacle.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Post-Apo", "Genre": "Science-Fiction", "Sujet": "Paris Ruines", "Tags": "Nature", "positive": "Affiche 'DERNIER ÉTÉ À PARIS'. Avec Lena Marelle et Assya Lomax. Un film de Thomas B. Sortie :  07.10.2026. Logo 'Green Future'. Ruines de la Tour Eiffel.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "9:16", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Solarpunk", "Genre": "Science-Fiction", "Sujet": "Cité Flottante", "Tags": "Utopie", "positive": "Affiche 'ÉCLOSION'. Avec Esteban Zia et Tao Lécité. Réalisé par Maya Sun. Sortie : 28.10.2026. Logo 'Eden Lab'. Architecture blanche et jardins suspendus.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Affiche", "Artist_Style": "Vaporwave", "Genre": "Science-Fiction", "Sujet": "Moon Beach", "Tags": "Nostalgie", "positive": "Affiche 'RETRO-LUNA'. Film d'animation de S. Vapors. Sortie 18.11.2026. Logo '80s Future'. Couleurs rose et cyan, grille 3D.", "negative": "blurry, signature 1.5, watermark, distorted, out of frame", "Ratio": "9:16", "seed": "Auto", "link": ""}
-    ]
-
-print("📡 Lancement du Colis n°1 (SF)...")
-for p in colis_sf:
-    r = requests.post(URL_SHEET, data=json.dumps(p))
-    print(f"✅ Injecté : {p['Sujet']}")
-</pre>  
-
-    <h3>📜 LES ILLUSTRATIONS Comic-Noir</h3>
-<pre class="code-container">
-import requests
-import json
-
-URL_SHEET = "VOTRE_URL_DÉPLOYÉE_ICI/exec"
-
-colis_noir = [
-    import requests
-import json
-
-URL_SHEET = "https://script.google.com/macros/s/AKfycbwJC0yqq0HLo5zJ3jPNzCF8WyCAP65luuzR0YtFiriRKFa2b8CHNIEu3qCuLR7Uk9e8/exec"
-
-colis_noir = [
-    # 1. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Comic Noir, Encre de chine", "Genre": "Comic Noir", "Sujet": "Détective", "Tags": "Pluie", "positive": "Style BD noir et blanc contrasté. Détective sous un réverbère. Image muette, atmosphérique.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "1:1", "seed": "Auto", "link": ""},
-    # 2. AVEC ONOMATOPÉE (Action)
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Frank Miller Style", "Genre": "Comic Noir", "Sujet": "Coup de poing", "Tags": "Impact", "positive": "Style Sin City. Un impact violent. Onomatopée 'POW!' intégrée graphiquement au dessin.", "negative": "color, credits, movie title, blurry, signature 1.5, watermark", "Ratio": "9:16", "seed": "Auto", "link": ""},
-    # 3. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Chiaroscuro", "Genre": "Comic Noir", "Sujet": "Femme fatale", "Tags": "Mystère", "positive": "Portrait mystérieux, jeu d'ombres sur le visage. Pas de texte.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "4:5", "seed": "Auto", "link": ""},
-    # 4. AVEC ONOMATOPÉE (Bruitage sourd)
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Encre et Lavis", "Genre": "Comic Noir", "Sujet": "Porte qui claque", "Tags": "Tension", "positive": "Une porte s'ouvrant brutalement. Onomatopée 'SLAM' s'étirant dans l'ombre.", "negative": "color, credits, movie title, blurry, signature 1.5, watermark", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    # 5. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Gravure moderne", "Genre": "Comic Noir", "Sujet": "La Ville", "Tags": "Brumes", "positive": "Vue des toits, silhouettes de cheminées. Image purement visuelle.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    # 6. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Ligne Claire", "Genre": "Comic Noir", "Sujet": "Bureau du privé", "Tags": "Détails", "positive": "Bureau encombré, ventilateur qui tourne. Noir et blanc pur.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "1:1", "seed": "Auto", "link": ""},
-    # 7. AVEC ONOMATOPÉE (Vitesse)
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "High Contrast", "Genre": "Comic Noir", "Sujet": "Course poursuite", "Tags": "Vitesse", "positive": "Voiture de police en virage. Onomatopée 'VROOOOM' stylisée suivant le mouvement.", "negative": "color, credits, movie title, blurry, signature 1.5, watermark", "Ratio": "16:9", "seed": "Auto", "link": ""},
-    # 8. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Hachures", "Genre": "Comic Noir", "Sujet": "L'Attente", "Tags": "Portrait", "positive": "Gros plan sur des yeux dans l'obscurité. Regard fixe.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "4:5", "seed": "Auto", "link": ""},
-    # 9. AVEC ONOMATOPÉE (Petit bruit)
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Style Polar", "Genre": "Comic Noir", "Sujet": "Le Verre", "Tags": "Reflets", "positive": "Un glaçon tombe dans le verre. Petite onomatopée 'PLINK' discrète.", "negative": "color, credits, movie title, blurry, signature 1.5, watermark", "Ratio": "1:1", "seed": "Auto", "link": ""},
-    # 10. SILENCIEUX
-    {"sheetName": "MASTER_ART_BIBLE", "Format": "Illustration", "Artist_Style": "Encre grasse", "Genre": "Comic Noir", "Sujet": "Le Pont", "Tags": "Atmosphère", "positive": "Pont sous la brume de nuit. Esthétique graphique pure.", "negative": "color, text, title, blurry, signature 1.5, watermark", "Ratio": "16:9", "seed": "Auto", "link": ""}
-]
-
-print("🕵️ Injection Comic Noir (Mix narratif)...")
-for p in colis_noir:
-    requests.post(URL_SHEET, data=json.dumps(p))
-    print(f"✅ Injecté : {p['Sujet']}")
-    ]
-
-
-print("🕵️ Lancement du Colis n°2 (Comic Noir)...")
-for p in colis_noir:
-    r = requests.post(URL_SHEET, data=json.dumps(p))
-    print(f"✅ Injecté : {p['Sujet']}")
-</pre>  
-
-    <pre class="code-container">
-    Quand votre fils ou Annette demandent à une autre IA (comme ChatGPT ou Claude) de générer le fameux "Colis de 50 lignes", ils doivent simplement intégrer cette consigne dans leur demande :
-    "Génère 50 lignes au format dictionnaire Python. Pour chaque ligne, le champ 'negative' doit impérativement être : 'blurry, signature 1.5, watermark, text, signature, filigrane, basse résolution, déformé, mauvaise qualité, distorted, out of frame'."
-Ainsi, l'IA va leur sortir les 50 blocs déjà remplis avec votre barrière de sécurité. Ils n'auront plus qu'à faire un seul "Copier-Coller" géant dans Colab.
+try:
+    requests.post(URL_SHEET, data=json.dumps(payload))
+    print(f"✅ Test envoyé avec accents corrigés : {titre}")
+except Exception as e:
+    print(f"❌ Erreur : {e}")
     </pre>
     
 </body>
 </html>
+
 
 
 
