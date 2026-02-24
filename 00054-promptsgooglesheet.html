@@ -77,85 +77,134 @@
 
 <div class="url-box">
   <strong>ID de déploiement :</strong><br>
-AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh<br><br>
   <strong>Application Web - URL / exec :</strong><br>
- https://script.google.com/macros/s/AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh/exec
+ https://script.google.com/macros/s/AKfycbz3ZIaBqIod2cOvUaVuj6n2CRPinM8u-gsTO_Who7n5HH_dnrB1JH47GI0HQabJ4-Fq/exec
 </div>
     
 <h3>📜 LE RÉCEPTIONNISTE (Google Apps Script) - V8</h3>
 <pre class="code-container">
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-  var d = JSON.parse(e.postData.contents);
-  
-  sheet.appendRow([
-    new Date(),      // A = DERNIER TEST À
-    d.artistStyle,   // B = Artist_Style
-    d.genre,         // C = Genre
-    d.sujet,         // D = Sujet / Set-up
-    d.tags,          // E = Tags / Ambiance
-    d.promptFinal,   // F = Positive_Prompt
-    d.negatif,       // G = Negative_Prompt
-    d.ratio,         // H = Ratio
-    d.seed,          // I = Seed
-    d.link           // J = Link
-  ]);
-  return ContentService.createTextOutput("OK");
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var brut = data.sujet || ""; 
+
+    // On force la recherche du séparateur "|"
+    if (brut.indexOf('|') !== -1) {
+      var s = brut.split('|').map(function(item) { return item.trim(); });
+      
+      // On construit la ligne colonne par colonne (A, B, C, D, E, F, G, H)
+      // Si un segment manque, on met du vide "" pour éviter le plantage
+      var ligneTrier = [
+        s[0] || "", // A: Format
+        s[1] || "", // B: Artist_Style
+        "",         // C: Vide
+        s[2] || "", // D: Sujet
+        s[3] || "", // E: Tags
+        s[5] || "", // F: Prompt Final
+        "",         // G: Vide
+        s[4] || ""  // H: Ratio
+      ];
+      
+      sheet.appendRow(ligneTrier);
+      return ContentService.createTextOutput("Succès : Division effectuée");
+    } else {
+      // Si pas de séparateur, on utilise les colonnes classiques dans l'interface
+      sheet.appendRow([data.format, data.artistStyle, "", data.sujet, data.tags, data.promptFinal, "", data.ratio]);
+      return ContentService.createTextOutput("Succès : Envoi classique");
+    }
+  } catch (err) {
+    return ContentService.createTextOutput("Erreur critique : " + err.message);
+  }
 }
 </pre>
 
 <h3>📜 LE TRANSPORTEUR (Python pour Colab)</h3>
 <pre class="code-container">
-#@title ✨ STUDIO LUMIÈRE NOIRE - ALIGNEMENT COLONNES (A-J)
+#@title 🛠️ CONFIGURATION STUDIO LUMIÈRE NOIRE - VERSION FINALE
 import ipywidgets as widgets
-from IPython.display import display, HTML, clear_output
+from IPython.display import display, clear_output
 import requests
+
+# --- COLONNE A : FORMATS ---
+opts_a = [
+    "AUCUN", "Affiche de film", "Couverture de livre, de livret", "Pochette de CD / 33 Tours", 
+    "Mug", "T-Shirt", "Pièce de monnaie", "Médaillon", "Photo", "Porte-clé", "Pin's", 
+    "Billet de banque", "Coeur", '"Boule de neige"', "Tasse", "Canette de soda", "Coloriage", 
+    "Carte (de visite, NASA, FBI, ...)", "Étoile de shériff", "Bijou", 
+    "Récipient avec un bateau (ou autre chose à l'intérieur)", "Souvenir miniature (Tour Eiffel, …)", 
+    "Chibi", "Poupée", "Ours en peluche", "Coquillage", "Étoile de mer", "Maquette", 
+    "Plan en 3D", "Figurine", "Peluche", "Mouchoir", "Foulard", "Casquette", "✍️ PERSONNALISER..."
+]
+
+# --- COLONNE B : STYLES & ARTISTES ---
+opts_b = [
+    "AUCUN", "Aquarelle", "Art Abstrait", "Art déco", "Art nouveau", "Baroque", "Bauhaus", 
+    "Bio-mécanique", "Bio-organique", "Calligraphie", "Colonialisme", "Comics", "Croquis", 
+    "Cubisme", "Cyberpunk", "Dessin vectoriel", "Diesel punk", "Digital art", 
+    "Dramscape / onirique (absureal)", "Editorial", "Esquisse", "Fantasy", "Fauvisme", 
+    "Folk Art Moderne", "Fusain", "Futurisme", "Gothique", "Gouache", "Hygge", 
+    "Illustration conte de fées", "Impressionnisme", "Ligne claire (BD franco-belge)", 
+    "Manga", "Minimalisme", "Pop art", "Réalisme", "Renaissance", "Rococo", 
+    "Romantisme", "Sculpture", "Steampunk", "Sumi-e", "Surréalisme", "Symbolisme", 
+    "Synthwave", "Tatouages", "Ukiyo-e (woodblock)", "Vaporwave", 
+    "Hergé", "H.R. Giger", "Alphonse Mucha", "Pablo Picasso", "Hieronymus Bosch", 
+    "Frida Kahlo", "Gustave Courbet", "Eugène Delacroix", "Claude Monet", "Shinjo Ito", 
+    "Satoshi Kon", "Hayao Miyazaki", "Rembrandt", "Raphaël", "JMW Turner", "Carolus-Duran",
+    "✍️ PERSONNALISER..."
+]
+
+# --- COLONNE E : TECHNIQUES & RENDUS ---
+opts_e = [
+    "AUCUN", "Acrilyque", "Aérographe", "Aplats de couleur", "Clair obscur", "Collage", 
+    "Colorisation numérique", "Encre", "Encre de Chine", "Fresque", "Gouache", 
+    "Gravure sur bois", "Huile", "Impasto", "Installation", "Or en feuille", 
+    "Papier de riz", "Pastel", "Pinceau", "Pinceau de bambou", "Sculpture industrielle", 
+    "Sérigraphie", "Splatter Paint", "Techniques mixtes", "Crayon de bois", "Main levée",
+    "Octane render", "icy blue", "Deep Black", "3D Render", "Blender cycles", 
+    "Digital painting", "Pencil sketch", "Photorealistic", "Ray tracing", 
+    "Unreal Engine 5", "V-Ray", "Vector Art", "✍️ PERSONNALISER..."
+]
 
 # --- INTERFACE ---
 url_w = widgets.Text(description='🔗 URL /exec:', layout=widgets.Layout(width='95%'))
-sujets_w = widgets.Textarea(description='✍️ Sujets (1 par ligne):', rows=6, layout=widgets.Layout(width='95%'))
+a_d = widgets.Dropdown(options=opts_a, description='A: Format')
+b_m = widgets.SelectMultiple(options=opts_b, description='B: Styles', layout=widgets.Layout(height='200px'))
+b_t = widgets.Text(description='Artiste:', placeholder='Ajouter manuellement...')
+d_t = widgets.Textarea(description='D: Sujets:', rows=4, layout=widgets.Layout(width='95%'))
+e_m = widgets.SelectMultiple(options=opts_e, description='E: Tech/Rendu', layout=widgets.Layout(height='200px'))
+e_p = widgets.Text(description='Poids ::', placeholder='ex: 1.2, 0.7')
+h_d = widgets.Dropdown(options=["16:9", "9:16", "1:1", "4:5", "3:2"], description='H: Ratio', value="1:1")
 
-# Tes sélections
-artist_w = widgets.Dropdown(options=["SWEDISH SPIDER", "PHOTOGRAPHIC", "AUCUN"], description='B: Artist_Style', value="SWEDISH SPIDER")
-genre_w = widgets.Dropdown(options=["CINEMATIC", "VINTAGE", "AUCUN"], description='C: Genre', value="AUCUN")
-tags_w = widgets.Text(description='E: Tags/Ambiance', value="High Quality, 8k")
-ratio_w = widgets.Dropdown(options=["16:9", "9:16", "1:1", "4:5"], description='H: Ratio', value="16:9")
-
-btn = widgets.Button(description='🚀 ENVOYER AU SHEET', button_style='success', layout=widgets.Layout(width='95%', height='50px'))
+btn = widgets.Button(description='🚀 ENVOYER AU SHEET', button_style='success', layout=widgets.Layout(width='95%'))
 out = widgets.Output()
 
 def envoyer(b):
     with out:
         clear_output()
         url = url_w.value.strip()
-        if not url:
-            print("❌ Manque l'URL !"); return
-            
-        lignes = [l.strip() for l in sujets_w.value.split('\n') if l.strip()]
-        for s in lignes:
-            # Construction du Prompt Final (F)
-            p_final = f"{s}, {artist_w.value}, {genre_w.value}, {tags_w.value} --ar {ratio_w.value}".strip()
-            
-            payload = {
-                "artistStyle": artist_w.value,
-                "genre": genre_w.value,
-                "sujet": s,
-                "tags": tags_w.value,
-                "promptFinal": p_final,
-                "negatif": "--no blur, low quality",
-                "ratio": ratio_w.value,
-                "seed": "", # Vide pour l'instant
-                "link": ""  # Vide pour l'instant
-            }
-            
+        if not url: print("❌ URL manquante"); return
+        
+        val_a = a_d.value if a_d.value != "AUCUN" else ""
+        
+        styles = [s for s in b_m.value if s not in ["AUCUN", "✍️ PERSONNALISER..."]]
+        if b_t.value.strip(): styles.append(b_t.value.strip())
+        val_b = ", ".join(styles)
+
+        techs = [t for t in e_m.value if t not in ["AUCUN", "✍️ PERSONNALISER..."]]
+        pds = [p.strip() for p in e_p.value.split(',') if p.strip()]
+        val_e = ", ".join([f"{t}::{pds[i]}" if i < len(pds) else t for i, t in enumerate(techs)])
+        
+        for s in [l.strip() for l in d_t.value.split('\n') if l.strip()]:
+            prompt = ", ".join([p for p in [val_a, val_b, s, val_e] if p]) + f" --ar {h_d.value}"
+            data = {"format": val_a, "artistStyle": val_b, "sujet": s, "tags": val_e, "promptFinal": prompt, "ratio": h_d.value}
             try:
-                r = requests.post(url, json=payload)
-                print(f"✅ Envoyé dans Colonne B à J : {s[:20]}...")
-            except Exception as e:
-                print(f"❌ Erreur : {e}")
+                requests.post(url, json=data)
+                print(f"✅ Envoyé : {s[:25]}...")
+            except: print("❌ Erreur d'envoi")
 
 btn.on_click(envoyer)
-display(url_w, sujets_w, artist_w, genre_w, tags_w, ratio_w, btn, out)
+display(url_w, a_d, b_m, b_t, d_t, e_m, e_p, h_d, btn, out)
 </pre>
     
 </body>
