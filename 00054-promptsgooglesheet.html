@@ -78,98 +78,85 @@
 <div class="url-box">
   <strong>ID de déploiement :</strong><br>
 AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh<br><br>
-  <strong>Application Web - URL :</strong><br>
+  <strong>Application Web - URL / exec :</strong><br>
  https://script.google.com/macros/s/AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh/exec
 </div>
     
 <h3>📜 LE RÉCEPTIONNISTE (Google Apps Script) - V8</h3>
 <pre class="code-container">
 function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(data.sheetName) || ss.getSheets()[0];
-    sheet.appendRow([
-      data.Format, data.Artist_Style, data.Genre, data.Sujet, data.Tags, 
-      data.positive, data.negative, data.Ratio, data.seed, data.link, 
-      data.Territoire // Colonne K
-    ]);
-    return ContentService.createTextOutput("✅ SYSTÈME OPÉRATIONNEL");
-  } catch (f) {
-    return ContentService.createTextOutput("❌ ERREUR : " + f.toString());
-  }
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var d = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    new Date(),      // A = DERNIER TEST À
+    d.artistStyle,   // B = Artist_Style
+    d.genre,         // C = Genre
+    d.sujet,         // D = Sujet / Set-up
+    d.tags,          // E = Tags / Ambiance
+    d.promptFinal,   // F = Positive_Prompt
+    d.negatif,       // G = Negative_Prompt
+    d.ratio,         // H = Ratio
+    d.seed,          // I = Seed
+    d.link           // J = Link
+  ]);
+  return ContentService.createTextOutput("OK");
 }
 </pre>
 
 <h3>📜 LE TRANSPORTEUR (Python pour Colab)</h3>
 <pre class="code-container">
-import requests, json
-from datetime import datetime, timedelta
+#@title ✨ STUDIO LUMIÈRE NOIRE - ALIGNEMENT COLONNES (A-J)
+import ipywidgets as widgets
+from IPython.display import display, HTML, clear_output
+import requests
 
-# --- CONFIGURATION ---
-URL_SHEET = "https://script.google.com/macros/s/AKfycbwlNA_gsRn1hTd534T7-TP4hXOXcpGZsO-HwqLz-ayIARi3KLDPuY0hPcOy_33-ynHh/exec"
+# --- INTERFACE ---
+url_w = widgets.Text(description='🔗 URL /exec:', layout=widgets.Layout(width='95%'))
+sujets_w = widgets.Textarea(description='✍️ Sujets (1 par ligne):', rows=6, layout=widgets.Layout(width='95%'))
 
-def get_date(pays):
-    # Logique de date pour 2026 [cite: 2026-01-19]
-    j = 2 if pays.upper() == "FRANCE" else 4
-    d = datetime.now() + timedelta(days=180)
-    return (d + timedelta(days=(j - d.weekday() + 7) % 7)).strftime("%d.%m.%Y")
+# Tes sélections
+artist_w = widgets.Dropdown(options=["SWEDISH SPIDER", "PHOTOGRAPHIC", "AUCUN"], description='B: Artist_Style', value="SWEDISH SPIDER")
+genre_w = widgets.Dropdown(options=["CINEMATIC", "VINTAGE", "AUCUN"], description='C: Genre', value="AUCUN")
+tags_w = widgets.Text(description='E: Tags/Ambiance', value="High Quality, 8k")
+ratio_w = widgets.Dropdown(options=["16:9", "9:16", "1:1", "4:5"], description='H: Ratio', value="16:9")
 
-# --- DONNÉES VERROUILLÉES (AVEC ACCENTS) ---
-titre = "NÉON RIVAGES" # Corrigé : l'accent est là.
-studio = "LUMIÈRE NOIRE"
-date_f = get_date("France")
+btn = widgets.Button(description='🚀 ENVOYER AU SHEET', button_style='success', layout=widgets.Layout(width='95%', height='50px'))
+out = widgets.Output()
 
-# 1. CONSTRUCTION DU PROMPT POSITIF (Colonne F)
-prompt_positif = (
-    f"Professional cinematic movie poster. photographic rendering [cite: 2026-01-18]. "
-    f"MANDATORY: Place the graphic visual logo of the studio {studio} at the very top. "
-    f"LARGE MAIN TITLE BELOW LOGO: {titre} " # Utilise le titre avec accent
-    f"Visuals: A detective in a trench coat under acidic rain, facing a holographic Eiffel Tower at night. "
-    f"Lighting: Lit ONLY by streetlights and the Eiffel Tower glow. NO background neon signs [cite: 2026-01-18]. "
-    f"CREDITS AT BOTTOM (4 lines, NO PERIODS): "
-    f"Line 1: {studio} présente {titre} "
-    f"Line 2: Réalisation : MARCELLE LEROI "
-    f"Line 3: avec SACHA VALES "
-    f"Line 4: {date_f}"
-)
+def envoyer(b):
+    with out:
+        clear_output()
+        url = url_w.value.strip()
+        if not url:
+            print("❌ Manque l'URL !"); return
+            
+        lignes = [l.strip() for l in sujets_w.value.split('\n') if l.strip()]
+        for s in lignes:
+            # Construction du Prompt Final (F)
+            p_final = f"{s}, {artist_w.value}, {genre_w.value}, {tags_w.value} --ar {ratio_w.value}".strip()
+            
+            payload = {
+                "artistStyle": artist_w.value,
+                "genre": genre_w.value,
+                "sujet": s,
+                "tags": tags_w.value,
+                "promptFinal": p_final,
+                "negatif": "--no blur, low quality",
+                "ratio": ratio_w.value,
+                "seed": "", # Vide pour l'instant
+                "link": ""  # Vide pour l'instant
+            }
+            
+            try:
+                r = requests.post(url, json=payload)
+                print(f"✅ Envoyé dans Colonne B à J : {s[:20]}...")
+            except Exception as e:
+                print(f"❌ Erreur : {e}")
 
-# 2. CONSTRUCTION DU PROMPT NÉGATIF (Colonne G)
-# On ajoute l'interdiction de l'absence d'accents [cite: 2026-01-19]
-prompt_negatif = (
-    f"negative prompt: missing accents on capital letters, NEON without accent, "
-    f"no studio logo, missing logo, background neon signs, "
-    f"text on signs, NUIOS, duplicate title, apostrophes in title, points at end of lines, "
-    f"blurry, watermarks, signature"
-)
-
-# 3. ENVOI DU PAQUET COMPLET
-payload = {
-    "sheetName": "MASTER",
-    "Format": "Affiche",
-    "Genre": "SF Néo-noir",
-    "Sujet": titre,
-    "Artist_Style": "Dir: MARCELLE LEROI",
-    "Tags": f"Typo Correcte | {date_f}",
-    "positive": prompt_positif,
-    "negative": prompt_negatif,
-    "Territoire": "France"
-}
-
-try:
-    requests.post(URL_SHEET, data=json.dumps(payload))
-    print(f"✅ Test envoyé avec accents corrigés : {titre}")
-except Exception as e:
-    print(f"❌ Erreur : {e}")
-    </pre>
+btn.on_click(envoyer)
+display(url_w, sujets_w, artist_w, genre_w, tags_w, ratio_w, btn, out)
+</pre>
     
 </body>
 </html>
-
-
-
-
-
-
-
-
